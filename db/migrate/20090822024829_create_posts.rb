@@ -1,4 +1,6 @@
+require "migration_helpers"
 class CreatePosts < ActiveRecord::Migration
+  extend MigrationHelpers
   def self.up
     create_table :posts do |t|
       t.string :subject,      :null => false
