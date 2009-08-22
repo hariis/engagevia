@@ -9,7 +9,7 @@ class CommentsController < ApplicationController
   end
   
   def index
-    @comments = @post.comments.all
+    @comments = @post.comments
 
     respond_to do |format|
       format.html # index.html.erb
@@ -31,7 +31,7 @@ class CommentsController < ApplicationController
   # GET /comments/new
   # GET /comments/new.xml
   def new
-    @comment = @post.comments.new
+    @comment = @post.comments.build
 
     respond_to do |format|
       format.html # new.html.erb
@@ -47,12 +47,14 @@ class CommentsController < ApplicationController
   # POST /comments
   # POST /comments.xml
   def create
-    @comment = @post.comments.new(params[:comment])
-
+    @comment = @post.comments.build(params[:comment])
+      @comment.user_id = current_user.id
+      #@comment.parent_id = 0
     respond_to do |format|
-      if @comment.save
+
+      if @post.comments << @comment
         flash[:notice] = 'Comment was successfully created.'
-        format.html { redirect_to(@comment) }
+        format.html { redirect_to(@post) }
         format.xml  { render :xml => @comment, :status => :created, :location => @comment }
       else
         format.html { render :action => "new" }
@@ -69,7 +71,7 @@ class CommentsController < ApplicationController
     respond_to do |format|
       if @comment.update_attributes(params[:comment])
         flash[:notice] = 'Comment was successfully updated.'
-        format.html { redirect_to(@comment) }
+        format.html { redirect_to(@post, @comment) }
         format.xml  { head :ok }
       else
         format.html { render :action => "edit" }
@@ -85,7 +87,7 @@ class CommentsController < ApplicationController
     @comment.destroy
 
     respond_to do |format|
-      format.html { redirect_to(comments_url) }
+      format.html { redirect_to(@post, @comment) }
       format.xml  { head :ok }
     end
   end

@@ -33,6 +33,18 @@
   <%=h @post.description %>
 </p>
 
+<% unless @post.comments.empty? %>
+  <h3>Listing comments </h3>
+<% end %>
 
+<p>
+  <% @post.comments.each do |comment| %>
+    <%= comment.body %><br/>
+  <% end %>
+</p>
+
+<h3>Add Comment </h3>
+<%= render :partial => @comment = Comment.new, :locals => {:button_type => 'Add Comment'} %>
+  
 <%= link_to 'Edit', edit_post_path(@post) %> |
 <%= link_to 'Back', posts_path %>
