@@ -4,6 +4,12 @@ class UsersController < ApplicationController
 
   before_filter :load_user_using_perishable_token, :only => [:activate]
   
+  #test code: delete it
+
+  def index
+    @users = User.find(:all)
+  end
+
   def new
     @user = User.new
 
@@ -57,7 +63,8 @@ class UsersController < ApplicationController
       end
     else
       @user = User.new(params[:user])
-
+    end
+    
     respond_to do |format|
       #if @user.save
       if @user.save_without_session_maintenance #dont login and goto to home page
@@ -127,5 +134,4 @@ private
       flash[:notice] = "You have already activated your account."
       redirect_to root_url
     end
-  end
  end

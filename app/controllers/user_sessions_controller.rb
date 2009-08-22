@@ -20,6 +20,7 @@ class UserSessionsController < ApplicationController
       else
         flash[:notice] = "Please activate your account and then try logging in"
       end
+      redirect_to root_url
     end
   end  
    

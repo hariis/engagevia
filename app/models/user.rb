@@ -4,10 +4,8 @@ class User < ActiveRecord::Base
   has_many :comments
   has_many :engagements
 
-
   acts_as_authentic do |c|
-    #c.login_field = :email
-
+    c.login_field = :email
   end
 
   def deliver_password_reset_instructions!
@@ -43,7 +41,8 @@ class User < ActiveRecord::Base
 
   def activated?
     #!! perishable_token.nil?
-    !activated_at.nil
+    #!activated_at.nil
+    !! activated_at.nil?
   end
 
 end
