@@ -18,7 +18,7 @@ default_url_options[:host] = "li98-245.members.linode.com/"
 
   def confirm_activation(user)
     setup_email(user)
-    subject    += 'Your account has been activated!'
+    subject    += 'Woohoo! Your account has been activated!'
     body       :url  => DOMAIN
   end
 
