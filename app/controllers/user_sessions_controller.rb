@@ -4,13 +4,23 @@ class UserSessionsController < ApplicationController
   end
 
   def create  
-    @user_session = UserSession.new(params[:user_session])  
-    if @user_session.save  
-      flash[:notice] = "Successfully logged in."  
-      redirect_to root_url  
-    else  
-      render :action => 'new'  
-    end  
+    @user = User.find_by_email(params[:user_session][:email])
+
+    if @user && @user.activated?
+      @user_session = UserSession.new(params[:user_session])
+      if @user_session.save
+        flash[:notice] = "Successfully logged in."
+        redirect_to root_url
+      else
+        render :action => 'new'
+      end
+    else
+      if @user.nil?
+        flash[:notice] = "We're sorry, but we could not locate your account. Please signup"
+      else
+        flash[:notice] = "Please activate your account and then try logging in"
+      end
+    end
   end  
    
   def destroy  

@@ -1,6 +1,9 @@
 class UsersController < ApplicationController
   # GET /users/new
   # GET /users/new.xml
+
+  before_filter :load_user_using_perishable_token, :only => [:activate]
+  
   def new
     @user = User.new
 
@@ -32,6 +35,8 @@ class UsersController < ApplicationController
     end
   end
 
+
+  
   def create
     #@random = ActiveSupport::SecureRandom.hex(10)
     #@user = User.find_by_email("dummy@gmail.com")
@@ -40,9 +45,22 @@ class UsersController < ApplicationController
     #   flash[:notice] = 'Successfully created profile.'
     #end
 
-    @user = User.new(params[:user])
+    @user = User.find_by_email(params[:user][:email])
+    if @user
+      if !@user.activated?
+        @user.username = params[:user][:username]
+        @user.password = params[:user][:password]
+        @user.password_confirmation = params[:user][:password_confirmation]
+      else
+        flash[:notice] = "Your account already exists. Please login or use reset password"
+        redirect_to login_path
+      end
+    else
+      @user = User.new(params[:user])
+
     respond_to do |format|
-      if @user.save
+      #if @user.save
+      if @user.save_without_session_maintenance #dont login and goto to home page
         @user.deliver_account_confirmation_instructions!
         flash[:notice] = "Instructions to confirm your account have been emailed to you. " +
         "Please check your email."
@@ -86,3 +104,28 @@ class UsersController < ApplicationController
     end
   end
 end
+
+ def activate
+    flash[:notice] = "Thanks for confirming your acocunt."
+    activate #set the activated at
+    #login him in    
+    redirect_to root_url #redirect him to dash board
+  end
+
+private
+  def load_user_using_perishable_token
+    @user = User.find_using_perishable_token(params[:id])    
+    unless @user
+      flash[:notice] = "We're sorry, but we could not locate your account." +
+        "If you are having issues try copying and pasting the URL " +
+        "from your email into your browser or restarting the " +
+        "reset password process."
+      redirect_to root_url
+    end
+
+    if @user.activated?
+      flash[:notice] = "You have already activated your account."
+      redirect_to root_url
+    end
+
+ end
