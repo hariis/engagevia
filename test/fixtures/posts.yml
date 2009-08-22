@@ -1,0 +1,19 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  subject: MyString
+  created_by: 1
+  url: MyString
+  unique_id: MyString
+  privacy: false
+  note: MyText
+  description: MyText
+
+two:
+  subject: MyString
+  created_by: 1
+  url: MyString
+  unique_id: MyString
+  privacy: false
+  note: MyText
+  description: MyText
