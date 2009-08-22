@@ -1,0 +1,8 @@
+production:
+  :enable_starttls_auto: true
+  :address: li98-245.members.linode.com
+  :domain: li98-245.members.linode.com
+  :port: 25
+  :authentication: :login
+  :user_name: hariis
+  :password: jayam4rama
