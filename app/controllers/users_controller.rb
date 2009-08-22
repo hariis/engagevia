@@ -36,13 +36,14 @@ class UsersController < ApplicationController
     #@random = ActiveSupport::SecureRandom.hex(10)
     #@user = User.find_by_email("dummy@gmail.com")
     #@user = User.new(params[:user])
-    if @user.update_attributes(params[:user])
-       flash[:notice] = 'Successfully created profile.'
-    end
+    #if @user.update_attributes(params[:user])
+    #   flash[:notice] = 'Successfully created profile.'
+    #end
 
+    @user = User.new(params[:user])
     respond_to do |format|
-      @user.deliver_account_confirmation_instructions!
       if @user.save
+        @user.deliver_account_confirmation_instructions!
         flash[:notice] = "Instructions to confirm your account have been emailed to you. " +
         "Please check your email."
         #flash[:notice] = 'Registration successfull.'
