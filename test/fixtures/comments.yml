@@ -1,0 +1,13 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  user: 
+  post: 
+  body: MyText
+  parent_id: 1
+
+two:
+  user: 
+  post: 
+  body: MyText
+  parent_id: 1
