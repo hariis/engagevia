@@ -127,5 +127,5 @@ private
       flash[:notice] = "You have already activated your account."
       redirect_to root_url
     end
-
+  end
  end
