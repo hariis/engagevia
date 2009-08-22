@@ -1,0 +1,13 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  user: 
+  post: 
+  invited_by: 1
+  invited_when: 2009-08-22 10:34:01
+
+two:
+  user: 
+  post: 
+  invited_by: 1
+  invited_when: 2009-08-22 10:34:01

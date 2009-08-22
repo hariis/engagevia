@@ -17,7 +17,7 @@ class UsersController < ApplicationController
 
   # POST /users
   # POST /users.xml
-  def create
+  def create1
     @user = User.new(params[:user])
 
     respond_to do |format|
@@ -31,8 +31,31 @@ class UsersController < ApplicationController
       end
     end
   end
-  
-  
+
+  def create
+    #@random = ActiveSupport::SecureRandom.hex(10)
+    #@user = User.find_by_email("dummy@gmail.com")
+    #@user = User.new(params[:user])
+    if @user.update_attributes(params[:user])
+       flash[:notice] = 'Successfully created profile.'
+    end
+
+    respond_to do |format|
+      @user.deliver_account_confirmation_instructions!
+      if @user.save
+        flash[:notice] = "Instructions to confirm your account have been emailed to you. " +
+        "Please check your email."
+        #flash[:notice] = 'Registration successfull.'
+        format.html { redirect_to(root_path) }
+        format.xml  { render :xml => @user, :status => :created, :location => @user }
+      else
+        format.html { render :action => "new" }
+        format.xml  { render :xml => @user.errors, :status => :unprocessable_entity }
+      end
+    end
+  end
+
+
   # PUT /users/1
   # PUT /users/1.xml
   def update
