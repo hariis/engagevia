@@ -12,12 +12,38 @@ class User < ActiveRecord::Base
 
   def deliver_password_reset_instructions!
     reset_perishable_token!
-    #Notifier.deliver_password_reset_instructions(self)
+    Notifier.deliver_password_reset_instructions(self)
   end
 
   def deliver_account_confirmation_instructions!
     reset_perishable_token!
-    #Notifier.deliver_account_confirmation_instructions(self)
+    Notifier.deliver_account_confirmation_instructions(self)
+  end
+
+  # prevents a user from submitting a crafted form that bypasses activation
+  # anything else you want your user to change should be added here.
+  attr_accessible :login, :email, :password, :password_confirmation, :time_zone
+
+  def has_role?(role)
+	self.roles.count(:conditions => ["name = ?", role]) > 0
+  end
+
+	def add_role(role)
+	  return if self.has_role?(role)
+	  self.roles << Role.find_by_name(role)
+	end
+
+  # Activates the user in the database.
+  def activate
+    #@activated = true
+    self.activated_at = Time.now.utc
+    #self.perishable_token = nil
+    save(false)
+  end
+
+  def activated?
+    #!! perishable_token.nil?
+    !activated_at.nil
   end
 
 end
