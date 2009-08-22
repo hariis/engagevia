@@ -1,26 +1,4 @@
 class UsersController < ApplicationController
-  # GET /users
-  # GET /users.xml
-  def index
-    @users = User.all
-
-    respond_to do |format|
-      format.html # index.html.erb
-      format.xml  { render :xml => @users }
-    end
-  end
-
-  # GET /users/1
-  # GET /users/1.xml
-  def show
-    @user = User.find(params[:id])
-
-    respond_to do |format|
-      format.html # show.html.erb
-      format.xml  { render :xml => @user }
-    end
-  end
-
   # GET /users/new
   # GET /users/new.xml
   def new
@@ -34,7 +12,7 @@ class UsersController < ApplicationController
 
   # GET /users/1/edit
   def edit
-    @user = User.find(params[:id])
+    @user = current_user
   end
 
   # POST /users
@@ -44,8 +22,8 @@ class UsersController < ApplicationController
 
     respond_to do |format|
       if @user.save
-        flash[:notice] = 'User was successfully created.'
-        format.html { redirect_to(@user) }
+        flash[:notice] = "Registration successful."  
+        format.html { redirect_to(root_url) }
         format.xml  { render :xml => @user, :status => :created, :location => @user }
       else
         format.html { render :action => "new" }
@@ -53,16 +31,17 @@ class UsersController < ApplicationController
       end
     end
   end
-
+  
+  
   # PUT /users/1
   # PUT /users/1.xml
   def update
-    @user = User.find(params[:id])
+    @user = current_user
 
     respond_to do |format|
       if @user.update_attributes(params[:user])
-        flash[:notice] = 'User was successfully updated.'
-        format.html { redirect_to(@user) }
+        flash[:notice] = "Successfully updated profile."
+        format.html { redirect_to(root_url) }
         format.xml  { head :ok }
       else
         format.html { render :action => "edit" }
@@ -70,7 +49,7 @@ class UsersController < ApplicationController
       end
     end
   end
-
+  
   # DELETE /users/1
   # DELETE /users/1.xml
   def destroy

@@ -1,6 +1,8 @@
 class PostsController < ApplicationController
   # GET /posts
   # GET /posts.xml
+  layout 'application'
+  
   def index
     @posts = Post.all
 
