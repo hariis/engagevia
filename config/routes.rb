@@ -4,7 +4,7 @@ ActionController::Routing::Routes.draw do |map|
   map.root :controller => 'posts', :action => 'index'
   
   map.resources :users
-  map.resources :posts
+  map.resources :posts, :has_many => 'comments'
   map.resources :user_sessions
   
   map.login "login",   :controller => 'user_sessions', :action => 'new'

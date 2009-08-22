@@ -1,31 +1,22 @@
-<h1>Listing posts</h1>
+<h3>Listing posts</h3>
+<% ActiveSupport::SecureRandom.hex(10) %>
 
-<table>
-  <tr>
-    <th>Subject</th>
-    <th>Created by</th>
-    <th>Url</th>
-    <th>Unique</th>
-    <th>Privacy</th>
-    <th>Note</th>
-    <th>Description</th>
-  </tr>
 
 <% @posts.each do |post| %>
-  <tr>
-    <td><%=h post.subject %></td>
-    <td><%=h post.created_by %></td>
-    <td><%=h post.url %></td>
-    <td><%=h post.unique_id %></td>
-    <td><%=h post.privacy %></td>
-    <td><%=h post.note %></td>
-    <td><%=h post.description %></td>
-    <td><%= link_to 'Show', post %></td>
-    <td><%= link_to 'Edit', edit_post_path(post) %></td>
-    <td><%= link_to 'Destroy', post, :confirm => 'Are you sure?', :method => :delete %></td>
-  </tr>
+
+    <%= link_to "#{post.subject}", post.url %>
+    <%= link_to  "(#{GetCommentCount(post)} comments)", post %> <br/>
+    <%h post.created_by %>
+    <%h post.url %>
+    <%h post.unique_id %>
+    <%h post.privacy %>
+    <%h post.note %>
+    <% link_to 'Show', post %>
+    <%= link_to 'Edit', edit_post_path(post) %>
+    <% link_to 'Destroy', post, :confirm => 'Are you sure?', :method => :delete %>
+    <br/>
 <% end %>
-</table>
+
 
 <br />
 
