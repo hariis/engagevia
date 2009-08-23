@@ -2,11 +2,11 @@ class Post < ActiveRecord::Base
   require 'rubygems'
   require 'twitter'
 
-  has_many :comments, :dependent => true
+  has_many :comments, :dependent => :destroy
   belongs_to :owner , :class_name => 'User', :foreign_key => :user_id
   
-  has_many :engagements, :dependent => true
-  has_many :participants, :through => :engagements, :source => :user, :dependent => true
+  has_many :engagements, :dependent => :destroy
+  has_many :participants, :through => :engagements, :source => :user
 
   after_create :send_post_link
 
