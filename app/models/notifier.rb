@@ -1,6 +1,7 @@
 class Notifier < ActionMailer::Base
-  
+
 default_url_options[:host] = "li98-245.members.linode.com/"
+DOMAIN = "http://li98-245.members.linode.com/"
 
   def password_reset_instructions(user)
     @subject    +=   " Password Reset Instructions"

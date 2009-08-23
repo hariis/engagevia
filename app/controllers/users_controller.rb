@@ -27,7 +27,14 @@ class UsersController < ApplicationController
   # POST /users
   # POST /users.xml
   def create1
-    @user = User.new(params[:user])
+    #@user = User.new(params[:user])
+
+    @user = User.new
+    @user.username = params[:user][:username]
+    @user.email = params[:user][:email]
+    @user.password = params[:user][:password]
+    @user.password_confirmation = params[:user][:password_confirmation]
+
 
     respond_to do |format|
       if @user.save
@@ -53,21 +60,31 @@ class UsersController < ApplicationController
 
     @user = User.find_by_email(params[:user][:email])
     if @user
-      if !@user.activated?
-        @user.username = params[:user][:username]
-        @user.password = params[:user][:password]
-        @user.password_confirmation = params[:user][:password_confirmation]
+      if @user.non_member?
+          @user.username = params[:user][:username]
+          @user.password = params[:user][:password]
+          #@user.password_confirmation = params[:user][:password_confirmation]
+      elseif !@user.activated?
+          flash[:notice] = "Your account already exists. Please active your account"
+          redirect_to root_url
       else
-        flash[:notice] = "Your account already exists. Please login or use reset password"
-        redirect_to login_path
+          flash[:notice] = "Your account already exists. Please login or use reset password"
+          redirect_to login_path
       end
     else
-      @user = User.new(params[:user])
+      #@user = User.new(params[:user])
+      @user = User.new
+      @user.username = params[:user][:username]
+      @user.email = params[:user][:email]
+      @user.password = params[:user][:password]
+      @user.password_confirmation = params[:user][:password_confirmation]
     end
     
     respond_to do |format|
       #if @user.save
       if @user.save_without_session_maintenance #dont login and goto to home page
+        @user.add_role("member")
+        @user.add_role("admin") if User.find(:all).size < 3 # first two users are admin
         @user.deliver_account_confirmation_instructions!
         flash[:notice] = "Instructions to confirm your account have been emailed to you. " +
         "Please check your email."
@@ -114,14 +131,14 @@ end
 
  def activate
     flash[:notice] = "Thanks for confirming your acocunt."
-    activate #set the activated at
+    @user.activate #set the activated at
     #login him in    
     redirect_to root_url #redirect him to dash board
   end
 
 private
   def load_user_using_perishable_token
-    @user = User.find_using_perishable_token(params[:id])    
+    @user = User.find_using_perishable_token(params[:activation_code])
     unless @user
       flash[:notice] = "We're sorry, but we could not locate your account." +
         "If you are having issues try copying and pasting the URL " +

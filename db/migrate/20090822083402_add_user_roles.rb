@@ -14,7 +14,9 @@ class AddUserRoles < ActiveRecord::Migration
       Role.create(:name => "admin")
       Role.create(:name => "private_beta_tester")
       Role.create(:name => "public_beta_tester")
+      Role.create(:name => "rails_rumble_beta_tester")
       Role.create(:name => "member")
+      Role.create(:name => "non_member")
 
     end
 

@@ -3,6 +3,8 @@ class User < ActiveRecord::Base
   has_many :posts, :through => :engagements
   has_many :comments
   has_many :engagements
+  has_many :user_roles, :dependent => :destroy
+  has_many :roles, :through => :user_roles
 
   acts_as_authentic do |c|
     c.login_field = :email
@@ -23,7 +25,7 @@ class User < ActiveRecord::Base
   attr_accessible :login, :email, :password, :password_confirmation, :time_zone
 
   def has_role?(role)
-	self.roles.count(:conditions => ["name = ?", role]) > 0
+    self.roles.count(:conditions => ["name = ?", role]) > 0
   end
 
 	def add_role(role)
@@ -33,16 +35,22 @@ class User < ActiveRecord::Base
 
   # Activates the user in the database.
   def activate
-    #@activated = true
     self.activated_at = Time.now.utc
-    #self.perishable_token = nil
+    self.perishable_token = nil
     save(false)
   end
 
   def activated?
     #!! perishable_token.nil?
-    #!activated_at.nil
-    !! activated_at.nil?
+    !!activated_at.nil?
+  end
+
+  def member?
+    has_role?("member")
+  end
+
+  def non_member?
+    has_role?("non_member")
   end
 
 end

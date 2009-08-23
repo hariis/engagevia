@@ -3,14 +3,18 @@ ActionController::Routing::Routes.draw do |map|
 
   map.root :controller => 'posts', :action => 'index'
   
-  map.resources :users
+  map.resources :users, :collection => {:activate => :get}
   map.resources :posts, :has_many => 'comments'
   map.resources :user_sessions
   map.resources :password_resets
   
   map.login "login",   :controller => 'user_sessions', :action => 'new'
   map.logout "logout", :controller => 'user_sessions', :action => 'destroy'
-  
+
+  map.activate '/activate/:activation_code', :controller => 'users', :action => 'activate'
+  #map.forgot_password '/forgot_password', :controller => 'users', :action => 'forgot_password'
+
+
   # The priority is based upon order of creation: first created -> highest priority.
 
   # Sample of regular route:
