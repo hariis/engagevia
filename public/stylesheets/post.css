@@ -1,0 +1,68 @@
+/*     
+    Design by     : http://www.intensivstation.ch/files/en_templates/temp07.html
+*/
+
+
+#left {
+position: absolute;
+left: 0px;
+width: 190px;
+color: #564b47;
+margin: 0px;
+padding: 0px;
+}
+
+
+#right {
+position: absolute;
+right: 0px;
+width: 190px;
+color: #564b47;
+margin: 0px;
+padding: 0px;
+}
+
+
+
+
+body {
+  background-color: #e1ddd9;
+  font-size: 12px;
+  font-family: Verdana, Arial, SunSans-Regular, Sans-Serif;
+  color:#564b47;
+  padding:0px;
+  margin:0px;
+}
+
+#content {
+  margin: 0px 190px 0px 190px;
+  border-left: 2px solid #564b47;
+  border-right: 2px solid #564b47;
+  padding: 0px;
+  background-color: #ffffff;
+}
+#header-links {
+   float:right;
+   margin-bottom:0;
+    margin-left:105px;
+    background-color:#90897A;
+    color:#fff;
+
+
+padding:5px 15px;
+text-align:right;
+text-transform:uppercase;
+}
+
+#header-links ul li {
+display:inline;
+}
+
+#header-links a { color: #1e86fa; text-decoration:underline;}
+#header-links a:visited { color: #1e86fa; }
+#header-links a:hover { color:#fff; background-color: #1e86fa; }
+
+p, h2, pre {
+margin:0;
+padding:5px 20px;
+}

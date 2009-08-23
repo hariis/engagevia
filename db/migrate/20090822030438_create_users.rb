@@ -1,6 +1,6 @@
 class CreateUsers < ActiveRecord::Migration
   def self.up
-    create_table :users do |t|
+    create_table :users, :options => "auto_increment = 1000" do |t|
       t.string :username,          :null => false
       t.string :email,             :null => false
       t.string :crypted_password,  :null => false

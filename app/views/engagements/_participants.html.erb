@@ -1,0 +1,7 @@
+<ul>
+  <% for p in participants %>
+  <li  class= 'new-p'>
+      <%  p.member? ? p.username : truncate(p.email, p.email.index('@'), "...") %>
+    </li>
+  <% end %>
+  </ul>

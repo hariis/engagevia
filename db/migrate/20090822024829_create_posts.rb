@@ -1,10 +1,8 @@
-require "migration_helpers"
-class CreatePosts < ActiveRecord::Migration
-  extend MigrationHelpers
+class CreatePosts < ActiveRecord::Migration  
   def self.up
-    create_table :posts do |t|
+    create_table :posts , :force => true do |t|
       t.string :subject,      :null => false
-      t.integer :created_by,  :null => false
+      t.references :user
       t.string :url
       t.string :unique_id,    :null => false
       t.boolean :public,      :default => false
@@ -13,10 +11,7 @@ class CreatePosts < ActiveRecord::Migration
       t.datetime :validated_at
 
       t.timestamps
-    end
-
-    add_index :posts, :created_by
-    foreign_key :posts, :created_by, :users
+    end    
   end
 
   def self.down

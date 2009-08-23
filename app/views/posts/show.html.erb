@@ -1,3 +1,10 @@
+<% if @post.nil? %>
+There was a problem locating your Conversation. <br>
+If you clicked on the link from your email, please try copying the pasting the link into the browser.
+
+<% else %>
+<div id="content">
+
 <p>
   <b>Subject:</b>
   <%=h @post.subject %>
@@ -11,21 +18,6 @@
 <p>
   <b>Url:</b>
   <%=h @post.url %>
-</p>
-
-<p>
-  <b>Unique:</b>
-  <%=h @post.unique_id %>
-</p>
-
-<p>
-  <b>Privacy:</b>
-  <%=h @post.privacy %>
-</p>
-
-<p>
-  <b>Note:</b>
-  <%=h @post.note %>
 </p>
 
 <p>
@@ -43,8 +35,9 @@
   <% end %>
 </p>
 
-<h3>Add Comment </h3>
+<h3>Engage </h3>
 <%= render :partial => @comment = Comment.new, :locals => {:button_type => 'Add Comment'} %>
   
-<%= link_to 'Edit', edit_post_path(@post) %> |
-<%= link_to 'Back', posts_path %>
+<% end %>
+
+</div>

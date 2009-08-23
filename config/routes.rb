@@ -5,6 +5,7 @@ ActionController::Routing::Routes.draw do |map|
   
   map.resources :users
   map.resources :posts, :has_many => 'comments'
+  map.resources :engagements, :collection => { :get_followers => :get }
   map.resources :user_sessions
   map.resources :password_resets
   

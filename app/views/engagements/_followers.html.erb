@@ -1,0 +1,8 @@
+<ul>
+  <% for follower in followers %>
+    <li>
+      <%= check_box_tag "followers[]", follower.screen_name %>
+      <%= follower.name %>
+    </li>
+  <% end %>
+  </ul>
