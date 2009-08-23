@@ -1,6 +1,7 @@
 <%= button_to 'Start New Conversation', new_post_path %>
 <h3>Listing All your Posts</h3>
 
+<%= @posts.size %><%= @posts.count %>
 
 
 <% @posts.each do |post| %>

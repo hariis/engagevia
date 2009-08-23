@@ -45,6 +45,10 @@ class PostsController < ApplicationController
   end
   def index
     @posts = @user.posts.find(:all)
+    #if @posts.count < 1
+    # redirect_to new_post_path
+    #  return
+    #end
 
     respond_to do |format|
       format.html # index.html.erb

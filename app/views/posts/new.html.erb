@@ -1,4 +1,3 @@
-
 <h1>Start a Conversation</h1>
 
 <% form_for(@post) do |f| %>
@@ -22,7 +21,8 @@
 
   <p>
     <%= f.label :tag_list, "Tags" %><br />
-    <%= f.text_field :tag_list , :size=> 80, :maxlength => 80 %>
+    <%= f.text_field :tag_list , :size=> 80, :maxlength => 80 %><br/>
+    <span class ="info"> (space separated) </span>
   </p>
 
   <p>    
@@ -31,7 +31,7 @@
   
   <p>
     <%= f.label :description %><br />
-    <%= f.text_area :description %>
+    <%= f.text_area :description, :cols => 0, :rows => 10  %>
   </p>
 
   <p>

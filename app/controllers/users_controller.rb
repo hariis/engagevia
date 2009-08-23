@@ -9,11 +9,11 @@ class UsersController < ApplicationController
   #test code: delete it
 
   def index
-    if current_user && current_user.admin?
+    #if current_user && current_user.admin?
       @users = User.find(:all)
-    else
-      redirect_to root_url
-    end
+    #else
+     # redirect_to root_url
+    #end
   end
 
   def new
@@ -71,7 +71,7 @@ class UsersController < ApplicationController
           @user.password = params[:user][:password]
           #@user.password_confirmation = params[:user][:password_confirmation]
       elsif !@user.activated?
-          flash[:notice] = "Your account already exists. Please active your account"
+          flash[:notice] = "Your account already exists. Please activate your account"
           redirect_to root_url
           return
       else
