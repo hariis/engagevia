@@ -1,8 +1,8 @@
 class PostsController < ApplicationController
   # GET /posts
   # GET /posts.xml
-  before_filter :load_user, :except => [:new, :create]
-  before_filter :check_activated_member, :except => [:new, :show, :create]
+  before_filter :load_user, :except => [:new, :create,:dashboard]
+  before_filter :check_activated_member, :except => [:new, :show, :create,:dashboard]
 
   def check_activated_member
     current_user.activated?
@@ -24,6 +24,9 @@ class PostsController < ApplicationController
        redirect_to login_path
       end
     end
+  end
+  def dashboard
+
   end
   def index
     @posts = @user.posts.find(:all)
@@ -54,7 +57,7 @@ class PostsController < ApplicationController
   # GET /posts/new.xml
   def new
     @post = Post.new
-    
+    session[:post] = nil
     respond_to do |format|
       format.html # new.html.erb
       format.xml  { render :xml => @post }
@@ -65,34 +68,54 @@ class PostsController < ApplicationController
   # POST /posts.xml
   def create
 
-    @post = Post.new(params[:post])
-    @post.unique_id = Post.get_unique_id
+    @post = session[:post] || Post.new(params[:post])
     
+    #create the user object if necessary
+    if current_user && current_user.activated?
+      @user = current_user
+      @post.validated_at = Time.now.utc
+    else
+      if  validate_emails(params[:from_email])
+        @user = User.find_by_email(params[:from_email])
+      else
+          flash[:notice] = "Your email is turning out to be not valid. Please check and try again"
+          redirect_to new_post_path
+      end
+      if @user && @user.activated?
+          #Save this post contents
+          session[:post] = @post
+          flash[:notice] = "Your email is registered with an account. <br/> Please login first."
+          redirect_to login_path
+      elsif @user.nil?
+          #Create a dummy user
+          @user = User.create(:username => 'nonmember',:email => params[:from_email], :password => 'mounthood', :password_confirmation => 'mounthood')
+      elsif !@user.activated?
+          #Save this post contents
+          session[:post] = @post
+          flash[:notice] = "Your email is registered with an account but not activated yet. <br/> Please activate your account and login first."
+          redirect_to login_path
+      end
+    end
+
+    @post.unique_id = Post.get_unique_id
     respond_to do |format|
       if @user.posts << @post #@post.save
-        flash[:notice] = 'Post was successfully created. <br/> Your email contains the link to this conversation as well'
+        flash[:notice] = 'Post was successfully created. <br/>'
+        if current_user && current_user.activated?
+          flash[:notice] +='Your email contains the link to this post as well.<br/> '+
+            'You can now start inviting your friends for the conversation.'
+        else
+          flash[:notice] +='Please check your email for the link to this post you just created. <br/>' +
+            'This redirect helps us to confirm your ownership of the provided email.'+
+                       'Happy Conversing!'
+          redirect_to root_url
+          return
+        end
         format.html { redirect_to(@post) }
         #format.xml  { render :xml => @post, :status => :created, :location => @post }
       else
         format.html { render :action => "new" }
         #format.xml  { render :xml => @post.errors, :status => :unprocessable_entity }
-      end
-    end
-  end
-
-  # PUT /posts/1
-  # PUT /posts/1.xml
-  def update
-    @post = Post.find(params[:id])
-
-    respond_to do |format|
-      if @post.update_attributes(params[:post])
-        flash[:notice] = 'Post was successfully updated.'
-        format.html { redirect_to(@post) }
-        format.xml  { head :ok }
-      else
-        format.html { render :action => "edit" }
-        format.xml  { render :xml => @post.errors, :status => :unprocessable_entity }
       end
     end
   end
@@ -113,5 +136,21 @@ class PostsController < ApplicationController
   # GET /posts/1/edit
   def edit
     @post = Post.find(params[:id])
+  end
+  # PUT /posts/1
+  # PUT /posts/1.xml
+  def update
+    @post = Post.find(params[:id])
+
+    respond_to do |format|
+      if @post.update_attributes(params[:post])
+        flash[:notice] = 'Post was successfully updated.'
+        format.html { redirect_to(@post) }
+        format.xml  { head :ok }
+      else
+        format.html { render :action => "edit" }
+        format.xml  { render :xml => @post.errors, :status => :unprocessable_entity }
+      end
+    end
   end
 end

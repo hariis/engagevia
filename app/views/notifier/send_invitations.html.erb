@@ -1,0 +1,24 @@
+<div style="font-family:Georgia;margin: 10%;">
+Hi there!<br/><br/>
+
+<%= @post.owner.email  %> has started a conversation on
+<em><%= @post.subject %></em> has been saved.<br/>
+
+Please visit this url to engage in this conversation:<br/>
+
+   <%= link_to @post_url, @post_url %>  <br/><br/>
+
+
+
+If the above URL does not work try copying and pasting it into your browser.<br/>
+If you continue to have problem please feel free to contact us.<br/>
+
+
+Happy Conversing,<br/>
+-EngageVia Team<br/>
+
+NOTE:<br/>
+
+If you do not know <%= @post.owner.email  %>, please ignore this email and <br/>
+we sincerely apologize for the inconvenience.
+</div>

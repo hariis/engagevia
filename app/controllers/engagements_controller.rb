@@ -17,7 +17,7 @@ class EngagementsController < ApplicationController
                   #Add them to engagement table
                   @participants.each {|invitee| @post.users << invitee }
                   #now send emails
-                  Notifier.deliver_send_invitations(@post, @participants)
+                  @post.send_invitations(invitees_emails)
                   #Delayed::Job.enqueue(MailingJob.new(@post, invitees))
 
                   @status_message = "<div id='success'>Invitations sent</div>"

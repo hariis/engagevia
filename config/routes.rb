@@ -1,7 +1,7 @@
 ActionController::Routing::Routes.draw do |map|
   map.resources :comments
 
-  map.root :controller => 'posts', :action => 'index'
+  map.root :controller => 'posts', :action => 'dashboard'
   
   map.resources :users, :collection => {:activate => :get}
   map.resources :posts, :has_many => 'comments'
@@ -13,6 +13,7 @@ ActionController::Routing::Routes.draw do |map|
   map.logout "logout", :controller => 'user_sessions', :action => 'destroy'
 
   map.activate '/activate/:activation_code', :controller => 'users', :action => 'activate'
+  #map.validate '/validate/:activation_code', :controller => 'posts', :action => 'validate'
   #map.forgot_password '/forgot_password', :controller => 'users', :action => 'forgot_password'
 
 
