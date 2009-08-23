@@ -1,5 +1,5 @@
 class PostsController < ApplicationController
-  layout :application, :only => :dashboard
+  layout 'application', :only => :dashboard
   # GET /posts
   # GET /posts.xml
   before_filter :load_user, :except => [:new, :create,:dashboard]
