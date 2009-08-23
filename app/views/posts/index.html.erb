@@ -13,7 +13,7 @@
     <% end %>
 
     <%= link_to  "(#{GetCommentCount(post)} comments)", post %> <br/>
-    <%= post.created_at.to_s(:short)  %>
+    Created at <%= post.created_at.to_s(:short)  %>
         
     <% link_to 'Edit', edit_post_path(post) %>
     <% link_to 'Destroy', post, :confirm => 'Are you sure? This will delete this post and all of its comments.', :method => :delete %>
