@@ -9,11 +9,11 @@ class UsersController < ApplicationController
   #test code: delete it
 
   def index
-    #if current_user && current_user.admin?
+    if current_user && current_user.admin?
       @users = User.find(:all)
-    #else
-     # redirect_to root_url
-    #end
+    else
+      redirect_to root_url
+    end
   end
 
   def new
