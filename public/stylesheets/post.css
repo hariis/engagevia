@@ -33,7 +33,7 @@ body {
 }
 
 #content {
-  margin: 0 270px;
+  margin: 0 275px;
   border-left: 2px solid #564b47;
   border-right: 2px solid #564b47;
   padding: 10px;
@@ -150,7 +150,7 @@ padding: 3px;
 .listing-line-odd {
 	margin-top:5px;
         text-align:justify;
-        background-color: #c4c9cd;
+        background-color: #c4c2cd;
 	padding: 5px;
 }
 .listing-line-even {

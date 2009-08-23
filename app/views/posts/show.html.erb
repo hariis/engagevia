@@ -9,7 +9,11 @@ If you clicked on the link from your email, please try copying the pasting the l
       <div class="owner">started by  <%=h @post.owner.display_name %></div>
     </div>
     <div id="body">
-      <div class="subject">  <%= link_to h(@post.subject), h(@post.url) %></div>
+      <% if @post.url.empty?  %>
+        <div class="subject">  <%= @post.subject %></div>
+      <% else %>
+        <div class="subject">  <%= link_to h(@post.subject), h(@post.url) %></div>
+      <% end %>
       <div class="description"><%=h @post.description %></div>
      </div>
   </div>

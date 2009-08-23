@@ -47,11 +47,11 @@ class PostsController < ApplicationController
   end
 
   def index
-    @posts = current_user.posts.find(:all, :order => 'updated_at desc')
-    #if @posts.count < 1
-    # redirect_to new_post_path
-    #  return
-    #end
+    @posts = @user.posts.find(:all, :order => 'updated_at desc')
+    if @posts.count < 1
+      redirect_to new_post_path
+      return
+    end
 
     respond_to do |format|
       format.html # index.html.erb
@@ -134,7 +134,15 @@ class PostsController < ApplicationController
     respond_to do |format|
 
       if @post.save
-      #if @user.posts << @post
+        #&& @user.posts << @post
+         #save an engagement
+          eng = Engagement.new
+          eng.invited_by = @post.owner
+          eng.invited_when = Time.now.utc
+          eng.post = @post
+          eng.invitee = @post.owner
+          eng.save
+
         flash[:notice] = 'Post was successfully created. <br/>'
         
         if current_user && current_user.activated?
@@ -150,7 +158,7 @@ class PostsController < ApplicationController
         format.html { redirect_to(@post) }
         #format.xml  { render :xml => @post, :status => :created, :location => @post }
       else
-        format.html { render :action => "new" }
+        format.html { redirect_to new_post_path }
         #format.xml  { render :xml => @post.errors, :status => :unprocessable_entity }
       end
     end

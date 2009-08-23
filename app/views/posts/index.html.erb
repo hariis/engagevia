@@ -1,10 +1,11 @@
 <%= button_to 'Start New Conversation', new_post_path %>
-<h3>Listing All your Posts</h3>
 
-<%= @posts.size %>
-
+<% unless @posts.empty? %>
+  <h3>Listing All your Posts</h3>
+<% end %>
 
 <% @posts.each do |post| %>
+   <div class="<%= cycle('listing-line-odd', 'listing-line-even') %>">
     <% if post.url.empty?  %>
       <%= h(post.subject) %>
     <% else %>
@@ -12,12 +13,13 @@
     <% end %>
 
     <%= link_to  "(#{GetCommentCount(post)} comments)", post %> <br/>
+    <%= post.created_at.to_s(:short)  %>
         
-    <%= link_to 'Edit', edit_post_path(post) %>
+    <% link_to 'Edit', edit_post_path(post) %>
     <% link_to 'Destroy', post, :confirm => 'Are you sure? This will delete this post and all of its comments.', :method => :delete %>
     <br/>
+   </div>
 <% end %>
-
 
 <br />
 
