@@ -10,8 +10,8 @@ class PostsController < ApplicationController
   end
 
   def load_user
-    if (:action_name == :show)
-      if current_user.activated?
+    if (action_name == 'show')
+      if current_user && current_user.activated?
         @user = current_user
       else
         #load the user based on the email id
@@ -19,11 +19,11 @@ class PostsController < ApplicationController
         @user = User.find_by_email(params[:email]) if uid
       end
     end
-    if (:action_name == :index)
-      if current_user.activated?
+    if (action_name == 'index')
+      if current_user && current_user.activated?
         @user = current_user
       else
-       redirect_to login_path
+       redirect_to root_path
       end
     end
   end
@@ -42,7 +42,7 @@ class PostsController < ApplicationController
   # GET /posts/1
   # GET /posts/1.xml
   def show
-    if current_user.activated?
+    if current_user && current_user.activated?
        @post = Post.find(params[:id])
     else
        #load the post based on unique id
