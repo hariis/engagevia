@@ -42,7 +42,7 @@ class User < ActiveRecord::Base
 
   def activated?
     #!! perishable_token.nil?
-    !!activated_at.nil?
+    !activated_at.nil?
   end
 
   def member?

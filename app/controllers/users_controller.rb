@@ -64,12 +64,14 @@ class UsersController < ApplicationController
           @user.username = params[:user][:username]
           @user.password = params[:user][:password]
           #@user.password_confirmation = params[:user][:password_confirmation]
-      elseif !@user.activated?
+      elsif !@user.activated?
           flash[:notice] = "Your account already exists. Please active your account"
           redirect_to root_url
+          return
       else
           flash[:notice] = "Your account already exists. Please login or use reset password"
-          redirect_to login_path
+          redirect_to login_url
+          return
       end
     else
       #@user = User.new(params[:user])
@@ -81,15 +83,16 @@ class UsersController < ApplicationController
     end
     
     respond_to do |format|
-      #if @user.save
-      if @user.save_without_session_maintenance #dont login and goto to home page
-        @user.add_role("member")
-        @user.add_role("admin") if User.find(:all).size < 3 # first two users are admin
+      @user.add_role("member")
+      @user.add_role("admin") if User.find(:all).size < 3 # first two users are admin
+
+      if @user.save
+      #if @user.save_without_session_maintenance dont login and goto to home page
         @user.deliver_account_confirmation_instructions!
         flash[:notice] = "Instructions to confirm your account have been emailed to you. " +
         "Please check your email."
         #flash[:notice] = 'Registration successfull.'
-        format.html { redirect_to(root_path) }
+        format.html { redirect_to(root_url) }
         format.xml  { render :xml => @user, :status => :created, :location => @user }
       else
         format.html { render :action => "new" }
@@ -147,8 +150,8 @@ private
       redirect_to root_url
     end
 
-    if @user.activated?
-      flash[:notice] = "You have already activated your account."
-      redirect_to root_url
-    end
+    #if @user.activated?
+    #  flash[:notice] = "You have already activated your account."
+    #  redirect_to root_url
+    #end
  end

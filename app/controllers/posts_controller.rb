@@ -5,10 +5,11 @@ class PostsController < ApplicationController
   before_filter :check_activated_member, :except => [:new, :show, :create,:dashboard]
 
   def check_activated_member
-    current_user.activated?
+    current_user && current_user.activated?
   end
+
   def load_user
-    if (controller[:action_name] == :show)
+    if (:action_name == :show)
       if current_user.activated?
         @user = current_user
       else
@@ -17,7 +18,7 @@ class PostsController < ApplicationController
         @user = User.find_by_email(params[:email]) if uid
       end
     end
-    if (controller[:action_name] == :index)
+    if (:action_name == :index)
       if current_user.activated?
         @user = current_user
       else

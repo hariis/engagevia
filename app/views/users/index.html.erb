@@ -16,6 +16,7 @@
     <td><%user.roles.each do |role| %></td>
       <td><%=h role.name %></td>
     <%  end %>
+    <td><%=h user.perishable_token %></td>
     <td><%= link_to 'Show', user %></td>
     <td><%= link_to 'Edit', edit_user_path(user) %></td>
     <td><%= link_to 'Destroy', user, :confirm => 'Are you sure?', :method => :delete %></td>
