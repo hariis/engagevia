@@ -83,7 +83,6 @@ class PostsController < ApplicationController
       @engagement = Engagement.new
     end
 
-    render :action => 'show'
   end
 
   # GET /posts/new
@@ -173,7 +172,15 @@ class PostsController < ApplicationController
       end
     end
   end
+  def identify
+     @user = User.find_by_email(params[:email_id])
+     session[:user] = @user if !@user.nil?
+     render :update do |page|
 
+        page.replace_html "identify", "Thank you! Go Ahead and join the Conversation"
+        
+    end
+  end
   # DELETE /posts/1
   # DELETE /posts/1.xml
   def destroy

@@ -2,7 +2,7 @@ ActionController::Routing::Routes.draw do |map|
   map.root :controller => 'posts', :action => 'dashboard'
   map.resources :comments
   map.resources :users, :collection => {:activate => :post}
-  map.resources :posts,  :collection => {:shown => :post}, :has_many => 'comments'
+  map.resources :posts,  :collection => {:shown => :post, :identify => :post}, :has_many => 'comments'
   map.resources :engagements, :collection => { :get_followers => :get }
   map.resources :user_sessions
   map.resources :password_resets
