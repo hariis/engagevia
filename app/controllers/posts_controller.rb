@@ -106,7 +106,12 @@ class PostsController < ApplicationController
           return
       elsif @user.nil?
           #Create a dummy user
-          @user = User.create(:username => 'nonmember',:email => params[:from_email], :password => 'mounthood', :password_confirmation => 'mounthood')
+          @user = User.new
+          @user.username = 'nonmember'
+          @user.email = params[:from_email]
+          @user.password = 'mounthood'
+          @user.password_confirmation = 'mounthood'
+          @user.save
       elsif !@user.activated?
           #Save this post contents
           session[:post] = @post
