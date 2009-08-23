@@ -15,17 +15,16 @@ If you clicked on the link from your email, please try copying the pasting the l
   </div>
 
   <div id="comments">
-<% unless @post.comments.empty? %>
-  <h3>Comments </h3>
-<% end %>
+    <%= render :partial => @comment = Comment.new, :locals => {:button_type => 'Add Comment'} %>
+    
+    <% @post.comments.each do |comment| %>
+    <div class="<%= cycle('list-line-odd', 'list-line-even') %>">
+      <span style="font-size :70%;"> comment by <%= "#{comment.user.username} at    #{comment.created_at.to_s(:short)}" %> </span><br/>
+        <%= comment.body %><br/><br/>
+      <% end %>
+    </div>
+  </div>
 
-
-  <% @post.comments.each do |comment| %>
-    <%= comment.body %><br/>
-  <% end %>
-
-<%= render :partial => @comment = Comment.new, :locals => {:button_type => 'Add Comment'} %>
- </div> 
 <% end %>
 
 </div>

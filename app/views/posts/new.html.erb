@@ -19,7 +19,12 @@
     <%= f.label :url , "Website URL" %><br />
     <%= f.text_field :url , :size=> 80, :maxlength => 80 %>
   </p>
-  
+
+  <p>
+    <%= f.label :tag_list, "Tags" %><br />
+    <%= f.text_field :tag_list , :size=> 80, :maxlength => 80 %>
+  </p>
+
   <p>    
     <%= f.check_box :public %><%= f.label :public , "Allow Outsiders to Join" %>
   </p>

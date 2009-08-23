@@ -1,5 +1,6 @@
 class User < ActiveRecord::Base
 
+  acts_as_tagger
   has_many :posts, :through => :engagements
   has_many :comments
   has_many :engagements
@@ -51,6 +52,10 @@ class User < ActiveRecord::Base
 
   def non_member?
     has_role?("non_member")
+  end
+
+  def admin?
+    has_role?("admin")
   end
 
   def display_name

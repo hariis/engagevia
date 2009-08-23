@@ -16,6 +16,12 @@
     <%= f.text_field :url %>
   </p>
   <p>
+    <%= f.label :tag_list, "Tags" %><br />
+    <%= f.text_field :tag_list , :size=> 80, :maxlength => 80 %>
+  </p>
+
+
+  <p>
     <%= f.label :unique_id %><br />
     <%= f.text_field :unique_id %>
   </p>

@@ -1,7 +1,8 @@
 class Post < ActiveRecord::Base
   require 'rubygems'
   require 'twitter'
-
+  acts_as_taggable
+  
   has_many :comments, :dependent => :destroy
   belongs_to :owner, :class_name => 'User', :foreign_key => :user_id
   

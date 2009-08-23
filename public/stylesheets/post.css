@@ -1,5 +1,5 @@
-/*     
-    Design by     : http://www.intensivstation.ch/files/en_templates/temp07.html
+/*
+    Original Design by     : http://www.intensivstation.ch/files/en_templates/temp07.html
 */
 
 
@@ -26,7 +26,7 @@ padding: 0px 7px;
 body {
   background-color: #000;
   font-size: 100%;
-  font-family: Verdana, Arial, SunSans-Regular, Sans-Serif;
+  font-family: Verdana, Arial, 'Lucida Grande', Sans-Serif;
   color:#fff;
   padding:0px;
   margin:0px;
@@ -64,9 +64,6 @@ margin:0;
 padding:0;
 }
 
-.inner-page #bg {
-background:transparent url(/images/garden/sidebar-bg.gif) repeat-y scroll 0 0;
-}
 #header {
 background:#2A532A none repeat scroll 0 0;
 border-bottom:3px solid #86B75F;
@@ -82,7 +79,7 @@ float:left;
 margin:0;
 }
 .logo a {
-background:transparent url(/images/garden/garden-logo.gif) no-repeat scroll 0 0;
+/* background:transparent url(/images/garden/garden-logo.gif) no-repeat scroll 0 0; */
 float:left;
 height:53px;
 overflow:hidden;
@@ -112,7 +109,7 @@ text-decoration:none;
 color:#FFFFFF;
 }
 .headline {
-background:#525252 url(/images/garden/headline.gif) no-repeat scroll 50% 55%;
+/* background:#525252 url() no-repeat scroll 50% 55%; */
 border-bottom:1px solid #4E4E4E;
 height:42px;
 margin:0;
@@ -138,11 +135,39 @@ width:87%;
 }
 
 #post {
-
+clear: both;
 }
 #owner-info{
-
+float: left;
+width: 20%;
+height: 50px;
+border: 1px solid #fff;
+padding: 3px;
 }
 #body{
-    
+   float: right;
+   width: 75%;
+}
+
+#comments {
+    clear: both;
+    margin-top: 10%;
+    border-top:1px solid #FFFFFF;
+}
+.listing-line-odd {
+	margin-top:5px;
+        text-align:justify;
+        background-color: #c4c9cd;
+	padding: 5px;
+}
+.listing-line-even {
+	margin-top:5px;
+        text-align:justify;
+        background-color: #564B47;
+	padding: 5px;
+}
+.subject {
+    font-size: 120%;
+    margin-bottom: 5px;
+    font-weight: bold;
 }
