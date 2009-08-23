@@ -4,8 +4,12 @@
 
 
 <% @posts.each do |post| %>
+    <% if post.url.empty?  %>
+      <%= h(post.subject) %>
+    <% else %>
+      <%= link_to "#{h(post.subject)}", h(post.url) %>
+    <% end %>
 
-    <%= link_to "#{h(post.subject)}", h(post.url) %>
     <%= link_to  "(#{GetCommentCount(post)} comments)", post %> <br/>
         
     <%= link_to 'Edit', edit_post_path(post) %>

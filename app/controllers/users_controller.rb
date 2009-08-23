@@ -85,11 +85,11 @@ class UsersController < ApplicationController
     end
 
     respond_to do |format|
-      @user.add_role("member")
-      @user.add_role("admin") if User.find(:all).size < 3 # first two users are admin
-
+   
       #if @user.save
       if @user.save_without_session_maintenance #dont login and goto to home page
+        @user.add_role("member")
+        @user.add_role("admin") if User.find(:all).size < 3 # first two users are admin
         @user.deliver_account_confirmation_instructions!
         flash[:notice] = "Instructions to confirm your account have been emailed to you. " +
         "Please check your email."
@@ -147,7 +147,7 @@ private
       flash[:notice] = "We're sorry, but we could not locate your account." +
         "If you are having issues try copying and pasting the URL " +
         "from your email into your browser or restarting the " +
-        "reset password process1111."
+        "reset password process."
       redirect_to root_url
     end
 

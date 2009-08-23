@@ -3,11 +3,16 @@ class CommentsController < ApplicationController
   # GET /comments.xml
   
   before_filter :load_post
-  
+  before_filter :check_current_user, :only => [:create]
+
   def load_post
     @post = Post.find(params[:post_id])
   end
-  
+
+  def check_current_user
+    current_user
+  end
+
   def index
     @comments = @post.comments
 
@@ -48,8 +53,8 @@ class CommentsController < ApplicationController
   # POST /comments.xml
   def create
     @comment = @post.comments.build(params[:comment])
-      @comment.user_id = current_user.id
-      #@comment.parent_id = 0
+    @comment.user_id = current_user.id
+    @comment.parent_id = 0
     respond_to do |format|
 
       if @post.comments << @comment
