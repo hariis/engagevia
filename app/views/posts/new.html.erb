@@ -6,7 +6,7 @@
   <% if current_user.nil? || !current_user.activated? %>
    <p>
     <%= label_tag "Your Email" %><br />
-    <%= text_field_tag :from_email, :size=> 80, :maxlength => 80  %>
+    <%= text_field_tag :from_email,'', :size => 80  %>
   </p>
   <% end %>
   <p>
@@ -31,7 +31,7 @@
   
   <p>
     <%= f.label :description %><br />
-    <%= f.text_area :description, :cols => 0, :rows => 10  %>
+    <%= f.text_area :description, :cols => 93, :rows => 10  %>
   </p>
 
   <p>

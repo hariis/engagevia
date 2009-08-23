@@ -1,9 +1,10 @@
 class User < ActiveRecord::Base
 
   acts_as_tagger
-  has_many :posts, :through => :engagements
+  has_many :posts
   has_many :comments
   has_many :engagements
+  has_many :posts, :through => :engagements
   has_many :user_roles, :dependent => :destroy
   has_many :roles, :through => :user_roles
 

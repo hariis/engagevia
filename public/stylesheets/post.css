@@ -108,18 +108,11 @@ text-decoration:none;
 #header ul li a.active, #header ul li a:hover {
 color:#FFFFFF;
 }
-.headline {
-/* background:#525252 url() no-repeat scroll 50% 55%; */
-border-bottom:1px solid #4E4E4E;
-height:42px;
-margin:0;
-overflow:hidden;
-text-indent:-9999px;
-}
+
 #home-content {
 overflow:hidden;
 width:100%;
-font-size: 120%;
+font-size: 20px;
 }
 
 .features {
@@ -128,10 +121,10 @@ padding:2px 0 0;
 width:100%;
 }
 .feature {
-overflow:hidden;
-padding:0 0 0 150px;
+overflow:auto;
+padding:0 0 0 112px;
 text-align:justify;
-width:87%;
+width:75%;
 }
 
 #post {

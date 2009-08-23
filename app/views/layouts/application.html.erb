@@ -15,8 +15,9 @@
 <a href="/">EngageVia</a>
 </strong>
 <ul>
+  <li><%= link_to "Home", root_url %> |</li>
   <% if current_user && current_user.activated? %>
-    <li><%= link_to 'Dashboard', posts_path if current_user.activated? %> |</li>
+    <li><%= link_to "#{current_user.display_name}'s Dashboard", posts_path if current_user.activated? %> |</li>
     <li><%= link_to "My Account", edit_user_path(current_user) %> |</li>
     <li><%= link_to "Logout", logout_path %></li>
    <% else %>
@@ -26,14 +27,14 @@
    <% end %>
 </ul>
 </div>
-  <h2 class="headline">Engage with trusted and like-minded friends in your network</h2>
+  
 <p style="color: green"><%= flash[:notice] %></p>
 
 <div id="left">
-  This is the left bar
+  
 </div>
 <div id="right">
-  This is the right bar
+  
 </div>
 <div id="content">
 <%= yield %>

@@ -4,7 +4,7 @@ class PostsController < ApplicationController
   # GET /posts
   # GET /posts.xml
   before_filter :load_user, :except => [:new, :create,:dashboard]
-  before_filter :check_activated_member, :except => [:new, :show, :create,:dashboard]
+  before_filter :check_activated_member, :except => [:new, :show, :create, :dashboard, :index]
 
   def choose_layout
     if [ 'new', 'index' ].include? action_name
@@ -15,6 +15,7 @@ class PostsController < ApplicationController
       'application'  #the one with search tabs
     end
   end
+
   def check_activated_member
     current_user && current_user.activated?
   end
@@ -40,11 +41,13 @@ class PostsController < ApplicationController
       end
     end
   end
+
   def dashboard
 
   end
+
   def index
-    @posts = @user.posts.find(:all)
+    @posts = current_user.posts.find(:all, :order => 'updated_at desc')
     #if @posts.count < 1
     # redirect_to new_post_path
     #  return
@@ -130,7 +133,8 @@ class PostsController < ApplicationController
     
     respond_to do |format|
 
-      if @post.save 
+      if @post.save
+      #if @user.posts << @post
         flash[:notice] = 'Post was successfully created. <br/>'
         
         if current_user && current_user.activated?

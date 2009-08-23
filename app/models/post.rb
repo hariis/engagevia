@@ -5,9 +5,10 @@ class Post < ActiveRecord::Base
   
   has_many :comments, :dependent => :destroy
   belongs_to :owner, :class_name => 'User', :foreign_key => :user_id
-  
   has_many :engagements, :dependent => :destroy
-  has_many :participants, :through => :engagements, :source => :invitee
+  has_many :participants, :through => :engagements, :source => :invitee, :class_name => 'User', :foreign_key => :user_id
+
+  validates_presence_of :subject
 
   after_create :send_post_link
 
