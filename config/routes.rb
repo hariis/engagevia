@@ -1,18 +1,18 @@
 ActionController::Routing::Routes.draw do |map|
-  map.resources :comments
-
   map.root :controller => 'posts', :action => 'dashboard'
-  
-  map.resources :users, :collection => {:activate => :get}
+  map.resources :comments
+  map.resources :users, :collection => {:activate => :post}
   map.resources :posts, :has_many => 'comments'
   map.resources :engagements, :collection => { :get_followers => :get }
   map.resources :user_sessions
   map.resources :password_resets
-  
+
+
   map.login "login",   :controller => 'user_sessions', :action => 'new'
   map.logout "logout", :controller => 'user_sessions', :action => 'destroy'
 
   map.activate '/activate/:activation_code', :controller => 'users', :action => 'activate'
+
   #map.validate '/validate/:activation_code', :controller => 'posts', :action => 'validate'
   #map.forgot_password '/forgot_password', :controller => 'users', :action => 'forgot_password'
 
@@ -35,7 +35,7 @@ ActionController::Routing::Routes.draw do |map|
 
   # Sample resource route with sub-resources:
   #   map.resources :products, :has_many => [ :comments, :sales ], :has_one => :seller
-  
+
   # Sample resource route with more complex sub-resources
   #   map.resources :products do |products|
   #     products.resources :comments
