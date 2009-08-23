@@ -29,14 +29,15 @@ DOMAIN = "http://li98-245.members.linode.com/"
     @subject    += ' Location of your new Posting'
     recipients    post.owner.email
 
-    body          :post_url  => DOMAIN + "posts/shown/#{post.unique_id}/#{post.owner.email}" , :post => post
+    testemail = CGI::escape(post.owner.email).gsub(/[.]/, '*')
+    body          :post_url  => DOMAIN + "posts/shown/#{post.unique_id}" , :post => post
   end
 
   def send_invitations(post, email)
     setup_email(post.owner)
     @subject    += " #{post.owner.email} has invited you for a conversation."
     recipients email
-    body          :post_url  => DOMAIN + "posts/shown/#{post.unique_id}/#{email}" ,:post => post
+    body          :post_url  => DOMAIN + "posts/shown/#{post.unique_id}" ,:post => post
   end
   protected
     def setup_email(user)      

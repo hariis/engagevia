@@ -1,9 +1,20 @@
+
 <% if @post.nil? %>
 There was a problem locating your Post. <br>
 If you clicked on the link from your email, please try copying the pasting the link into the browser.
 
 <% else %>
-
+<div id="identify">
+ <%  form_remote_tag :url => { :controller => 'posts', :action => "identify", :post_id => "#{@post.id}" } do %>
+        <h3>Please Identify yourself with you email id for logging </h3>  <p>
+          <%= label_tag 'Email Address' %><br />
+          <%= text_field_tag :email_id %>
+        </p>
+ <p style="margin-top: 10px;">
+    <%= submit_tag "Here's my ID" %>
+  </p>
+<% end %>
+</div>
 
 <div id="content">
   <div id="post">
@@ -18,7 +29,7 @@ If you clicked on the link from your email, please try copying the pasting the l
 
   <div id="comments">
     <%= render :partial => @comment = Comment.new, :locals => {:button_type => 'Add Comment'} %>
-    
+
     <% @post.comments.each do |comment| %>
     <div class="<%= cycle('listing-line-odd', 'listing-line-even') %>">
       <span style="font-size :70%;"> comment by <%= "#{comment.user.username} at    #{comment.created_at.to_s(:short)}" %> </span><br/>
