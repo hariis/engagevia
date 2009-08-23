@@ -1,6 +1,6 @@
 class Notifier < ActionMailer::Base
 
-default_url_options[:host] = "li98-245.members.linode.com/"
+default_url_options[:host] = "li98-245.members.linode.com"
 DOMAIN = "http://li98-245.members.linode.com/"
 
   def password_reset_instructions(user)
@@ -15,7 +15,7 @@ DOMAIN = "http://li98-245.members.linode.com/"
     @subject    += ' Please activate your new account'
     recipients    user.email
     
-    body          :activation_url  => DOMAIN + "activate/#{user.perishable_token}"
+    body          :activation_url  => DOMAIN + "users/activate/#{user.perishable_token}"
   end
 
   def confirm_activation(user)
@@ -26,17 +26,18 @@ DOMAIN = "http://li98-245.members.linode.com/"
 
   def post_link(post)
     setup_email(post.owner)
-    @subject    += ' Please validate your new Posting'
+    @subject    += ' Location of your new Posting'
     recipients    post.owner.email
 
-    body          :post_url  => DOMAIN + "show/#{post.unique_id}/post.owner.email" , :post => post
+    testemail = CGI::escape(post.owner.email).gsub(/[.]/, '*')
+    body          :post_url  => DOMAIN + "posts/shown/#{post.unique_id}" , :post => post
   end
 
   def send_invitations(post, email)
     setup_email(post.owner)
     @subject    += " #{post.owner.email} has invited you for a conversation."
     recipients email
-    body          :post_url  => DOMAIN + "show/#{post.unique_id}/#{email}" ,:post => post
+    body          :post_url  => DOMAIN + "posts/shown/#{post.unique_id}" ,:post => post
   end
   protected
     def setup_email(user)      

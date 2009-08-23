@@ -9,7 +9,7 @@ class PostsController < ApplicationController
   def choose_layout
     if [ 'new', 'index' ].include? action_name
       'application'
-    elsif ['show'].include? action_name
+    elsif ['show','shown'].include? action_name
     'posts'
     elsif ['dashboard'].include? action_name
       'application'  #the one with search tabs
@@ -74,6 +74,16 @@ class PostsController < ApplicationController
       format.html # show.html.erb
       format.xml  { render :xml => @post }
     end
+  end
+
+  def shown
+
+    if params[:id]     
+      @post = Post.find_by_unique_id(unique_id)
+      @engagement = Engagement.new
+    end
+
+    render :action => 'show'
   end
 
   # GET /posts/new
