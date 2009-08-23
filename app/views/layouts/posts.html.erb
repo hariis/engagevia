@@ -11,14 +11,13 @@
 </head>
 <body>
 
-<p align="right"><br />
-<a href="http://engagevia.r09.railsrumble.com">EngageVia<img src="" alt="" width="414" height="56" border="0" /></a>
-</p>
-<h1>Engaging, one conversation at a time</h1>
-<div id="header-links">
-  <ul>
-  <% if current_user.activated? %>
-    <li><%= link_to 'Home', posts_path if current_user.activated? %></li>
+<div id="header">
+<strong class="logo">
+<a href="/">EngageVia</a>
+</strong>
+<ul>
+  <% if current_user && current_user.activated? %>
+    <li><%= link_to 'Dashboard', posts_path if current_user.activated? %> |</li>
     <li><%= link_to "My Account", edit_user_path(current_user) %> |</li>
     <li><%= link_to "Logout", logout_path %></li>
    <% else %>
@@ -26,33 +25,35 @@
      <li><%= link_to "Login", login_path %> |</li>
      <li><%= link_to "Forgot Password", new_password_reset_path %></li>
    <% end %>
-  </ul>
+</ul>
 </div>
-
+  <h2 class="headline">Engage with trusted and like-minded friends in your network</h2>
 <p style="color: green"><%= flash[:notice] %></p>
 
 <div id="left">
   <div id="send-status">
 
   </div>
-  <% remote_form_for([@post, @engagement]) do |f| %>
-  <%= f.error_messages %>
 
-<fieldset>
-  <legend>Invitations</legend>
-  <%=  label_tag "Invite by Email" %> 
-  <span style="font-size: 8px;">Separate multiple email addresses with a comma. <br/> Limit to 10 at a time. </span>
+  <%  form_remote_tag :url => { :controller => 'engagements', :action => "create", :post_id => "#{@post.id}" } do %>
+
+ 
+
+  <h3 style="border-bottom:1px solid #fff;">Invite </h3>
+  <%=  label_tag "via Email" %><br/>
+  <span style="font-size: 10px;">Separate multiple addresses with a comma. <br/> Limit to 10 at a time. </span>
   <%=  text_area_tag "email_invitees", nil, :cols => '30', :rows => '4' %>
 
-   <%= link_to_function "Send DM to your Twitter followers that are on our email invite list ",
+   <%= button_to_function "Notify your Twitter followers",
                             visual_effect(:toggle_blind, "get_credentials", :duration => 0.5) %>
-  <div id="twitter-invite">>
-    <h3>Please Note: DMs are only notifications. Followers should check their email for the link to join the Conversation</h3>
+  <div id="twitter-invite">
+    <span  style="font-size: 10px;">Please Note: Currently, DMs are for notifications to those already on the invite list above.
+      Followers should check their email for the link to join the Conversation</span>
   <div id="twitter_followers">
 
   </div>
 
-      <%= link_to_function "Show My Followers", visual_effect(:toggle_blind, "get_credentials", :duration => 0.5) %>
+  
         <div id="get_credentials" style="display: none;">
         <h3>Your Twitter Credentials</h3>  <p>
           <%= label_tag 'Twitter Id' %><br />
@@ -62,36 +63,36 @@
           <%= label_tag 'Twitter Password' %><br />
           <%= password_field_tag :twitter_passwd %>
         </p>
-        <%= submit_to_remote 'get_followers', 'Get My Followers',:method => 'get', :url => { :controller => 'posts', :action => 'get_followers' },
+        <p>
+        <%= submit_to_remote 'get_followers', 'Get My Followers',:method => 'get', :url => { :controller => 'engagements', :action => 'get_followers' },
                   :before => "Element.toggle( 'get_credentials');"  ,
                   :with => "'twitid='+ escape($('twitter_id').value) + '&twitp=' + escape($('twitter_passwd').value)" %>
 
                or  <%= link_to_function "Cancel",   visual_effect(:toggle_blind, "get_credentials", :duration => 0.5) %>
+       </p>
         </div>
 
   </div>
 
 
-</fieldset>
-  <p>
-    <%= f.submit 'Send' %>
+  <p style="margin-top: 10px;">
+    <%= submit_tag 'Send Invites & Notifications' %>
   </p>
 <% end %>
 </div>
 <div id="right">
-  <div id="participants">
-    <% unless @post.paticipants.empty? %>
-    <ul>
-      <% @post.participants.each do |p| %>
-      <li>
-        <%  p.member? ? p.username : truncate(p.email, p.email.index('@'), "...") %>
-      </li>
-      <% end %>
-    </ul>
+  <h3 style="border-bottom:1px solid #fff;">Participants </h3>
+ 
+    <ul id="participants">
+    <% unless @post.participants.empty? %>    
+          <% @post.participants.each do |p| %>
+            <li> <%=  p.display_name %> </li>
+          <% end %>
     <%  end %>
-  </div>
+    </ul>
+ 
 </div>
-<div id="content">
+<div id="home-content">
 <%= yield %>
 </div>
 </body>

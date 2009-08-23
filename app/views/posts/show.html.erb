@@ -4,40 +4,28 @@ If you clicked on the link from your email, please try copying the pasting the l
 
 <% else %>
 <div id="content">
+  <div id="post">
+    <div id="owner-info">
+      <div class="owner">started by  <%=h @post.owner.display_name %></div>
+    </div>
+    <div id="body">
+      <div class="subject">  <%= link_to h(@post.subject), h(@post.url) %></div>
+      <div class="description"><%=h @post.description %></div>
+     </div>
+  </div>
 
-<p>
-  <b>Subject:</b>
-  <%=h @post.subject %>
-</p>
-
-<p>
-  <b>Created by:</b>
-  <%=h @post.created_by %>
-</p>
-
-<p>
-  <b>Url:</b>
-  <%=h @post.url %>
-</p>
-
-<p>
-  <b>Description:</b>
-  <%=h @post.description %>
-</p>
-
+  <div id="comments">
 <% unless @post.comments.empty? %>
-  <h3>Listing comments </h3>
+  <h3>Comments </h3>
 <% end %>
 
-<p>
+
   <% @post.comments.each do |comment| %>
     <%= comment.body %><br/>
   <% end %>
-</p>
 
-<h3>Engage </h3>
 <%= render :partial => @comment = Comment.new, :locals => {:button_type => 'Add Comment'} %>
-  
+ </div> 
 <% end %>
 
 </div>

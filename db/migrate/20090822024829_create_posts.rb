@@ -8,7 +8,6 @@ class CreatePosts < ActiveRecord::Migration
       t.boolean :public,      :default => false
       t.text :note
       t.text :description
-      t.datetime :validated_at
 
       t.timestamps
     end    

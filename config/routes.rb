@@ -13,7 +13,8 @@ ActionController::Routing::Routes.draw do |map|
 
   map.activate '/activate/:activation_code', :controller => 'users', :action => 'activate'
 
-  #map.validate '/validate/:activation_code', :controller => 'posts', :action => 'validate'
+  map.shown 'shown/:uid/:eid', :controller => 'posts', :action => 'show'
+  
   #map.forgot_password '/forgot_password', :controller => 'users', :action => 'forgot_password'
 
 

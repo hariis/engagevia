@@ -1,10 +1,20 @@
 class PostsController < ApplicationController
-  layout 'application', :only => :dashboard
+  #layout 'application', :only => [:dashboard]
+  layout :choose_layout
   # GET /posts
   # GET /posts.xml
   before_filter :load_user, :except => [:new, :create,:dashboard]
   before_filter :check_activated_member, :except => [:new, :show, :create,:dashboard]
 
+  def choose_layout
+    if [ 'new', 'index' ].include? action_name
+      'application'
+    elsif ['show'].include? action_name
+    'posts'
+    elsif ['dashboard'].include? action_name
+      'application'  #the one with search tabs
+    end
+  end
   def check_activated_member
     current_user && current_user.activated?
   end
@@ -16,14 +26,17 @@ class PostsController < ApplicationController
       else
         #load the user based on the email id
         uid = params[:uid]
-        @user = User.find_by_email(params[:email]) if uid
+        @user = User.find_by_email(params[:eid]) if uid
       end
+      redirect_to login_path if @user.nil?
+      return
     end
     if (action_name == 'index')
       if current_user && current_user.activated?
         @user = current_user
       else
        redirect_to root_path
+       return
       end
     end
   end
@@ -42,12 +55,13 @@ class PostsController < ApplicationController
   # GET /posts/1
   # GET /posts/1.xml
   def show
-    if current_user && current_user.activated?
-       @post = Post.find(params[:id])
-    else
-       #load the post based on unique id
-      @post = Post.find_by_unique_id(params[:uid]) if params[:uid]
-    end   
+    if params[:uid]
+      @post = Post.find_by_unique_id(params[:uid])
+      @engagement = Engagement.new
+    elsif current_user && current_user.activated?
+      @post = Post.find(params[:id])
+       @engagement = Engagement.new
+    end
     
     respond_to do |format|
       format.html # show.html.erb
@@ -58,8 +72,8 @@ class PostsController < ApplicationController
   # GET /posts/new
   # GET /posts/new.xml
   def new
-    @post = Post.new
-    session[:post] = nil
+    @post = session[:post] || Post.new
+    
     respond_to do |format|
       format.html # new.html.erb
       format.xml  { render :xml => @post }
@@ -69,8 +83,8 @@ class PostsController < ApplicationController
   # POST /posts
   # POST /posts.xml
   def create
-
-    @post = session[:post] || Post.new(params[:post])
+    session[:post] = nil
+    @post =  Post.new(params[:post])
     
     #create the user object if necessary
     if current_user && current_user.activated?
@@ -82,12 +96,14 @@ class PostsController < ApplicationController
       else
           flash[:notice] = "Your email is turning out to be not valid. Please check and try again"
           redirect_to new_post_path
+          return
       end
       if @user && @user.activated?
           #Save this post contents
           session[:post] = @post
-          flash[:notice] = "Your email is registered with an account. <br/> Please login first."
+          flash[:notice] = "Your email is registered with an account. <br/> Please login."
           redirect_to login_path
+          return
       elsif @user.nil?
           #Create a dummy user
           @user = User.create(:username => 'nonmember',:email => params[:from_email], :password => 'mounthood', :password_confirmation => 'mounthood')
@@ -96,13 +112,18 @@ class PostsController < ApplicationController
           session[:post] = @post
           flash[:notice] = "Your email is registered with an account but not activated yet. <br/> Please activate your account and login first."
           redirect_to login_path
+          return
       end
     end
 
-    @post.unique_id = Post.get_unique_id
+    @post.unique_id = Post.generate_unique_id
+    @post.user_id = @user.id
+    
     respond_to do |format|
-      if @user.posts << @post #@post.save
+
+      if @post.save 
         flash[:notice] = 'Post was successfully created. <br/>'
+        
         if current_user && current_user.activated?
           flash[:notice] +='Your email contains the link to this post as well.<br/> '+
             'You can now start inviting your friends for the conversation.'

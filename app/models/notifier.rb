@@ -25,9 +25,9 @@ DOMAIN = "http://li98-245.members.linode.com/"
   end
 
   def post_link(post)
-    setup_email(user)
+    setup_email(post.owner)
     @subject    += ' Please validate your new Posting'
-    recipients    user.email
+    recipients    post.owner.email
 
     body          :post_url  => DOMAIN + "show/#{post.unique_id}/post.owner.email" , :post => post
   end

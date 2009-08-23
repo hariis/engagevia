@@ -1,34 +1,54 @@
 class EngagementsController < ApplicationController
-  before_filter :load_post
+  before_filter :load_post, :except => [:get_followers]
 
   def load_post
     @post = Post.find(params[:post_id])
   end
   def create
+    #Save the engagements
+
     #Send email invites
     invitees_emails = params[:email_invitees]
 
     if invitees_emails.length > 0
           if validate_emails(invitees_emails)
+                  valid_emails =[]
+                  valid_emails = string_to_array(invitees_emails)
+
                   #Limit sending only to first 10
-                  invitees_emails.slice!(0...9) if invitees_emails.length > 10
+                  
                   #Get userid of invitees - involves creating dummy accounts
-                  @participants = Post.get_invitees(invitees_emails)
+                  @requested_participants = []
+                  @participants = []
+                  @participants_emails = []
+                  @requested_participants = Post.get_invitees(valid_emails)
                   #Add them to engagement table
-                  @participants.each {|invitee| @post.users << invitee }
-                  #now send emails
-                  @post.send_invitations(invitees_emails)
+                  @requested_participants.each do |invitee|
+                    eng_exists = Engagement.find(:first, :conditions => ['user_id = ? and post_id = ?',invitee.id, @post.id])
+                    if eng_exists.nil?
+                        eng = Engagement.new
+                        eng.invited_by = @post.owner
+                        eng.invited_when = Time.now.utc
+                        eng.post = @post
+                        eng.invitee = invitee
+                        eng.save
+                        @participants << invitee
+                        @participants_emails << invitee.email
+                    end
+                  end
+
+                   #now send emails
+                  @post.send_invitations(@participants_emails)
                   #Delayed::Job.enqueue(MailingJob.new(@post, invitees))
 
                   @status_message = "<div id='success'>Invitations sent</div>"
-                  
           else
                   @status_message = "<div id='failure'>There was some problem sending. <br/>" + @invalid_emails_message + "</div>"
 
           end
-          #Update right column with list of invitees
+          
     else
-              @status_message = "<div id='failure'>One or more of the email addresses is invalid. <br/> Please check and try again.</div>"
+              @status_message = "<div id='failure'>Please enter valid email addresses and try again.</div>"
     end
 
     #Send twitter notifications
@@ -37,13 +57,16 @@ class EngagementsController < ApplicationController
     @from_config = {}
     @from_config[:twitid] = params[:twitter_id]
     @from_config[:password] = params[:twitter_passwd]
-    Engagement.send_twitter_notification(@from_config, @followers)
-
+    if !params[:followers].nil?  &&  !params[:twitter_id].nil? && !params[:twitter_passwd].nil?
+        Engagement.send_twitter_notification(@from_config, @followers)
+    end
     render :update do |page|
         page.insert_html :bottom, 'participants', :partial => 'participants'
         page.replace_html "send-status", @status_message
-        page.select(".new-p}").each { |b| b.visual_effect :highlight, :startcolor => "#e9ef3d",
-												:endcolor => "#ffffff", :duration => 5.0 }
+        page.select("send-status").each { |b| b.visual_effect :highlight, :startcolor => "#fb3f37",
+												:endcolor => "#cf6d0f", :duration => 5.0 }
+        page.select(".new-p").each { |b| b.visual_effect :highlight, :startcolor => "#fb3f37",
+												:endcolor => "#cf6d0f", :duration => 5.0 }
     end
   end
 
