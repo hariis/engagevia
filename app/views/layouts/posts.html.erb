@@ -87,7 +87,7 @@
     <ul id="participants">
     <% unless @post.participants.empty? %>    
           <% @post.participants.each do |p| %>
-            <li> <%=  p.display_name %> </li>
+            <li <%= "id='you'" if p.id == @user.id %>> <%=  p.display_name %> </li>
           <% end %>
     <%  end %>
     </ul>

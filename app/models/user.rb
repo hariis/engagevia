@@ -1,5 +1,5 @@
 class User < ActiveRecord::Base
-
+  require 'digest/md5'
   acts_as_tagger
   has_many :posts
   has_many :comments
@@ -11,7 +11,11 @@ class User < ActiveRecord::Base
   acts_as_authentic do |c|
     c.login_field = :email
   end
+  before_create :assign_unique_id
 
+  def assign_unique_id
+    self.unique_id = Digest::MD5.hexdigest(email)
+  end
   def deliver_password_reset_instructions!
     reset_perishable_token!
     Notifier.deliver_password_reset_instructions(self)
@@ -59,6 +63,16 @@ class User < ActiveRecord::Base
     has_role?("admin")
   end
 
+  def self.create_non_member(email)
+    user = User.new
+    user.username = 'nonmember'
+    user.email = email
+    user.password = 'mounthood'
+    user.password_confirmation = 'mounthood'
+    user.add_role("non_member")
+    user.save
+    return user
+  end
   def display_name
     activated? ? username : awesome_truncate(email, email.index('@'), "...")
   end

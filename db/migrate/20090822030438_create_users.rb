@@ -11,7 +11,7 @@ class CreateUsers < ActiveRecord::Migration
       t.datetime  :current_login_at
       t.datetime  :last_login_at
       t.datetime  :last_request_at
-
+      t.string :unique_id
       t.timestamps
     end
 

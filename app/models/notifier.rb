@@ -1,7 +1,8 @@
 class Notifier < ActionMailer::Base
 
 default_url_options[:host] = "li98-245.members.linode.com"
-DOMAIN = "http://li98-245.members.linode.com/"
+DOMAIN = "http://li98-245.members.linode.com/" if ENV['RAILS_ENV'] == 'production'
+DOMAIN = "http://localhost:3000/" if ENV['RAILS_ENV'] == 'development'
 
   def password_reset_instructions(user)
     setup_email(user)
@@ -28,16 +29,15 @@ DOMAIN = "http://li98-245.members.linode.com/"
     setup_email(post.owner)
     @subject    += ' Location of your new Posting'
     recipients    post.owner.email
-
-    testemail = CGI::escape(post.owner.email).gsub(/[.]/, '*')
-    body          :post_url  => DOMAIN + "posts/shown/#{post.unique_id}" , :post => post
+    
+    body          :post_url  => DOMAIN + "conversation/show/#{post.unique_id}/#{post.owner.unique_id}" , :post => post
   end
 
-  def send_invitations(post, email)
+  def send_invitations(post, invitee)
     setup_email(post.owner)
     @subject    += " #{post.owner.email} has invited you for a conversation."
-    recipients email
-    body          :post_url  => DOMAIN + "posts/shown/#{post.unique_id}" ,:post => post
+    recipients invitee.email
+    body          :post_url  => DOMAIN + "conversation/show/#{post.unique_id}/#{invitee.unique_id}" ,:post => post
   end
   protected
     def setup_email(user)      
@@ -47,4 +47,4 @@ DOMAIN = "http://li98-245.members.linode.com/"
       @sent_on     = Time.zone.now
       @content_type = "text/html"
     end
-end
+  end

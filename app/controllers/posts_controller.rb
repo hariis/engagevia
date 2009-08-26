@@ -25,17 +25,20 @@ class PostsController < ApplicationController
       if current_user && current_user.activated?
         @user = current_user
       else
-        #load the user based on the email id
-        uid = params[:uid]
-        @user = User.find_by_email(params[:eid]) if uid
+        #load the user based on the unique id
+        @user = User.find_by_unique_id(params[:uid]) if params[:uid]
       end
-      redirect_to login_path if @user.nil?
+      if @user.nil?
+        flash[:notice] = "Your identity could not be confirmed from the link that you provided. <br/> Please request the post owner to resend the link."
+        redirect_to login_path
+      end
       return
     end
     if (action_name == 'index')
       if current_user && current_user.activated?
         @user = current_user
       else
+        flash[:notice] = "Dashboard is a member-only feature. Please signup to enjoy the feature."
        redirect_to root_path
        return
       end
@@ -62,28 +65,16 @@ class PostsController < ApplicationController
   # GET /posts/1
   # GET /posts/1.xml
   def show
-    if params[:uid]
-      @post = Post.find_by_unique_id(params[:uid])
+    if params[:pid]
+      @post = Post.find_by_unique_id(params[:pid])
       @engagement = Engagement.new
-    elsif current_user && current_user.activated?
-      @post = Post.find(params[:id])
-       @engagement = Engagement.new
     end
     
     respond_to do |format|
       format.html # show.html.erb
       format.xml  { render :xml => @post }
     end
-  end
-
-  def shown
-
-    if params[:id]     
-      @post = Post.find_by_unique_id(unique_id)
-      @engagement = Engagement.new
-    end
-
-  end
+  end  
 
   # GET /posts/new
   # GET /posts/new.xml
@@ -121,19 +112,18 @@ class PostsController < ApplicationController
           redirect_to login_path
           return
       elsif @user.nil?
-          #Create a dummy user
-          @user = User.new
-          @user.username = 'nonmember'
-          @user.email = params[:from_email]
-          @user.password = 'mounthood'
-          @user.password_confirmation = 'mounthood'
-          @user.save
-      elsif !@user.activated?
+          #Create a nonmember user record
+          @user = User.create_non_member(params[:from_email])
+      elsif @user.member? && !@user.activated?
+          #The user has started the process of signing up but has not activated yet.
           #Save this post contents
           session[:post] = @post
           flash[:notice] = "Your email is registered with an account but not activated yet. <br/> Please activate your account and login first."
           redirect_to login_path
           return
+      else
+        #The user object is still a nonmember
+        #Go ahead with record creation
       end
     end
 
@@ -146,7 +136,7 @@ class PostsController < ApplicationController
         #&& @user.posts << @post
          #save an engagement
           eng = Engagement.new
-          eng.invited_by = @post.owner
+          eng.invited_by = @post.owner  #TODO Shoudl this be 0 ?
           eng.invited_when = Time.now.utc
           eng.post = @post
           eng.invitee = @post.owner
@@ -172,15 +162,7 @@ class PostsController < ApplicationController
       end
     end
   end
-  def identify
-     @user = User.find_by_email(params[:email_id])
-     session[:user] = @user if !@user.nil?
-     render :update do |page|
-
-        page.replace_html "identify", "Thank you! Go Ahead and join the Conversation"
-        
-    end
-  end
+  
   # DELETE /posts/1
   # DELETE /posts/1.xml
   def destroy

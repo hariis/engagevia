@@ -164,3 +164,8 @@ padding: 3px;
     margin-bottom: 5px;
     font-weight: bold;
 }
+
+#you {
+    background-color: #ff0000;
+    color: #fff;
+}

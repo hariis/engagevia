@@ -25,21 +25,15 @@ class Post < ActiveRecord::Base
     invitees_emails.each do |email|
       user = User.find_by_email(email)
       if user.nil?
-        user = User.new
-        user.username = 'nonmember'
-        user.email = email
-        user.password = 'mounthood'
-        user.password_confirmation = 'mounthood'
-       
-        user.save
+        user = User.create_non_member(email)
       end
       invitees << user
     end
     return invitees
   end
 
-  def send_invitations(invitees_emails)
-    invitees_emails.each{|email| Notifier.deliver_send_invitations(self, email)}
+  def send_invitations(invitees)
+    invitees.each{|invitee| Notifier.deliver_send_invitations(self, invitee)}
   end
 
 end

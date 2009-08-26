@@ -2,7 +2,7 @@ ActionController::Routing::Routes.draw do |map|
   map.root :controller => 'posts', :action => 'dashboard'
   map.resources :comments
   map.resources :users, :collection => {:activate => :post}
-  map.resources :posts,  :collection => {:shown => :post, :identify => :post}, :has_many => 'comments'
+  map.resources :posts, :has_many => 'comments'
   map.resources :engagements, :collection => { :get_followers => :get }
   map.resources :user_sessions
   map.resources :password_resets
@@ -13,8 +13,8 @@ ActionController::Routing::Routes.draw do |map|
 
   map.activate '/activate/:activation_code', :controller => 'users', :action => 'activate'
 
-  map.connect '/shown/:uid/:eid', :controller => 'posts', :action => 'shown'
-  map.newn '/newn/:uid/:eid', :controller => 'posts', :action => 'new'
+  map.connect 'conversation/show/:pid/:uid', :controller => 'posts', :action => 'show'
+  
   #map.forgot_password '/forgot_password', :controller => 'users', :action => 'forgot_password'
 
 
