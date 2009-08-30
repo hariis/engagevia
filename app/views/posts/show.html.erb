@@ -2,35 +2,37 @@
 There was a problem locating your Post. <br>
 If you clicked on the link from your email, please try copying the pasting the link into the browser.
 
-<% else %>
-
+<% else %>  
 
 <div id="content">
-  <div id="post">
-    <div id="owner-info">
-      <div class="owner">started by  <%=h @post.owner.display_name %></div>
+
+  <div id="parent-post">
+    <div class="owner-info">
+      <div class="owner"><%=h @post.owner.display_name %></div>
     </div>
-    <div id="body">
+    <div id="post-body">
       <% if @post.url.empty?  %>
         <div class="subject">  <%= @post.subject %></div>
       <% else %>
         <div class="subject">  <%= link_to h(@post.subject), h(@post.url) %></div>
       <% end %>
-      <div class="description"><%=h @post.description %></div>
-     </div>
+      <%= in_place_rich_editor_field :post, :description ,{}, :mode => 'tinymce_advanced_with_save_options' %>
+     
+ </div>
+   
+  <div id="comments">
+    <div class="comment-body new-comment">
+      <%  @comment = Comment.new(:body => "Click here to add your comment") %>
+       <span style="font-size :70%;"> comment by <%= "#{@user.display_name} at    #{Time.now.to_s(:short)}" %> </span><br/>
+       
+      <%= in_place_rich_editor_field :comment, :body ,{},:url => { :controller => :comments, :action => :create, :post_id => @post.id, :uid => params[:uid]}, :mode => 'tinymce_advanced_with_save_options' %>
+       
   </div>
 
-  <div id="comments">
-    <%= render :partial => @comment = Comment.new, :locals => {:button_type => 'Add Comment'} %>
-    
-    <% @post.comments.each do |comment| %>
-    <div class="<%= cycle('listing-line-odd', 'listing-line-even') %>">
-      <span style="font-size :70%;"> comment by <%= "#{comment.user.username} at    #{comment.created_at.to_s(:short)}" %> </span><br/>
-        <%= comment.body %><br/><br/>
-      <% end %>
-    </div>
+   <%= render :partial => "/comments/comment", :collection => @post.comments  %>
   </div>
 
 <% end %>
+
 
 </div>

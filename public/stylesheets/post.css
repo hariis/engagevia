@@ -2,7 +2,9 @@
     Original Design by     : http://www.intensivstation.ch/files/en_templates/temp07.html
 */
 
-
+table.mceLayout{
+    width: 900px;
+}
 #left {
 position: absolute;
 left: 0px;
@@ -18,34 +20,61 @@ width:250px;
 position: absolute;
 right: 0px;
 width:250px;
-color: #564b47;
 margin: 0px 10px;
-background-color: #fbcc37;
+background-color:#0B84E8;
+color:#FFFFFF;
 padding: 0px 7px;
 }
-body {
-  background-color: #000;
+html,body {
   font-size: 100%;
-  font-family: Verdana, Arial, 'Lucida Grande', Sans-Serif;
-  color:#fff;
+  font-family:  'Lucida Grande', Sans-Serif;
+  color:#2b1e24;
   padding:0px;
   margin:0px;
+  -moz-background-clip:border;
+  -moz-background-inline-policy:continuous;
+  -moz-background-origin:padding;
+  background:#bbdefa none repeat scroll 0 0;
+  background-color:#bbdefa;
 }
-
+#wrapper{
+    margin:0 auto;
+    padding:0 20px 0 30px;
+}
 #content {
-  margin: 0 275px;
-  border-left: 2px solid #564b47;
-  border-right: 2px solid #564b47;
-  padding: 10px;
-  background-color: #564b47;
-  font-size: 75%;
-}
 
+  margin: 0 275px;  
+  padding: 10px;
+  background-color: #fff;
+  font-size: 75%;
+  margin:0 auto;
+  text-align:left;  
+  color: #222222;
+}
+#shadow {
+    width:1050px;
+    margin: 0 auto;
+    position: relative;
+    border-right: 1px solid #aaa;
+    border-bottom: 1px solid #aaa;
+    background: #666666;
+}
+#bodyblock {
+    width:1050px;
+    position: relative;
+    top: -3px;
+    left: -3px;
+    border-right: 1px solid #666666;
+    border-bottom: 1px solid #666666;
+    text-align: left;
+    color: #666;
+    background: #fff;
+}
 img {
 border:medium none;
 }
 a {
-color:#BFFF80;
+color:#4c9801;
 outline-color:-moz-use-text-color;
 outline-style:none;
 outline-width:medium;
@@ -65,8 +94,8 @@ padding:0;
 }
 
 #header {
-background:#2A532A none repeat scroll 0 0;
-border-bottom:3px solid #86B75F;
+background:#FFFFFF none repeat scroll 0 0;
+border-bottom:3px solid #0B84E8;
 overflow:hidden;
 padding:10px 20px 7px 30px;
 }
@@ -83,7 +112,7 @@ margin:0;
 float:left;
 height:53px;
 overflow:hidden;
-text-indent:-9999px;
+/* text-indent:-9999px; */
 width:251px;
 }
 #header ul {
@@ -102,11 +131,12 @@ margin-left:-2px;
 padding:0 13px;
 }
 #header ul li a {
-color:#CAFF80;
+color:#0B84E8;
 text-decoration:none;
 }
 #header ul li a.active, #header ul li a:hover {
 color:#FFFFFF;
+background-color:#0B84E8;
 }
 
 #home-content {
@@ -127,19 +157,20 @@ text-align:justify;
 width:75%;
 }
 
-#post {
+#parent-post {
 clear: both;
 }
-#owner-info{
+.owner-info{
 float: left;
-width: 20%;
+width: 18%;
 height: 50px;
-border: 1px solid #fff;
+border: 2px solid #d7d7d7;
 padding: 3px;
 }
-#body{
-   float: right;
-   width: 75%;
+#post-body{  
+background-color: #d1d7f6;
+width: 80%;
+float: right;
 }
 
 #comments {
@@ -147,25 +178,52 @@ padding: 3px;
     margin-top: 10%;
     border-top:1px solid #FFFFFF;
 }
-.listing-line-odd {
-	margin-top:5px;
-        text-align:justify;
-        background-color: #86B75F;
-	padding: 5px;
+.comment-body {
+    margin-top:5px;
+    text-align:justify;
+    padding: 5px;
+    clear: both;
+    width: 80%;
+    float: right;
 }
-.listing-line-even {
-	margin-top:5px;
-        text-align:justify;
-        background-color: #564B47;
-	padding: 5px;
+.listing-line-odd {
+	border-bottom: 1px dotted #32a3fe;
+        background-color: #a5d6fd;
+}
+.listing-line-even {	
+        background-color: #63b9fe;
+        border-bottom: 1px dotted #32a3fe; 
+}
+.current-user-comment {
+        background-color: #d6f6a6;	
+        border-bottom: 1px dotted #68ac02;        
+}
+.new-comment {
+        background-color: #ffffff;
+        border-bottom: 2px dotted #68ac02;
+        margin-top:25px;
+    border-bottom-color: #68ac02;
 }
 .subject {
     font-size: 120%;
     margin-bottom: 5px;
     font-weight: bold;
+    padding-left:5px;
+    padding-top:5px;
+}
+.description, .in_place_editor_field {
+    float:left;
+    padding-left:5px;
+    padding-top:5px;
+}
+#you {
+    background-color:yellow;
+    color:#000000;
+    list-style:none;
+    padding:3px;
+    margin-left:-25px;
 }
 
-#you {
-    background-color: #ff0000;
-    color: #fff;
+.subject a {
+    color:#2c2727;
 }

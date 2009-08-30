@@ -175,6 +175,15 @@ class PostsController < ApplicationController
     end
   end
 
+  def set_post_description
+    @post = Post.find(params[:id])
+    @post.description = params[:value]
+    if @post.save
+      render :text => @post.description
+    else
+      render :text => "There was a problem saving your description. Please refresh and try again."
+    end
+  end
   private
   # GET /posts/1/edit
   def edit
