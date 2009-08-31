@@ -4,7 +4,9 @@ class Comment < ActiveRecord::Base
   validates_presence_of :body
 
   def deliver_comment_notification(post)
-    post.participants.each {|participant| Notifier.deliver_comment_notification(post, self, participant)}
+    post.participants.each do |participant|
+      Notifier.deliver_comment_notification(post, self, participant)
+    end
   end
 
 end
