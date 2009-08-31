@@ -94,7 +94,6 @@ class PostsController < ApplicationController
     #create the user object if necessary
     if current_user && current_user.activated?
       @user = current_user
-      @post.validated_at = Time.now.utc
     else
       if  validate_emails(params[:from_email])
         @user = User.find_by_email(params[:from_email])
