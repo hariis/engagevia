@@ -1,8 +1,6 @@
 class Notifier < ActionMailer::Base
 
 default_url_options[:host] = "li98-245.members.linode.com"
-DOMAIN = "http://li98-245.members.linode.com/" if ENV['RAILS_ENV'] == 'production'
-DOMAIN = "http://localhost:3000/" if ENV['RAILS_ENV'] == 'development'
 
   def password_reset_instructions(user)
     setup_email(user)

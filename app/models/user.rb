@@ -14,7 +14,12 @@ class User < ActiveRecord::Base
   before_create :assign_unique_id
 
   def assign_unique_id
-    self.unique_id = Digest::MD5.hexdigest(email)
+    if email.slice(0..8) != "nonmember"
+      self.unique_id = Digest::MD5.hexdigest(email + "Jayam9rama") 
+    elsif username.size > 0
+      self.unique_id = Digest::MD5.hexdigest(username + "Jayam9rama")
+    end
+    
   end
   def deliver_password_reset_instructions!
     reset_perishable_token!
@@ -73,8 +78,25 @@ class User < ActiveRecord::Base
     user.save
     return user
   end
+  def self.create_non_member_by_twitter_id(follower_screen_name)
+    user = User.new
+    user.username = follower_screen_name
+    user.email = "nonmember@nonmember.com"    
+    user.password = 'mounthood'
+    user.password_confirmation = 'mounthood'
+    user.add_role("non_member")
+    user.save(false)
+    return user
+  end
   def display_name
-    activated? ? username : awesome_truncate(email, email.index('@'), "...")
+    if activated?
+      #email is our primary means of identity even if user has twitter id
+      awesome_truncate(email, email.index('@'), "...")
+    elsif username != "nonmember" #If not a member, give preference to twitter id
+      "@" + username
+    else #all else fails, resort to email
+      awesome_truncate(email, email.index('@'), "...")
+    end   
   end
   # Awesome truncate
   # First regex truncates to the length, plus the rest of that word, if any.

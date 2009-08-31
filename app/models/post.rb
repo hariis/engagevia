@@ -31,9 +31,28 @@ class Post < ActiveRecord::Base
     end
     return invitees
   end
+  
+  def self.get_twitter_invitees(followers)
+    invitees = []
+    followers.each do |follower|
+      user = User.find_by_username(follower)
+      if user.nil?
+        user = User.create_non_member_by_twitter_id(follower)
+      end
+      invitees << user
+    end
+    return invitees
+  end
 
   def send_invitations(invitees)
     invitees.each{|invitee| Notifier.deliver_send_invitations(self, invitee)}
   end
-
+  def send_twitter_notification(from_config,followers)
+   httpauth = Twitter::HTTPAuth.new(from_config[:twitid], from_config[:password])
+   base = Twitter::Base.new(httpauth)
+   followers.each do |follower|
+      message = DOMAIN + "conversation/show/#{self.unique_id}/#{follower.unique_id}"
+      base.update "d #{follower.username}" + " You are invited to join a conversation. The link is at " + message
+   end
+  end
 end

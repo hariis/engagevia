@@ -1,8 +1,6 @@
 class PostsController < ApplicationController
-  #layout 'application', :only => [:dashboard]
   layout :choose_layout
-  # GET /posts
-  # GET /posts.xml
+  
   before_filter :load_user, :except => [:new, :create,:dashboard]
   before_filter :check_activated_member, :except => [:new, :show, :create, :dashboard, :index]
 
@@ -184,6 +182,8 @@ class PostsController < ApplicationController
       render :text => "There was a problem saving your description. Please refresh and try again."
     end
   end
+
+  
   private
   # GET /posts/1/edit
   def edit

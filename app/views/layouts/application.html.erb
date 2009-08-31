@@ -12,7 +12,7 @@
 
 <div id="header">
 <strong class="logo">
-<a href="/">EngageVia</a>
+<a href="/"><%= image_tag "evlogo.png" %></a>
 </strong>
 <ul>
   <li><%= link_to "Home", root_url %> |</li>
@@ -36,8 +36,14 @@
 <div id="right">
   
 </div>
-<div id="content">
+<% if controller.action_name != 'dashboard' %>
+    <div id="gen-content">
+<% else %>
+    <div id="content">
+<% end %>
+      
 <%= yield %>
+       
 </div>
 </body>
 </html>
