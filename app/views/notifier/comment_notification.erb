@@ -1,15 +1,11 @@
 <div style="font-family:Georgia;margin: 10%;">
 Hi there!<br/><br/>
 
-TODO: This templete needs to be updated.
+<%= @comment.owner.email  %> has added a new comment to <em><%= @post.subject %></em>.<br/>
 
-<%= @post.owner.email  %> has started a conversation on
-<em><%= @post.subject %></em> has been saved.<br/>
-
-Please visit this url to engage in this conversation:<br/>
+Please visit this url to view comment and follow the conversation:<br/>
 
    <%= link_to @post_url, @post_url %>  <br/><br/>
-
 
 
 If the above URL does not work try copying and pasting it into your browser.<br/>
@@ -21,6 +17,5 @@ Happy Conversing,<br/>
 
 NOTE:<br/>
 
-If you do not know <%= @post.owner.email  %>, please ignore this email and <br/>
-we sincerely apologize for the inconvenience.
+If you do not what to receive any further notification please use <em>Avoid Notification</em>
 </div>

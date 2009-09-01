@@ -16,7 +16,8 @@ If you clicked on the link from your email, please try copying the pasting the l
       <% if @post.owner == @user  %>
          <div class="subject">  <%= in_place_rich_editor_field :post, 'subject',{}, :mode => 'tinymce_advanced_stripped_options' %> </div>
          <div class="url"><%= in_place_rich_editor_field :post, 'url',{}, :mode => 'tinymce_advanced_stripped_options' %></div>
-         <%= in_place_rich_editor_field :post, :description ,{}, :mode => 'tinymce_advanced_with_save_options' %>
+         <%= in_place_rich_editor_field :post, :description, {}, :mode => 'tinymce_advanced_with_save_options' %>
+         <%= in_place_rich_editor_field :post, :note, {}, :mode => 'tinymce_advanced_with_save_options' %>
       <% else %>
          <div class="subject">  <%= link_to h(@post.subject) , h(@post.url) %></div>
          <div class="description">  <%= @post.description %></div>

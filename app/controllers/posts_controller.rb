@@ -182,6 +182,17 @@ class PostsController < ApplicationController
     end
   end
 
+  def set_post_note
+    @post = Post.find(params[:id])
+    @post.note = params[:value]
+    if @post.save
+      render :text => @post.note
+    else
+      render :text => "There was a problem saving your note. Please refresh and try again."
+    end
+  end
+
+
   
   private
   # GET /posts/1/edit

@@ -7,6 +7,8 @@ class Post < ActiveRecord::Base
   belongs_to :owner, :class_name => 'User', :foreign_key => :user_id
   has_many :engagements, :dependent => :destroy
   has_many :participants, :through => :engagements, :source => :invitee, :class_name => 'User', :foreign_key => :user_id
+  has_many :notify_participants, :through => :engagements, :source => :invitee, :class_name => 'User',
+           :conditions => 'engagements.notify_comment = 1'
 
   validates_presence_of :subject
 
