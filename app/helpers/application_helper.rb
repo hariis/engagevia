@@ -29,8 +29,11 @@ module ApplicationHelper
     js_options['textBetweenControls'] = %('#{options[:text_between_controls]}') if options[:text_between_controls]
     mode = %(#{options[:mode]}) if options[:mode]
     function << (', ' + options_for_javascript(js_options)) unless js_options.empty?
-
-    function << ",#{mode})"
+    if options[:mode]
+      function << ",#{mode})"
+    else
+      function << ")"
+    end
 
     javascript_tag(function)
   end
