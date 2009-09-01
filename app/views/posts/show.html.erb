@@ -14,10 +14,6 @@ If you clicked on the link from your email, please try copying the pasting the l
     </div>
     <div id="post-body">
       <% if @post.owner == @user  %>
-         <div class="subject">  <%= in_place_rich_editor_field :post, 'subject',{}, :mode => 'tinymce_advanced_stripped_options' %> </div>
-         <div class="url"><%= in_place_rich_editor_field :post, 'url',{}, :mode => 'tinymce_advanced_stripped_options' %></div>
-         <%= in_place_rich_editor_field :post, :description, {}, :mode => 'tinymce_advanced_with_save_options' %>
-         <%= in_place_rich_editor_field :post, :note, {}, :mode => 'tinymce_advanced_with_save_options' %>
          <div class="subject">  <%= in_place_editor_field :post, 'subject',{}, :size => '80' %> </div>
          <div class="url"><%= in_place_editor_field :post, 'url',{}, :size => '80' %></div>
          <%= in_place_rich_editor_field :post, :description ,{}, :mode => 'tinymce_advanced_with_save_options' %>
@@ -25,20 +21,12 @@ If you clicked on the link from your email, please try copying the pasting the l
          <div class="subject">  <%= link_to h(@post.subject) , h(@post.url) %></div>
          <div class="description">  <%= @post.description %></div>
       <% end %>
-      
-      
+           
      
  </div>
    
   <div id="comments">
-    <div class="comment-body new-comment">
-      <%  @comment = Comment.new(:body => "Click here to add your comment") %>
-       <span style="font-size :70%;"> comment by <%= "#{@user.display_name}    #{Time.now.to_s(:short)}" %> </span><br/>
-       
-      <%= in_place_rich_editor_field :comment, :body ,{},:url => { :controller => :comments, :action => :create, :post_id => @post.id, :uid => params[:uid]}, :mode => 'tinymce_advanced_with_save_options' %>
-       
-  </div>
-
+   <%= render :partial => "/comments/new", :locals => {:post => @post, :uid1 => params[:uid], :user => @user } %>
    <%= render :partial => "/comments/comment", :collection => @post.comments, :order => 'created_at desc'  %>
   </div>
 
