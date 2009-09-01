@@ -1,25 +1,27 @@
+<div id="dashboard-view">
 <%= button_to 'Start New Conversation', new_post_path %>
 
 <% unless @posts.empty? %>
-  <h3>Listing All your Posts</h3>
+  <h3>My Conversations</h3>
 <% end %>
 
 <% @posts.each do |post| %>
-   <div class="<%= cycle('listing-line-odd', 'listing-line-even') %>">
+   <div class="<%= cycle('listing-line-odd', 'listing-line-even') %> post-item">
     <% if post.url.empty?  %>
-      <%= h(post.subject) %>
+      <%= link_to  h(post.subject), post.get_url_for(@user)  %>
     <% else %>
       <%= link_to "#{h(post.subject)}", h(post.url) %>
     <% end %>
+    <span class="timestamp">started at <%= post.created_at.to_s(:short)  %>
 
-    <%= link_to  "(#{GetCommentCount(post)} comments)", post %> <br/>
-    Created at <%= post.created_at.to_s(:short)  %>
-        
-    <% link_to 'Edit', edit_post_path(post) %>
-    <% link_to 'Destroy', post, :confirm => 'Are you sure? This will delete this post and all of its comments.', :method => :delete %>
-    <br/>
+    <% if post.owner == @user %>
+    <%= link_to 'Delete', post, :confirm => 'Are you sure? This will wipe out this conversation and all of its comments.', :method => :delete %>
+    <% end %>
+    </span>
+    <%= button_to  "(#{GetCommentCount(post)} comments) | View", post.get_url_for(@user), :class => 'dashboard-comments' %>
+    
    </div>
 <% end %>
 
-<br />
+</div>
 

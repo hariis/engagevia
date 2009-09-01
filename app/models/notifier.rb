@@ -14,7 +14,7 @@ default_url_options[:host] = "li98-245.members.linode.com"
     @subject    += ' Please activate your new account'
     recipients    user.email
     
-    body          :activation_url  => DOMAIN + "users/activate/#{user.perishable_token}"
+    body          :activation_url  => DOMAIN + "activate/#{user.perishable_token}"
   end
 
   def confirm_activation(user)

@@ -55,4 +55,8 @@ class Post < ActiveRecord::Base
       base.update "d #{follower.username}" + " You are invited to join a conversation. The link is at " + message
    end
   end
+
+  def get_url_for(user)
+    DOMAIN + "conversation/show/#{self.unique_id}/#{user.unique_id}"
+  end
 end

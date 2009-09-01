@@ -10,7 +10,7 @@ class PostsController < ApplicationController
     elsif ['show','shown'].include? action_name
     'posts'
     elsif ['dashboard'].include? action_name
-      'application'  #the one with search tabs
+      'application'  #the one with shorter width content section
     end
   end
 
@@ -50,6 +50,7 @@ class PostsController < ApplicationController
   def index
     @posts = @user.posts.find(:all, :order => 'updated_at desc')
     if @posts.count < 1
+      flash[:notice] += "Currently you are not engaged in any conversation. Why don't you start one?"
       redirect_to new_post_path
       return
     end
@@ -90,7 +91,9 @@ class PostsController < ApplicationController
   def create
     session[:post] = nil
     @post =  Post.new(params[:post])
-    
+    if @post.description.length == 0
+      @post.description = "Add your Initial thoughts"
+    end
     #create the user object if necessary
     if current_user && current_user.activated?
       @user = current_user
@@ -105,7 +108,7 @@ class PostsController < ApplicationController
       if @user && @user.activated?
           #Save this post contents
           session[:post] = @post
-          flash[:notice] = "Your email is registered with an account. <br/> Please login."
+          flash[:notice] = "Your email is registered with an account. <br/> Please login first."
           redirect_to login_path
           return
       elsif @user.nil?
@@ -137,21 +140,20 @@ class PostsController < ApplicationController
           eng.invited_when = Time.now.utc
           eng.post = @post
           eng.invitee = @post.owner
-          eng.save
-
-        flash[:notice] = 'Post was successfully created. <br/>'
+          eng.save        
         
         if current_user && current_user.activated?
-          flash[:notice] +='Your email contains the link to this post as well.<br/> '+
+          flash[:notice] ='Your email contains the link to this post as well.<br/> '+
             'You can now start inviting your friends for the conversation.'
         else
+          flash[:notice] = 'Your Conversation page was successfully created. <br/>'
           flash[:notice] +='Please check your email for the link to this post you just created. <br/>' +
             'This redirect helps us to confirm your ownership of the provided email.'+
-                       'Happy Conversing!'
+                       'Happy Engaging!'
           redirect_to root_url
           return
         end
-        format.html { redirect_to(@post) }
+        format.html { redirect_to(@post.get_url_for(@user)) }
         #format.xml  { render :xml => @post, :status => :created, :location => @post }
       else
         format.html { redirect_to new_post_path }
@@ -174,15 +176,42 @@ class PostsController < ApplicationController
 
   def set_post_description
     @post = Post.find(params[:id])
-    @post.description = params[:value]
-    if @post.save
-      render :text => @post.description
+    if params[:value] && params[:value].length > 0
+      @post.description = params[:value]
     else
-      render :text => "There was a problem saving your description. Please refresh and try again."
+       @post.description = "Add your Initial thoughts"
+    end
+    if @post.save
+        render :text => @post.description
     end
   end
 
-  
+  def set_post_subject
+    @post = Post.find(params[:id])
+    prior_subject = @post.subject
+    if params[:value] && params[:value].length > 0
+      @post.subject = params[:value]
+      if @post.save
+        render :text => @post.subject
+      else
+        render :text => prior_subject
+      end
+    else
+      render :text => prior_subject
+    end
+  end
+
+  def set_post_url
+    @post = Post.find(params[:id])
+    if params[:value] && params[:value].length > 0
+      @post.url = params[:value]
+    else
+       @post.url = "Add a link"
+    end
+    if @post.save
+        render :text => @post.url
+    end
+  end
   private
   # GET /posts/1/edit
   def edit

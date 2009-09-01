@@ -1,24 +1,28 @@
 <div style="font-family:Georgia;margin: 10%;">
 Hi there!<br/><br/>
 
-<%= @post.owner.email  %> has started a conversation on
-<em><%= @post.subject %></em> has been saved.<br/>
+<%= @post.owner.display_name  %> has started a conversation on
+<em><%= @post.subject %></em><br/>
 
-Please visit this url to engage in this conversation:<br/>
+Please visit this link to engage in this conversation:<br/>
 
    <%= link_to @post_url, @post_url %>  <br/><br/>
 
+IMPORTANT NOTE: Please do not forward this mail or share this link provided to you <br/>
+ as a way of inviting friends.<br/>
 
+ To invite, please visit the link and invite from there.<br/>
+ Each one of your invitees will then get their own unique link.<br/>
 
-If the above URL does not work try copying and pasting it into your browser.<br/>
+If the above link does not work try copying and pasting it into your browser.<br/>
 If you continue to have problem please feel free to contact us.<br/>
 
 
-Happy Conversing,<br/>
+Happy Engaging,<br/>
 -EngageVia Team<br/>
 
 NOTE:<br/>
 
-If you do not know <%= @post.owner.email  %>, please ignore this email and <br/>
+If you do not know <%= @post.owner.display_name  %>, please ignore this email and <br/>
 we sincerely apologize for the inconvenience.
 </div>
