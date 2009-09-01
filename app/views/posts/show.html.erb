@@ -35,7 +35,7 @@ If you clicked on the link from your email, please try copying the pasting the l
        
   </div>
 
-   <%= render :partial => "/comments/comment", :collection => @post.comments  %>
+   <%= render :partial => "/comments/comment", :collection => @post.comments, :order => 'created_at desc'  %>
   </div>
 
 <% end %>

@@ -37,6 +37,14 @@ default_url_options[:host] = "li98-245.members.linode.com"
     recipients invitee.email
     body          :post_url  => DOMAIN + "conversation/show/#{post.unique_id}/#{invitee.unique_id}" ,:post => post
   end
+
+  def comment_notification(post, comment, participant)
+    setup_email(post.owner)  #TODO: we are not using this argument.
+    @subject    +=   " New comment has been added for #{post.subject}"
+    recipients    participant.email
+    body          :post_url  => DOMAIN + "conversation/show/#{post.unique_id}/#{participant.unique_id}" ,:post => post
+  end
+
   protected
     def setup_email(user)      
       @from        = "EngageVia <yeeyay-notifier@li98-245.members.linode.com>"

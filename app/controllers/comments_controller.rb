@@ -46,6 +46,7 @@ class CommentsController < ApplicationController
 
      if @post.comments << @comment
       render :text => @comment.body
+      @comment.deliver_comment_notification(@post)
       flash[:notice] = 'Comment was successfully created.'    
     else
       render :text => "There was a problem saving your description. Please refresh and try again."
