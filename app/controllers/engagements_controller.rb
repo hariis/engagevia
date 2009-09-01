@@ -4,6 +4,19 @@ class EngagementsController < ApplicationController
   def load_post
     @post = Post.find(params[:post_id])
   end
+
+  def disable_notification
+     @engagement = Engagement.find(params[:id])
+     @engagement.notify_comment = false
+     @engagement.save
+  end
+
+  def enable_notification
+     @engagement = Engagement.find(params[:id])
+     @engagement.notify_comment = true
+     @engagement.save
+  end
+
   def create
     #Save the engagements
     if params[:invite_type] == 'email'

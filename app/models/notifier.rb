@@ -39,10 +39,10 @@ default_url_options[:host] = "li98-245.members.linode.com"
   end
 
   def comment_notification(post, comment, participant)
-    setup_email(post.owner)  #TODO: we are not using this argument.
-    @subject    +=   " New comment has been added for #{post.subject}"
+    setup_email(comment.owner)  #TODO: we are not using this argument.
+    @subject    +=   " #{comment.owner} has added a new comment for #{post.subject}"
     recipients    participant.email
-    body          :post_url  => DOMAIN + "conversation/show/#{post.unique_id}/#{participant.unique_id}" ,:post => post
+    body          :post_url  => DOMAIN + "conversation/show/#{post.unique_id}/#{participant.unique_id}" ,:post => post, :comment => comment
   end
 
   protected

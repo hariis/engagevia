@@ -1,0 +1,6 @@
+<div class="comment-body new-comment">
+  <%  @comment = Comment.new(:body => "Click here to add your comment") %>
+   <span style="font-size :70%;"> comment by <%= "#{user.display_name}    #{Time.now.to_s(:short)}" %> </span><br/>
+
+  <%= in_place_rich_editor_field :comment, :body ,{},:url => { :controller => :comments, :action => :create, :post_id => post.id, :uid => uid1}, :mode => 'tinymce_advanced_with_save_options' %>
+</div>
