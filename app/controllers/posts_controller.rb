@@ -79,7 +79,8 @@ class PostsController < ApplicationController
   # GET /posts/new.xml
   def new
     @post = session[:post] || Post.new
-    
+    @post.subject = params[:title] if params[:title]
+    @post.url = params[:url] if params[:url]
     respond_to do |format|
       format.html # new.html.erb
       format.xml  { render :xml => @post }

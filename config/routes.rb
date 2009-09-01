@@ -14,7 +14,7 @@ ActionController::Routing::Routes.draw do |map|
   map.activate '/activate/:activation_code', :controller => 'users', :action => 'activate'
 
   map.connect 'conversation/show/:pid/:uid', :controller => 'posts', :action => 'show'
-  
+  map.connect 'conversation/new', :controller => 'posts', :action => 'new'
   #map.forgot_password '/forgot_password', :controller => 'users', :action => 'forgot_password'
 
 
