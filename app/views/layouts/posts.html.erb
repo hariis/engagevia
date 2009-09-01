@@ -97,27 +97,26 @@
 </div>
 <div id="right">
 
-  <% unless @post.engagements.empty? %>
-        <% @post.engagements.each do |engagement| %>
-          <% if engagement.invitee.id == @user.id %>
-              <% if engagement.notify_comment == true %>
-                  <h3 style="border-bottom:1px solid #fff;"><%= link_to_remote 'Disable Notification', :url => {:controller => 'engagements', :action => 'disable_notification', :post_id => @post.id, :id => engagement.id} %></h3>
-              <% else %>
-                  <h3 style="border-bottom:1px solid #fff;"><%= link_to_remote 'Enable Notification', :url => {:controller => 'engagements', :action => 'enable_notification', :post_id => @post.id, :id => engagement.id} %></h3>
-              <% end %>
-          <% end %>
-        <% end %>
-  <% end %>
-
   <h3 style="border-bottom:1px solid #fff;">Participants </h3>
- 
+
     <ul id="participants">
-    <% unless @post.participants.empty? %>    
-          <% @post.participants.each do |p| %>
-            <li <%= "id='you'" if p.id == @user.id %>> <%=  p.display_name %> </li>
-          <% end %>
+    <% unless @post.engagements.empty? %>
+        <% @post.engagements.each do |engagement| %>
+        <li
+            <%= "id='you'" if engagement.invitee.id == @user.id %>> <%=  engagement.invitee.display_name %>
+            <% if engagement.invitee.id == @user.id %>
+              <% if engagement.notify_comment == true %>
+                <%= link_to_remote 'Disable Notification', :url => {:controller => 'engagements', :action => 'disable_notification', :post_id => @post.id, :id => engagement.id} %>
+              <% else %>
+                <%= link_to_remote 'Enable Notification', :url => {:controller => 'engagements', :action => 'enable_notification', :post_id => @post.id, :id => engagement.id} %>
+             <% end %>
+            <% end %>
+          </li>
+        <% end %>
     <%  end %>
     </ul>
+
+
  
 </div>
 <div id="home-content">
