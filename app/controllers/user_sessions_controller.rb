@@ -11,21 +11,22 @@ class UserSessionsController < ApplicationController
             if @user.activated?
                 @user_session = UserSession.new(params[:user_session])
                 if @user_session.save
-                  flash[:notice] = "Successfully logged in."
+                  flash[:notice] = "Welcome #{@user.display_name}"
                   redirect_to posts_url
                 else
                   render :action => 'new'
                 end
             else
-                flash[:notice] = "Your account is not activated. Please active your account"
+                flash[:notice] = "Your account is not activated. Please activate your account"
                 redirect_to root_url
             end
         else
-          flash[:notice] = "We're sorry, but we could not locate your account. Please signup"
+          #How can this happen? logged in but not a member - Hacked in, perhaps
+          flash[:notice] = "We're sorry, but we could not locate your account.<br/> Please signup first, if you haven't already."
           redirect_to root_url
           end
     else
-      flash[:notice] = "We're sorry, but we could not locate your account. Please signup111"
+      flash[:notice] = "We're sorry, but we could not locate your account. Please signup first."
       redirect_to root_url
     end
   end

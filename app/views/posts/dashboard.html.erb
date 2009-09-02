@@ -31,8 +31,9 @@ to request, gather and organize all of the input from your circle and your exten
     <p>  
     When you have one of these needs,
     <ol>
-      <li>Drag this <a title="EngageVia bookmarklet" href="http://li98-245.members.linode.com/posts/new">EngageVia link </a>to your browser's bookmarks.
-      <li>Click on the link button whenever you want to engage. </li>
+      <% bk_link = "javascript:location.href= #{DOMAIN} + 'conversation/new?url='+encodeURIComponent(location.href)+';title='+encodeURIComponent(document.title)+'"  %>
+      <li>Drag this <a title="EngageVia bookmarklet" href="{bk_link}">EngageVia bookmarklet </a>to your browser's bookmarks.
+      <li>Click on it whenever you want to engage or simply visit <a title="EngageVia Homepage" href="http://www.engagevia.com">EngageVia Home </a> </li>
       <li>Fill up the basic information about the topic of your choice. </li>
       <li>Invite only relevant friends from your address book. A link to the Post page is sent to them. </li>
        <li>Let your invitees invite relevant friends from their circle as well.</li>

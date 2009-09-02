@@ -209,7 +209,7 @@ float: right;
         background-color: #a5d6fd;
 }
 .listing-line-even {	
-        background-color: #63b9fe;
+        background-color: #fff;
         border-bottom: 1px dotted #32a3fe; 
 }
 .current-user-comment {
@@ -254,6 +254,26 @@ div#twitter_followers ul li {
     list-style:none;
     margin-left:-30px;
 }
-.subject a {
-    color:#2c2727;
+#post-body a {
+    font-size: 14px;
+}
+
+.post-item {
+    padding: 5px;
+    font-size: 18px;
+}
+.post-item a {
+    color: #0B84E8;
+}
+.timestamp {
+    float: right;
+    font-size: 14px;
+}
+
+#dashboard-view{
+    width: 1230px;
+    margin:0 auto;
+}
+.post-item a.dashboard-comments {
+    color: green;
 }
