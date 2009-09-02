@@ -1,0 +1,3 @@
+ page.replace_html "notification", :partial => "notification" 
+ page.select("notification").each { |b| b.visual_effect :highlight, :startcolor => "#fb3f37",
+												:endcolor => "#cf6d0f", :duration => 5.0 }

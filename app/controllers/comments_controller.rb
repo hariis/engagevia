@@ -42,9 +42,11 @@ class CommentsController < ApplicationController
     @comment = Comment.new
     @comment.body = params[:value]
     @comment.user_id = @user.id
-    @comment.parent_id = 0    
+    if params[:id] != nil
+      @comment.parent_id = params[:id]
+    end
 
-     if @post.comments << @comment
+    if @post.comments << @comment
       render :text => @comment.body
       @comment.deliver_comment_notification(@post)
       flash[:notice] = 'Comment was successfully created.'    

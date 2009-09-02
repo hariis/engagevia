@@ -6,9 +6,13 @@
       <%= in_place_rich_editor "comment_body_#{comment.id}"  ,:url => { :controller => :comments, :action => :set_comment_body, :post_id => @post.id, :id => comment.id, :uid => params[:uid]}, :mode => 'tinymce_advanced_with_save_options' %>
   <% end %>
 
- <%= link_to_function "reply", visual_effect(:toggle_blind, "reply#{comment.id}", :duration => 0.5) %><br/><br/>
-    <div id= reply<%="#{comment.id}"%> style="display: none;">
-      <%= render :partial => "/comments/new", :locals => {:post => @post, :uid1 => params[:uid], :user => @user } %>
+  <%= link_to_function "reply", visual_effect(:toggle_blind, "reply_#{comment.id}", :duration => 0.5) %><br/><br/>
+    <div id= reply_<%="#{comment.id}"%> style="display: none;"> 
+        <%  reply_comment = Comment.new(:body => "Click here to add your comment") %>
+        <div id="comment_reply_body_<%=  comment.id %>">  <%= reply_comment.body %></div>
+        <%= in_place_rich_editor "comment_reply_body_#{comment.id}", :url => { :controller => :comments, :action => :create, :post_id => @post.id, :id => comment.id, :uid => params[:uid]}, :mode => 'tinymce_advanced_with_save_options' %>
     </div>
+
+  <%= render :partial => "/comments/comment", :collection => comment.children, :order => 'created_at desc' %>
 
 </div>

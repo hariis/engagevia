@@ -1,4 +1,6 @@
 class Comment < ActiveRecord::Base
+  acts_as_tree
+  
   belongs_to :owner, :class_name => 'User', :foreign_key => :user_id
   belongs_to :post
   validates_presence_of :body

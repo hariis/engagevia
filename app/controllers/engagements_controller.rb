@@ -1,19 +1,17 @@
 class EngagementsController < ApplicationController
-  before_filter :load_post, :except => [:get_followers]
+  before_filter :load_post, :except => [:get_followers, :set_notification]
 
   def load_post
     @post = Post.find(params[:post_id])
   end
 
-  def disable_notification
+  def set_notification
      @engagement = Engagement.find(params[:id])
-     @engagement.notify_comment = false
-     @engagement.save
-  end
-
-  def enable_notification
-     @engagement = Engagement.find(params[:id])
-     @engagement.notify_comment = true
+     if params[:set] == 'true'
+        @engagement.notify_comment = true
+     else
+       @engagement.notify_comment = false
+     end
      @engagement.save
   end
 
