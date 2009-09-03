@@ -7,7 +7,7 @@
 
 <% @posts.each do |post| %>
    <div class="<%= cycle('listing-line-odd', 'listing-line-even') %> post-item">
-    <% if post.url.empty?  %>
+    <% if post.url == "Add a link"  %>
       <%= link_to  h(post.subject), post.get_url_for(@user)  %>
     <% else %>
       <%= link_to "#{h(post.subject)}", h(post.url) %>

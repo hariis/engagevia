@@ -67,6 +67,9 @@ class PostsController < ApplicationController
     if params[:pid]
       @post = Post.find_by_unique_id(params[:pid])
       @engagement = Engagement.new
+    else
+      flash[:error] = 'Could not locate the conversation you requested'
+      render 'posts/404', :status => 404, :layout => false and return
     end
     
     respond_to do |format|
@@ -95,6 +98,14 @@ class PostsController < ApplicationController
     if @post.description.length == 0
       @post.description = "Add your Initial thoughts"
     end
+    if @post.url.length == 0
+      @post.url = "Add a link"
+    end
+
+    
+    @post.note = "Keep some notes here"
+    
+    
     #create the user object if necessary
     if current_user && current_user.activated?
       @user = current_user
@@ -217,8 +228,8 @@ class PostsController < ApplicationController
 
   def set_post_note
     @post = Post.find(params[:id])
-    @post.note = params[:value]
-    if @post.save
+    #@post.note = params[:value]
+    if @post.update_attributes(:note => params[:value])
       render :text => @post.note
     else
       render :text => "There was a problem saving your note. Please refresh and try again."

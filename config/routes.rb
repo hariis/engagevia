@@ -12,9 +12,10 @@ ActionController::Routing::Routes.draw do |map|
   map.logout "logout", :controller => 'user_sessions', :action => 'destroy'
 
   map.activate '/activate/:activation_code', :controller => 'users', :action => 'activate'
+  map.error ':posts',  :controller => 'posts', :action => '404'
 
-  map.connect 'conversation/show/:pid/:uid', :controller => 'posts', :action => 'show'
-  map.connect 'conversation/new', :controller => 'posts', :action => 'new'
+  #map.connect 'conversation/show/:pid/:uid', :controller => 'posts', :action => 'show'
+  #map.connect 'conversation/new', :controller => 'posts', :action => 'new'
   #map.forgot_password '/forgot_password', :controller => 'users', :action => 'forgot_password'
 
 

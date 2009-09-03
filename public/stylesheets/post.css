@@ -26,6 +26,19 @@ margin: 0px 10px;
 background-color:#0B84E8;
 color:#FFFFFF;
 padding: 0px 7px;
+top: 410px;
+}
+#sticky-note {
+    background-color: #f6f650;
+    color: #000000;
+    position: absolute;
+    right: 0px;
+    width:250px;
+    margin: 0px 10px;
+    padding: 0px 7px;
+    width:250px;
+    height: 250px;
+    overflow:auto;
 }
 html,body {
   font-size: 100%;
@@ -38,6 +51,7 @@ html,body {
   -moz-background-origin:padding;
   background:#bbdefa none repeat scroll 0 0;
   background-color:#bbdefa;
+  background-image: url('/images/pattern_096.gif');
 }
 #wrapper{
     margin:0 auto;
@@ -46,7 +60,7 @@ html,body {
 #content {
   margin: 0 275px;
   padding: 10px;
-  background-color: #fff;
+  
   font-size: 75%;
   margin:0 auto;
   text-align:left;  
@@ -177,6 +191,7 @@ width:75%;
 
 #parent-post {
 clear: both;
+background-color: #d1d7f6;
 }
 .owner-info{
 float: left;
@@ -186,9 +201,10 @@ border: 2px solid #d7d7d7;
 padding: 3px;
 }
 #post-body{  
-background-color: #d1d7f6;
+background-color: #fff;
 width: 80%;
 float: right;
+padding-bottom:10px;
 }
 
 #comments {
@@ -201,26 +217,32 @@ float: right;
     text-align:justify;
     padding: 5px;
     clear: both;
-    width: 80%;
     float: right;
 }
+.root-comment-body {
+    width: 100%;
+}
 .listing-line-odd {
-	border-bottom: 1px dotted #32a3fe;
         background-color: #a5d6fd;
 }
 .listing-line-even {	
         background-color: #fff;
-        border-bottom: 1px dotted #32a3fe; 
 }
 .current-user-comment {
-        background-color: #d6f6a6;	
-        border-bottom: 1px dotted #68ac02;        
+        background-color: #d6f6a6;       
 }
 .new-comment {
-        background-color: #ffffff;
-        border-bottom: 2px dotted #68ac02;
-        margin-top:25px;
+    background-color: #ffffff;
+    border-bottom: 2px dotted #68ac02;
+    margin-top:25px;
     border-bottom-color: #68ac02;
+    width: 100%;
+}
+.apply_border {
+        border-bottom: 1px dotted #32a3fe;     
+}
+.apply_comment_owner_border {
+        border-bottom: 1px dotted #68ac02;
 }
 .subject {
     font-size: 120%;
@@ -229,11 +251,18 @@ float: right;
     padding-left:5px;
     padding-top:5px;
 }
-.description, .in_place_editor_field, .inplacericheditor-form {
+.in_place_editor_field, .inplacericheditor-form {
     clear:left;
     float:left;
     padding-left:5px;
     padding-top:5px;
+}
+.description {
+    clear:left;
+    float:left;
+    padding-left:5px;
+    padding-top:5px;
+    margin-top: 10px;
 }
 .url {
     font-size:70%;
@@ -245,8 +274,8 @@ float: right;
     background-color:yellow;
     color:#000000;    
 }
-ul#participants li {
-    list-style:none;
+
+ul#participants li {    
     padding:3px;
     margin-left:-25px;
 }

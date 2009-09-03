@@ -59,6 +59,6 @@ class Post < ActiveRecord::Base
   end
 
   def get_url_for(user)
-    DOMAIN + "conversation/show/#{self.unique_id}/#{user.unique_id}"
+    DOMAIN + "posts/show?pid=#{self.unique_id};uid=#{user.unique_id}"
   end
 end

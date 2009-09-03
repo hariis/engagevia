@@ -24,7 +24,7 @@ class UserSessionsController < ApplicationController
           #How can this happen? logged in but not a member - Hacked in, perhaps
           flash[:notice] = "We're sorry, but we could not locate your account.<br/> Please signup first, if you haven't already."
           redirect_to root_url
-          end
+        end
     else
       flash[:notice] = "We're sorry, but we could not locate your account. Please signup first."
       redirect_to root_url

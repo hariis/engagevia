@@ -32,29 +32,6 @@ class UsersController < ApplicationController
 
   # POST /users
   # POST /users.xml
-  def create1
-    #@user = User.new(params[:user])
-
-    @user = User.new
-    @user.username = params[:user][:username]
-    @user.email = params[:user][:email]
-    @user.password = params[:user][:password]
-    @user.password_confirmation = params[:user][:password_confirmation]
-
-
-    respond_to do |format|
-      if @user.save
-        flash[:notice] = "Registration successful."
-        format.html { redirect_to(root_url) }
-        format.xml  { render :xml => @user, :status => :created, :location => @user }
-      else
-        format.html { render :action => "new" }
-        format.xml  { render :xml => @user.errors, :status => :unprocessable_entity }
-      end
-    end
-  end
-
-
 
   def create
     #@random = ActiveSupport::SecureRandom.hex(10)
@@ -158,5 +135,8 @@ private
     #  flash[:notice] = "You have already activated your account."
     #  redirect_to root_url
     #end
+ end
+ def show
+   
  end
 end

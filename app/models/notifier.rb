@@ -28,21 +28,21 @@ default_url_options[:host] = "li98-245.members.linode.com"
     @subject    += ' Location of your new Posting'
     recipients    post.owner.email
     
-    body          :post_url  => DOMAIN + "conversation/show/#{post.unique_id}/#{post.owner.unique_id}" , :post => post
+    body          :post_url  => DOMAIN + "posts/show?pid=#{post.unique_id};uid=#{post.owner.unique_id}" , :post => post
   end
 
   def send_invitations(post, invitee)
     setup_email(post.owner)
     @subject    += " #{post.owner.email} has invited you for a conversation."
     recipients invitee.email
-    body          :post_url  => DOMAIN + "conversation/show/#{post.unique_id}/#{invitee.unique_id}" ,:post => post
+    body          :post_url  => DOMAIN + "posts/show?pid=#{post.unique_id};uid=#{invitee.unique_id}" ,:post => post
   end
 
   def comment_notification(post, comment, participant)
     setup_email(comment.owner)  #TODO: we are not using this argument.
     @subject    +=   " #{comment.owner} has added a new comment for #{post.subject}"
     recipients    participant.email
-    body          :post_url  => DOMAIN + "conversation/show/#{post.unique_id}/#{participant.unique_id}" ,:post => post, :comment => comment
+    body          :post_url  => DOMAIN + "posts/show?pid=#{post.unique_id};uid=#{participant.unique_id}" ,:post => post, :comment => comment
   end
 
   protected

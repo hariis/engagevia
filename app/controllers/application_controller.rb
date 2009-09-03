@@ -8,8 +8,19 @@ class ApplicationController < ActionController::Base
   # Scrub sensitive parameters from your log
    filter_parameter_logging :password
   
-  helper_method :current_user  
-    
+  helper_method :current_user
+  
+  def method_missing(methodname, *args)
+       @methodname = methodname
+       @args = args
+       if controller_name == "users"
+         flash[:error] = 'Could not locate the user you requested'
+       elsif controller_name == "posts"
+         flash[:error] = 'Could not locate the conversation you requested'
+       end
+       render 'posts/404', :status => 404, :layout => false
+   end
+
   private  
     def current_user_session  
       return @current_user_session if defined?(@current_user_session)  
