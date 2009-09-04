@@ -33,14 +33,24 @@ class UsersController < ApplicationController
   # POST /users
   # POST /users.xml
 
-  def create
-    #@random = ActiveSupport::SecureRandom.hex(10)
-    #@user = User.find_by_email("dummy@gmail.com")
-    #@user = User.new(params[:user])
-    #if @user.update_attributes(params[:user])
-    #   flash[:notice] = 'Successfully created profile.'
-    #end
+  def resendnewactivation
+    render
+  end
 
+  def resendactivation
+    @user = User.find_by_email(params[:email])
+    if @user
+        @user.deliver_account_confirmation_instructions!
+        flash[:notice] = "Instructions to confirm your account have been emailed to you. " +
+        "Please check your email."
+        redirect_to root_url
+    else
+      flash[:notice] = "No user was found with that email address"
+      render :action => :new
+    end
+  end
+
+  def create
     @user = User.find_by_email(params[:user][:email])
     if @user
       if @user.non_member?
