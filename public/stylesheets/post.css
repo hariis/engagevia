@@ -12,7 +12,7 @@ position: absolute;
 left: 0px;
 color: #fff;
 margin:5px 10px;
-padding: 5px 7px;
+padding: 0px 7px;  /* top and bottom is 0 so empty div does not show up */
 background-color: #0b84e8;
 width:250px;
 }
@@ -109,6 +109,7 @@ border:medium none;
     width:100%;
     z-index:100;
     opacity: 0.9;
+    text-align:center;
 }
 #flash-error{
     padding: 5px;
@@ -119,6 +120,7 @@ border:medium none;
     opacity: 0.9;
     position:fixed;
     top: 0px;
+    text-align:center;
 }
 #header img {
     width: 260px;

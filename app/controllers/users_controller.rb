@@ -47,10 +47,10 @@ class UsersController < ApplicationController
     if @user
         @user.deliver_account_confirmation_instructions!
         flash[:notice] = "Instructions to confirm your account have been emailed to you. " +
-        "Please check your email."
+        "Please check your email and click on the activation link."
         redirect_to root_url
     else
-      flash[:notice] = "No user was found with that email address"
+      flash[:notice] = "No user was found with that email address."
       redirect_to root_url
     end
   end
