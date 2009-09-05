@@ -47,6 +47,13 @@ var tinymce_advanced_with_save_options = {
   theme_advanced_buttons3: "",
   save_enablewhendirty : true,
 
+  forced_root_block : false,
+    force_p_newlines : false,
+    remove_linebreaks : false,
+    force_br_newlines : true,
+    remove_trailing_nbsp : false,
+    verify_html : false,
+
   theme_advanced_toolbar_location: "bottom",
   theme_advanced_resizing : true,
   content_css : "/style/editable.css",
@@ -66,7 +73,12 @@ var tinymce_advanced_stripped_options = {
   theme_advanced_buttons1: "bold,italic,underline,strikethrough,bullist,numlist",
   theme_advanced_buttons2: "",
   theme_advanced_buttons3: "",
-
+  forced_root_block : false,
+    force_p_newlines : false,
+    remove_linebreaks : false,
+    force_br_newlines : true,
+    remove_trailing_nbsp : false,
+    verify_html : false,
   theme_advanced_toolbar_location: "bottom",
   content_css : "/style/editable.css",
   theme_advanced_blockformats : "p,h2,h3,blockquote"

@@ -4,6 +4,15 @@ class PostsController < ApplicationController
   before_filter :load_user, :except => [:new, :create,:dashboard]
   before_filter :check_activated_member, :except => [:new, :show, :create, :dashboard, :index]
 
+  def method_missing(methodname, *args)
+       @methodname = methodname
+       @args = args
+       if methodname == :controller
+         controller = 'posts'
+       else
+         render 'posts/404', :status => 404, :layout => false
+       end
+   end
   def choose_layout
     if [ 'new', 'index' ].include? action_name
       'application'
@@ -27,10 +36,9 @@ class PostsController < ApplicationController
         @user = User.find_by_unique_id(params[:uid]) if params[:uid]
       end
       if @user.nil?
-        flash[:notice] = "Your identity could not be confirmed from the link that you provided. <br/> Please request the post owner to resend the link."
+        flash[:error] = "Your identity could not be confirmed from the link that you provided. <br/> Please request the post owner to resend the link."
         redirect_to login_path
-      end
-      return
+      end      
     end
     if (action_name == 'index')
       if current_user && current_user.activated?
@@ -68,7 +76,6 @@ class PostsController < ApplicationController
       @post = Post.find_by_unique_id(params[:pid])
       @engagement = Engagement.new
     else
-      flash[:error] = 'Could not locate the conversation you requested'
       render 'posts/404', :status => 404, :layout => false and return
     end
     

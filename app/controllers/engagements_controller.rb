@@ -8,9 +8,9 @@ class EngagementsController < ApplicationController
   def set_notification
      @engagement = Engagement.find(params[:id])
      if params[:set] == 'true'
-        @engagement.notify_comment = true
+        @engagement.notify = true
      else
-       @engagement.notify_comment = false
+       @engagement.notify = false
      end
      @engagement.save
   end
@@ -33,14 +33,28 @@ class EngagementsController < ApplicationController
      from_config = {}
      from_config[:twitid] = params[:twitid]
      from_config[:password] = params[:twitp]
-     @followers = Engagement.get_followers(from_config)
-
+     @error_message = ""
+     begin
+        @followers = Engagement.get_followers(from_config)
+     rescue
+         @error_message = "Could not login to Twitter.<br/> Please check your credentials <br/>and try again a little later. "
+     end
     render :update do |page|
-        page.replace_html "twitter_followers", :partial => 'followers'
-        page.show "twit-invite-btn"
+        if @error_message.empty?
+          page.replace_html "twitter_followers", ""
+          page.replace_html "twitter_followers", :partial => 'followers'
+          page.show "twit-invite-btn"
+        else
+          page.replace_html "twitter_followers", @error_message
+        end
     end
   end
 
+ def method_missing(methodname, *args)
+       @methodname = methodname
+       @args = args
+        render 'posts/404', :status => 404, :layout => false
+   end
  private
  def send_email_invites
    #Send email invites
@@ -120,17 +134,25 @@ class EngagementsController < ApplicationController
               @participants << invitee
           end
         end
-
+     @error_message = ""
+     begin
         @post.send_twitter_notification(@from_config, @participants) if @participants.size > 0
-        #Delayed::Job.enqueue(MailingJob.new(@post, invitees))           
+     rescue
+        @error_message = "Unable to send invites.<br/> Please check your credentials <br/>and try again a little later."
+     end
+             
     end
     render :update do |page|
+       if @error_message.empty?
         page.insert_html :bottom, 'participants', :partial => 'participants'
         page.replace_html "send-status", @status_message
         page.select("send-status").each { |b| b.visual_effect :highlight, :startcolor => "#fb3f37",
 												:endcolor => "#cf6d0f", :duration => 5.0 }
         page.select(".new-p").each { |b| b.visual_effect :highlight, :startcolor => "#fb3f37",
 												:endcolor => "#cf6d0f", :duration => 5.0 }
+       else
+         page.replace_html "send-status", @error_message
+       end
     end
  end
 end

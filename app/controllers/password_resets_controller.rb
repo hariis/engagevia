@@ -34,6 +34,12 @@ class PasswordResetsController < ApplicationController
     end
   end
 
+  def method_missing(methodname, *args)
+       @methodname = methodname
+       @args = args
+        render 'posts/404', :status => 404, :layout => false
+   end
+
   private
     def load_user_using_perishable_token
       @user = User.find_using_perishable_token(params[:id])

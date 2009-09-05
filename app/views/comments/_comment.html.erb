@@ -1,21 +1,21 @@
 <% comment_owner = comment.owner == @user %>
-<% comment_type = "current-user-comment apply_comment_owner_border root-comment-body" if root && comment_owner %>
-<% comment_type = cycle('listing-line-odd', 'listing-line-even') + " apply_border root-comment-body" if root && !comment_owner %>
-<% comment_type = "current-user-comment" if !root && comment_owner %>
-<% comment_type = cycle('listing-line-odd', 'listing-line-even') if !root && !comment_owner %>
+<% comment_type = "current-user-comment apply_comment_owner_border root" if root && comment_owner %>
+<% comment_type = cycle('listing-line-odd', 'listing-line-even') + " apply_border root" if root && !comment_owner %>
+<% comment_type = "current-user-comment sub" if !root && comment_owner %>
+<% comment_type = cycle('listing-line-odd', 'listing-line-even') + " sub" if !root && !comment_owner %>
 
 <div class="<%= comment_type %> comment-body">
   
-  <span style="font-size :70%;"> comment by <%= "#{comment.owner.display_name}     #{comment.created_at.to_s(:short)}" %> </span><br/>
+  <div style="font-size :70%;float:right;"> comment by <%= "#{comment.owner.display_name}     #{comment.created_at.to_s(:short)}" %> </div>
   <div id="comment_body_<%= comment.id %>">  <%= comment.body %></div>
   <% if comment.owner == @user  %>
       <%= in_place_rich_editor "comment_body_#{comment.id}"  ,:url => { :controller => :comments, :action => :set_comment_body, :post_id => @post.id, :id => comment.id, :uid => params[:uid]}, :mode => 'tinymce_advanced_with_save_options' %>
   <% end %>
 
   <%= link_to_function "reply", visual_effect(:toggle_blind, "reply_#{comment.id}", :duration => 0.5) %><br/><br/>
-    <div id= reply_<%="#{comment.id}"%> class="comment-body  new-comment" style="display: none;">
+    <div id= reply_<%="#{comment.id}"%> class="sub  new-comment comment-body" style="display: none;">
         <%  reply_comment = Comment.new(:body => "Click here to add your comment") %>
-        <span style="font-size :70%;"> comment by <%= "#{@user.display_name}    #{Time.now.to_s(:short)}" %> </span><br/>
+        <div style="font-size :70%;float:right;"> comment by <%= "#{@user.display_name}    #{Time.now.to_s(:short)}" %> </div>
         <div id="comment_reply_body_<%=  comment.id %>">  <%= reply_comment.body %></div>        
         <%= in_place_rich_editor "comment_reply_body_#{comment.id}", :url => { :controller => :comments, :action => :create, :post_id => @post.id, :id => comment.id, :uid => params[:uid]}, :mode => 'tinymce_advanced_with_save_options' %>
     </div>

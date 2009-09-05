@@ -14,6 +14,17 @@
   <script src="/javascripts/tiny_mce/tiny_mce.js" type="text/javascript"></script>
   <script src="/javascripts/tiny_mce_init.js" type="text/javascript"></script>
   <script src="/javascripts/inplacericheditor.js" type="text/javascript"></script>
+  <script src="/javascripts/jquery-1.3.2.js" type="text/javascript"></script>
+  <script type="text/javascript">
+        jQuery.noConflict();
+        var $j = jQuery;
+     </script>
+  <script  type="text/javascript">
+  $j(function(){  // $(document).ready shorthand
+     $j('#flash-notice').fadeOut(10000);
+});
+  </script>
+
 </head>
 <body>
 
@@ -25,7 +36,7 @@
   <li><%= link_to "Home", root_url %> |</li>
   <% if current_user && current_user.activated? %>
     <li><%= link_to "#{current_user.display_name}'s Dashboard", posts_path if current_user.activated? %> |</li>
-    <li><%= link_to "My Account", edit_user_path(current_user) %> |</li>
+    <li><%= link_to "My Account", user_path(current_user) %> |</li>
     <li><%= link_to "Logout", logout_path %></li>
    <% else %>
      <li><%= link_to "Register", new_user_path %> |</li>
@@ -34,110 +45,20 @@
    <% end %>
 </ul>
 </div>
-  
-<p style="padding: 5px; background-color: green; color: white;"><%= flash[:notice] %></p>
 
-<div id="left">
-  <div id="send-status">
-
+  <% if flash[:notice] %>
+  <div id="flash-notice">
+<p><%= flash[:notice] %></p>
   </div>
-
-  <h3 style="border-bottom:1px solid #fff;">Invite via Email </h3>
-  <%  form_remote_tag :url => { :controller => 'engagements', :action => "create", :post_id => "#{@post.id}", :invite_type => 'email' } do %>
- 
-  <span style="font-size: 10px;">Separate multiple addresses with a comma. <br/> Limit to 10 at a time. </span>
-  <%= text_area_tag :email_invitees ,"Separate multiple addresses with a comma.",  :class =>"mceNoEditor",:rows => 10, :cols => 30 %>
- <p style="margin-top: 10px;">
-    <%= submit_tag 'Send Email Invites' %>
-  </p>
 <% end %>
-  <h3 style="border-bottom:1px solid #fff;">Invite via Twitter</h3>
-  <%  form_remote_tag :url => { :controller => 'engagements', :action => "create", :post_id => "#{@post.id}", :invite_type => 'twitter' } do %>
-        <%= button_to_function "Select from your Twitter followers",
-                            visual_effect(:toggle_blind, "get_credentials", :duration => 0.5) %>
-        <div id="twitter-invite">
-
-            <div id="twitter_followers">
-            </div>
-            <div id="get_credentials" style="display: none;">
-                <h4>Your Twitter Credentials</h4>
-                <p>
-                  <%= label_tag 'Twitter Id' %><br />
-                  <%= text_field_tag :twitter_id %>
-                </p>
-                <p>
-                  <%= label_tag 'Twitter Password' %><br />
-                  <%= password_field_tag :twitter_passwd %>
-                </p>
-
-                  <p>
-                    <%= submit_to_remote 'get_followers', 'Get My Followers',:method => 'get', :url => { :controller => 'engagements', :action => 'get_followers' },
-                              :before => "Element.toggle( 'get_credentials');"  ,
-                              :with => "'twitid='+ escape($('twitter_id').value) + '&twitp=' + escape($('twitter_passwd').value)" %>
-
-                           or  <%= link_to_function "Cancel",   visual_effect(:toggle_blind, "get_credentials", :duration => 0.5) %>
-                  </p>
-
-               
-            </div>
-             <div id="twit-invite-btn" style="margin: 10px; display: none;">
-                  <%= submit_tag 'Send Twitter Invites' %>
-             </div>
-        </div>
-
-
-       
+  <% if flash[:error] %>
+  <div id="flash-error">
+<p><%= flash[:error] %></p>
+  </div>
 <% end %>
-
-  
-
-
-  
-
-</div>
-<div id="sticky-note">
-  <h3 style="border-bottom:1px solid #fff;text-align:center;">Sticky Note </h3>
-  <% if @post.owner == @user  %>
-  <%= in_place_rich_editor_field :post, :note, {}, :mode => 'tinymce_advanced_stripped_options' %>
-  <% else %>
-   <%= @post.note %>
-   <% end %>
-</div>
-<div id="right"> 
-
-  <h3 style="border-bottom:1px solid #fff;">Participants </h3>
-
-    <ul id="participants">
-    <% unless @post.engagements.empty? %>
-        <% @post.engagements.each do |engagement| %>
-        <li
-            <%= "id='you'" if engagement.invitee.id == @user.id %>> <%=  engagement.invitee.display_name %>
-            <% if engagement.invitee.id == @user.id %>
-            <div id=notification>
-              <% if engagement.notify_comment? %>
-                <%= link_to_remote 'Disable Notification', :url => {:controller => 'engagements', :action => 'set_notification', :id => engagement.id, :set => 'false'} %>
-              <% else %>
-                <%= link_to_remote 'Enable Notification', :url => {:controller => 'engagements', :action => 'set_notification', :id => engagement.id, :set => 'true'} %>
-             <% end %>
-            </div>
-          <% end %>
-
-          </li>
-        <% end %>
-    <%  end %>
-    </ul>
+<%= yield  %>
 
 
- 
-</div>
-<div id="home-content">
-  <div id="wrapper">
-    <div id="shadow">
-      <div id="bodyblock">
-            <%= yield %>
-     </div>
-    </div>
-   </div>
-</div>
+
 </body>
 </html>

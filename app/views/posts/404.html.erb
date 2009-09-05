@@ -8,6 +8,7 @@
   <%= stylesheet_link_tag 'post' %>
 </head>
 <body>
+
 <div id="header">
 <strong class="logo">
 <a href="/"><%= image_tag "evlogo.png" %></a>
@@ -25,21 +26,25 @@
    <% end %>
 </ul>
 </div>
-  <div id="left">
-
-</div>
-<div id="right">
-
-</div>
- <div id="gen-content">
+<% if flash[:notice] %>
+  <div id="flash-notice">
+<p><%= flash[:notice] %></p>
+  </div>
+<% end %>
+  <% if flash[:error] %>
+  <div id="flash-error">
+<p><%= flash[:error] %></p>
+  </div>
+<% end %>
+<div id="gen-content">
 
  <%= content_tag 'h2', 'Whoops! Sorry :(' %>
 
-    <%= content_tag 'h3',  flash[:error]  %>
+    <%= content_tag 'h3',  flash[:error] || "The requested page is not valid" %>
 
-
-</div>
-
-
-    </body>
+ </div>
+  
+</body>
 </html>
+
+ 

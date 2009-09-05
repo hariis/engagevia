@@ -5,17 +5,22 @@ class UsersController < ApplicationController
   layout "application"
 
   before_filter :load_user_using_perishable_token, :only => [:activate]
+  before_filter :is_admin , :only => [:index,:destroy]
 
-  #test code: delete it
+  def is_admin
+    current_user.admin?
+  end
 
   def index
-    if current_user && current_user.admin?
+    if current_user 
       @users = User.find(:all)
     else
       redirect_to root_url
     end
   end
-
+  def show
+   @user = current_user
+  end
   def new
     @user = User.new
 
@@ -34,13 +39,6 @@ class UsersController < ApplicationController
   # POST /users.xml
 
   def create
-    #@random = ActiveSupport::SecureRandom.hex(10)
-    #@user = User.find_by_email("dummy@gmail.com")
-    #@user = User.new(params[:user])
-    #if @user.update_attributes(params[:user])
-    #   flash[:notice] = 'Successfully created profile.'
-    #end
-
     @user = User.find_by_email(params[:user][:email])
     if @user
       if @user.non_member?
@@ -48,16 +46,15 @@ class UsersController < ApplicationController
           @user.password = params[:user][:password]
           #@user.password_confirmation = params[:user][:password_confirmation]
       elsif !@user.activated?
-          flash[:notice] = "Your account already exists. Please activate your account"
+          flash[:error] = "Your account already exists. Please activate your account"
           redirect_to root_url
           return
       else
-          flash[:notice] = "Your account already exists. Please login or use reset password"
+          flash[:error] = "Your account already exists. Please login or use reset password"
           redirect_to login_url
           return
       end
-    else
-      #@user = User.new(params[:user])
+    else      
       @user = User.new
       @user.username = params[:user][:username]
       @user.email = params[:user][:email]
@@ -74,7 +71,7 @@ class UsersController < ApplicationController
         @user.deliver_account_confirmation_instructions!
         flash[:notice] = "Instructions to confirm your account have been emailed to you. " +
         "Please check your email."
-        #flash[:notice] = 'Registration successfull.'
+        
         format.html { redirect_to(root_url) }
         format.xml  { render :xml => @user, :status => :created, :location => @user }
       else
@@ -121,22 +118,27 @@ class UsersController < ApplicationController
     redirect_to login_url #redirect him to dash board
   end
 
+ def method_missing(methodname, *args)
+       @methodname = methodname
+       @args = args
+       if controller_name == "users" && methodname != :controller
+         flash[:error] = 'Could not locate the user you requested'
+       end
+       if methodname != :controller
+         render 'posts/404', :status => 404, :layout => false
+       else
+         controller = 'posts'
+       end
+ end
 private
   def load_user_using_perishable_token
     @user = User.find_using_perishable_token(params[:activation_code])
     unless @user
-      flash[:notice] = "We're sorry, but we could not locate your account. <br/>" +
+      flash[:error] = "We're sorry, but we could not locate your account. <br/>" +
         "If you are having issues try copying and pasting the link " +
         "from your email into your browser. " 
       redirect_to root_url
     end
-
-    #if @user.activated?
-    #  flash[:notice] = "You have already activated your account."
-    #  redirect_to root_url
-    #end
  end
- def show
-   
- end
+ 
 end

@@ -35,7 +35,15 @@ class UserSessionsController < ApplicationController
     @user_session = UserSession.find  
     @user_session.destroy  
     flash[:notice] = "Successfully logged out."  
-    redirect_to root_url  
+    redirect_to root_url
   end  
-
+  def method_missing(methodname, *args)
+       @methodname = methodname
+       @args = args
+       if methodname == :controller
+         controller = 'posts'
+       else
+         render 'posts/404', :status => 404, :layout => false
+       end       
+   end
 end
