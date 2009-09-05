@@ -6,6 +6,7 @@ class UsersController < ApplicationController
 
   before_filter :load_user_using_perishable_token, :only => [:activate]
   before_filter :is_admin , :only => [:index,:destroy]
+  before_filter :require_user, :except => [:new, :create]
 
   def is_admin
     current_user.admin?
