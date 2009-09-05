@@ -38,6 +38,24 @@ class UsersController < ApplicationController
   # POST /users
   # POST /users.xml
 
+  def resendnewactivation
+    render
+  end
+
+  def resendactivation
+    @user = User.find_by_email(params[:email])
+    if @user
+        @user.deliver_account_confirmation_instructions!
+        flash[:notice] = "Instructions to confirm your account have been emailed to you. " +
+        "Please check your email."
+        redirect_to root_url
+    else
+      flash[:notice] = "No user was found with that email address"
+      redirect_to root_url
+    end
+  end
+
+
   def create
     @user = User.find_by_email(params[:user][:email])
     if @user
