@@ -5,7 +5,7 @@ class CreateEngagements < ActiveRecord::Migration
       t.references :post
       t.integer :invited_by,    :null => false
       t.datetime :invited_when, :null => false
-      t.boolean :notify, :default => true
+      t.boolean :notify_me, :default => true
       t.timestamps
     end
       add_index   :engagements, :invited_by

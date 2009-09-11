@@ -8,7 +8,7 @@ class Post < ActiveRecord::Base
   has_many :engagements, :dependent => :destroy
   has_many :participants, :through => :engagements, :source => :invitee, :class_name => 'User', :foreign_key => :user_id
   has_many :participants_to_notify, :through => :engagements, :source => :invitee, :class_name => 'User', :foreign_key => :user_id,
-           :conditions => 'engagements.notify = 1'
+           :conditions => 'engagements.notify_me = 1'
 
   validates_presence_of :subject
 

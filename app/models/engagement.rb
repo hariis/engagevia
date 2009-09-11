@@ -19,8 +19,8 @@ class Engagement < ActiveRecord::Base
           1.upto(3).each do
               base = Twitter::Base.new(httpauth)
                #check if we got the right response object
-               break if base && base.followers.first.screen_name != nil
+               return base.followers if base && base.followers.first.screen_name != nil
          end
-         return base.followers
+         raise
   end
 end

@@ -1,5 +1,5 @@
 class EngagementsController < ApplicationController
-  before_filter :load_post, :except => [:get_followers, :set_notification]
+  before_filter :load_post, :except => [:set_notification]
 
   def load_post
     @post = Post.find(params[:post_id])
@@ -8,9 +8,9 @@ class EngagementsController < ApplicationController
   def set_notification
      @engagement = Engagement.find(params[:id])
      if params[:set] == 'true'
-        @engagement.notify = true
+        @engagement.notify_me = true
      else
-       @engagement.notify = false
+       @engagement.notify_me = false
      end
      @engagement.save
   end
@@ -87,7 +87,6 @@ class EngagementsController < ApplicationController
                         eng.invited_when = Time.now.utc
                         eng.post = @post
                         eng.invitee = invitee
-                        eng.notify = true
                         eng.save
                         @participants << invitee
                     end
@@ -106,6 +105,8 @@ class EngagementsController < ApplicationController
     else
               @status_message = "<div id='failure'>Please enter valid email addresses and try again.</div>"
     end
+
+   close_facebox 
     render :update do |page|
         page.insert_html :bottom, 'participants', :partial => 'participants'
         page.replace_html "send-status", @status_message
@@ -150,16 +151,17 @@ class EngagementsController < ApplicationController
      end
              
     end
+   
     render :update do |page|
-       if @error_message.empty?
+       if @error_message.blank?
         page.insert_html :bottom, 'participants', :partial => 'participants'
-        page.replace_html "send-status", @status_message
-        page.select("send-status").each { |b| b.visual_effect :highlight, :startcolor => "#fb3f37",
-												:endcolor => "#cf6d0f", :duration => 5.0 }
+        #page.replace_html "send-status", @status_message
+        #page.select("send-status").each { |b| b.visual_effect :highlight, :startcolor => "#fb3f37",
+				#								:endcolor => "#cf6d0f", :duration => 5.0 }
         page.select(".new-p").each { |b| b.visual_effect :highlight, :startcolor => "#fb3f37",
 												:endcolor => "#cf6d0f", :duration => 5.0 }
        else
-         page.replace_html "send-status", @error_message
+         #page.replace_html "send-status", @error_message
        end
     end
  end

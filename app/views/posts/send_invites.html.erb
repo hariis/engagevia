@@ -1,4 +1,4 @@
-<div style="background-color:#0B84E8;padding: 10px;">
+<div style="background-color:#0099cc;padding: 10px;">
   <div id="send-status">
 
   </div>
@@ -15,12 +15,13 @@
 <% end %>
   </div>  
   
-  <%  form_remote_tag :url => { :controller => 'engagements', :action => "create", :post_id => "#{@post.id}", :invite_type => 'twitter' } do %>
+  
         <%= button_to_function "Invite via Twitter",
                             visual_effect(:toggle_blind, "get_credentials", :duration => 0.5) %>
         <div id="twitter-invite">
 
-            <div id="twitter_followers"  style="background-color:#0B84E8;height:600px;overflow:scroll;display: none;">
+            <div id="twitter_followers"  style="height:600px;overflow:scroll;display: none;">
+              <%= image_tag 'spinner.gif', :id=>"spinner", :style=>"display:none;" %>
             </div>
             <div id="get_credentials" style="display: none;">
                 <h4>Your Twitter Credentials</h4>
@@ -35,9 +36,10 @@
 
                   <p>
                     <%= submit_to_remote 'get_followers', 'Get My Followers',:method => 'get', :url => { :controller => 'engagements', :action => 'get_followers' },
-                              :before => "Element.toggle( 'get_credentials');"  ,:before => "Element.show( 'twitter_followers');"  ,
-                              :with => "'twitid='+ escape($('twitter_id').value) + '&twitp=' + escape($('twitter_passwd').value)",
-                              :update => { :success => "twitter_followers", :failure => "send-status" } %>
+                              :before => "Element.toggle( 'get_credentials');Element.show('spinner');Element.show( 'twitter_followers');"  ,
+                              :with => "'twitid='+ escape($('twitter_id').value) + '&twitp=' + escape($('twitter_passwd').value)+ '&post_id=' + #{@post.id}",
+                              :update => { :success => "twitter_followers", :failure => "send-status" },
+                              :complete => "Element.hide('spinner')"%>
 
                            or  <%= link_to_function "Cancel",   visual_effect(:toggle_blind, "get_credentials", :duration => 0.5) %>
                   </p>
@@ -49,7 +51,7 @@
 
 
 
-<% end %>
+
 
 
 </div>
