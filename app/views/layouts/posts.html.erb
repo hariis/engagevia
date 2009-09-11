@@ -19,12 +19,13 @@
         jQuery.noConflict();
         var $j = jQuery;
      </script>
-  <script  type="text/javascript">
+  <script type="text/javascript">
   $j(function(){  // $(document).ready shorthand
      $j('#flash-notice').fadeOut(10000);
 });
   </script>
-
+  <%= stylesheet_link_tag 'facebox' %>
+  <%= javascript_include_tag 'facebox' %>
 </head>
 <body>
 
@@ -44,7 +45,12 @@
    <% end %>
 </ul>
 </div>
-
+  <div id="widgets">
+    <ul>
+      <li><%= facebox_link_to "Invite Friends",  :url => @post.get_url_for(@user,'send_invites') %>
+</li>
+    </ul>
+  </div>
   <% if flash[:notice] %>
   <div id="flash-notice">
 <p><%= flash[:notice] %></p>

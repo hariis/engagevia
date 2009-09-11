@@ -33,21 +33,28 @@ class EngagementsController < ApplicationController
      from_config = {}
      from_config[:twitid] = params[:twitid]
      from_config[:password] = params[:twitp]
+
      @error_message = ""
      begin
         @followers = Engagement.get_followers(from_config)
-     rescue
-         @error_message = "Could not login to Twitter.<br/> Please check your credentials <br/>and try again a little later. "
-     end
-    render :update do |page|
-        if @error_message.empty?
-          page.replace_html "twitter_followers", ""
-          page.replace_html "twitter_followers", :partial => 'followers'
-          page.show "twit-invite-btn"
-        else
-          page.replace_html "twitter_followers", @error_message
+        if @followers.size == 0
+          @error_message = "There was a problem connecting to Twitter.<br/> Please try again a little later."
+        elsif @followers.blank?
+          @error_message = "No followers found."
         end
-    end
+     rescue Exception => e
+       if e.type.inspect == "Twitter::Unauthorized"
+        @error_message = "Could not login to Twitter.<br/> Please check your credentials <br/>and try again a little later. "
+       else
+        @error_message = "There was a problem talking to Twitter.<br/> Please try again a little later."
+       end
+     end
+     respond_to do |format|
+        format.js {            
+              render_to_facebox  :partial => 'followers.html.erb', :object => @followers
+            #page.show "twit-invite-btn"
+        }
+      end
   end
 
  def method_missing(methodname, *args)
@@ -80,6 +87,7 @@ class EngagementsController < ApplicationController
                         eng.invited_when = Time.now.utc
                         eng.post = @post
                         eng.invitee = invitee
+                        eng.notify = true
                         eng.save
                         @participants << invitee
                     end

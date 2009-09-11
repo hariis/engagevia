@@ -1,0 +1,55 @@
+<div style="background-color:#0B84E8;padding: 10px;">
+  <div id="send-status">
+
+  </div>
+  <%= button_to_function "Invite via Email",
+                            visual_effect(:toggle_blind, "show_email_form", :duration => 0.5) %>
+  <div id="show_email_form"  style="display: none;">
+  <%  form_remote_tag :url => { :controller => 'engagements', :action => "create", :post_id => "#{@post.id}", :invite_type => 'email' } do %>
+
+  <div style="font-size: 10px;">Separate multiple addresses with a comma. <br/> Limit to 10 at a time. </div>
+  <%= text_area_tag :email_invitees ,"Separate multiple addresses with a comma.",  :class =>"mceNoEditor",:rows => 10, :cols => 43 %>
+ <p style="margin-top: 10px;">
+    <%= submit_tag 'Send Email Invites' %>
+  </p>
+<% end %>
+  </div>  
+  
+  <%  form_remote_tag :url => { :controller => 'engagements', :action => "create", :post_id => "#{@post.id}", :invite_type => 'twitter' } do %>
+        <%= button_to_function "Invite via Twitter",
+                            visual_effect(:toggle_blind, "get_credentials", :duration => 0.5) %>
+        <div id="twitter-invite">
+
+            <div id="twitter_followers"  style="background-color:#0B84E8;height:600px;overflow:scroll;display: none;">
+            </div>
+            <div id="get_credentials" style="display: none;">
+                <h4>Your Twitter Credentials</h4>
+                <p>
+                  <%= label_tag 'Twitter Id' %><br />
+                  <%= text_field_tag :twitter_id %>
+                </p>
+                <p>
+                  <%= label_tag 'Twitter Password' %><br />
+                  <%= password_field_tag :twitter_passwd %>
+                </p>
+
+                  <p>
+                    <%= submit_to_remote 'get_followers', 'Get My Followers',:method => 'get', :url => { :controller => 'engagements', :action => 'get_followers' },
+                              :before => "Element.toggle( 'get_credentials');"  ,:before => "Element.show( 'twitter_followers');"  ,
+                              :with => "'twitid='+ escape($('twitter_id').value) + '&twitp=' + escape($('twitter_passwd').value)",
+                              :update => { :success => "twitter_followers", :failure => "send-status" } %>
+
+                           or  <%= link_to_function "Cancel",   visual_effect(:toggle_blind, "get_credentials", :duration => 0.5) %>
+                  </p>
+
+
+            </div>
+            
+        </div>
+
+
+
+<% end %>
+
+
+</div>

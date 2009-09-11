@@ -2,7 +2,7 @@ class PostsController < ApplicationController
   layout :choose_layout
   
   before_filter :load_user, :except => [:new, :create,:dashboard]
-  before_filter :check_activated_member, :except => [:new, :show, :create, :dashboard, :index]
+  before_filter :check_activated_member, :except => [:new, :show,:send_invites, :create, :dashboard, :index]
 
   def method_missing(methodname, *args)
        @methodname = methodname
@@ -28,7 +28,7 @@ class PostsController < ApplicationController
   end
 
   def load_user
-    if (action_name == 'show')
+    if (action_name == 'show' || action_name == 'send_invites')
       if current_user && current_user.activated?
         @user = current_user
       else
@@ -58,7 +58,12 @@ class PostsController < ApplicationController
   def index
     @posts = @user.posts.find(:all, :order => 'updated_at desc')
     if @posts.count < 1
-      flash[:notice] += "Currently you are not engaged in any conversation. Why don't you start one?"
+      prompt_message = "Currently you are not engaged in any conversation. Why don't you start one?"
+      if flash[:notice].blank?
+        flash[:notice] = prompt_message
+      else  #when we come here upon login, we will already have a flash[:notice] message
+        flash[:notice] += prompt_message
+      end
       redirect_to new_post_path
       return
     end
@@ -84,7 +89,20 @@ class PostsController < ApplicationController
       format.xml  { render :xml => @post }
     end
   end  
+  def send_invites
+    if params[:pid]
+      @post = Post.find_by_unique_id(params[:pid])
+      @engagement = Engagement.new
+    else
+      render 'posts/404', :status => 404, :layout => false and return
+    end
 
+    respond_to do |format|
+      format.html # show.html.erb
+      format.xml  { render :xml => @post }
+      format.js { render_to_facebox }
+    end
+  end
   # GET /posts/new
   # GET /posts/new.xml
   def new
@@ -154,12 +172,12 @@ class PostsController < ApplicationController
       if @post.save
         #&& @user.posts << @post
          #save an engagement
-          eng = Engagement.new
-          eng.invited_by = @post.owner  #TODO Shoudl this be 0 ?
-          eng.invited_when = Time.now.utc
-          eng.post = @post
-          eng.invitee = @post.owner
-          eng.save        
+#          eng = Engagement.new
+#          eng.invited_by = @post.owner  #TODO Shoudl this be 0 ?
+#          eng.invited_when = Time.now.utc
+#          eng.post = @post
+#          eng.invitee = @post.owner
+#          eng.save      
         
         if current_user && current_user.activated?
           flash[:notice] ='Your email contains the link to this post as well.<br/> '+
@@ -172,7 +190,7 @@ class PostsController < ApplicationController
           redirect_to root_url
           return
         end
-        format.html { redirect_to(@post.get_url_for(@user)) }
+        format.html { redirect_to(@post.get_url_for(@user,'show')) }
         #format.xml  { render :xml => @post, :status => :created, :location => @post }
       else
         format.html { redirect_to new_post_path }

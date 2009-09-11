@@ -1,5 +1,5 @@
 module PostsHelper
-  def GetCommentCount(post)
-    post.comments.count
+  def get_comments_count(post)
+    pluralize(post.comments.count, "comment")
   end
 end

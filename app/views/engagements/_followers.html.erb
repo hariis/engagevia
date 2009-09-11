@@ -1,3 +1,4 @@
+<% if !followers.blank? %>
 <ul>
   <% for follower in followers %>
     <li>
@@ -5,4 +6,17 @@
       <%= follower.name %>
     </li>
   <% end %>
+    <% for follower in followers %>
+    <li>
+      <%= check_box_tag "followers[]", follower.screen_name %>
+      <%= follower.name %>
+    </li>
+  <% end %>
   </ul>
+ <div id="twit-invite-btn" style="margin: 10px;">
+      <%= submit_tag 'Send Twitter Invites' %>
+ </div>
+
+<% else %>
+  <%= @error_message %>
+<% end %>

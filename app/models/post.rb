@@ -14,9 +14,14 @@ class Post < ActiveRecord::Base
 
   after_create :send_post_link
 
-  def send_post_link
-      #send an email with confirmation link
-      Notifier.deliver_post_link(self)    
+  def send_post_link      
+      Notifier.deliver_post_link(self)
+      eng = Engagement.new
+      eng.invited_by = self.owner  #TODO Shoudl this be 0 ?
+      eng.invited_when = Time.now.utc
+      eng.post = self
+      eng.invitee = self.owner
+      eng.save
   end
   def self.generate_unique_id
     ActiveSupport::SecureRandom.hex(20)
@@ -58,7 +63,7 @@ class Post < ActiveRecord::Base
    end
   end
 
-  def get_url_for(user)
-    DOMAIN + "posts/show?pid=#{self.unique_id};uid=#{user.unique_id}"
+  def get_url_for(user,action)
+    DOMAIN + "posts/" + action + "?pid=#{self.unique_id};uid=#{user.unique_id}"
   end
 end

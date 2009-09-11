@@ -8,7 +8,7 @@
 <% @posts.each do |post| %>
    <div class="<%= cycle('listing-line-odd', 'listing-line-even') %> post-item">
     <% if post.url == "Add a link"  %>
-      <%= link_to  h(post.subject), post.get_url_for(@user)  %>
+      <%= link_to  h(post.subject), post.get_url_for(@user,'show')  %>
     <% else %>
       <%= link_to "#{h(post.subject)}", h(post.url) %>
     <% end %>
@@ -18,7 +18,7 @@
     <%= link_to 'Delete', post, :confirm => 'Are you sure? This will wipe out this conversation and all of its comments.', :method => :delete %>
     <% end %>
     </span>
-    <%= button_to  "(#{GetCommentCount(post)} comments) | View", post.get_url_for(@user), :class => 'dashboard-comments' %>
+    <%= button_to  "(#{get_comments_count(post)}) | View", post.get_url_for(@user,'show'), :class => 'dashboard-comments' %>
     
    </div>
 <% end %>

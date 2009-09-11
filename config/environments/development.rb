@@ -17,7 +17,7 @@ config.action_controller.perform_caching             = false
 config.action_mailer.raise_delivery_errors = false
 
 config.action_mailer.delivery_method = :smtp
-#ActionMailer::Base.smtp_settings[:tls] = true
+ActionMailer::Base.smtp_settings[:tls] = true
 
 config.action_mailer.smtp_settings =  {
 :address => "smtp.gmail.com",
