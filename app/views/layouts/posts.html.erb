@@ -47,8 +47,8 @@
 </div>
   <div id="widgets">
     <ul>
-      <li><%= facebox_link_to "Invite Friends",  :url => @post.get_url_for(@user,'send_invites') %>
-</li>
+      <li><%= facebox_link_to "Invite Friends",  :url => @post.get_url_for(@user,'send_invites') %></li>
+      <li id="invite-status"></li>
     </ul>
   </div>
   <% if flash[:notice] %>

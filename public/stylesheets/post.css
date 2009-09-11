@@ -30,6 +30,8 @@ top: 165px;
 }
 #participants{
     background-color:#0B84E8;
+    margin-top:10px;
+    padding:3px;
 }
 #sticky-note {
     background-color: #f6f650;
@@ -202,6 +204,13 @@ text-decoration:none;
 color:#FFFFFF;
 background-color:#0B84E8;
 }
+ul li {
+    list-style-image:none;
+    list-style-position:outside;
+    list-style-type:none;
+    overflow:hidden;
+}
+
 #widgets ul {
 float:left;
 list-style-image:none;

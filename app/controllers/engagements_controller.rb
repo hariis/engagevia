@@ -106,13 +106,17 @@ class EngagementsController < ApplicationController
               @status_message = "<div id='failure'>Please enter valid email addresses and try again.</div>"
     end
 
-   close_facebox 
+   
     render :update do |page|
-        page.insert_html :bottom, 'participants', :partial => 'participants'
-        page.replace_html "send-status", @status_message
-        page.select("send-status").each { |b| b.visual_effect :highlight, :startcolor => "#fb3f37",
-												:endcolor => "#cf6d0f", :duration => 5.0 }
+        page.hide 'facebox'
+        page.insert_html :bottom, 'participants-list', :partial => 'participants'
+        page.replace_html 'invite-status', "#{@participants? pluralize(@participants.size ,"participant") : "None"} added."
+        #page.replace_html "send-status", @status_message
+        #page.select("send-status").each { |b| b.visual_effect :highlight, :startcolor => "#fb3f37",
+				#								:endcolor => "#cf6d0f", :duration => 5.0 }
         page.select(".new-p").each { |b| b.visual_effect :highlight, :startcolor => "#fb3f37",
+												:endcolor => "#cf6d0f", :duration => 5.0 }
+        page.select("#invite-status").each { |b| b.visual_effect :fade, :startcolor => "#fb3f37",
 												:endcolor => "#cf6d0f", :duration => 5.0 }
     end
  end
@@ -154,12 +158,16 @@ class EngagementsController < ApplicationController
    
     render :update do |page|
        if @error_message.blank?
-        page.insert_html :bottom, 'participants', :partial => 'participants'
+        page.hide 'facebox'
+        page.insert_html :bottom, 'participants-list', :partial => 'participants'
+        page.replace_html 'invite-status', "#{@participants? pluralize(@participants.size ,"participant") : "None"} added."
         #page.replace_html "send-status", @status_message
         #page.select("send-status").each { |b| b.visual_effect :highlight, :startcolor => "#fb3f37",
 				#								:endcolor => "#cf6d0f", :duration => 5.0 }
         page.select(".new-p").each { |b| b.visual_effect :highlight, :startcolor => "#fb3f37",
 												:endcolor => "#cf6d0f", :duration => 5.0 }
+        page.select("#invite-status").each { |b| b.visual_effect :fade, :startcolor => "#fb3f37",
+          :endcolor => "#cf6d0f", :duration => 50.0 }
        else
          #page.replace_html "send-status", @error_message
        end
