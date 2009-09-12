@@ -1,6 +1,6 @@
 class Notifier < ActionMailer::Base
 
-default_url_options[:host] = "li98-245.members.linode.com"
+default_url_options[:host] = "www.engagevia.com"
 
   def password_reset_instructions(user)
     setup_email(user)
@@ -47,8 +47,8 @@ default_url_options[:host] = "li98-245.members.linode.com"
 
   protected
     def setup_email(user)      
-      @from        = "EngageVia <yeeyay-notifier@li98-245.members.linode.com>"
-      headers         "Reply-to" => "EngageVia-notifier@li98-245.members.linode.com"
+      @from        = "EngageVia <EngageVia-notifier@engagevia.com>"
+      headers         "Reply-to" => "EngageVia-notifier@engagevia.com"
       @subject     = "[EngageVia] "
       @sent_on     = Time.zone.now
       @content_type = "text/html"

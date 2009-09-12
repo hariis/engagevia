@@ -26,4 +26,4 @@ config.action_mailer.raise_delivery_errors = false
 
 # Enable threaded mode
 # config.threadsafe!
-DOMAIN = 'http://li98-245.members.linode.com/'
+

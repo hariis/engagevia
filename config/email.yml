@@ -1,7 +1,7 @@
 production:
   :enable_starttls_auto: true
-  :address: li98-245.members.linode.com
-  :domain: li98-245.members.linode.com
+  :address: engagevia.com
+  :domain: engagevia.com
   :port: 25
   :authentication: :login
   :user_name: hariis
