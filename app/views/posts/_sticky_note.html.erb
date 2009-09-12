@@ -1,3 +1,5 @@
+<!--If there is no note, then do not show this at all to participants (i.e non-owner) -->
+<% if @post.owner == @user || @post.note != 'Keep some notes here'  %>
 <div id="sticky-note">
   <h3 style="border-bottom:1px solid #fff;text-align:center;">Sticky Note </h3>
   <% if @post.owner == @user  %>
@@ -6,3 +8,4 @@
    <%= @post.note %>
    <% end %>
 </div>
+<% end %>
