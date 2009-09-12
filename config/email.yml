@@ -1,7 +1,7 @@
 production:
   :enable_starttls_auto: true
-  :address: engagevia.com
-  :domain: engagevia.com
+  :address: plannerbee.com
+  :domain: plannerbee.com
   :port: 25
   :authentication: :login
   :user_name: hariis
