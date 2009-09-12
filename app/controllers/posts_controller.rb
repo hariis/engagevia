@@ -34,6 +34,11 @@ class PostsController < ApplicationController
       else
         #load the user based on the unique id
         @user = User.find_by_unique_id(params[:uid]) if params[:uid]
+        #Still require the user to login so we can maintain a session
+        flash[:error] = "Please login and you will be on your way"
+        flash[:email] = @user.email
+        store_location
+        redirect_to login_path
       end
       if @user.nil?
         flash[:error] = "Your identity could not be confirmed from the link that you provided. <br/> Please request the post owner to resend the link."
@@ -146,6 +151,7 @@ class PostsController < ApplicationController
           #Save this post contents
           session[:post] = @post
           flash[:notice] = "Your email is registered with an account. <br/> Please login first."
+          store_location
           redirect_to login_path
           return
       elsif @user.nil?
@@ -156,6 +162,7 @@ class PostsController < ApplicationController
           #Save this post contents
           session[:post] = @post
           flash[:notice] = "Your email is registered with an account but not activated yet. <br/> Please activate your account and login first."
+          store_location
           redirect_to login_path
           return
       else
