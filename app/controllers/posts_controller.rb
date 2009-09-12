@@ -16,7 +16,7 @@ class PostsController < ApplicationController
   def choose_layout
     if [ 'new', 'index' ].include? action_name
       'application'
-    elsif ['show','shown'].include? action_name
+    elsif ['show'].include? action_name
     'posts'
     elsif ['dashboard'].include? action_name
       'application'  #the one with shorter width content section
@@ -35,10 +35,12 @@ class PostsController < ApplicationController
         #load the user based on the unique id
         @user = User.find_by_unique_id(params[:uid]) if params[:uid]
         #Still require the user to login so we can maintain a session
-        flash[:error] = "Please login and you will be on your way"
-        flash[:email] = @user.email
-        store_location
-        redirect_to login_path
+        if @user.activated?
+          flash[:notice] = "Please login and you will be on your way"
+          flash[:email] = @user.email
+          store_location
+          redirect_to login_path
+        end
       end
       if @user.nil?
         flash[:error] = "Your identity could not be confirmed from the link that you provided. <br/> Please request the post owner to resend the link."
