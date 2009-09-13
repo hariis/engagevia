@@ -6,13 +6,16 @@
 
 <div class="<%= comment_type %> comment-body">
   
-  <div style="font-size :70%;float:right;"> comment by <%= "#{comment.owner.display_name}     #{comment.created_at.to_s(:short)}" %> </div>
+  <div style="font-size :70%;float:right;"><%= image_tag "comment.png" %>  by <%= "#{comment.owner.display_name}     #{comment.created_at.to_s(:short)}" %> </div>
   <div id="comment_body_<%= comment.id %>">  <%= comment.body %></div>
   <% if comment.owner == @user  %>
       <%= in_place_rich_editor "comment_body_#{comment.id}"  ,:url => { :controller => :comments, :action => :set_comment_body, :post_id => @post.id, :id => comment.id, :uid => params[:uid]}, :mode => 'tinymce_advanced_with_save_options' %>
   <% end %>
 
-  <%= link_to_function "reply", visual_effect(:toggle_blind, "reply_#{comment.id}", :duration => 0.5) %><br/><br/>
+  <%= link_to_function(image_tag "comment_add.png") do |page|
+                  page["reply_#{comment.id}"].visual_effect  :toggle_blind                  
+                end  %><br/><br/>
+                
     <div id= reply_<%="#{comment.id}"%> class="sub  new-comment comment-body" style="display: none;">
         <%  reply_comment = Comment.new(:body => "Click here to add your comment") %>
         <div style="font-size :70%;float:right;"> comment by <%= "#{@user.display_name}    #{Time.now.to_s(:short)}" %> </div>

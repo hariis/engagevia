@@ -31,7 +31,7 @@
 
 <div id="header">
 <strong class="logo">
-<a href="/"><%= image_tag "evlogo.png" %></a>
+<a href="/"><%= image_tag "evlogo.png" %><%= image_tag "ev.png", :width => '48', :height => '48' %></a>
 </strong>
 <ul>
   <li><%= link_to "Home", root_url %> |</li>
@@ -47,7 +47,7 @@
 </div>
   <div id="widgets">
     <ul>
-      <li><%= facebox_link_to "Invite Friends",  :url => @post.get_url_for(@user,'send_invites') %></li>
+      <li><%= image_tag "group_add.png" %><%= facebox_link_to "Invite Friends",  :url => @post.get_url_for(@user,'send_invites') %></li>
       <li id="invite-status"></li>
     </ul>
   </div>

@@ -123,7 +123,7 @@ border:medium none;
     top: 0px;
     text-align:center;
 }
-#header img {
+#header .logo img {
     width: 260px;
 }
 a {
@@ -193,11 +193,11 @@ padding:0;
 display:inline;
 float:left;
 margin-left:-2px;
-padding:0 13px;
 }
 #header ul li a {
 color:#0B84E8;
 text-decoration:none;
+padding:0 13px;
 }
 #header ul li a.active, #header ul li a:hover {
 color:#FFFFFF;
@@ -372,4 +372,8 @@ div#twitter_followers ul li {
 }
 .post-item a.dashboard-comments {
     color: green;
+}
+
+#notify-option {
+   margin-left:120px;
 }

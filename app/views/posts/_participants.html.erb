@@ -3,24 +3,36 @@
   <%= render :partial => 'sticky_note' %>
   
   <div id="participants">
-  <h3 style="border-bottom:1px solid #fff;">Participants </h3>
+  <h3 style="border-bottom:1px solid #fff;"><%= image_tag "group.png" %>Participants </h3>
 
     <ul id="participants-list">
     <% unless @post.engagements.empty? %>
         <% @post.engagements.each do |engagement| %>
-        <li
-            <%= "id='you'" if engagement.invitee.id == @user.id %>> <%=  engagement.invitee.display_name %>
-            <% if engagement.invitee.id == @user.id %>
-            <div id='notification'>
-              <% if engagement.notify_me? %>
-                <%= link_to_remote 'Disable Notification', :url => {:controller => 'engagements', :action => 'set_notification', :id => engagement.id, :set => 'false'} %>
-              <% else %>
-                <%= link_to_remote 'Enable Notification', :url => {:controller => 'engagements', :action => 'set_notification', :id => engagement.id, :set => 'true'} %>
-             <% end %>
-            </div>
-          <% end %>
-
-          </li>
+        <% if engagement.invitee.id == @user.id  %>
+        <li id='you'><%= image_tag "user_red.png" %> You
+          <span id="notify-option">
+               <% if engagement.notify_me? %>
+                  <%= image_tag "email.png", :id => "enabled" %><%= image_tag "email_delete.png", :id => "disabled" , :style => "display:none;" %>
+               <% else %>
+                  <%= image_tag "email.png", :id => "enabled", :style => "display:none;" %><%= image_tag "email_delete.png", :id => "disabled"  %>
+               <% end %>
+              <%= link_to_function( (image_tag ("bullet_arrow_down.png")),  :id => "more_link") do |page|
+                      page.visual_effect  :toggle_blind, 'notification'
+                      page.replace_html 'more_link', "#{image_tag "bullet_arrow_up.png"}"
+               end  %>
+          </span>
+                <div id='notification' style="display:none; float:right;">
+                    <% if engagement.notify_me? %>
+                      <%= link_to_remote 'Disable Notification', :url => {:controller => 'engagements', :action => 'set_notification', :id => engagement.id, :set => 'false'} %>
+                    <% else %>
+                      <%= link_to_remote 'Enable Notification', :url => {:controller => 'engagements', :action => 'set_notification', :id => engagement.id, :set => 'true'} %>
+                   <% end %>
+                  </div>
+        <% else %>
+         <li><%= image_tag "user_green.png" %> <%=  engagement.invitee.display_name %>
+        <% end  %>            
+            
+         </li>
         <% end %>
     <%  end %>
     </ul>
