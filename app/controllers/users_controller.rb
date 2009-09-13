@@ -63,7 +63,7 @@ class UsersController < ApplicationController
       if @user.non_member?
           @user.username = params[:user][:username]
           @user.password = params[:user][:password]
-          #@user.password_confirmation = params[:user][:password_confirmation]
+          @user.password_confirmation = params[:user][:password_confirmation]
       elsif !@user.activated?
           flash[:error] = "Your account already exists. Please activate your account"
           redirect_to root_url
@@ -138,16 +138,16 @@ class UsersController < ApplicationController
   end
 
  def method_missing(methodname, *args)
-       @methodname = methodname
-       @args = args
-       if controller_name == "users" && methodname != :controller
-         flash[:error] = 'Could not locate the user you requested'
-       end
-       if methodname != :controller
-         render 'posts/404', :status => 404, :layout => false
-       else
-         controller = 'posts'
-       end
+#       @methodname = methodname
+#       @args = args
+#       if controller_name == "users" && methodname != :controller
+#         flash[:error] = 'Could not locate the user you requested'
+#       end
+#       if methodname != :controller
+#         render 'posts/404', :status => 404, :layout => false
+#       else
+#         controller = 'posts'
+#       end      
  end
 private
   def load_user_using_perishable_token

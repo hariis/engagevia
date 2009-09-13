@@ -38,7 +38,7 @@ class PostsController < ApplicationController
         if @user.activated?
           flash[:notice] = "Please login and you will be on your way"
           flash[:email] = @user.email
-          store_location
+          store_location if controller.action_name == 'show'  #we do not want to store if it is any other action
           redirect_to login_path
         end
       end

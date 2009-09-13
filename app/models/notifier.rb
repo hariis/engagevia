@@ -40,7 +40,7 @@ default_url_options[:host] = "www.engagevia.com"
 
   def comment_notification(post, comment, participant)
     setup_email(comment.owner)  #TODO: we are not using this argument.
-    @subject    +=   " #{comment.owner} has added a new comment for #{post.subject}"
+    @subject    +=   " #{comment.owner.email} has added a new comment for #{post.subject}"
     recipients    participant.email
     body          :post_url  => DOMAIN + "posts/show?pid=#{post.unique_id};uid=#{participant.unique_id}" ,:post => post, :comment => comment
   end

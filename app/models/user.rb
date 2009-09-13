@@ -89,10 +89,10 @@ class User < ActiveRecord::Base
     return user
   end
   def display_name
-    if activated?
+    if member? #whether activated or not - as long as they signed up, we have their email id
       #email is our primary means of identity even if user has twitter id
       awesome_truncate(email, email.index('@'), "...")
-    elsif username != "nonmember" #If not a member, give preference to twitter id
+    elsif username != "nonmember" && !username.blank? #If not a member, give preference to twitter id
       "@" + username
     else #all else fails, resort to email
       awesome_truncate(email, email.index('@'), "...")
