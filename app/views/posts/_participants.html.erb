@@ -16,9 +16,16 @@
                <% else %>
                   <%= image_tag "email.png", :id => "enabled", :style => "display:none;" %><%= image_tag "email_delete.png", :id => "disabled"  %>
                <% end %>
-              <%= link_to_function( (image_tag ("bullet_arrow_down.png")),  :id => "more_link") do |page|
+              <%= link_to_function( (image_tag ("bullet_arrow_down.png")),  :id => "more_link_down") do |page|
                       page.visual_effect  :toggle_blind, 'notification'
-                      page.replace_html 'more_link', "#{image_tag "bullet_arrow_up.png"}"
+                      page.show 'more_link_up'
+                      page.hide 'more_link_down'
+                      #page.replace_html 'more_link', "#{image_tag "bullet_arrow_up.png"}"
+               end  %>
+              <%= link_to_function( (image_tag ("bullet_arrow_up.png")),  :id => "more_link_up", :style => 'display:none;') do |page|
+                      page.visual_effect  :toggle_blind, 'notification'
+                      page.hide 'more_link_up'
+                      page.show 'more_link_down'
                end  %>
           </span>
                 <div id='notification' style="display:none; float:right;">

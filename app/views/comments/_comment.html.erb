@@ -12,8 +12,8 @@
       <%= in_place_rich_editor "comment_body_#{comment.id}"  ,:url => { :controller => :comments, :action => :set_comment_body, :post_id => @post.id, :id => comment.id, :uid => params[:uid]}, :mode => 'tinymce_advanced_with_save_options' %>
   <% end %>
 
-  <%= link_to_function(image_tag "comment_add.png") do |page|
-                  page["reply_#{comment.id}"].visual_effect  :toggle_blind                  
+  <%= link_to_function("#{image_tag("comment_add.png")}reply") do |page|
+                  page.visual_effect  :toggle_blind, "reply_#{comment.id}"
                 end  %><br/><br/>
                 
     <div id= reply_<%="#{comment.id}"%> class="sub  new-comment comment-body" style="display: none;">
