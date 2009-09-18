@@ -66,7 +66,6 @@ html,body {
   font-size: 75%;
   margin:0 auto;
   text-align:left;  
-  color: #bbbbbb;
 }
 
 #gen-content {
@@ -193,6 +192,7 @@ padding:0;
 display:inline;
 float:left;
 margin-left:-2px;
+padding: 2px;
 }
 #header ul li a {
 color:#0B84E8;
