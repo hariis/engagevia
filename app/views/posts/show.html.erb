@@ -3,12 +3,8 @@ There was a problem locating your Post. <br>
 If you clicked on the link from your email, please try copying the pasting the link into the browser.
 
 <% else %>  
-
-
-<%= render :partial => 'forum' %>
-
-
-
+<div id="home-content">
 <%= render :partial => 'participants' %>
-
+<%= render :partial => 'forum' %>
+</div>
 <% end %>
