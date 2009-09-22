@@ -34,13 +34,13 @@
 <a href="/"><%= image_tag "evlogo.png" %><%= image_tag "ev.png", :width => '48', :height => '48' %></a>
 </strong>
 <ul>
-  <li><%= link_to "Home", root_url %> </li>
+  <li><%= link_to "Home", root_url %> | </li>
   <% if current_user && current_user.activated? %>
-    <li><%= link_to "| #{current_user.display_name}'s Dashboard", posts_path if current_user.activated? %> |</li>
+    <li><%= link_to "#{current_user.display_name}'s Dashboard", posts_path if current_user.activated? %> |</li>
     <li><%= link_to "My Account", user_path(current_user) %> |</li>
     <li><%= link_to "Logout", logout_path %></li>
    <% else %>
-     <li style="color:#FF60B0;"><%="| Welcome #{@user.display_name}" %> |</li>
+     <li style="color:#FF60B0;"><%="Welcome #{@user.display_name}" %> | </li>
      <li><%= link_to "Register", new_user_path %> </li>
    <% end %>
 </ul>

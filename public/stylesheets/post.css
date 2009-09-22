@@ -239,11 +239,16 @@ overflow:hidden;
 width:100%;
 font-size: 14px;
 }
-
+#dashboard-content {
+    overflow:hidden;
+    width:100%;
+    font-size: 14px;
+    width:90%;
+}
 .features {
-overflow:hidden;
 padding:2px 0 0;
 width:100%;
+color:#FFFFFF;
 }
 .feature {
 margin:auto;
@@ -365,6 +370,7 @@ div#twitter_followers ul li {
 #dashboard-view{
     width: 1230px;
     margin:0 auto;
+    color:fuchsia;
 }
 .post-item a.dashboard-comments {
     color: green;
@@ -372,4 +378,11 @@ div#twitter_followers ul li {
 
 #notify-option {
    margin-left:120px;
+}
+#signup{
+float: right;
+color:#fff;
+background-color:fuchsia;
+padding: 10px;
+width:420px;
 }
