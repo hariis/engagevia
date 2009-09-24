@@ -5,6 +5,9 @@ class ApplicationController < ActionController::Base
   helper :all # include all helpers, all the time
   protect_from_forgery # See ActionController::RequestForgeryProtection for details
   include FaceboxRender
+  include ExceptionNotifiable
+
+  ExceptionNotifier.exception_recipients = %w(hrajagopal@yahoo.com satish.fnu@gmail.com)
 
   # Scrub sensitive parameters from your log
    filter_parameter_logging :password
