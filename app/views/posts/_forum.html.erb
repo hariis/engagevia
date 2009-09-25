@@ -1,15 +1,6 @@
 
-  <div id="wrapper">
-    <div id="shadow">
-      <div id="bodyblock">
-            <div id="content">
-
-                    <div id="parent-post">
-                      <div class="owner-info">
-                        <div class="owner">
-                        <span style="font-size :70%;"> started by <%= "#{h @post.owner.display_name} <br/>    #{@post.created_at.to_s(:short)}" %> </span>
-                        </div>
-                      </div>
+            <div id="post-content">
+                    <div id="parent-post">                         
                       <div id="post-body">
                         <% if @post.owner == @user  %>
                            <div class="subject">  <%= in_place_editor_field :post, 'subject',{}, :size => '80', :text_between_controls => ' or ',:save_text => 'save' %> </div>
@@ -21,20 +12,29 @@
                            <div class="url">Check out:<%= link_to h(@post.url) , h(@post.url) %></div>
                            <% end %>
                            <div class="description">  <%= @post.description %></div>
-                        <% end %>
+                        <% end %>                        
                       </div>
+                      <span style="color:#0062f6;">
+                      started by <%= "#{@post.owner.display_name} <br/>   #{@post.created_at.to_s(:short)}" %></span>
+                      <%= image_tag @post.owner.avatar.url(:thumb) %>                      
                     </div>
                     <div id="comments">
                       <div class="new-comment root comment-body">
+                        <div style="font-size :70%;float:right;"> <%= image_tag "comment.png" %> by <%= "#{@user.display_name} <br/>    #{Time.now.to_s(:short)}" %> </div>
+                      <div class="owner-info">
+                        <div class="owner">                         
+                        <%= image_tag @user.avatar.url(:thumb) %>
+                        </div>
+                      </div>                      
                       <%  @comment = Comment.new(:body => "Click here to add your comment") %>
-                      <div style="font-size :70%;float:right;"> recent comment by <%= "#{@user.display_name}    #{Time.now.to_s(:short)}" %> </div>
+                      
+                      <div class="comment-body-editor">
                       <%= in_place_rich_editor_field :comment, :body ,{},:url => { :controller => :comments, :action => :create, :post_id => @post.id, :uid => params[:uid]}, :mode => 'tinymce_advanced_with_save_options' %>
+                      </div>
                     </div>
 
                    <%= render :partial => "/comments/comment", :collection => @post.comments.roots, :locals => {:root => 'true'} %>
 
                    </div>
-            </div>
-     </div>
-    </div>
-   </div>
+ 
+</div>

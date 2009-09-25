@@ -79,6 +79,7 @@ class UsersController < ApplicationController
       @user.email = params[:user][:email]
       @user.password = params[:user][:password]
       @user.password_confirmation = params[:user][:password_confirmation]
+      @user.avatar = params[:user][:avatar]
     end
 
     respond_to do |format|
@@ -105,7 +106,7 @@ class UsersController < ApplicationController
   # PUT /users/1.xml
   def update
     @user = current_user
-
+    @user.avatar = params[:user][:avatar]
     respond_to do |format|
       if @user.update_attributes(params[:user])
         flash[:notice] = "Successfully updated profile."

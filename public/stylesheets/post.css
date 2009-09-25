@@ -67,7 +67,17 @@ html,body {
   text-align:left;
   color: #000;
 }
-
+#post-content{
+    margin: 5px 275px;
+  padding: 10px;
+  margin:17px auto;
+  overflow: auto;
+  text-align:left;
+  color: #000;
+  width: 898px;
+  background-color: #fff;
+  /* background-image: url(/images/middle.png); background-repeat: repeat-y; width: 898px; */
+}
 #gen-content {
   margin: 0 275px;
   padding: 10px;
@@ -151,10 +161,10 @@ margin:0;
 padding:0;
 }
 #widgets {
-background: #f95b08 url('/images/bg-widgets-o.png') repeat-x scroll 0 0;
+background: #f95b08 url('/images/bg-widgets.png') repeat-x scroll 0 0;
 overflow:hidden;
 padding:10px 20px 7px 30px;
-height:36px;
+height:33px;
 }
 #header {
 background: #575455 url('/images/bg-header.png') repeat-x scroll 0 0;
@@ -226,7 +236,7 @@ margin-left:-2px;
 padding:0 13px;
 }
 #widgets ul li a {
-color:#fff;
+color:#ff00ff;
 text-decoration:none;
 font-weight: bold;
 }
@@ -258,30 +268,33 @@ width:57%;
 
 #parent-post {
 background-color: #d1d7f6;
+overflow: auto;
 }
 .owner-info{
-float: left;
-width: 18%;
-height: 75px;
+float: right;
+width: 64px;
+height: 64px;
 border: 2px solid #d7d7d7;
 padding: 3px;
+clear: right;
 }
 #post-body{  
-background-color: #fff;
-width: 80%;
-float: right;
-padding-bottom:10px;
+    float: left;
+    padding-bottom:10px;
+    width:88%;    
 }
 
 #comments {
-    margin-top: 10%;
+    margin: auto;
     border-top:1px solid #FFFFFF;
+    background-color: #fff;    
 }
 .comment-body {
     margin-top:5px;
     text-align:justify;
-    padding: 5px;
-    float: right;
+    padding: 5px 5px 10px 5px;
+    float: left;
+    width:88%;
 }
 
 .new-comment {
@@ -289,6 +302,9 @@ padding-bottom:10px;
     border-bottom: 2px dotted #68ac02;
     margin-top:25px;
     border-bottom-color: #68ac02;
+}
+.comment-body-editor {
+    float:left;
 }
 .root {
     width: 100%;
@@ -337,6 +353,7 @@ padding-bottom:10px;
     clear:both;
     padding-left:12px;
     padding-top:5px;
+    color: #0062f6;
 }
 #you {
     background-color:yellow;

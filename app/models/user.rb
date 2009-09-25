@@ -1,13 +1,15 @@
 class User < ActiveRecord::Base
   require 'digest/md5'
   acts_as_tagger
+  has_attached_file :avatar, :styles => { :medium => "300x300>", :thumb => "64x64>" }
   has_many :posts
   has_many :comments
   has_many :engagements
   has_many :posts, :through => :engagements
   has_many :user_roles, :dependent => :destroy
   has_many :roles, :through => :user_roles
-
+  validates_attachment_size :avatar, :less_than => 500.kilobytes
+  validates_attachment_content_type :avatar, :content_type => ['image/jpeg', 'image/png']
   acts_as_authentic do |c|
     c.login_field = :email
   end

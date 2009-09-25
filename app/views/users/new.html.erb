@@ -1,6 +1,6 @@
 <h1>Become a Member</h1>
 
-<% form_for(@user) do |f| %>
+<% form_for(@user, :html => { :multipart => true }) do |f| %>
   <%= f.error_messages %>
 
  
@@ -20,6 +20,10 @@
     <%= f.label :password_confirmation %><br />
     <%= f.password_field :password_confirmation %>
   </p>
+  <p>
+  <%= f.label :avatar %><br />
+  <%= f.file_field :avatar %>
+</p>
   <p>
     <%= f.submit 'Submit' %>
   </p>
