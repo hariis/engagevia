@@ -1,5 +1,6 @@
 
-            <div id="post-content">
+<div id="post-content">
+  <div id="actual-post-content">
                     <div id="parent-post">                         
                       <div id="post-body">
                         <% if @post.owner == @user  %>
@@ -16,25 +17,23 @@
                       </div>
                       <span style="color:#0062f6;">
                       started by <%= "#{@post.owner.display_name} <br/>   #{@post.created_at.to_s(:short)}" %></span>
-                      <%= image_tag @post.owner.avatar.url(:thumb) %>                      
+                      <span  style="color:#0062f6;float:right;width:8%;">
+                      <%= image_tag @post.owner.avatar.url(:thumb) if @post.owner.avatar.file? %></span>
                     </div>
                     <div id="comments">
-                      <div class="new-comment root comment-body">
-                        <div style="font-size :70%;float:right;"> <%= image_tag "comment.png" %> by <%= "#{@user.display_name} <br/>    #{Time.now.to_s(:short)}" %> </div>
-                      <div class="owner-info">
-                        <div class="owner">                         
-                        <%= image_tag @user.avatar.url(:thumb) %>
+                      <h3>Your Comment</h3>
+                      <div class="new-comment root comment-body">                                                                    
+                        <%  @comment = Comment.new(:body => "Click here to add your comment") %>
+                        <div class="comment-body-editor">
+                          <%= in_place_rich_editor_field :comment, :body ,{},:url => { :controller => :comments, :action => :create, :post_id => @post.id, :uid => params[:uid]}, :mode => 'tinymce_advanced_with_save_options' %>
                         </div>
-                      </div>                      
-                      <%  @comment = Comment.new(:body => "Click here to add your comment") %>
-                      
-                      <div class="comment-body-editor">
-                      <%= in_place_rich_editor_field :comment, :body ,{},:url => { :controller => :comments, :action => :create, :post_id => @post.id, :uid => params[:uid]}, :mode => 'tinymce_advanced_with_save_options' %>
+                        <span  style="color:#0062f6;float:right;width:8%;">
+                        <%= image_tag @user.avatar.url(:thumb)  if @user.avatar.file? %></span>
+                        <div id="owner-info"  style="color:#0062f6;clear:both;float:right;">
+                        <%= image_tag "comment.png" %> <%= "#{@user.display_name}   #{Time.now.to_s(:short)}" %></div>
                       </div>
-                    </div>
-
-                   <%= render :partial => "/comments/comment", :collection => @post.comments.roots, :locals => {:root => 'true'} %>
-
+                      <h3>Comments</h3>
+                      <%= render :partial => "/comments/comment", :collection => @post.comments.roots, :locals => {:root => 'true'} %>
                    </div>
- 
+  </div>
 </div>

@@ -18,12 +18,14 @@
                <% end %>
               <%= link_to_function( (image_tag ("bullet_arrow_down.png")),  :id => "more_link_down") do |page|
                       page.visual_effect  :toggle_blind, 'notification'
+                      page.visual_effect  :toggle_blind, 'photo'
                       page.show 'more_link_up'
                       page.hide 'more_link_down'
                       #page.replace_html 'more_link', "#{image_tag "bullet_arrow_up.png"}"
                end  %>
               <%= link_to_function( (image_tag ("bullet_arrow_up.png")),  :id => "more_link_up", :style => 'display:none;') do |page|
                       page.visual_effect  :toggle_blind, 'notification'
+                      page.visual_effect  :toggle_blind, 'photo'
                       page.hide 'more_link_up'
                       page.show 'more_link_down'
                end  %>
@@ -34,13 +36,39 @@
                     <% else %>
                       <%= link_to_remote 'Enable Notification', :url => {:controller => 'engagements', :action => 'set_notification', :id => engagement.id, :set => 'true'} %>
                    <% end %>
-                  </div>
+               </div>
+              <div id="photo" style="display:none;" >
+                    <% if engagement.invitee.avatar.file? %>
+                      <%= image_tag engagement.invitee.avatar.url(:thumb) %>
+                    <% else %>
+                      No photo available
+                   <% end %>
+
+              </div>
         <% else %>
-         <li><%= image_tag "user_green.png" %> <%=  engagement.invitee.display_name %>
+         
+           <li><%= image_tag "user_green.png" %> <%=  engagement.invitee.display_name %>
+             <%= link_to_function( (image_tag ("bullet_arrow_down.png")),  :id => "more_link_down_#{engagement.invitee.id}") do |page|
+                      page.visual_effect  :toggle_blind, "user-details_#{engagement.invitee.id}"
+                      page.show "more_link_up_#{engagement.invitee.id}"
+                      page.hide "more_link_down_#{engagement.invitee.id}"
+                      #page.replace_html 'more_link', "#{image_tag "bullet_arrow_up.png"}"
+               end  %>
+              <%= link_to_function( (image_tag ("bullet_arrow_up.png")),  :id => "more_link_up_#{engagement.invitee.id}", :style => 'display:none;') do |page|
+                      page.visual_effect  :toggle_blind, "user-details_#{engagement.invitee.id}"
+                      page.hide "more_link_up_#{engagement.invitee.id}"
+                      page.show "more_link_down_#{engagement.invitee.id}"
+               end  %>
+             <div id="user-details_<%=engagement.invitee.id %>"  style="display:none; float:left;">
+                    <% if engagement.invitee.avatar.file? %>
+                      <%= image_tag engagement.invitee.avatar.url(:thumb) %>
+                    <% else %>
+                      No photo available
+                   <% end %>
+             </div>
         <% end  %>            
-            
-         </li>
-        <% end %>
+        </li>
+       <% end %>
     <%  end %>
     </ul>
 

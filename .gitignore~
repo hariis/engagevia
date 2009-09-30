@@ -7,7 +7,6 @@ log
 nbproject
 public/javascripts/cache
 public/stylesheets/cache
-public/system
 tmp
 vendor/plugins/query_trace/
 vendor/gems

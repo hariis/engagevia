@@ -52,7 +52,7 @@ html,body {
   -moz-background-clip:border;
   -moz-background-inline-policy:continuous;
   -moz-background-origin:padding;
-  background:#171717 none repeat scroll 0 0;
+  background:#333333 none repeat scroll 0 0;
   min-width:1625px;
   /* background-image: url('/images/pattern_096.gif'); */
 }
@@ -68,15 +68,19 @@ html,body {
   color: #000;
 }
 #post-content{
-    margin: 5px 275px;
-  padding: 10px;
+  margin: 5px 275px;  
   margin:17px auto;
   overflow: auto;
   text-align:left;
   color: #000;
-  width: 898px;
+  width: 970px;
   background-color: #fff;
+  background-repeat: repeat-y;  background-image: url('/images/content-bg.png');
   /* background-image: url(/images/middle.png); background-repeat: repeat-y; width: 898px; */
+}
+#actual-post-content {
+    padding:5px 41px;
+    width:880px;
 }
 #gen-content {
   margin: 0 275px;
@@ -290,27 +294,27 @@ clear: right;
     background-color: #fff;    
 }
 .comment-body {
-    margin-top:5px;
-    text-align:justify;
+    margin-top:0px;
     padding: 5px 5px 10px 5px;
-    float: left;
-    width:88%;
+    float: left;    
 }
 
 .new-comment {
     background-color: #d6f6a6;   
-    border-bottom: 2px dotted #68ac02;
-    margin-top:25px;
+    border-bottom: 2px dotted #68ac02;    
     border-bottom-color: #68ac02;
+    margin-bottom:5px;
 }
 .comment-body-editor {
     float:left;
+    width:88%;
+    text-align:justify;
 }
 .root {
     width: 100%;
 }
 .sub {
-    width: 95%;
+    width: 98%;
 }
 .listing-line-odd {
         background-color: #a5d6fd;
@@ -402,4 +406,12 @@ color:#fff;
 background-color:fuchsia;
 padding: 10px;
 width:420px;
+}
+ul#participants-list li:hover {
+    border-top: 2px solid #fff;
+    border-bottom: 2px solid #fff;
+    background-color:#5894ed;
+}
+h3 {
+    padding: 5px;
 }
