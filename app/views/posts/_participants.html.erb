@@ -47,7 +47,8 @@
               </div>
         <% else %>
          
-           <li><%= image_tag "user_green.png" %> <%=  engagement.invitee.display_name %>
+           
+        <li><%= image_tag "user_green.png" %> <%=  engagement.invitee.display_name(nil,engagement) %>
              <%= link_to_function( (image_tag ("bullet_arrow_down.png")),  :id => "more_link_down_#{engagement.invitee.id}") do |page|
                       page.visual_effect  :toggle_blind, "user-details_#{engagement.invitee.id}"
                       page.show "more_link_up_#{engagement.invitee.id}"

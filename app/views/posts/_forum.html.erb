@@ -30,7 +30,7 @@
                         <span  style="color:#0062f6;float:right;width:8%;">
                         <%= image_tag @user.avatar.url(:thumb)  if @user.avatar.file? %></span>
                         <div id="owner-info"  style="color:#0062f6;clear:both;float:right;">
-                        <%= image_tag "comment.png" %> <%= "#{@user.display_name}   #{Time.now.to_s(:short)}" %></div>
+                        <%= image_tag "comment.png" %> <%= "#{@user.display_name(@post)}   #{Time.now.to_s(:short)}" %></div>
                       </div>
                       <h3>Comments</h3>
                       <%= render :partial => "/comments/comment", :collection => @post.comments.roots, :locals => {:root => 'true'} %>

@@ -90,15 +90,41 @@ class User < ActiveRecord::Base
     user.save(false)
     return user
   end
-  def display_name
-    if member? #whether activated or not - as long as they signed up, we have their email id
-      #email is our primary means of identity even if user has twitter id
-      awesome_truncate(email, email.index('@'), "...")
-    elsif username != "nonmember" && !username.blank? #If not a member, give preference to twitter id
-      "@" + username
-    else #all else fails, resort to email
-      awesome_truncate(email, email.index('@'), "...")
-    end   
+  def display_name(post=nil,engagement=nil)
+    
+      if member? #whether activated or not - as long as they signed up, we have their email id and or twitter id
+        #Make a judgment based on how the person got invited
+        if engagement
+          return get_display_name_via_engagement(engagement)
+        end
+        if post
+          eng = Engagement.find(:first, :conditions => ['user_id = ? and post_id = ?',id, post.id])
+          return get_display_name_via_engagement(eng)
+        end
+        #Last resort
+        return get_email_name  #currently used by layout
+      elsif username != "nonmember" && !username.blank? #If not a member, give preference to twitter id
+        return get_twitter_name
+      else #Is a nonmember and invited via email OR all else fails, resort to email
+        return get_email_name
+      end
+    
+  end
+
+  def get_display_name_via_engagement(engagement)
+    if engagement
+      if engagement.invited_via == 'twitter'
+        get_twitter_name
+      else
+        get_email_name
+      end
+    end
+  end
+  def get_email_name
+    awesome_truncate(email, email.index('@'), "")
+  end
+  def get_twitter_name
+    "@" + username
   end
   # Awesome truncate
   # First regex truncates to the length, plus the rest of that word, if any.
