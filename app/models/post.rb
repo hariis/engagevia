@@ -52,7 +52,7 @@ class Post < ActiveRecord::Base
   end
 
   def send_invitations(invitees)
-    invitees.each{|invitee| Notifier.deliver_send_invitations(self, invitee)}
+    invitees.each_key{|invitee| Notifier.deliver_send_invitations(self, invitee)}
   end
   def send_twitter_notification(from_config,followers)
    httpauth = Twitter::HTTPAuth.new(from_config[:twitid], from_config[:password])

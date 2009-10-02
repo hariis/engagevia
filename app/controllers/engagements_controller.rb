@@ -76,7 +76,7 @@ class EngagementsController < ApplicationController
 
                   #Get userid of invitees - involves creating dummy accounts
                   @requested_participants = []
-                  @participants = []
+                  @participants = {}
                   @requested_participants = Post.get_invitees(valid_emails)
                   #Add them to engagement table
                   @requested_participants.each do |invitee|
@@ -87,8 +87,9 @@ class EngagementsController < ApplicationController
                         eng.invited_when = Time.now.utc
                         eng.post = @post
                         eng.invitee = invitee
+                        eng.invited_via = 'email'
                         eng.save
-                        @participants << invitee
+                        @participants[invitee] = eng
                     end
                   end
 
@@ -131,7 +132,7 @@ class EngagementsController < ApplicationController
     if !params[:followers].nil?  &&  !params[:twitter_id].nil? && !params[:twitter_passwd].nil?
        #Get userid of invitees - involves creating dummy accounts
         @requested_participants = []
-        @participants = []
+        @participants = {}
         @requested_participants = Post.get_twitter_invitees(@followers)
         #Add them to engagement table
         @requested_participants.each do |invitee|
@@ -143,8 +144,9 @@ class EngagementsController < ApplicationController
               eng.invited_when = Time.now.utc
               eng.post = @post
               eng.invitee = invitee
+              eng.invited_via = 'twitter'
               eng.save
-              @participants << invitee
+              @participants[invitee] = eng
           end
         end
      @error_message = ""

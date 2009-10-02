@@ -1,7 +1,8 @@
 class Notifier < ActionMailer::Base
 
 default_url_options[:host] = "www.engagevia.com"
-
+host = ENV["HTTP_HOST"] || "localhost:3000"
+DOMAIN = "http://" + host + "/"
   def password_reset_instructions(user)
     setup_email(user)
     @subject    +=   " Password Reset Instructions"

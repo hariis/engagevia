@@ -90,27 +90,25 @@ class User < ActiveRecord::Base
     user.save(false)
     return user
   end
-  def display_name(post=nil,engagement=nil)
-    
+  def display_name(post=nil,engagement=nil)    
       if member? #whether activated or not - as long as they signed up, we have their email id and or twitter id
         #Make a judgment based on how the person got invited
-        if engagement
-          return get_display_name_via_engagement(engagement)
-        end
-        if post
-          eng = Engagement.find(:first, :conditions => ['user_id = ? and post_id = ?',id, post.id])
-          return get_display_name_via_engagement(eng)
-        end
-        #Last resort
-        return get_email_name  #currently used by layout
-      elsif username != "nonmember" && !username.blank? #If not a member, give preference to twitter id
-        return get_twitter_name
-      else #Is a nonmember and invited via email OR all else fails, resort to email
-        return get_email_name
+        return get_display_name_via_engagement_or_post(post,engagement) if (post || engagement)
+      elsif (post || engagement) #If not a member, check how he/she got invited
+        return get_display_name_via_engagement_or_post(post,engagement) if (post || engagement)
       end
-    
+      #Last resort
+      return get_email_name  #currently used by layout
   end
-
+  def get_display_name_via_engagement_or_post(post=nil,engagement=nil)
+    if engagement
+      return get_display_name_via_engagement(engagement)
+    end
+    if post
+      eng = Engagement.find(:first, :conditions => ['user_id = ? and post_id = ?',id, post.id])
+      return get_display_name_via_engagement(eng)
+    end
+  end
   def get_display_name_via_engagement(engagement)
     if engagement
       if engagement.invited_via == 'twitter'

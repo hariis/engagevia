@@ -1,7 +1,24 @@
 
-  <% for p in participants %>
+  <% participants.each_pair do |invitee,engagement| %>
   <li  class= 'new-p'>
-      <%=  p.display_name %>
+          <%= image_tag "user_green.png" %> <%=  invitee.display_name(nil,engagement) %>
+            <%= link_to_function( (image_tag ("bullet_arrow_down.png")),  :id => "more_link_down_#{invitee.id}") do |page|
+                      page.visual_effect  :toggle_blind, "user-details_#{invitee.id}"
+                      page.show "more_link_up_#{invitee.id}"
+                      page.hide "more_link_down_#{invitee.id}"
+               end  %>
+              <%= link_to_function( (image_tag ("bullet_arrow_up.png")),  :id => "more_link_up_#{invitee.id}", :style => 'display:none;') do |page|
+                      page.visual_effect  :toggle_blind, "user-details_#{invitee.id}"
+                      page.hide "more_link_up_#{invitee.id}"
+                      page.show "more_link_down_#{invitee.id}"
+               end  %>
+             <div id="user-details_<%=invitee.id %>"  style="display:none; float:left;">
+                    <% if invitee.avatar.file? %>
+                      <%= image_tag invitee.avatar.url(:thumb) %>
+                    <% else %>
+                      No photo available
+                   <% end %>
+             </div>
     </li>
   <% end %>
 
