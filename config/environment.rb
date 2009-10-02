@@ -41,9 +41,6 @@ Rails::Initializer.run do |config|
   # config.i18n.load_path += Dir[Rails.root.join('my', 'locales', '*.{rb,yml}')]
   # config.i18n.default_locale = :de
   DOMAIN = "http://www.engagevia.com/" if ENV['RAILS_ENV'] == 'production'
-   if ENV['RAILS_ENV'] == 'development'
-     host =  "localhost:3000"
-     DOMAIN = "http://" + host + "/"
-   end
+  DOMAIN = "http://localhost:3000/" if ENV['RAILS_ENV'] == 'development'
   
 end
