@@ -7,7 +7,7 @@ class Comment < ActiveRecord::Base
 
   def deliver_comment_notification(post)
     post.participants_to_notify.each do |participant|
-     Notifier.deliver_comment_notification(post, self, participant)     
+     Notifier.deliver_comment_notification(post, self, participant)   if participant != owner
     end
   end
 end

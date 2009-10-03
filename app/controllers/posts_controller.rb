@@ -1,9 +1,14 @@
 class PostsController < ApplicationController
   layout :choose_layout
   
-  before_filter :load_user, :except => [:new, :create,:dashboard]
-  before_filter :check_activated_member, :except => [:new, :show,:send_invites, :create, :dashboard, :index]
-
+  before_filter :load_user, :except => [:new, :create,:dashboard,:privacy,:about]
+  before_filter :check_activated_member, :except => [:new, :show,:send_invites, :create, :dashboard, :index, :privacy,:about]
+  def privacy
+   
+  end
+  def about
+    
+  end
   def method_missing(methodname, *args)
        @methodname = methodname
        @args = args
@@ -18,7 +23,7 @@ class PostsController < ApplicationController
       'application'
     elsif ['show'].include? action_name
     'posts'
-    elsif ['dashboard'].include? action_name
+    elsif ['dashboard','privacy','about'].include? action_name
       'application'  #the one with shorter width content section
     end
   end

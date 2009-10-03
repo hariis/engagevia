@@ -140,7 +140,7 @@ border:medium none;
     width: 260px;
 }
 a {
-color:#4c9801;
+color:#00ff00;
 outline-color:-moz-use-text-color;
 outline-style:none;
 outline-width:medium;
@@ -414,4 +414,32 @@ ul#participants-list li:hover {
 }
 h3 {
     padding: 5px;
+}
+#footer {
+    background: #333333 url('/images/bg-widgets.png') repeat-x scroll 0 0;
+    overflow:hidden;
+    padding:10px 20px 7px 30px;
+    height:33px;
+    padding-bottom:1em;
+    text-align:center;
+    width:100%;
+    color: #fff;
+    font-size:85%;
+    position:absolute;
+    bottom: 0px;
+}
+#footer-d {
+    background: #333333 url('/images/bg-widgets.png') repeat-x scroll 0 0;
+    overflow:hidden;
+    padding:10px 20px 7px 30px;
+    height:33px;
+    padding-bottom:1em;
+    text-align:center;
+    width:100%;
+    color: #fff;
+    font-size:85%;
+    position:relative;
+}
+#footer ul li,#footer-d ul li {
+    display:inline;
 }

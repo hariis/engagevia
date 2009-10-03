@@ -7,8 +7,9 @@ ActionController::Routing::Routes.draw do |map|
   map.resources :engagements, :collection => { :get_followers => :get }
   map.resources :user_sessions
   map.resources :password_resets
-
-
+  
+  map.about "about", :controller => 'posts', :action => 'about'
+  map.privacy "privacy", :controller => 'posts', :action => 'privacy'
   map.login "login",   :controller => 'user_sessions', :action => 'new'
   map.logout "logout", :controller => 'user_sessions', :action => 'destroy'
 
