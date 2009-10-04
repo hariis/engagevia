@@ -113,6 +113,7 @@ html,body {
 }
 img {
 border:medium none;
+vertical-align:top;
 }
 #flash-notice{
     padding: 5px;

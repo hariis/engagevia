@@ -83,7 +83,7 @@ class EngagementsController < ApplicationController
                     eng_exists = Engagement.find(:first, :conditions => ['user_id = ? and post_id = ?',invitee.id, @post.id])
                     if eng_exists.nil?
                         eng = Engagement.new
-                        eng.invited_by = @post.owner
+                        eng.invited_by = @post.owner.id
                         eng.invited_when = Time.now.utc
                         eng.post = @post
                         eng.invitee = invitee
@@ -140,7 +140,7 @@ class EngagementsController < ApplicationController
           eng_exists = Engagement.find(:first, :conditions => ['user_id = ? and post_id = ?',invitee.id, @post.id])
           if eng_exists.nil?
               eng = Engagement.new
-              eng.invited_by = @post.owner
+              eng.invited_by = @post.owner.id
               eng.invited_when = Time.now.utc
               eng.post = @post
               eng.invitee = invitee
