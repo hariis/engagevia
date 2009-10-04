@@ -12,7 +12,7 @@
                       page.hide "more_link_up_#{invitee.id}"
                       page.show "more_link_down_#{invitee.id}"
                end  %>
-             <div id="user-details_<%=invitee.id %>"  style="display:none; float:left;">
+             <div id="user-details_<%=invitee.id %>"  style="display:none;">
                     <% if invitee.avatar.file? %>
                       <%= image_tag invitee.avatar.url(:thumb) %>
                     <% else %>

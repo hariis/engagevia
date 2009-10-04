@@ -38,6 +38,7 @@ var tinymce_advanced_with_save_options = {
   editor_deselector : "mceNoEditor",
   theme_advanced_resizing_min_width : 500,
   theme_advanced_resizing_max_width : 800,
+  height : "20",
    width: "800",
   button_title_map: false,
   apply_source_formatting: true,

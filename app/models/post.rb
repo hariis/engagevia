@@ -57,7 +57,7 @@ class Post < ActiveRecord::Base
   def send_twitter_notification(from_config,followers)
    httpauth = Twitter::HTTPAuth.new(from_config[:twitid], from_config[:password])
    base = Twitter::Base.new(httpauth)
-   followers.each do |follower|
+   followers.each_key do |follower|
       message = DOMAIN + "conversation/show/#{self.unique_id}/#{follower.unique_id}"
       base.update "d #{follower.username}" + " You are invited to join a conversation. The link is at " + message
    end

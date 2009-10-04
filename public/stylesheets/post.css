@@ -293,6 +293,9 @@ clear: right;
     border-top:1px solid #FFFFFF;
     background-color: #fff;    
 }
+#comments a, #participants a {
+   color: #0062f6;
+}
 .comment-body {
     margin-top:0px;
     padding: 5px 5px 10px 5px;
@@ -351,6 +354,7 @@ clear: right;
     padding-left:5px;
     padding-top:5px;
     margin-top: 10px;
+    text-align:justify;
 }
 .url {
     font-size:70%;
@@ -403,14 +407,18 @@ div#twitter_followers ul li {
 #signup{
 float: right;
 color:#fff;
-background-color:fuchsia;
+background-color:#5b5b5b;
 padding: 10px;
 width:420px;
 }
 ul#participants-list li:hover {
     border-top: 2px solid #fff;
     border-bottom: 2px solid #fff;
-    background-color:#5894ed;
+    background-color:#f3f390;
+    color:#0B84E8;
+}
+ul#participants-list li.new-p:hover {
+    color: #fff;
 }
 h3 {
     padding: 5px;
