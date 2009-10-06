@@ -297,9 +297,9 @@ clear: right;
    color: #0062f6;
 }
 .comment-body {
-    margin-top:0px;
+    margin-top:5px;
     padding: 5px 5px 10px 5px;
-    float: left;    
+    float: left;   
 }
 
 .new-comment {
@@ -318,6 +318,7 @@ clear: right;
 }
 .sub {
     width: 98%;
+    margin-left:5px;
 }
 .listing-line-odd {
         background-color: #a5d6fd;
