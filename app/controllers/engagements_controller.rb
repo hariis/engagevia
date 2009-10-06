@@ -1,6 +1,10 @@
 class EngagementsController < ApplicationController
   before_filter :load_post, :except => [:set_notification]
+  before_filter :load_user, :only => [:create, :get_followers]
 
+  def load_user
+    @user = User.find_by_unique_id(params[:uid]) if params[:uid]
+  end
   def load_post
     @post = Post.find(params[:post_id])
   end
@@ -83,7 +87,7 @@ class EngagementsController < ApplicationController
                     eng_exists = Engagement.find(:first, :conditions => ['user_id = ? and post_id = ?',invitee.id, @post.id])
                     if eng_exists.nil?
                         eng = Engagement.new
-                        eng.invited_by = @post.owner.id
+                        eng.invited_by = @user.id
                         eng.invited_when = Time.now.utc
                         eng.post = @post
                         eng.invitee = invitee
@@ -140,7 +144,7 @@ class EngagementsController < ApplicationController
           eng_exists = Engagement.find(:first, :conditions => ['user_id = ? and post_id = ?',invitee.id, @post.id])
           if eng_exists.nil?
               eng = Engagement.new
-              eng.invited_by = @post.owner.id
+              eng.invited_by = @user.id
               eng.invited_when = Time.now.utc
               eng.post = @post
               eng.invitee = invitee

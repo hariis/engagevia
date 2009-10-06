@@ -1,6 +1,9 @@
+<%= image_tag 'spinner.gif', :id=>"spinner", :style=>"display:none;" %>
 <% if !followers.blank? %>
 
-    <%  form_remote_tag :url => { :controller => 'engagements', :action => "create", :post_id => "#{@post.id}", :invite_type => 'twitter', :twitter_id => "#{params[:twitid]}",:twitter_passwd => "#{params[:twitp]}" } do %>
+    <%  form_remote_tag :url => { :controller => 'engagements', :action => "create", :post_id => "#{@post.id}", :invite_type => 'twitter',:uid => "#{@user.unique_id}", :twitter_id => "#{params[:twitid]}",:twitter_passwd => "#{params[:twitp]}" },
+      :before => "Element.show('spinner');",
+      :complete => "Element.hide('spinner')" do %>
           <ul>
             <% for follower in followers %>
               <li>

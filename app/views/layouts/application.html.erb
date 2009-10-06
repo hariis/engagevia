@@ -52,7 +52,7 @@
 <%= yield %>
        
 </div>
-  <% if controller.action_name == 'dashboard'  %>
+  <% if controller.action_name == 'dashboard' || controller.action_name == 'privacy' %>
     <div id="footer-d">
 <% else %>
      <div id="footer">

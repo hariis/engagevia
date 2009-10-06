@@ -28,11 +28,18 @@
           <li>
             <span class="inviter"><strong><%= User.find(invited_by).display_name %></strong>  </span> invited <br/>
             <% invitees = [] %>
+            <%  engagements_by_date = engagements.group_by { |t| t.invited_when } if engagements %>
+            <% engagements_by_date.sort.each do |invited_when, engagements| %>
             <% engagements.each do |engagement| %>
                 <% invitee = User.find(engagement.user_id) %>
                 <% invitees << invitee.display_name(nil,engagement) if @post.owner.id != invitee.id %>
             <% end %>
-            <%= invitees.join(", ") %>
+            <% if invitees.length > 0 %>
+            <%= invitees.join(", ")  %>  <%= distance_of_time_in_words(@post.created_at, invited_when.in_time_zone) + " later" %>  <br/>
+            <% invitees = [] %>
+            <% end %>
+            <% end %>
+            
             </li>
           <% end %>
         </ul>
