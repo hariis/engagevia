@@ -14,7 +14,7 @@ class UserSessionsController < ApplicationController
             if @user.activated?
                 @user_session = UserSession.new(params[:user_session])
                 if @user_session.save
-                  flash[:notice] = "Welcome #{@user.display_name}"
+                  flash[:notice] = "Welcome #{@user.display_name}! "
                   redirect_back_or_default(posts_url)
                 else
                   render :action => 'new'

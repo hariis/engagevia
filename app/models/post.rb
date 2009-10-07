@@ -17,7 +17,7 @@ class Post < ActiveRecord::Base
   def send_post_link      
       Notifier.deliver_post_link(self)
       eng = Engagement.new
-      eng.invited_by = self.owner  #TODO Shoudl this be 0 ?
+      eng.invited_by = self.owner.id  #TODO Shoudl this be 0 ?
       eng.invited_when = Time.now.utc
       eng.post = self
       eng.invitee = self.owner
