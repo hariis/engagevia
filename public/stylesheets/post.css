@@ -17,7 +17,6 @@ background-color: #171717;
 width:250px;
 }
 
-
 #right {
     float:right;
     width:250px;
@@ -288,12 +287,11 @@ clear: right;
     width:88%;    
 }
 
-#comments {
-    margin: auto;
-    border-top:1px solid #FFFFFF;
+#comments-section {
+    margin: auto;    
     background-color: #fff;    
 }
-#comments a, #participants a {
+#comments-section a, #participants a {
    color: #0062f6;
 }
 .comment-body {
@@ -307,6 +305,7 @@ clear: right;
     border-bottom: 2px dotted #68ac02;    
     border-bottom-color: #68ac02;
     margin-bottom:5px;
+    background:#FFFFFF url(/images/topbluefade.gif) repeat-x scroll 0 0;
 }
 .comment-body-editor {
     float:left;
@@ -384,9 +383,13 @@ div#twitter_followers ul li {
 .post-item {
     padding: 5px;
     font-size: 18px;
+    overflow:auto;
+    border-left: 6px solid #0B84E8;
+    border-bottom:1px solid #0B84E8;
 }
 .post-item a {
     color: #0B84E8;
+    font-weight:bold;
 }
 .timestamp {
     float: right;
@@ -400,6 +403,8 @@ div#twitter_followers ul li {
 }
 .post-item a.dashboard-comments {
     color: green;
+    float: left;
+    font-weight:normal;
 }
 
 #notify-option {
@@ -460,4 +465,28 @@ h3 {
 }
 #invite-status {
     color: #fff;
+}
+.heading {
+    color:#575455;
+    font-size:32px;
+    margin:20px;
+}
+.sub-heading {
+    color:#575455;
+    font-size:20px;
+    margin:14px;
+    font-weight:bold;
+}
+.index {
+    font-size: 46px;
+    color:#575455;
+    float:left;
+    margin-top: 24px;    
+}
+#add-new-comment {
+    
+    margin-top:10em;
+}
+#comments {
+    border-top:1px solid #FFFFFF;
 }

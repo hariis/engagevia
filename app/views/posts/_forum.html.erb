@@ -25,6 +25,7 @@
       <div id="invitations">
         <ul>
           <% engagements_by_invite.sort.each do |invited_by, engagements| %>
+          <% if engagements.size > 1 %>
           <li>
             <span class="inviter"><strong><%= User.find(invited_by).display_name %></strong>  </span> invited <br/>
             <% invitees = [] %>
@@ -41,15 +42,24 @@
             <% end %>
             
             </li>
+            <% else %>
+            No one has been invited yet.
+            <% end %>
           <% end %>
         </ul>
       </div>
     <% end %>
-                    <div id="comments">                      
-                      <h3>Comments</h3>
+                    <div id="comments-section">
+                      <div id="comments">
+                      <div class="sub-heading">Comments</div>
+                      <% if @post.comments.roots.length > 0 %>
                       <%= render :partial => "/comments/comment", :collection => @post.comments.roots, :locals => {:root => 'true',:parent_comment => nil} %>
-                      <br/>
-                      <h3>Add Your Comment</h3>
+                      <% else %>
+                      No comments yet.
+                      <% end %>
+                      </div>
+                      <div id="add-new-comment">
+                      <div class="sub-heading">Add Your Comment</div>
                       <div class="new-comment root comment-body">
                         <%  @comment = Comment.new(:body => "Click here to add your comment") %>
                         <div class="comment-body-editor">
@@ -60,6 +70,7 @@
                         <%= image_tag @user.avatar.url(:thumb),:size=> "32x32"  if @user.avatar.file? %></span>
                         <div id="owner-info"  style="color:#0062f6;clear:both;float:right;">
                         <%= image_tag "comment.png" %> <%= "#{@user.display_name(@post)}" %></div>
+                      </div>
                       </div>
                    </div>
   </div>
