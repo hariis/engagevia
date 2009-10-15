@@ -1,31 +1,3 @@
 <h1>Become a Member</h1>
 
-<% form_for(@user, :html => { :multipart => true }) do |f| %>
-  <%= f.error_messages %>
-
- 
-  <p>
-    <%= f.label :email %>(required)<br />
-    <%= f.text_field :email %>
-  </p>
-   <p>
-    <%= f.label :username, "Twitter ID" %>(optional)<br />
-    <%= f.text_field :username %>
-  </p>
-  <p>
-    <%= f.label :password %><br />
-    <%= f.password_field :password %>
-  </p>
-  <p>
-    <%= f.label :password_confirmation %><br />
-    <%= f.password_field :password_confirmation %>
-  </p>
-  <p>
-  <%= f.label :avatar %><br />
-  <%= f.file_field :avatar %>
-</p>
-  <p>
-    <%= f.submit 'Submit' %>
-  </p>
-<% end %>
-
+<%= render :partial => "user", :locals => {:button_type => 'Create'} %>
