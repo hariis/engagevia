@@ -8,6 +8,10 @@ class User < ActiveRecord::Base
   has_many :posts, :through => :engagements
   has_many :user_roles, :dependent => :destroy
   has_many :roles, :through => :user_roles
+
+  #validates_presence_of :first_name
+  #validates_presence_of :last_name
+
   validates_attachment_size :avatar, :less_than => 500.kilobytes
   validates_attachment_content_type :avatar, :content_type => ['image/jpeg', 'image/png']
   acts_as_authentic do |c|
@@ -80,6 +84,7 @@ class User < ActiveRecord::Base
     user.save
     return user
   end
+
   def self.create_non_member_by_twitter_id(follower_screen_name)
     user = User.new
     user.username = follower_screen_name
@@ -90,10 +95,12 @@ class User < ActiveRecord::Base
     user.save(false)
     return user
   end
+  
   def display_name(post=nil,engagement=nil)    
       if member? #whether activated or not - as long as they signed up, we have their email id and or twitter id
+        return first_name + " " + last_name
         #Make a judgment based on how the person got invited
-        return get_display_name_via_engagement_or_post(post,engagement) if (post || engagement)
+        #return get_display_name_via_engagement_or_post(post,engagement) if (post || engagement)
       elsif (post || engagement) #If not a member, check how he/she got invited
         return get_display_name_via_engagement_or_post(post,engagement) if (post || engagement)
       end
