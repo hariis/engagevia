@@ -13,13 +13,13 @@
     <% else %>
       <%= link_to "#{h(post.subject)}", h(post.url) %>
     <% end %>
-    <span class="timestamp">started at <%= post.created_at.to_s(:short)  %>
+    <span class="timestamp">started by '<%= post.owner.display_name == current_user.display_name ? "You" : post.owner.display_name %>' at <%= post.created_at.to_s(:short)  %>
 
     <% if post.owner == @user %>
     <%= link_to 'Delete', post, :confirm => 'Are you sure? This will wipe out this conversation and all of its comments.', :method => :delete %>
     <% end %>
     </span>
-    <%= link_to  "#{get_comments_count(post)} | Join", post.get_url_for(@user,'show'), :class => 'dashboard-comments' %>
+    <%= link_to  "#{get_comments_count(post)} | #{get_participants_count(post)}", post.get_url_for(@user,'show'), :class => 'dashboard-comments' %>
     
    </div>
 <% end %>
