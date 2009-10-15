@@ -51,7 +51,7 @@
     <% end %>
                     <div id="comments-section">
                       <div id="comments">
-                      <div class="sub-heading">Comments</div>
+                      <div class="sub-heading">Comments (<%= @post.comments.size %>)</div>
                       <% if @post.comments.roots.length > 0 %>
                       <%= render :partial => "/comments/comment", :collection => @post.comments.roots, :locals => {:root => 'true',:parent_comment => nil} %>
                       <% else %>

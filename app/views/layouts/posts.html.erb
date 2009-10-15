@@ -36,7 +36,7 @@
 <ul>
   <li><%= link_to "Home", root_url %> | </li>
   <% if current_user && current_user.activated? %>
-    <li><%= link_to "#{current_user.display_name}'s Dashboard", posts_path if current_user.activated? %> |</li>
+    <li><%= link_to "#{current_user.display_name}'s Dashboard (#{current_user.posts.count})", posts_path if current_user.activated? %> |</li>
     <li><%= link_to "My Account", user_path(current_user) %> |</li>
     <li><%= link_to "Logout", logout_path %></li>
    <% else %>
