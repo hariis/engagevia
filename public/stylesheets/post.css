@@ -73,13 +73,13 @@ html,body {
   overflow:hidden;
   text-align:left;
   color: #000;
-  width: 970px;
+  width: 920px;
   background-color: #fff;
   background-repeat: repeat-y;  background-image: url('/images/content-bg.png');
   /* background-image: url(/images/middle.png); background-repeat: repeat-y; width: 898px; */
 }
 #actual-post-content {
-    padding:5px 41px;
+    padding:5px 15px;
     width:880px;
 }
 #gen-content {
@@ -170,6 +170,7 @@ background: #f95b08 url('/images/bg-widgets.png') repeat-x scroll 0 0;
 overflow:hidden;
 padding:10px 20px 7px 30px;
 height:33px;
+width:100%;
 }
 #header {
 background: #575455 url('/images/bg-header.png') repeat-x scroll 0 0;
@@ -177,6 +178,7 @@ border-bottom:3px solid #0B84E8;
 overflow:hidden;
 padding:10px 20px 7px 30px;
 height:58px;
+width:100%;
 }
 * html #header {
 height:1%;
@@ -272,6 +274,7 @@ width:57%;
 #parent-post {
 background-color: #d1d7f6;
 overflow: auto;
+width: 101%;
 }
 .owner-info{
 float: right;
@@ -405,6 +408,7 @@ div#twitter_followers ul li {
     color: green;
     float: left;
     font-weight:normal;
+    clear:both;
 }
 
 #notify-option {
@@ -459,7 +463,7 @@ h3 {
 }
 #invitations {
     background-color:#f6aff6;
-    width: 100%;
+    width: 101%;
     padding: 5px 0px;
     margin-top:5px;
 }
