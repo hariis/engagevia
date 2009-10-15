@@ -23,7 +23,8 @@
     <%= f.password_field :password_confirmation %>
   </p>
  <p>
-    <%= f.submit 'Update' %>
+    <%= f.submit 'Update' %> | 
+    <%= link_to 'Cancel', @user %>
   </p>
 <% end %>
 
