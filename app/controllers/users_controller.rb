@@ -61,9 +61,7 @@ class UsersController < ApplicationController
     @user = User.find_by_email(params[:user][:email])
     if @user
       if @user.non_member?
-          @user.username = params[:user][:username]
-          @user.password = params[:user][:password]
-          @user.password_confirmation = params[:user][:password_confirmation]
+          assign_user_object
       elsif !@user.activated?
           flash[:error] = "Your account already exists. Please activate your account"
           redirect_to root_url
@@ -75,11 +73,8 @@ class UsersController < ApplicationController
       end
     else      
       @user = User.new
-      @user.username = params[:user][:username]
       @user.email = params[:user][:email]
-      @user.password = params[:user][:password]
-      @user.password_confirmation = params[:user][:password_confirmation]
-      @user.avatar = params[:user][:avatar]
+      assign_user_object
     end
 
     respond_to do |format|
@@ -160,5 +155,15 @@ private
       redirect_to root_url
     end
  end
- 
+ def assign_user_object
+      @user.username = params[:user][:username]
+      @user.password = params[:user][:password]
+      @user.password_confirmation = params[:user][:password_confirmation]
+      @user.avatar = params[:user][:avatar]
+      @user.first_name = params[:user][:first_name]
+      @user.last_name = params[:user][:last_name]
+      @user.facebook_link = params[:user][:facebook_link]
+      @user.linkedIn_link = params[:user][:linkedIn_link]
+      @user.blog_link = params[:user][:blog_link]
+ end
 end
