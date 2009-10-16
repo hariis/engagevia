@@ -19,6 +19,10 @@
                       <span  style="color:#0062f6;float:right;width:8%;">
                       <%= image_tag @post.owner.avatar.url(:thumb) if @post.owner.avatar.file? %></span>
                     </div>
+    <div id="tags">
+      Tags: 
+      <%= in_place_editor_field :post, 'tag_list',{}, :size => '80', :text_between_controls => ' or ',:save_text => 'save' %>
+    </div>
     <% engagements = Engagement.find(:all,:conditions => ["post_id = ?", @post.id]) %>
     <%  engagements_by_invite = engagements.group_by { |t| t.invited_by } if engagements %>
     <% if engagements_by_invite %>

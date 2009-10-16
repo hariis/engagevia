@@ -22,8 +22,8 @@
 <ul>
   <li><%= link_to "Home", root_url %> |</li>
   <% if current_user && current_user.activated? %>
-    <li><%= link_to "#{current_user.display_name}'s Dashboard (#{current_user.posts.count})", posts_path if current_user.activated? %> |</li>
-    <li><%= link_to "My Account", user_path(current_user) %> |</li>
+    <li><%= link_to "#{current_user.display_name} (#{current_user.posts.count})", posts_path if current_user.activated? %> |</li>
+    <li><%= link_to "My Account", :controller => 'users', :action => 'show' %> |</li>
     <li><%= link_to "Logout", logout_path %></li>
    <% else %>
      <li><%= link_to "Register", new_user_path %> |</li>
@@ -52,10 +52,10 @@
 <%= yield %>
        
 </div>
-  <% if controller.action_name == 'dashboard' || controller.action_name == 'privacy' %>
+  <% if controller.action_name == 'dashboard' || controller.action_name == 'privacy' || controller.action_name == 'edit'|| controller.action_name == 'new' %>
     <div id="footer-d">
 <% else %>
-     <div id="footer">
+     <div id="footer">  
 <% end %>
       <ul>
 

@@ -275,6 +275,20 @@ class PostsController < ApplicationController
     end
   end
 
+ def set_post_tag_list
+    @post = Post.find(params[:id])
+    prior_tags = @post.tag_list
+    if params[:value] && params[:value].length > 0
+      @post.tag_list = params[:value]
+      if @post.save
+        render :text => @post.tag_list
+      else
+        render :text => prior_tags
+      end
+    else
+      render :text => prior_tags
+    end
+  end
 
   private
   # GET /posts/1/edit

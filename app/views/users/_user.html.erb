@@ -13,28 +13,37 @@
     <%= f.label :last_name %> (required)<br />
     <%= f.text_field :last_name %>
   </p>
-   <p>
-    <%= f.label :username, "Twitter ID" %> (optional)<br />
-    <%= f.text_field :username %>
-  </p>
+  
   <p>
-    <%= f.label :password %><br />
+    <% if controller.action_name == 'edit' %>
+        <h4> Change Password </h4> 
+        <%= f.label :password, "New Password" %><br />
+    <% else %>
+        <%= f.label :password %><br />
+    <% end %>    
     <%= f.password_field :password %>
   </p>
   <p>
     <%= f.label :password_confirmation %><br />
     <%= f.password_field :password_confirmation %>
   </p>
+
+  <hr/>
+  <h3>Optional - You can fill this anytime</h3>
+   <p>
+    <%= f.label :username, "Twitter ID" %><br />
+    <%= f.text_field :username %>
+  </p>
   <p>
-    <%= f.label :facebook_link %>  (optional)<br />
+    <%= f.label :facebook_link %><br />
     <%= f.text_field :facebook_link %>
   </p>
     <p>
-    <%= f.label :linkedIn_link %>  (optional)<br />
+    <%= f.label :linkedIn_link %><br />
     <%= f.text_field :linkedIn_link %>
   </p>
     <p>
-    <%= f.label :blog_link %>  (optional)<br />
+    <%= f.label :blog_link %><br />
     <%= f.text_field :blog_link %>
   </p>
   <p>
@@ -44,7 +53,7 @@
   <p>
     <%= f.submit button_type %>
     <%  if button_type == 'Update' %>
-      |<%= link_to ' Cancel', @user %>
+      or <%= link_to ' Cancel', @user %>
     <% end %>
   </p>
 <% end %>

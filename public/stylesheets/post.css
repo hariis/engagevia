@@ -466,6 +466,7 @@ h3 {
     width: 101%;
     padding: 5px 0px;
     margin-top:5px;
+    clear:both;
 }
 #invite-status {
     color: #fff;
@@ -493,4 +494,16 @@ h3 {
 }
 #comments {
     border-top:1px solid #FFFFFF;
+}
+.user-bio {
+    clear:both;
+    font-size: 85%;
+}
+#tags {
+    clear:both;
+    background-color:#f2bc60;
+    width: 101%;
+    padding: 5px 0px;
+    margin-top:5px;
+    overflow:auto;
 }

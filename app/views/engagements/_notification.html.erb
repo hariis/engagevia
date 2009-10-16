@@ -1,5 +1,5 @@
  <% if @engagement.notify_me? %>
-    <%= link_to_remote 'Disable Notification', :url => {:controller => 'engagements', :action => 'set_notification', :id => @engagement.id, :set => 'false'} %>
+    <%= button_to_remote 'Disable Notification', :url => {:controller => 'engagements', :action => 'set_notification', :id => @engagement.id, :set => 'false'} %>
  <% else %>
-    <%= link_to_remote 'Enable Notification', :url => {:controller => 'engagements', :action => 'set_notification', :id => @engagement.id, :set => 'true'} %>
+    <%= button_to_remote 'Enable Notification', :url => {:controller => 'engagements', :action => 'set_notification', :id => @engagement.id, :set => 'true'} %>
  <% end %>

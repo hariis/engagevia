@@ -1,4 +1,4 @@
-<%= link_to 'Edit Settings', edit_user_path(@user) %>
+<%= link_to 'Edit Settings', :controller => 'users', :action => 'edit', :id=> @user.unique_id %>
 <p>
   <h3><%=h @user.display_name %></h3>
 </p>

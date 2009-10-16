@@ -102,6 +102,7 @@ class UsersController < ApplicationController
   def update
     @user = current_user
     @user.avatar = params[:user][:avatar]
+    assign_user_object
     respond_to do |format|
       if @user.update_attributes(params[:user])
         flash[:notice] = "Successfully updated profile."
