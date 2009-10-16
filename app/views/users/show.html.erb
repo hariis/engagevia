@@ -1,16 +1,9 @@
 <%= link_to 'Edit Settings', edit_user_path(@user) %>
-
+<p>
+  <h3><%=h @user.display_name %></h3>
+</p>
 <p>
 <b>Photo: </b><%= image_tag @user.avatar.url(:thumb) %>
-</p>
-<p>
-  <b>Twitter ID:</b>
-  <%=h @user.username %>
-</p>
-
-<p>
-  <b>Name:</b>
-  <%=h @user.first_name %>
 </p>
 
 <p>
@@ -18,4 +11,20 @@
   <%=h @user.email %>
 </p>
 
+<p>
+  <b>Twitter Profile:</b>
+   <%= "http://twitter.com/" + @user.username %>
+</p>
 
+<p>
+  <b>Blog:</b>
+  <%=h @user.blog_link %>
+</p>
+<p>
+  <b>Facebook Profile:</b>
+  <%=h @user.facebook_link %>
+</p>
+<p>
+  <b>LinkedIn Profile:</b>
+  <%=h @user.linkedIn_link %>
+</p>
