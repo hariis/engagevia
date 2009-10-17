@@ -1,14 +1,21 @@
 class PostsController < ApplicationController
   layout :choose_layout
   
-  before_filter :load_user, :except => [:new, :create,:dashboard,:privacy,:about]
-  before_filter :check_activated_member, :except => [:new, :show,:send_invites, :create, :dashboard, :index, :privacy,:about]
+  before_filter :load_user, :except => [:new, :create,:dashboard,:privacy,:about,:blog,:contact]
+  before_filter :check_activated_member, :except => [:new, :show,:send_invites, :create, :dashboard, :index, :privacy,:about,:blog,:contact]
+
   def privacy
-   
   end
-  def about
-    
+  
+  def about  
   end
+
+  def contact
+  end
+
+  def blog
+  end
+
   def method_missing(methodname, *args)
        @methodname = methodname
        @args = args
@@ -23,7 +30,7 @@ class PostsController < ApplicationController
       'application'
     elsif ['show'].include? action_name
     'posts'
-    elsif ['dashboard','privacy','about'].include? action_name
+    elsif ['dashboard','privacy','about','blog','contact'].include? action_name
       'application'  #the one with shorter width content section
     end
   end
@@ -40,7 +47,7 @@ class PostsController < ApplicationController
         #load the user based on the unique id
         @user = User.find_by_unique_id(params[:uid]) if params[:uid]
         #Still require the user to login so we can maintain a session
-        if @user.activated?
+        if @user && @user.activated?
           flash[:notice] = "Please login and you will be on your way"
           flash[:email] = @user.email
           store_location if action_name == 'show'  #we do not want to store if it is any other action
@@ -311,4 +318,5 @@ class PostsController < ApplicationController
       end
     end
   end
+
 end

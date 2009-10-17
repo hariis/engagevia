@@ -10,6 +10,8 @@ ActionController::Routing::Routes.draw do |map|
   
   map.about "about", :controller => 'posts', :action => 'about'
   map.privacy "privacy", :controller => 'posts', :action => 'privacy'
+  map.blog "blog", :controller => 'posts', :action => 'blog'
+  map.contact "contact", :controller => 'posts', :action => 'contact'
   map.login "login",   :controller => 'user_sessions', :action => 'new'
   map.logout "logout", :controller => 'user_sessions', :action => 'destroy'
 

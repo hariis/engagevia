@@ -9,19 +9,21 @@ class UsersController < ApplicationController
   before_filter :require_user, :except => [:new, :create, :activate, :resendactivation, :resendnewactivation]
 
   def is_admin
-    current_user.admin?
+    current_user && current_user.admin?
   end
 
   def index
-    if current_user 
+    if current_user && current_user.admin?
       @users = User.find(:all)
     else
       redirect_to root_url
     end
   end
+
   def show
    @user = current_user
   end
+
   def new
     @user = User.new
 

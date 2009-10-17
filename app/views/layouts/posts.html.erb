@@ -50,7 +50,7 @@
       <li id="invite-status"></li>      
     </ul>
      <ul style="float:right;">
-      <li><%= link_to "Become a Member", new_user_path %> </li>
+      <li><%= link_to_if (!current_user || !current_user.activated?), "Become a Member", new_user_path %> </li>
     </ul>
   </div>
   <% if flash[:notice] %>
@@ -73,7 +73,7 @@
       <ul>
 
       <li>©2009 EngageVia</li> |
-      <li><%=  link_to "Blog" , "http://blog.engagevia.com/" %></li> |
+      <li><%=  link_to "Blog" , "http://www.engagevia.com/blog" %></li> |
       <li><%=  link_to "About" , "http://www.engagevia.com/about" %></li> |
       <li><%=  link_to "Contact" , "http://www.engagevia.com/contact" %></li> |
       <li><%=  link_to "Privacy" , "http://www.engagevia.com/privacy" %></li>
