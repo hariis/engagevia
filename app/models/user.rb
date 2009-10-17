@@ -146,5 +146,8 @@ class User < ActiveRecord::Base
     text.mb_chars.length > length ? text[/\A.{#{l}}\w*\;?/m][/.*[\w\;]/m] + truncate_string : text
   end
 
+  def twitter_id
+    (username != "" && username != 'nonmember' ) ? username : ""
+  end
 end
 

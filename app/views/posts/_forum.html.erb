@@ -23,36 +23,37 @@
       Tags: 
       <%= in_place_editor_field :post, 'tag_list',{}, :size => '80', :text_between_controls => ' or ',:save_text => 'save' %>
     </div>
+
+    <div id="invitations">
     <% engagements = Engagement.find(:all,:conditions => ["post_id = ?", @post.id]) %>
-    <%  engagements_by_invite = engagements.group_by { |t| t.invited_by } if engagements %>
-    <% if engagements_by_invite %>
-      <div id="invitations">
-        <ul>
-          <% engagements_by_invite.sort.each do |invited_by, engagements| %>
-          <% if engagements.size > 1 %>
-          <li>
-            <span class="inviter"><strong><%= User.find(invited_by).display_name %></strong>  </span> invited <br/>
-            <% invitees = [] %>
-            <%  engagements_by_date = engagements.group_by { |t| t.invited_when } if engagements %>
-            <% engagements_by_date.sort.each do |invited_when, engagements| %>
-            <% engagements.each do |engagement| %>
-                <% invitee = User.find(engagement.user_id) %>
-                <% invitees << invitee.display_name(nil,engagement) if @post.owner.id != invitee.id %>
-            <% end %>
-            <% if invitees.length > 0 %>
-            <%= invitees.join(", ")  %>  <%= distance_of_time_in_words(@post.created_at, invited_when.in_time_zone) + " later" %>  <br/>
-            <% invitees = [] %>
-            <% end %>
-            <% end %>
-            
-            </li>
-            <% else %>
-            No one has been invited yet.
-            <% end %>
+    <% if engagements.size > 1 %>
+          <%  engagements_by_invite = engagements.group_by { |t| t.invited_by } if engagements %>
+          <% if engagements_by_invite %>
+              <ul>
+                <% engagements_by_invite.sort.each do |invited_by, engagements| %>
+                      <li>
+                        <span class="inviter"><strong><%= User.find(invited_by).display_name %></strong>  </span> invited <br/>
+                        <% invitees = [] %>
+                        <%  engagements_by_date = engagements.group_by { |t| t.invited_when } if engagements %>
+                        <% engagements_by_date.sort.each do |invited_when, engagements| %>
+                        <% engagements.each do |engagement| %>
+                            <% invitee = User.find(engagement.user_id) %>
+                            <% invitees << invitee.display_name(nil,engagement) if @post.owner.id != invitee.id %>
+                        <% end %>
+                        <% if invitees.length > 0 %>
+                        <%= invitees.join(", ")  %>  <%= distance_of_time_in_words(@post.created_at, invited_when.in_time_zone) + " later" %>  <br/>
+                        <% invitees = [] %>
+                        <% end %>
+                        <% end %>
+                      </li>
+
+                <% end %>
+              </ul>
           <% end %>
-        </ul>
-      </div>
+     <% else %>
+        No one has been invited yet.
     <% end %>
+    </div>
                     <div id="comments-section">
                       <div id="comments">
                       <div class="sub-heading">Comments (<%= @post.comments.size %>)</div>

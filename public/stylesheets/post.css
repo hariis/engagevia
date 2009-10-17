@@ -507,3 +507,10 @@ h3 {
     margin-top:5px;
     overflow:auto;
 }
+#centered-heading{
+    color:#0B84E8;
+    font-size:20px;
+    margin:14px;
+    font-weight:bold;
+    text-align:center;
+}

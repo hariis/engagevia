@@ -34,21 +34,23 @@
 <a href="/"><%= image_tag "evlogo.png" %><%= image_tag "ev.png", :width => '48', :height => '48' %></a>
 </strong>
 <ul>
-  <li><%= link_to "Home", root_url %> | </li>
+  <li><%= link_to "Home", root_url %></li>
   <% if current_user && current_user.activated? %>
-    <li><%= link_to "#{current_user.display_name} (#{current_user.posts.count})", posts_path if current_user.activated? %> |</li>
-    <li><%= link_to "My Account", :controller => 'users', :action => 'show' %> |</li>
+    <li><%= link_to "#{current_user.display_name} (#{current_user.posts.count})", posts_path if current_user.activated? %></li>
+    <li><%= link_to "My Account", :controller => 'users', :action => 'show' %></li>
     <li><%= link_to "Logout", logout_path %></li>
    <% else %>
-     <li style="color:#FF60B0;"><%="Welcome #{@user.display_name}" %> | </li>
-     <li><%= link_to "Register", new_user_path %> </li>
+     <li style="color:#FF60B0;"> <%="Welcome #{@user.display_name}" %></li>
    <% end %>
 </ul>
 </div>
   <div id="widgets">
     <ul>
       <li><%= image_tag "group_add.png" %> <%= facebox_link_to "Invite Friends",  :url => @post.get_url_for(@user,'send_invites') %></li>
-      <li id="invite-status"></li>
+      <li id="invite-status"></li>      
+    </ul>
+     <ul style="float:right;">
+      <li><%= link_to "Become a Member", new_user_path %> </li>
     </ul>
   </div>
   <% if flash[:notice] %>
