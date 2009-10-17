@@ -80,8 +80,8 @@ class User < ActiveRecord::Base
     user.password = 'mounthood'
     user.password_confirmation = 'mounthood'
     user.add_role("non_member")
-    user.first_name = "nonmember"
-    user.last_name = "nonmember"
+    user.first_name = "firstname"
+    user.last_name = "lastname"
     user.save
     return user
   end
@@ -93,8 +93,8 @@ class User < ActiveRecord::Base
     user.password = 'mounthood'
     user.password_confirmation = 'mounthood'
     user.add_role("non_member")
-    user.first_name = "nonmember"
-    user.last_name = "nonmember"
+    user.first_name = "firstname"
+    user.last_name = "lastname"
     user.save(false)
     return user
   end
