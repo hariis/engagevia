@@ -51,6 +51,11 @@ class ApplicationController < ActionController::Base
       session[:return_to] = nil
     end
 
+    def force_logout
+      @user_session = UserSession.find
+      @user_session.destroy if @user_session
+      session[:return_to] = nil
+    end
     #validating email
     def validate_emails(emails)
             #Parse the string into an array

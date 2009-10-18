@@ -11,10 +11,10 @@ class Tag < ActiveRecord::Base
     list.gsub!(/\"(.*?)\"\s*/) { tag_names << $1; "" }
 
     # then, replace all commas with a space
-    list.gsub!(/,/, " ")
+    #list.gsub!(/,/, " ")
 
     # then, get whatever is left
-    tag_names.concat(list.split(/\s/))
+    tag_names.concat(list.split(/,/))
 
     # delete any blank tag names
     tag_names = tag_names.delete_if { |t| t.empty? }

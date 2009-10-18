@@ -56,6 +56,7 @@ class PostsController < ApplicationController
       end
       if @user.nil?
         flash[:error] = "Your identity could not be confirmed from the link that you provided. <br/> Please request the post owner to resend the link."
+        force_logout
         redirect_to login_path
       end      
     end
@@ -98,6 +99,9 @@ class PostsController < ApplicationController
   def show
     if params[:pid]
       @post = Post.find_by_unique_id(params[:pid])
+      if @post.tag_list == ""
+        @post.tag_list = "Click here to Add"
+      end
       @engagement = Engagement.new
     else
       render 'posts/404', :status => 404, :layout => false and return
@@ -176,7 +180,7 @@ class PostsController < ApplicationController
           #Save this post contents
           session[:post] = @post
           flash[:notice] = "Your email is registered with an account but not activated yet. <br/> Please activate your account and login first."
-          store_location
+          store_location          
           redirect_to login_path
           return
       else
@@ -284,16 +288,13 @@ class PostsController < ApplicationController
 
  def set_post_tag_list
     @post = Post.find(params[:id])
-    prior_tags = @post.tag_list
+    @post.tag_list = params[:value]
+    @post.save
+
     if params[:value] && params[:value].length > 0
-      @post.tag_list = params[:value]
-      if @post.save
-        render :text => @post.tag_list
-      else
-        render :text => prior_tags
-      end
+      render :text => @post.tag_list
     else
-      render :text => prior_tags
+      render :text => "Click here to Add"
     end
   end
 

@@ -13,7 +13,7 @@
     <% else %>
       <%= link_to "#{h(post.subject)}", h(post.url) %>
     <% end %>
-    <span class="timestamp">started by '<%= post.owner.email == current_user.email ? "You" : post.owner.display_name %>' at <%= post.created_at.to_s(:short)  %>
+    <span class="timestamp">started by <%= post.owner.email == current_user.email ? "You" : post.owner.display_name %> @ <%= post.created_at.to_s(:short)  %>
 
     <% if post.owner == @user %>
     <%= link_to 'Delete', post, :confirm => 'Are you sure? This will wipe out this conversation and all of its comments.', :method => :delete %>

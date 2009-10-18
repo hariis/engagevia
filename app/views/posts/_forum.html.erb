@@ -3,9 +3,9 @@
                     <div id="parent-post">                         
                       <div id="post-body">
                         <% if @post.owner == @user  %>
-                           <div class="subject">  <%= in_place_editor_field :post, 'subject',{}, :size => '80', :text_between_controls => ' or ',:save_text => 'save' %> </div>
-                           <div class="url"><%= in_place_editor_field :post, 'url',{}, :size => '80', :text_between_controls => ' or ',:save_text => 'save' %></div>
-                           <%= in_place_rich_editor_field :post, :description ,{}, :mode => 'tinymce_advanced_with_save_options' %>
+                           <div class="subject">  <%= in_place_editor_field :post, 'subject',{}, :size => '80', :text_between_controls => ' or ',:save_text => 'save' %> <%= image_tag '/images/pencil.png' %></div>
+                           <div class="url"><%= in_place_editor_field :post, 'url',{}, :size => '80', :text_between_controls => ' or ',:save_text => 'save' %><%= image_tag '/images/pencil.png' %></div>
+                           <div><%= in_place_rich_editor_field :post, :description ,{}, :mode => 'tinymce_advanced_with_save_options' %><%= image_tag '/images/pencil.png' %></div>
                         <% else %>
                            <div class="subject">  <%=  @post.subject %></div>
                            <% if @post.url != "Add a link" %>
@@ -20,8 +20,9 @@
                       <%= image_tag @post.owner.avatar.url(:thumb) if @post.owner.avatar.file? %></span>
                     </div>
     <div id="tags">
-      Tags: 
-      <%= in_place_editor_field :post, 'tag_list',{}, :size => '80', :text_between_controls => ' or ',:save_text => 'save' %>
+      <strong>Keywords that describe this conversation:</strong><%= image_tag '/images/pencil.png' %>
+      <%= in_place_editor_field :post, 'tag_list',{}, :size => '80',:text_between_controls => ' or ',:save_text => 'save' %>      
+      <span style="font-size:85%;float:left;clear:both;">(separate multiple keywords with comma)</span>
     </div>
 
     <div id="invitations">

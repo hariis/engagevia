@@ -274,7 +274,7 @@ width:57%;
 #parent-post {
 background-color: #d1d7f6;
 overflow: auto;
-width: 101%;
+width: 100%;
 }
 .owner-info{
 float: right;
@@ -341,8 +341,7 @@ clear: right;
 .subject {
     font-size: 120%;
     margin-bottom: 5px;
-    font-weight: bold;
-    padding-left:5px;
+    font-weight: bold;   
     padding-top:5px;
 }
 .in_place_editor_field, .inplacericheditor-form {
@@ -457,14 +456,15 @@ h3 {
     color: #fff;
     font-size:85%;
     position:relative;
+    margin-top:30px;
 }
 #footer ul li,#footer-d ul li {
     display:inline;
 }
 #invitations {
     background-color:#f6aff6;
-    width: 101%;
-    padding: 5px 0px;
+    width: 100%;
+    padding: 5px;
     margin-top:5px;
     clear:both;
 }
@@ -479,7 +479,8 @@ h3 {
 .sub-heading {
     color:#575455;
     font-size:20px;
-    margin:14px;
+    margin-top:14px;
+    padding:5px;
     font-weight:bold;
 }
 .index {
@@ -501,9 +502,9 @@ h3 {
 }
 #tags {
     clear:both;
-    background-color:#f2bc60;
-    width: 101%;
-    padding: 5px 0px;
+    background-color:#fedba1;
+    width: 100%;
+    padding: 5px;
     margin-top:5px;
     overflow:auto;
 }
@@ -513,4 +514,7 @@ h3 {
     margin:14px;
     font-weight:bold;
     text-align:center;
+}
+#invitations ul {
+    margin-left: -40px;
 }

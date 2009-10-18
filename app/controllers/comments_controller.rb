@@ -23,6 +23,7 @@ class CommentsController < ApplicationController
       end
       if @user.nil?
         flash[:error] = "Your identity could not be confirmed from the link that you provided. <br/> Please request the post owner to resend the link."
+        force_logout
         redirect_to login_path
       end
       return

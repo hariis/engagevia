@@ -49,9 +49,11 @@
       <li><%= image_tag "group_add.png" %> <%= facebox_link_to "Invite Friends",  :url => @post.get_url_for(@user,'send_invites') %></li>
       <li id="invite-status"></li>      
     </ul>
-     <ul style="float:right;">
-      <li><%= link_to_if (!current_user || !current_user.activated?), "Become a Member", new_user_path %> </li>
-    </ul>
+     <%  if !current_user || !current_user.activated? %>
+       <ul style="float:right;">
+        <li><% link_to "Become a Member", new_user_path %> </li>
+       </ul>
+     <% end %>
   </div>
   <% if flash[:notice] %>
   <div id="flash-notice">

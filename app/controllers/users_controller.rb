@@ -21,7 +21,12 @@ class UsersController < ApplicationController
   end
 
   def show
-   @user = current_user
+   if current_user && current_user.activated?
+     @user = current_user
+   else     
+     force_logout
+     redirect_to login_path
+   end
   end
 
   def new
