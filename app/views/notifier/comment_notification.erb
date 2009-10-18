@@ -1,7 +1,7 @@
 <div style="font-family:Georgia;margin: 10%;">
 Hi there!<br/><br/>
 
-<%= @comment.owner.email  %> has added a new comment to <em><%= @post.subject %></em>.<br/>
+<%= @comment.owner.display_name  %> has added a new comment to <em><%= @post.subject %></em>.<br/>
 
 Please visit this url to view comment and follow the conversation:<br/>
 
@@ -13,9 +13,14 @@ If you continue to have problem please feel free to contact us.<br/>
 
 
 Happy Engaging,<br/>
--EngageVia Team<br/>
+-EngageVia Team<br/><br/>
+
+<hr/>
+<%= link_to 'EngageVia', "http://www.engagevia.com" %> is an online tool for engaging with friends in your cirle and <br/>
+your extended circle on topics of common interest. <br/><br/>
 
 NOTE:<br/>
 
-If you do not what to receive any further notification please use <em>Avoid Notification</em>
+If you do not want to receive further notifications, please visit the <%= link_to 'conversation page', @post_url %>
+and update the notification settings under the 'Participants' section.
 </div>
