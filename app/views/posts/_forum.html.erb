@@ -15,7 +15,7 @@
                         <% end %>                        
                       </div>
                       <span style="color:#0062f6;">
-                      started by <%= "#{@post.owner.display_name} <br/>   #{@post.created_at.to_s(:short)}" %></span>
+                      <%= "#{@post.owner.display_name} <br/>   #{@post.created_at.to_s(:short)}" %></span>
                       <span  style="color:#0062f6;float:right;width:8%;">
                       <%= image_tag @post.owner.avatar.url(:thumb) if @post.owner.avatar.file? %></span>
                     </div>

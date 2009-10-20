@@ -171,7 +171,7 @@ private
       @user.first_name = params[:user][:first_name]
       @user.last_name = params[:user][:last_name]
       @user.facebook_link = params[:user][:facebook_link]
-      @user.linkedIn_link = params[:user][:linkedIn_link]
+      @user.linked_in_link = params[:user][:linked_in_link]
       @user.blog_link = params[:user][:blog_link]
  end
 end
