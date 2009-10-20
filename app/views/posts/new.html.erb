@@ -6,24 +6,24 @@
 
   <% if current_user.nil? || !current_user.activated? %>
    <p>
-    <%= label_tag "Your Email" %><br />
+    <%= label_tag "Your Email" %> (required) <br />
     <%= text_field_tag :from_email,'', :size => 80  %>
   </p>
   <% end %>
   <p>
-    <%= f.label :subject %><br />
+    <%= f.label :subject %> (required) <br />
     <%= f.text_field :subject, :size=> 80, :maxlength => 80 %>
   </p>
   
   <p>
-    <%= f.label :url , "Website URL" %><br />
+    <%= f.label :url , "Link to a Website" %><br />
     <%= f.text_field :url , :size=> 80, :maxlength => 80 %>
   </p>
 
   <p>
-    <%= f.label :tag_list, "Tags" %><br />
+    <%= f.label :tag_list, "Keywords that describe this conversation" %><br />
     <%= f.text_field :tag_list , :size=> 80, :maxlength => 80 %><br/>
-    <span class ="info"> (space separated) </span>
+    <span class ="info"> (separate multiple keywords with comma) </span>
   </p>
 
   <p>    

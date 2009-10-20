@@ -7,7 +7,7 @@ Hi there!<br/><br/>
 Please visit this link to engage in this conversation:<br/>
 
    <%= link_to @post_url, @post_url %>  <br/><br/>
-
+ <p>
 IMPORTANT NOTE: Please do not forward this mail or share this link provided to you <br/>
  as a way of inviting friends.<br/>
 
@@ -16,7 +16,7 @@ IMPORTANT NOTE: Please do not forward this mail or share this link provided to y
 
 If the above link does not work try copying and pasting it into your browser.<br/>
 If you continue to have problem please feel free to contact us.<br/>
-
+</p>
 
 Happy Engaging,<br/>
 -EngageVia Team<br/>
@@ -24,9 +24,11 @@ Happy Engaging,<br/>
 <hr/>
 <%= link_to 'EngageVia', "http://www.engagevia.com" %> is an online tool for engaging with friends in your cirle and <br/>
 your extended circle on topics of common interest. <br/><br/>
+<hr/>
 
 NOTE:<br/>
-
+<span style="font-size:85%;color:#dcdcdc;">
 If you do not know <%= @post.owner.display_name  %>, please ignore this email and <br/>
 we sincerely apologize for the inconvenience.
+</span>
 </div>

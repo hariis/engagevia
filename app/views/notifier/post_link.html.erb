@@ -1,12 +1,13 @@
 <div style="font-family:Georgia;margin: 10%;">
 Hi there!<br/><br/>
 
-Your post on <em><%= @post.subject %></em> has been saved.<br/>
+Your conversation on <em><%= @post.subject %></em> has been saved.<br/>
 
-Please visit this link to invite your friends and start the conversation:<br/>
+Please visit this link to invite your friends and get the conversation going:<br/>
 
    <%= link_to @post_url, @post_url %>  <br/><br/>
-  
+
+   <p>
  IMPORTANT NOTE: Please do not forward this mail or share this link provided to you <br/>
  as a way of inviting friends.<br/>
 
@@ -15,7 +16,7 @@ Please visit this link to invite your friends and start the conversation:<br/>
 
 If the above lilnk does not work try copying and pasting it into your browser.<br/>
 If you continue to have problem please feel free to contact us.<br/>
-
+</p>
 
 Happy Engaging,<br/>
 -EngageVia Team<br/>
@@ -23,9 +24,11 @@ Happy Engaging,<br/>
 <hr/>
 <%= link_to 'EngageVia', "http://www.engagevia.com" %> is an online tool for engaging with friends in your cirle and <br/>
 your extended circle on topics of common interest. <br/><br/>
+<hr/>
 
 NOTE:<br/>
-
+<span style="font-size:85%;color:#dcdcdc;">
 If you did not start this conversation, please ignore this email and <br/>
 we sincerely apologize for the inconvenience.
+</span>
 </div>

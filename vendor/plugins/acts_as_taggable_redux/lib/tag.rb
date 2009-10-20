@@ -13,7 +13,7 @@ class Tag < ActiveRecord::Base
     # then, replace all commas with a space
     #list.gsub!(/,/, " ")
 
-    # then, get whatever is left
+    # then, get whatever is left -also delimiter is comma
     tag_names.concat(list.split(/,/))
 
     # delete any blank tag names
