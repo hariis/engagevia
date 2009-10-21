@@ -57,7 +57,7 @@ class CommentsController < ApplicationController
   def set_comment_body
     @comment = @post.comments.find(params[:id])
     @comment.body = params[:value] == "" ? "<i>Comment removed by author</i>" : params[:value]
-    if @post.save
+    if @comment.save
       render :text => @comment.body
     else
       render :text => "There was a problem saving your description. Please refresh and try again."
