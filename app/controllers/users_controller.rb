@@ -107,8 +107,7 @@ class UsersController < ApplicationController
   # PUT /users/1
   # PUT /users/1.xml
   def update
-    @user = current_user
-    @user.avatar = params[:user][:avatar]
+    @user = current_user    
     assign_user_object
     respond_to do |format|
       if @user.update_attributes(params[:user])
