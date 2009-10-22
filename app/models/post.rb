@@ -51,15 +51,15 @@ class Post < ActiveRecord::Base
     return invitees
   end
 
-  def send_invitations(invitees)
-    invitees.each_key{|invitee| Notifier.deliver_send_invitations(self, invitee)}
+  def send_invitations(invitees,inviter)
+    invitees.each_key{|invitee| Notifier.deliver_send_invitations(self, invitee,inviter)}
   end
   def send_twitter_notification(from_config,followers)
    httpauth = Twitter::HTTPAuth.new(from_config[:twitid], from_config[:password])
    base = Twitter::Base.new(httpauth)
    followers.each_key do |follower|
       message = DOMAIN + "conversation/show/#{self.unique_id}/#{follower.unique_id}"
-      base.update "d #{follower.username}" + " You are invited to join a conversation. The link is at " + message
+      base.update "d #{follower.username}" + " Join me for a conversation. The link is at " + message
    end
   end
 

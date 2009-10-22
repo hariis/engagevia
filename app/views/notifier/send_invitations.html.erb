@@ -1,14 +1,14 @@
 
 <div style="font-family:Georgia;margin: 10%;">
 <div>
-<%= image_tag "evlogo.png", :size=>'251x53' %>
+<%= image_tag "http://www.engagevia.com/evlogo.png", :size=>'251x53' %>
 <hr/>
 </div>
 
 Hi there!<br/><br/>
 
-<%= @post.owner.display_name  %> has started a conversation on
-<em><%= @post.subject %></em> and is requesting you to join!<br/>
+<%= @inviter.display_name  %> is requesting you to join a conversation on <br/>
+<em><%= @post.subject %></em><br/>
 
 Please visit this link to engage in this conversation:<br/>
 

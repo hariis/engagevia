@@ -54,13 +54,13 @@
                        <% end %>
                     <div class ="user-bio">
                         <b>Twitter Profile:</b><br/>
-                         <%= @user.twitter_id != "" ? "http://twitter.com/" + @user.username : "" %><br/>
+                         <%= engagement.invitee.twitter_id != "" ? "http://twitter.com/" + engagement.invitee.username : "" %><br/>
                         <b>Blog:</b><br/>
-                        <%=h @user.blog_link %><br/>
+                        <%=h engagement.invitee.blog_link %><br/>
                         <b>Facebook Profile:</b><br/>
-                        <%=h @user.facebook_link %><br/>
+                        <%=h engagement.invitee.facebook_link %><br/>
                         <b>LinkedIn Profile:</b><br/>
-                        <%=h @user.linked_in_link %><br/>
+                        <%=h engagement.invitee.linked_in_link %><br/>
 
                     </div>
              </div>

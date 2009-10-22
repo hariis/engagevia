@@ -98,7 +98,7 @@ class EngagementsController < ApplicationController
                   end
 
                    #now send emails
-                  @post.send_invitations(@participants) if @participants.size > 0
+                  @post.send_invitations(@participants,@user) if @participants.size > 0
                   #Delayed::Job.enqueue(MailingJob.new(@post, invitees))
 
                   @status_message = "<div id='success'>Invitations sent</div>"
