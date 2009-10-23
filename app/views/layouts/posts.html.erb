@@ -46,12 +46,10 @@
 </div>
   <div id="widgets">
     <ul>
-      <li><%= image_tag "group_add.png" %> <%= facebox_link_to "Invite Friends",  :url => @post.get_url_for(@user,'send_invites') %></li>
       <li id="invite-status"></li>      
-    </ul>
+      <li><%= image_tag "group_add.png" %> <%= facebox_link_to "Invite Friends",  :url => @post.get_url_for(@user,'send_invites') %></li>
      <%  if !current_user || !current_user.activated? %>
-       <ul style="float:right;">
-        <li><% link_to "Become a Member", new_user_path %> </li>
+        <li style="float:right"><%= link_to "Become a Member", new_user_path %> </li>
        </ul>
      <% end %>
   </div>
