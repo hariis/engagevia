@@ -1,5 +1,7 @@
 class Notifier < ActionMailer::Base
 
+include ActionView::Helpers::TextHelper
+
 default_url_options[:host] = "www.engagevia.com"
 
   def password_reset_instructions(user)
@@ -25,7 +27,7 @@ default_url_options[:host] = "www.engagevia.com"
 
   def post_link(post)
     setup_email(post.owner)
-    @subject    += ' [New Conversation]' + truncate(post.subject, 20, "...")
+    @subject    += ' [New Conversation]' + truncate(post.subject, :ommision => "...", :length => 20)
     recipients    post.owner.email
     
     body          :post_url  => DOMAIN + "posts/show?pid=#{post.unique_id};uid=#{post.owner.unique_id}" , :post => post

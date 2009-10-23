@@ -3,7 +3,7 @@
   <%= render :partial => 'sticky_note' %>
   
   <div id="participants">
-  <h3 style="border-bottom:1px solid #fff;"><%= image_tag "group.png" %>Participants </h3>
+  <h3 style="border-bottom:1px solid #fff;"><%= image_tag "group.png" %>Participants (<%=  @post.engagements.size%>)</h3>
 
     <ul id="participants-list">
     <% unless @post.engagements.empty? %>
