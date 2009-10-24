@@ -43,7 +43,7 @@
                             <% invitees << invitee.display_name(nil,engagement) if @post.owner.id != invitee.id %>
                         <% end %>
                         <% if invitees.length > 0 %>
-                        <%= invitees.join(", ")  %>  <%= distance_of_time_in_words(@post.created_at, invited_when.in_time_zone) + " later" %>  <br/>
+                        <%= invitees.join(", ")  %>  <%= distance_of_time_in_words(@post.created_at.utc, invited_when.utc) + " later" %>  <br/>
                         <% invitees = [] %>
                         <% end %>
                         <% end %>
