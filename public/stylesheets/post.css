@@ -526,3 +526,7 @@ h3 {
 #invitations ul {
     margin-left: -40px;
 }
+#new-comment-status{
+    margin-top: 10px;
+    color: red;
+}

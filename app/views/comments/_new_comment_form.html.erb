@@ -1,0 +1,16 @@
+<%  form_remote_tag :url => { :controller => 'comments', :action => "create", :post_id => "#{@post.id}",:uid => params[:uid] },
+          :before => "Element.show('e-spinner');",
+          :complete => "Element.hide('e-spinner')" do %>
+        <% if @user.non_member? && @user.first_name == 'firstname' %>
+            <%=  label_tag 'First Name' %><br/>
+            <%= text_field_tag :first_name ,"",  :class =>"mceNoEditor",:size => 20, :maxlength => 20 %><br/>
+            <%=  label_tag 'Last Name' %><br/>
+            <%= text_field_tag :last_name ,"",  :class =>"mceNoEditor",:size => 20, :maxlength => 20  %><br/>
+        <% end %>
+        <%=  label_tag 'Comment' %><br/>
+        <%= text_area :comment, :body, :class => "mceNoEditor",:rows => 10, :cols => 115 %><br/>
+
+       <p style="margin-top: 10px;">
+          <%= submit_tag 'Add' %><%= image_tag 'spinner.gif', :id=>"e-spinner", :style=>"display:none;" %>
+        </p>
+      <% end %>

@@ -105,10 +105,21 @@ class User < ActiveRecord::Base
         #Make a judgment based on how the person got invited
         #return get_display_name_via_engagement_or_post(post,engagement) if (post || engagement)
       elsif (post || engagement) #If not a member, check how he/she got invited
-        return get_display_name_via_engagement_or_post(post,engagement) if (post || engagement)
+        #In case they have entered their first name, display that
+        if first_name != 'firstname' && last_name != 'last_name'
+          return first_name.titleize + " " + last_name.titleize
+        else
+          return get_display_name_via_engagement_or_post(post,engagement) if (post || engagement)
+        end
       end
       #Last resort
-      return get_email_name  #currently used by layout
+        #In case they have entered their first name, display that
+        if first_name != 'firstname' && last_name != 'last_name'
+          return first_name.titleize + " " + last_name.titleize
+        else
+          return get_email_name  #currently used by layout
+        end
+      
   end
   def get_display_name_via_engagement_or_post(post=nil,engagement=nil)
     if engagement
