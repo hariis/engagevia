@@ -28,6 +28,7 @@
     </div>
 
     <div id="invitations">
+      <strong style="float:left;">Invitations sent:</strong>
     <% engagements = Engagement.find(:all,:conditions => ["post_id = ?", @post.id]) %>
     <% if engagements.size > 1 %>
           <%  engagements_by_invite = engagements.group_by { |t| t.invited_by } if engagements %>
@@ -35,7 +36,7 @@
               <ul>
                 <% engagements_by_invite.sort.each do |invited_by, engagements| %>
                       <li>
-                        <span class="inviter"><%= User.find(invited_by).display_name %>  </span> invited 
+                        <span class="inviter"><%= User.find(invited_by).display_name %>  invited</span>  <br/>
                         <% invitees = [] %>
                         <%  engagements_by_date = engagements.group_by { |t| t.invited_when } if engagements %>
                         <% engagements_by_date.sort.each do |invited_when, engagements| %>
@@ -44,7 +45,8 @@
                             <% invitees << invitee.display_name(nil,engagement) if @post.owner.id != invitee.id %>
                         <% end %>
                         <% if invitees.length > 0 %>
-                        <%= invitees.join(", ")  %>  <%= distance_of_time_in_words(@post.created_at.utc, invited_when.utc) + " later" %>  <br/>
+                        <span class="invitees">
+                        <%= invitees.join(", ")  %>  <%= distance_of_time_in_words(@post.created_at.utc, invited_when.utc) + " later" %></span>  <br/>
                         <% invitees = [] %>
                         <% end %>
                         <% end %>
