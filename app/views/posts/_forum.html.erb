@@ -28,7 +28,7 @@
     </div>
 
     <div id="invitations">
-      <strong style="float:left;">Invitations sent:</strong>
+      <strong style="float:left;">Invitations sent:</strong><br/>
     <% engagements = Engagement.find(:all,:conditions => ["post_id = ?", @post.id]) %>
     <% if engagements.size > 1 %>
           <%  engagements_by_invite = engagements.group_by { |t| t.invited_by } if engagements %>
