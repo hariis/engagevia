@@ -22,8 +22,9 @@
                     </div>
     <div id="tags">
       <strong style="float:left;">Keywords that describe this conversation:</strong><%= image_tag '/images/pencil.png' %>
+      <span style="font-size:85%;">(separate multiple keywords with comma)</span>
       <%= in_place_editor_field :post, 'tag_list',{}, :size => '80',:text_between_controls => ' or ',:save_text => 'save' %>      
-      <span style="font-size:85%;float:left;clear:both;">(separate multiple keywords with comma)</span>
+      
     </div>
 
     <div id="invitations">
@@ -34,7 +35,7 @@
               <ul>
                 <% engagements_by_invite.sort.each do |invited_by, engagements| %>
                       <li>
-                        <span class="inviter"><strong><%= User.find(invited_by).display_name %></strong>  </span> invited 
+                        <span class="inviter"><%= User.find(invited_by).display_name %>  </span> invited 
                         <% invitees = [] %>
                         <%  engagements_by_date = engagements.group_by { |t| t.invited_when } if engagements %>
                         <% engagements_by_date.sort.each do |invited_when, engagements| %>

@@ -523,8 +523,9 @@ h3 {
     font-weight:bold;
     text-align:center;
 }
-#invitations ul {
-    margin-left: -40px;
+#invitations ul li {
+    list-style-type: square;
+    overflow:inherit;
 }
 #new-comment-status{
     margin-top: 10px;
