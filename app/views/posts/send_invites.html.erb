@@ -1,3 +1,8 @@
+<script type="text/javascript">
+        function onABCommComplete() {
+                Plaxo.abl.abWin.close();
+        }
+</script>
 <div style="background-color:#0099cc;padding: 10px;">
   <div id="send-status">
 
@@ -8,9 +13,10 @@
   <%  form_remote_tag :url => { :controller => 'engagements', :action => "create", :post_id => "#{@post.id}", :invite_type => 'email',:uid => "#{@user.unique_id}" },
     :before => "Element.show('e-spinner');",
     :complete => "Element.hide('e-spinner')" do %>
-
+  <a href="#" onclick="showPlaxoABChooser('email_invitees', '/posts/plaxo'); return false"><img src="http://www.plaxo.com/images/abc/buttons/add_button.gif" alt="Add from my address book" /></a><br/>
+   
   <div style="font-size: 10px;">Separate multiple addresses with a comma. <br/> Limit to 10 at a time. </div>
-  <%= text_area_tag :email_invitees ,"Separate multiple addresses with a comma.",  :class =>"mceNoEditor",:rows => 10, :cols => 43 %>
+  <%= text_area_tag :email_invitees ,"",  :class =>"mceNoEditor",:rows => 10, :cols => 43 %>
  <p style="margin-top: 10px;">   
     <%= submit_tag 'Send Email Invites' %><%= image_tag 'spinner.gif', :id=>"e-spinner", :style=>"display:none;" %>
   </p>
@@ -27,6 +33,8 @@
             </div>
             <div id="get_credentials" style="display: none;">
                 <h4>Your Twitter Credentials</h4>
+                <div style="font-size: 10px;">We will not store your id or password provided here. <br/>
+                  It will only be used temporarily to get your followers list and send invites. </div>
                 <p>
                   <%= label_tag 'Twitter Id' %><br />
                   <%= text_field_tag :twitter_id %>

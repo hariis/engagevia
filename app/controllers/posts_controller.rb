@@ -1,8 +1,8 @@
 class PostsController < ApplicationController
-  layout :choose_layout
+  layout :choose_layout, :except => [:plaxo]
   
-  before_filter :load_user, :except => [:new, :create,:dashboard,:privacy,:about,:blog,:contact]
-  before_filter :check_activated_member, :except => [:new, :show,:send_invites, :create, :dashboard, :index, :privacy,:about,:blog,:contact]
+  before_filter :load_user, :except => [:new, :create,:dashboard,:privacy,:about,:blog,:contact,:plaxo]
+  before_filter :check_activated_member, :except => [:new, :show,:send_invites, :create, :dashboard, :index, :privacy,:about,:blog,:contact,:plaxo]
 
   def privacy
   end
@@ -15,7 +15,9 @@ class PostsController < ApplicationController
 
   def blog
   end
-
+  def plaxo
+    
+  end
   def method_missing(methodname, *args)
        @methodname = methodname
        @args = args

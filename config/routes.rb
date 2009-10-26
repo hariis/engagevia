@@ -1,6 +1,7 @@
 ActionController::Routing::Routes.draw do |map|
   map.root :controller => 'posts', :action => 'dashboard'
   map.connect '/posts/send_invites', :controller => 'posts', :action => 'send_invites'
+  map.connect '/posts/plaxo', :controller => 'posts', :action => 'plaxo'
   map.resources :comments, :collection => {:set_comment_body => :post}
   map.resources :users, :collection => {:activate => :post, :resendnewactivation => :get, :resendactivation => :post}
   map.resources :posts, :has_many => 'comments'
