@@ -34,7 +34,7 @@ class Post < ActiveRecord::Base
       if user.nil?
         user = User.create_non_member(email)
       end
-      invitees << user
+      invitees << user if !user.nil?
     end
     return invitees
   end

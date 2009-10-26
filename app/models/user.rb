@@ -82,8 +82,9 @@ class User < ActiveRecord::Base
     user.add_role("non_member")
     user.first_name = "firstname"
     user.last_name = "lastname"
-    user.save
-    return user
+    if user.save
+      return user
+    end
   end
 
   def self.create_non_member_by_twitter_id(follower_screen_name)

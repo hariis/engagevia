@@ -84,17 +84,19 @@ class EngagementsController < ApplicationController
                   @requested_participants = Post.get_invitees(valid_emails)
                   #Add them to engagement table
                   @requested_participants.each do |invitee|
-                    eng_exists = Engagement.find(:first, :conditions => ['user_id = ? and post_id = ?',invitee.id, @post.id])
-                    if eng_exists.nil?
-                        eng = Engagement.new
-                        eng.invited_by = @user.id
-                        eng.invited_when = Time.now.utc
-                        eng.post = @post
-                        eng.invitee = invitee
-                        eng.invited_via = 'email'
-                        eng.save
-                        @participants[invitee] = eng
-                    end
+                    #if !invitee.nil?
+                      eng_exists = Engagement.find(:first, :conditions => ['user_id = ? and post_id = ?',invitee.id, @post.id])
+                      if eng_exists.nil?
+                          eng = Engagement.new
+                          eng.invited_by = @user.id
+                          eng.invited_when = Time.now.utc
+                          eng.post = @post
+                          eng.invitee = invitee
+                          eng.invited_via = 'email'
+                          eng.save
+                          @participants[invitee] = eng
+                      end
+                    #end
                   end
 
                    #now send emails
