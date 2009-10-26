@@ -125,6 +125,7 @@ class EngagementsController < ApplicationController
 												:endcolor => "#cf6d0f", :duration => 5.0 }
         page.select("#invite-status").each { |b| b.visual_effect :fade, :startcolor => "#fb3f37",
 												:endcolor => "#cf6d0f", :duration => 5.0 }
+        page.replace_html "participant-count", "(#{@post.engagements.size})"
     end
  end
 
@@ -176,6 +177,7 @@ class EngagementsController < ApplicationController
 												:endcolor => "#cf6d0f", :duration => 5.0 }
         page.select("#invite-status").each { |b| b.visual_effect :fade, :startcolor => "#fb3f37",
           :endcolor => "#cf6d0f", :duration => 50.0 }
+        page.replace_html "participant-count", "(#{@post.engagements.size})"
        else
          #page.replace_html "send-status", @error_message
        end

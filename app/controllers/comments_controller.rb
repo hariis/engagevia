@@ -35,6 +35,58 @@ class CommentsController < ApplicationController
    # POST /comments
   # POST /comments.xml
   def create
+    @comment = Comment.new
+    if params[:comment][:body] != nil && params[:comment][:body] != ""
+      @comment.body = params[:comment][:body]
+    else
+      render :update do |page|
+        page.replace_html "new-comment-status", "Please enter your valuable comments"
+      end
+      return
+    end
+    if @user.non_member? && @user.first_name == 'firstname'
+      #require the first name and last name
+      if params[:first_name] != nil && params[:first_name] != ""
+        @user.first_name = params[:first_name]
+      else
+        render :update do |page|
+          page.replace_html "new-comment-status", "Please identify yourself! <br/> Your information is available only to this conversation participants."
+        end
+        return
+      end
+      if params[:last_name] != nil && params[:last_name] != ""
+        @user.last_name = params[:last_name]
+      else
+        render :update do |page|
+          page.replace_html "new-comment-status", "Please identify yourself! <br/> Your information is available only to this conversation participants."
+        end
+       return
+      end
+      #If everything is ok
+      @user.save
+    end
+    @comment.user_id = @user.id
+    if params[:id] != nil
+      @comment.parent_id = params[:id]
+    end
+
+    if @post.comments << @comment
+      @comment.deliver_comment_notification(@post)
+      render :update do |page|
+        page.insert_html :bottom, 'comments', :partial => "/comments/comment", :object => @comment,  :locals => {:root => 'true',:parent_comment => nil}
+        
+        page.replace_html "comments-heading", "Comments (#{@post.comments.size})"
+        page.select("comments-heading").each { |b| b.visual_effect :highlight, :startcolor => "#fb3f37",
+											:endcolor => "#cf6d0f", :duration => 5.0 }
+        page.replace_html "new-comment-status", "Thank you for your comment."
+        page.replace_html "new-comment-body", ""
+      end
+
+    else
+      page.replace_html "new-comment-status", "There was a problem saving your description. Please refresh and try again."
+    end
+  end
+  def create_reply_comment
     if params[:value] == "Click here to add your comment" || params[:value] == ""
       render :text => "Click here to add your comment"
       return

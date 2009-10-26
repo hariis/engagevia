@@ -166,7 +166,7 @@ private
       @user.username = params[:user][:username]
       @user.password = params[:user][:password]
       @user.password_confirmation = params[:user][:password_confirmation]
-      @user.avatar = params[:user][:avatar]
+      @user.avatar = params[:user][:avatar] if params[:user][:avatar] != nil
       @user.first_name = params[:user][:first_name]
       @user.last_name = params[:user][:last_name]
       @user.facebook_link = params[:user][:facebook_link]
