@@ -86,7 +86,7 @@ class CommentsController < ApplicationController
       page.replace_html "new-comment-status", "There was a problem saving your description. Please refresh and try again."
     end
   end
-  def create_old
+  def create_reply_comment
     if params[:value] == "Click here to add your comment" || params[:value] == ""
       render :text => "Click here to add your comment"
       return
