@@ -99,13 +99,14 @@ class PostsController < ApplicationController
   # GET /posts/1
   # GET /posts/1.xml
   def show
-    if params[:pid]
-      @post = Post.find_by_unique_id(params[:pid])
+    @post = params[:pid] ? Post.find_by_unique_id(params[:pid]) : nil
+    if @post
       if @post.tag_list == ""
         @post.tag_list = "Click here to Add"
       end
       @engagement = Engagement.new
     else
+      flash[:error] = "We could not locate this post. Please check the address and try again."
       render 'posts/404', :status => 404, :layout => false and return
     end
     
