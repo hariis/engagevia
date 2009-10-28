@@ -70,7 +70,7 @@ class ApplicationController < ActionController::Base
                       if validate_simple_email(email)
                              addresses << email
                               next
-                      elsif  validate_ab_style_email(email)
+                      elsif  validate_ab_style_email(email)                                
                                 addresses << email
                                 next
                       else
@@ -113,8 +113,20 @@ class ApplicationController < ActionController::Base
                 # downcase all tags
                 valid_array = valid_array.map! { |t| t.downcase }
 
+                # extract ab-style emails
+                 valid_array = valid_array.map! do |t|
+                   if t.include?('<')
+                     t.gsub!(/\A"/, '\1')
+                     str = t.split(/ /)
+                     str.delete_if{|x| x== ""}
+                     t = str[str.size-1].delete "<>"
+                   else
+                     t
+                  end
+                 end
+
                 # remove duplicates
-                valid_array = valid_array.uniq
+                valid_array = valid_array.uniq               
       end
      def is_admin
       current_user.has_role?('admin')
