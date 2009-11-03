@@ -15,6 +15,7 @@ ActionController::Routing::Routes.draw do |map|
   map.contact "contact", :controller => 'posts', :action => 'contact'
   map.login "login",   :controller => 'user_sessions', :action => 'new'
   map.logout "logout", :controller => 'user_sessions', :action => 'destroy'
+  map.admin "admin", :controller => 'posts', :action => 'admin'
 
   map.activate '/activate/:activation_code', :controller => 'users', :action => 'activate' 
 

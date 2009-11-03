@@ -26,6 +26,10 @@
     <li><%= link_to "#{current_user.display_name} (#{current_user.posts.count})", posts_path if current_user.activated? %></li>
     <li><%= link_to "My Account", :controller => 'users', :action => 'show' %></li>
     <li><%= link_to "Logout", logout_path %></li>
+    <% if current_user && current_user.admin? %>
+        <li><%= link_to "Admin", admin_path %></li>
+    <% end %>
+
    <% else %>
      <li><%= link_to "Sign Up", new_user_path %></li>
      <li><%= link_to "Login", login_path %></li>    

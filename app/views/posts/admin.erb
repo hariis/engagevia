@@ -1,0 +1,21 @@
+<h2>Statistics</h2>
+<ul>
+<li>Total Posts:        <%= @posts.count %></li>
+<li>Total Participants: <%= @participants.count %></li>
+<li>Total Comments:     <%= @comments.count %></li>
+</ul>
+<table border=1>
+  <tr>
+      <th>Post Id</th>
+      <th>Participants</th>
+      <th>Comments</th>
+  </tr>
+
+  <% @posts.each do |post| %>
+    <tr>
+        <td><%= post.id %></td>
+        <td><%= post.participants.count %></td>
+        <td><%= post.comments.count %></td>
+    </tr>
+  <% end %>
+</table>

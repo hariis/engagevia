@@ -15,9 +15,15 @@ class PostsController < ApplicationController
 
   def blog
   end
-  def plaxo
-    
+  def plaxo    
   end
+
+  def admin
+    @posts = Post.find(:all)
+    @participants = Engagement.find(:all)
+    @comments = Comment.find(:all)
+  end
+
   def method_missing(methodname, *args)
        @methodname = methodname
        @args = args
@@ -32,7 +38,7 @@ class PostsController < ApplicationController
       'application'
     elsif ['show'].include? action_name
     'posts'
-    elsif ['dashboard','privacy','about','blog','contact'].include? action_name
+    elsif ['dashboard','privacy','about','blog','contact', 'admin'].include? action_name
       'application'  #the one with shorter width content section
     end
   end

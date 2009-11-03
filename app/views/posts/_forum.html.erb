@@ -1,78 +1,75 @@
-<div id="right">
- 
-  <%= render :partial => 'sticky_note' %>
-  
-  <div id="participants">
-    <h3 style="border-bottom:1px solid #fff;"><%= image_tag "group.png" %>Participants <span id="participant-count">(<%=  @post.engagements.size%>)</span></h3>
-
-    <ul id="participants-list">
-    <% unless @post.engagements.empty? %>
-        <% @post.engagements.each do |engagement| %>
-        <% if engagement.invitee.id == @user.id  %>
-        <li id='you'><%= image_tag "user_red.png" %> You
-          <span id="notify-option">
-               <% if engagement.notify_me? %>
-                  <%= image_tag "email.png", :id => "enabled" %><%= image_tag "email_delete.png", :id => "disabled" , :style => "display:none;" %>
-               <% else %>
-                  <%= image_tag "email.png", :id => "enabled", :style => "display:none;" %><%= image_tag "email_delete.png", :id => "disabled"  %>
-               <% end %>              
-          </span>
-                
-              
-        <% else %>         
-
-        <% if engagement.invitee.member? %>
-          <li><%= image_tag "user_green.png" %> <%=  engagement.invitee.display_name(nil,engagement) %>
-        <% else %>
-          <li><%= image_tag "user_green.png" %> <%=  engagement.invitee.display_name(nil,engagement) %>
-        <% end  %>
-                  
-
-        <% end  %>  
-           <!-- common to both -->
-              <%= link_to_function( (image_tag ("bullet_arrow_down.png")),  :id => "more_link_down_#{engagement.invitee.id}") do |page|
-                      page.visual_effect  :toggle_blind, "user-details_#{engagement.invitee.id}"
-                      page.show "more_link_up_#{engagement.invitee.id}"
-                      page.hide "more_link_down_#{engagement.invitee.id}"
-                      #page.replace_html 'more_link', "#{image_tag "bullet_arrow_up.png"}"
-               end  %>
-              <%= link_to_function( (image_tag ("bullet_arrow_up.png")),  :id => "more_link_up_#{engagement.invitee.id}", :style => 'display:none;') do |page|
-                      page.visual_effect  :toggle_blind, "user-details_#{engagement.invitee.id}"
-                      page.hide "more_link_up_#{engagement.invitee.id}"
-                      page.show "more_link_down_#{engagement.invitee.id}"
-               end  %>
-            <div id="user-details_<%=engagement.invitee.id %>"  style="display:none;">
-                    <% if engagement.invitee.avatar.file? %>
-                      <%= image_tag engagement.invitee.avatar.url(:thumb) %>
-                    <% else %>
-                      No photo available
-                   <% end %>
-                      <% if engagement.invitee.id == @user.id  %>
-                            <div id="notification" style="float:right;margin-bottom:10px;">
-                                <% if engagement.notify_me? %>
-                                  <%= button_to_remote 'Disable Notification', :url => {:controller => 'engagements', :action => 'set_notification', :id => engagement.id, :set => 'false'} %>
-                                <% else %>
-                                  <%= button_to_remote 'Enable Notification', :url => {:controller => 'engagements', :action => 'set_notification', :id => engagement.id, :set => 'true'} %>
-                               <% end %>
-                           </div>
-                       <% end %>
-                    <div class ="user-bio">
-                        <b>Twitter Profile:</b><br/>
-                         <%= engagement.invitee.twitter_id != "" ? "http://twitter.com/" + engagement.invitee.username : "" %><br/>
-                        <b>Blog:</b><br/>
-                        <%=h engagement.invitee.blog_link %><br/>
-                        <b>Facebook Profile:</b><br/>
-                        <%=h engagement.invitee.facebook_link %><br/>
-                        <b>LinkedIn Profile:</b><br/>
-                        <%=h engagement.invitee.linked_in_link %><br/>
-
+<div id="post-content">
+  <div id="actual-post-content">
+                    <div id="parent-post">
+                      <div id="post-body">
+                        <% if @post.owner == @user %>
+                           <div class="subject"> <%= in_place_editor_field :post, 'subject',{}, :size => '80', :text_between_controls => ' or ',:save_text => 'save' %> <%= image_tag '/images/pencil.png' %></div>
+                           <div class="url"><%= in_place_editor_field :post, 'url',{}, :size => '80', :text_between_controls => ' or ',:save_text => 'save' %><%= image_tag '/images/pencil.png' %>
+                           <%= link_to "Go" , h(@post.url) %></div>
+                           <div><%= in_place_rich_editor_field :post, :description ,{}, :mode => 'tinymce_advanced_with_save_options' %><%= image_tag '/images/pencil.png' %></div>
+                        <% else %>
+                           <div class="subject"> <%= @post.subject %></div>
+                           <% if @post.url != "Add a link" %>
+                           <div class="url">Check out:<%= link_to h(@post.url) , h(@post.url) %></div>
+                           <% end %>
+                           <div class="description"> <%= @post.description %></div>
+                        <% end %>
+                      </div>
+                      <span style="color:#0062f6;">
+                      <%= "#{@post.owner.display_name} <br/> #{@post.created_at.to_s(:short)}" %></span>
+                      <span style="color:#0062f6;float:right;width:8%;">
+                      <%= image_tag @post.owner.avatar.url(:thumb) if @post.owner.avatar.file? %></span>
                     </div>
-             </div>
-        </li>
-       <% end %>
-    <%  end %>
-    </ul>
+    <div id="tags">
+      <strong style="float:left;">Keywords that describe this conversation:</strong><%= image_tag '/images/pencil.png' %>
+      <span style="font-size:85%;">(separate multiple keywords with comma)</span>
+      <%= in_place_editor_field :post, 'tag_list',{}, :size => '80',:text_between_controls => ' or ',:save_text => 'save' %>
 
+    </div>
+
+    <div id="invitations">
+      <strong style="float:left;">Invitations sent:</strong><br/>
+    <% engagements = Engagement.find(:all,:conditions => ["post_id = ?", @post.id]) %>
+    <% if engagements.size > 1 %>
+          <% engagements_by_invite = engagements.group_by { |t| t.invited_by } if engagements %>
+          <% if engagements_by_invite %>
+              <ul>
+                <% engagements_by_invite.sort.each do |invited_by, engagements| %>
+                      <li>
+                        <span class="inviter"><%= User.find(invited_by).display_name %> invited</span> <br/>
+                        <% invitees = [] %>
+                        <% engagements_by_date = engagements.group_by { |t| t.invited_when } if engagements %>
+                        <% engagements_by_date.sort.each do |invited_when, engagements| %>
+                        <% engagements.each do |engagement| %>
+                            <% invitee = User.find(engagement.user_id) %>
+                            <% invitees << invitee.display_name(nil,engagement) if @post.owner.id != invitee.id %>
+                        <% end %>
+                        <% if invitees.length > 0 %>
+                        <span class="invitees">
+                        <%= invitees.join(", ") %> <%= distance_of_time_in_words(@post.created_at.utc, invited_when.utc) + " later" %></span> <br/>
+                        <% invitees = [] %>
+                        <% end %>
+                        <% end %>
+                      </li>
+
+                <% end %>
+              </ul>
+          <% end %>
+     <% else %>
+        No one has been invited yet.
+    <% end %>
+    </div>
+                    <div id="comments-section">
+                      <div id="comments">
+                      <div id ="comments-heading" class="sub-heading">Comments (<%= @post.comments.size %>)</div>
+                      <% if @post.comments.roots.length > 0 %>
+                      <%= render :partial => "/comments/comment", :collection => @post.comments.roots, :locals => {:root => 'true',:parent_comment => nil} %>
+                      <% else %>
+                      <!--No comments yet. -->
+                      <% end %>
+                      </div>
+
+                      <%= render :partial => 'new_comment' %>
+                   </div>
   </div>
-
 </div>
