@@ -14,7 +14,7 @@ class UserSessionsController < ApplicationController
             if @user.activated?
                 @user_session = UserSession.new(params[:user_session])
                 if @user_session.save
-                  flash[:notice] = "Welcome #{@user.display_name}! "
+                  #flash[:notice] = "Welcome #{@user.display_name}! "
                   redirect_back_or_default(posts_url)
                 else
                   render :action => 'new'
@@ -37,7 +37,7 @@ class UserSessionsController < ApplicationController
   def destroy  
     @user_session = UserSession.find  
     @user_session.destroy  
-    flash[:notice] = "Successfully logged out."
+    #flash[:notice] = "Successfully logged out."
     redirect_to root_url
   end  
   def method_missing(methodname, *args)
