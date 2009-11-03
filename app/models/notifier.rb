@@ -35,7 +35,7 @@ default_url_options[:host] = "www.engagevia.com"
 
   def send_invitations(post, invitee, inviter)
     setup_email(post.owner)
-    @subject    += " #{inviter.display_name} has invited you for a conversation"
+    @subject    += " #{inviter.display_name} has invited you for a conversation on #{truncate(post.subject,20,"...")}"
     recipients invitee.email
     body          :post_url  => DOMAIN + "posts/show?pid=#{post.unique_id};uid=#{invitee.unique_id}" ,:post => post, :inviter => inviter
   end
@@ -51,7 +51,7 @@ default_url_options[:host] = "www.engagevia.com"
     def setup_email(user)      
       @from        = "EngageVia <EngageVia-notifier@engagevia.com>"
       headers         "Reply-to" => "EngageVia-notifier@engagevia.com"
-      @subject     = "[EngageVia] "
+      @subject     = ""
       @sent_on     = Time.zone.now
       @content_type = "text/html"
     end

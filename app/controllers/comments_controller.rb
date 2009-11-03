@@ -36,8 +36,8 @@ class CommentsController < ApplicationController
   # POST /comments.xml
   def create
     @comment = Comment.new
-    if params[:comment][:body] != nil && params[:comment][:body] != ""
-      @comment.body = params[:comment][:body]
+    if params[:comment_body] != nil && params[:comment_body] != ""
+      @comment.body = params[:comment_body]
     else
       render :update do |page|
         page.replace_html "new-comment-status", "Please enter your valuable comments"
