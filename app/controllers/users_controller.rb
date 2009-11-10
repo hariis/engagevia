@@ -187,7 +187,11 @@ class UsersController < ApplicationController
  end
 private
   def load_user_using_perishable_token
-    @user = User.find_using_perishable_token(params[:activation_code])
+    #You can lengthen that limit by changing:
+    #@user = User.find_using_perishable_token(params[:activation_code], 2.hours)
+    #Or just set it to 0 to disable the limit all together:
+    @user = User.find_using_perishable_token(params[:activation_code], 0)
+
     unless @user
       flash[:error] = "We're sorry, but we could not locate your account. <br/>" +
         "If you are having issues try copying and pasting the link " +

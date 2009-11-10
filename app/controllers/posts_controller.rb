@@ -281,7 +281,8 @@ class PostsController < ApplicationController
        @post.url = "Add a link"
     end
     if @post.save
-        render :text => @post.url
+        #render :text => @post.url
+         redirect_to(@post) 
     end
   end
 
