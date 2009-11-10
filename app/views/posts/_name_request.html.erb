@@ -1,0 +1,14 @@
+<%  form_remote_tag :url => { :controller => 'users', :action => "update_name", :uid => params[:uid] },
+          :before => "Element.show('n-spinner');",
+          :complete => "Element.hide('n-spinner')" do %>
+        
+      <%=  label_tag 'First Name' %>
+      <%= text_field_tag :first_name ,"",  :class =>"mceNoEditor",:size => 20, :maxlength => 20 %><br/>
+      <%=  label_tag 'Last Name' %>
+      <%= text_field_tag :last_name ,"",  :class =>"mceNoEditor",:size => 20, :maxlength => 20  %><br/>
+        
+
+       <p style="margin-top: 10px;">
+          <%= submit_tag 'Save' %><%= image_tag 'spinner.gif', :id=>"n-spinner", :style=>"display:none;" %>
+        </p>
+      <% end %>

@@ -65,7 +65,7 @@
         <li><%= link_to "Admin", admin_path %></li>
     <% end %>
    <% else %>
-     <li style="color:#FF60B0;"> <%="Welcome #{@user.display_name}" %></li>
+     <li id="non-member-name"style="color:#FF60B0;"> <%="Welcome #{@user.display_name}" %></li>
    <% end %>
 </ul>
 </div>
@@ -88,6 +88,12 @@
 <p><%= flash[:error] %></p>
   </div>
 <% end %>
+  <% if @user.non_member? && @user.first_name == 'firstname' %>
+  <div id="name-request">
+    <%= render :partial => 'name_request' %>
+  </div>
+  <% end %>
+  
 <%= yield  %>
 
 <% if controller.action_name == 'show'  %>

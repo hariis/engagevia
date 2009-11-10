@@ -44,27 +44,7 @@ class CommentsController < ApplicationController
       end
       return
     end
-    if @user.non_member? && @user.first_name == 'firstname'
-      #require the first name and last name
-      if params[:first_name] != nil && params[:first_name] != ""
-        @user.first_name = params[:first_name]
-      else
-        render :update do |page|
-          page.replace_html "new-comment-status", "Please identify yourself! <br/> Your information is available only to this conversation participants."
-        end
-        return
-      end
-      if params[:last_name] != nil && params[:last_name] != ""
-        @user.last_name = params[:last_name]
-      else
-        render :update do |page|
-          page.replace_html "new-comment-status", "Please identify yourself! <br/> Your information is available only to this conversation participants."
-        end
-       return
-      end
-      #If everything is ok
-      @user.save
-    end
+    
     @comment.user_id = @user.id
     if params[:id] != nil
       @comment.parent_id = params[:id]

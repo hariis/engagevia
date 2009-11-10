@@ -55,8 +55,8 @@ class PostsController < ApplicationController
         #load the user based on the unique id
         @user = User.find_by_unique_id(params[:uid]) if params[:uid]
         #Still require the user to login so we can maintain a session
-        if @user && @user.activated?
-          flash[:notice] = "To maintain security, Please login and you will be on your way"
+        if !current_user && @user && @user.activated?
+          flash[:notice] = "To maintain security, Please login and you will be on your way."
           flash[:email] = @user.email
           store_location if action_name == 'show'  #we do not want to store if it is any other action
           redirect_to login_path

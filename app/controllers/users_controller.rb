@@ -6,7 +6,7 @@ class UsersController < ApplicationController
 
   before_filter :load_user_using_perishable_token, :only => [:activate]
   before_filter :is_admin , :only => [:index,:destroy]
-  before_filter :require_user, :except => [:new, :create, :activate, :resendactivation, :resendnewactivation]
+  before_filter :require_user, :except => [:new, :create, :activate, :resendactivation, :resendnewactivation, :update_name]
 
   def is_admin
     current_user && current_user.admin?
@@ -91,8 +91,8 @@ class UsersController < ApplicationController
         @user.add_role("member")
         @user.add_role("admin") if User.find(:all).size < 3 # first two users are admin
         @user.deliver_account_confirmation_instructions!
-        flash[:notice] = "Instructions to confirm your account have been emailed to you. " +
-        "Please check your email."
+        flash[:status] = "An email has been sent to confirm that we have your correct email address. <br/>" +
+        "Please check your Inbox and also sometimes your Spam folder :( and click on the activation link."
         
         format.html { redirect_to(root_url) }
         format.xml  { render :xml => @user, :status => :created, :location => @user }
@@ -134,7 +134,7 @@ class UsersController < ApplicationController
   end
 
  def activate
-    flash[:notice] = "Thanks for confirming your acocunt."
+    flash[:notice] = "Thanks for confirming your acocunt.<br/>To maintain security, Please login and you will be on your way."
     @user.activate #set the activated at
     #login him in
     redirect_to login_url #redirect him to dash board
@@ -151,6 +151,39 @@ class UsersController < ApplicationController
 #       else
 #         controller = 'posts'
 #       end      
+ end
+
+ def update_name
+   @user = User.find_by_unique_id(params[:uid]) if params[:uid]
+   if @user.non_member? && @user.first_name == 'firstname'
+      #require the first name and last name
+      if params[:first_name] != nil && params[:first_name] != ""
+        @user.first_name = params[:first_name]
+      else
+        render :update do |page|
+          page.replace_html "name-request-status", "Please identify yourself!"
+        end
+        return
+      end
+      if params[:last_name] != nil && params[:last_name] != ""
+        @user.last_name = params[:last_name]
+      else
+        render :update do |page|
+          page.replace_html "new-comment-status", "Please identify yourself!"
+        end
+       return
+      end
+      #If everything is ok
+      if @user.save
+        flash[:notice] = "Welcome #{@user.display_name}!"
+        render :update do |page|
+          page.visual_effect :blind_up, 'name-request'
+          page.replace_html "non-member-name", flash[:notice]
+          page.select("non-member-name").each { |b| b.visual_effect :highlight, :startcolor => "#f3add0",
+											:endcolor => "#ffffff", :duration => 5.0 }
+        end
+      end
+    end
  end
 private
   def load_user_using_perishable_token
