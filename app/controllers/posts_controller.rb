@@ -3,7 +3,7 @@ class PostsController < ApplicationController
   
   before_filter :load_user, :except => [:new, :create,:dashboard,:privacy,:about,:blog,:contact,:plaxo]
   before_filter :check_activated_member, :except => [:new, :show,:send_invites, :create, :dashboard, :index, :privacy,:about,:blog,:contact,:plaxo]
-
+  
   def privacy
   end
   
@@ -15,13 +15,18 @@ class PostsController < ApplicationController
 
   def blog
   end
+
   def plaxo    
   end
 
   def admin
-    @posts = Post.find(:all)
-    @participants = Engagement.find(:all)
-    @comments = Comment.find(:all)
+    if current_user && current_user.admin?
+      @posts = Post.find(:all)
+      @participants = Engagement.find(:all)
+      @comments = Comment.find(:all)
+    else
+      redirect_to root_path
+    end
   end
 
   def method_missing(methodname, *args)
