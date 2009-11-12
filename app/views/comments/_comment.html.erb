@@ -6,7 +6,7 @@
 
 <div class="<%= comment_type %> comment-body">
    <div style="font-size :70%;float:right;"><%= image_tag "comment.png" %>   <%= "#{comment.owner.display_name(@post)}" %><br/>
-    <%  if parent_comment %> 
+    <%  if parent_comment && false %>
         <%= "#{distance_of_time_in_words(parent_comment.created_at,comment.created_at) + " later"}" %> <br/>
       <% else %>
         <%= "#{time_ago_in_words(comment.created_at) + " ago"}" %> <br/>
@@ -15,21 +15,14 @@
 
   <div id="comment_body_<%= comment.id %>" style="width:80%;text-align:justify;">  <%= comment.body %></div>
   <% if comment.owner == @user  %>
-      <%= in_place_rich_editor "comment_body_#{comment.id}"  ,:url => { :controller => :comments, :action => :set_comment_body, :post_id => @post.id, :id => comment.id, :uid => params[:uid]}, :mode => 'tinymce_advanced_with_save_options' %>
+      <%= in_place_rich_editor "comment_body_#{comment.id}"  ,:url => { :controller => :comments, :action => :set_comment_body, :pid => @post.unique_id, :id => comment.id, :uid => params[:uid]}, :mode => 'tinymce_advanced_with_save_options' %>
   <% end %>
   <span style="float:left;clear:left;">
-  <%= link_to_function("#{image_tag("comment_add.png")} reply") do |page|
-                  page.visual_effect  :toggle_blind, "reply_#{comment.id}"
-                end  %>
+    <%= facebox_link_to "#{image_tag("comment_add.png")} reply",  :url => comment.get_url_for_new_comment(@post,@user) %>
    </span>
-    <div id= reply_<%="#{comment.id}"%> class="sub  new-comment comment-body" style="display: none;">
-        <%  reply_comment = Comment.new(:body => "Click here to add your comment") %>
-      <div style="font-size :70%;float:right;"> <%= image_tag "comment.png" %>  <%= "#{@user.display_name(@post)}" %><br/>
-        <%= image_tag @user.avatar.url(:thumb),:size=> "32x32"  if @user.avatar.file? %> </div>
-        <div id="comment_reply_body_<%=  comment.id %>">  <%= reply_comment.body %></div>        
-        <%= in_place_rich_editor "comment_reply_body_#{comment.id}", :url => { :controller => :comments, :action => :create_reply_comment, :post_id => @post.id, :id => comment.id, :uid => params[:uid]}, :mode => 'tinymce_advanced_with_save_options' %>
-    </div>
-
+   
+  <div id="children_for_<%= comment.id %>">
   <%= render :partial => "/comments/comment", :collection => comment.children , :locals => {:root => nil,:parent_comment => comment } %>
+  </div>
 
 </div>

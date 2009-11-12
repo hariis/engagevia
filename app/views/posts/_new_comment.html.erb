@@ -8,7 +8,7 @@
     </div>
     <div id="new-comment-body" class="comment-body-editor">
 
-      <%=  render :partial => 'comments/new_comment_form', :locals => { :comment => @comment } %>
+      <%=  render :partial => 'comments/new_comment_form', :locals => { :comment => @comment, :parent_comment => 0 } %>
 
     </div>
 </div>

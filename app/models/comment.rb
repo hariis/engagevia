@@ -10,4 +10,7 @@ class Comment < ActiveRecord::Base
      Notifier.deliver_comment_notification(post, self, participant)   if participant.id != owner.id
     end
   end
+  def get_url_for_new_comment(post,user)
+    DOMAIN + "comments/new" + "?pid=#{post.unique_id};uid=#{user.unique_id};pcid=#{id}"
+  end
 end

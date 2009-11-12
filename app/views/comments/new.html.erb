@@ -1,5 +1,16 @@
+<h2>You are replying to </h2>
+<span style="background-color:#dcdcdc;margin-bottom:10px;">
+<%= truncate(@parent_comment.body,  100) %> </span> by <%= @parent_comment.owner.display_name(@post) %>
+
+<%  form_remote_tag :url => { :controller => 'comments', :action => "create", :pcid => "#{@parent_comment.id}",:pid => "#{@post.unique_id}",:uid => params[:uid] }, :html => {:id => 'comment_form' },
+      :before => "Element.show('e-spinner');",
+      :complete => "Element.hide('e-spinner')" do %>
+    
+    <%= text_area_tag 'comment_body', nil,:rows => 10, :cols => 100 %><br/>
 
 
-<% render :partial => '@comment', :locals => {:button_type => 'Add Comment'} %>
+   <p style="margin-top: 10px;">
+      <%= submit_tag 'Add' %><%= image_tag 'spinner.gif', :id=>"e-spinner", :style=>"display:none;" %>
+    </p>
+  <% end %>
 
-<%= link_to 'Back', comments_path %>

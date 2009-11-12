@@ -29,9 +29,18 @@ class CommentsController < ApplicationController
       return
   end
   def load_post
-    @post = Post.find(params[:post_id]) if params[:post_id]
+    @post = Post.find_by_unique_id(params[:pid]) if params[:pid]
   end  
-  
+
+  def new
+    @comment = Comment.new
+    @parent_comment = Comment.find(params[:pcid])
+    respond_to do |format|
+      format.html # new.html.erb
+      format.xml  {  }
+      format.js { render_to_facebox }
+    end
+  end
    # POST /comments
   # POST /comments.xml
   def create
@@ -46,20 +55,26 @@ class CommentsController < ApplicationController
     end
     
     @comment.user_id = @user.id
-    if params[:id] != nil
-      @comment.parent_id = params[:id]
+    if params[:pcid] != nil
+      @comment.parent_id = params[:pcid]
+      @parent_comment = Comment.find(params[:pcid])
     end
 
     if @post.comments << @comment
       @comment.deliver_comment_notification(@post)
       render :update do |page|
-        page.insert_html :bottom, 'comments', :partial => "/comments/comment", :object => @comment,  :locals => {:root => 'true',:parent_comment => nil}
-        
-        page.replace_html "comments-heading", "Comments (#{@post.comments.size})"
-        page.select("comments-heading").each { |b| b.visual_effect :highlight, :startcolor => "#fb3f37",
-											:endcolor => "#cf6d0f", :duration => 5.0 }
-        page.replace_html "new-comment-status", "Thank you for your comment."
-        page.replace_html "new-comment-body", ""
+        if params[:pcid].nil?
+            page.insert_html :bottom, 'comments', :partial => "/comments/comment", :object => @comment,  :locals => {:root => 'true',:parent_comment => nil}
+
+            page.replace_html "comments-heading", "Comments (#{@post.comments.size})"
+            page.select("comments-heading").each { |b| b.visual_effect :highlight, :startcolor => "#fb3f37",
+                          :endcolor => "#cf6d0f", :duration => 5.0 }
+            page.replace_html "new-comment-status", "Thank you for your comment."
+            page.replace_html "new-comment-body", ""
+        else
+            page.hide 'facebox'
+            page.insert_html :bottom, "children_for_#{params[:pcid]}", :partial => "/comments/comment", :object => @comment,  :locals => {:root => nil,:parent_comment => @parent_comment}
+        end
       end
 
     else
