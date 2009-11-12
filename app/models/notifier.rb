@@ -1,7 +1,7 @@
 class Notifier < ActionMailer::Base
 
 include ActionView::Helpers::TextHelper
-#layout 'notifications'
+layout 'notifications'
 default_url_options[:host] = "www.engagevia.com"
 
   def password_reset_instructions(user)

@@ -1,9 +1,9 @@
 <%  form_remote_tag :url => { :controller => 'comments', :action => "create", :post_id => "#{@post.id}",:uid => params[:uid] }, :html => {:id => 'comment_form' },
-          :before => "Element.show('e-spinner');document.getElementById('mce_1').value =  tinyMCE.get('comment_body').getContent();",
+          :before => "Element.show('e-spinner');document.getElementById('comment_form').getElementsByTagName('textarea')[0].value =  tinyMCE.get('comment_body').getContent();",
           :complete => "Element.hide('e-spinner')" do %>
         
         <%=  label_tag 'Comment' %><br/>
-        <%= text_area_tag :comment_body, nil,:rows => 10, :cols => 100 %><br/> 
+        <%= text_area_tag :comment_body, nil,:rows => 10, :cols => 100 %><br/>
 
 
        <p style="margin-top: 10px;">
