@@ -85,7 +85,7 @@ var tinymce_advanced_stripped_options = {
   theme_advanced_blockformats : "p,h2,h3,blockquote"
 
 };
+
 tinyMCE.init(tinymce_advanced_options);
 tinyMCE.init(tinymce_advanced_with_save_options);
-
 tinyMCE.init(tinymce_advanced_stripped_options);
