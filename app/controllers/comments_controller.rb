@@ -64,7 +64,7 @@ class CommentsController < ApplicationController
       @comment.deliver_comment_notification(@post)
       render :update do |page|
         if params[:pcid].nil?
-            page.insert_html :bottom, 'comments', :partial => "/comments/comment", :object => @comment,  :locals => {:root => 'true',:parent_comment => nil}
+            page.insert_html :top, 'comments', :partial => "/comments/comment", :object => @comment,  :locals => {:root => 'true',:parent_comment => nil}
 
             page.replace_html "comments-heading", "Comments (#{@post.comments.size})"
             page.select("comments-heading").each { |b| b.visual_effect :highlight, :startcolor => "#fb3f37",
@@ -74,6 +74,9 @@ class CommentsController < ApplicationController
         else
             page.hide 'facebox'
             page.insert_html :bottom, "children_for_#{params[:pcid]}", :partial => "/comments/comment", :object => @comment,  :locals => {:root => nil,:parent_comment => @parent_comment}
+            page.replace_html "comments-heading", "Comments (#{@post.comments.size})"
+            page.select("comments-heading").each { |b| b.visual_effect :highlight, :startcolor => "#fb3f37",
+                          :endcolor => "#cf6d0f", :duration => 5.0 }
         end
       end
 

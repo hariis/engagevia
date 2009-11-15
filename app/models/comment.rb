@@ -1,6 +1,6 @@
 class Comment < ActiveRecord::Base
   acts_as_tree
-  
+  named_scope :top, :conditions => {:parent_id => nil}  , :order => 'updated_at desc'
   belongs_to :owner, :class_name => 'User', :foreign_key => :user_id
   belongs_to :post
   validates_presence_of :body

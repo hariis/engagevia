@@ -7,9 +7,9 @@
 <div class="<%= comment_type %> comment-body">
    <div style="font-size :70%;float:right;"><%= image_tag "comment.png" %>   <%= "#{comment.owner.display_name(@post)}" %><br/>
     <%  if parent_comment && false %>
-        <%= "#{distance_of_time_in_words(parent_comment.created_at,comment.created_at) + " later"}" %> <br/>
+        <%= "#{distance_of_time_in_words(parent_comment.created_at,comment.updated_at) + " later"}" %> <br/>
       <% else %>
-        <%= "#{time_ago_in_words(comment.created_at) + " ago"}" %> <br/>
+        <%= "#{time_ago_in_words(comment.updated_at) + " ago"}" %> <br/>
       <% end %>
   <%= image_tag comment.owner.avatar.url(:thumb),:size=> "32x32"  if comment.owner.avatar.file? %></div>
 

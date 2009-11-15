@@ -1,9 +1,10 @@
+<h2>Please enter you name</h2>
 <%  form_remote_tag :url => { :controller => 'users', :action => "update_name", :uid => params[:uid] },
           :before => "Element.show('n-spinner');",
           :complete => "Element.hide('n-spinner')" do %>
         
       <%=  label_tag 'First Name' %>
-      <%= text_field_tag :first_name ,"",  :class =>"mceNoEditor",:size => 20, :maxlength => 20 %><br/>
+      <%= text_field_tag :first_name ,"",  :class =>"mceNoEditor",:size => 20, :maxlength => 20 %>
       <%=  label_tag 'Last Name' %>
       <%= text_field_tag :last_name ,"",  :class =>"mceNoEditor",:size => 20, :maxlength => 20  %><br/>
         

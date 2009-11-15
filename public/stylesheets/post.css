@@ -325,7 +325,9 @@ clear: right;
 .comment-body {
     margin-top:5px;
     padding: 5px 5px 10px 5px;
-    float: left;   
+    float: left;
+    border-left:1px solid #777777;
+    border-top:1px solid #777777;
 }
 
 .new-comment {
@@ -418,6 +420,10 @@ div#twitter_followers ul li {
     color: #0B84E8;
     font-weight:bold;
 }
+.post-item a:hover {
+    color: #6c0c0c;
+    font-weight:bold;
+}
 .timestamp {
     float: right;
     font-size: 14px;
@@ -430,6 +436,12 @@ div#twitter_followers ul li {
 }
 .post-item a.dashboard-comments {
     color: green;
+    float: left;
+    font-weight:normal;
+    clear:both;
+}
+.post-item a.dashboard-comments:hover {
+    color: #6c0c0c;
     float: left;
     font-weight:normal;
     clear:both;

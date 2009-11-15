@@ -285,9 +285,11 @@ class PostsController < ApplicationController
     else
        @post.url = "Add a link"
     end
-    if @post.save
-        #render :text => @post.url
-         redirect_to(@post) 
+    if @post.save        
+        render :update do |page|
+          page.replace_html 'url-text', :partial => 'update_url_text', :object => @post
+          page.replace_html 'url-link', :partial => 'update_url_link', :object => @post
+        end       
     end
   end
 

@@ -26,9 +26,7 @@ var tinymce_advanced_options = {
 
   theme_advanced_toolbar_location: "bottom",
   theme_advanced_resizing : true,
-  content_css : "/style/editable.css",
   theme_advanced_blockformats : "p,h2,h3,blockquote"
-
 };
 
 var tinymce_advanced_with_save_options = {

@@ -4,8 +4,10 @@
                       <div id="post-body">
                         <% if @post.owner == @user %>
                            <div class="subject"> <%= in_place_editor_field :post, 'subject',{}, :size => '80', :text_between_controls => ' or ',:save_text => 'save' %> <%= image_tag '/images/pencil.png' %></div>
-                           <div class="url"><%= in_place_editor_field :post, 'url',{}, :size => '80', :text_between_controls => ' or ',:save_text => 'save' %><%= image_tag '/images/pencil.png' %>
-                           <%= link_to "Go" , h(@post.url) %></div>
+                           <div>
+                           <span id="url-text" class="url"><%= render :partial => 'update_url_text', :object => @post  %></span><%= image_tag '/images/pencil.png' %>
+                           <span id="url-link"><%= render :partial => 'update_url_link', :object => @post %></span>
+                           </div>
                            <div><%= in_place_rich_editor_field :post, :description ,{}, :mode => 'tinymce_advanced_with_save_options' %><%= image_tag '/images/pencil.png' %></div>
                         <% else %>
                            <div class="subject"> <%= @post.subject %></div>
@@ -63,7 +65,7 @@
                       <div id="comments">
                       <div id ="comments-heading" class="sub-heading">Comments (<%= @post.comments.size %>)</div>
                       <% if @post.comments.roots.length > 0 %>
-                      <%= render :partial => "/comments/comment", :collection => @post.comments.roots, :locals => {:root => 'true',:parent_comment => nil} %>
+                      <%= render :partial => "/comments/comment", :collection => @post.comments.top, :locals => {:root => 'true',:parent_comment => nil} %>
                       <% else %>
                       <!--No comments yet. -->
                       <% end %>
