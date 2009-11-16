@@ -10,6 +10,8 @@ var tinymce_advanced_options = {
   mode : "textareas",
   theme : "advanced",
   editor_deselector : "mceNoEditor",
+  skin : "o2k7",
+  skin_variant : "black",
   theme_advanced_resizing_min_width : 500,
   theme_advanced_resizing_max_width : 800,
   plugins : "autoresize,paste,preview,safari,table,contextmenu,paste,imagepopup,emotions",
@@ -18,9 +20,10 @@ var tinymce_advanced_options = {
   button_title_map: false,
   apply_source_formatting: true,
   theme_advanced_toolbar_align: "left",
-  theme_advanced_buttons1: "formatselect,outdent,indent,seperator,undo,redo,separator,emotions",
-  theme_advanced_buttons2: "justifyleft,justifycenter,justifyright,separator,bold,italic,separator,bullist,numlist,link,separator,imagepopup,table,separator",
-  theme_advanced_buttons3: "preview",
+  
+  theme_advanced_buttons1: "bold,italic,underline,strikethrough,separator,undo,redo,separator,emotions,bullist,numlist,link",
+  theme_advanced_buttons2: "",
+  theme_advanced_buttons3: "",
   plugin_preview_width : "500",
   plugin_preview_height : "600",
 
@@ -83,6 +86,6 @@ var tinymce_advanced_stripped_options = {
   theme_advanced_blockformats : "p,h2,h3,blockquote"
 
 };
-tinyMCE.init(tinymce_advanced_stripped_options);
 tinyMCE.init(tinymce_advanced_options);
+tinyMCE.init(tinymce_advanced_stripped_options);
 tinyMCE.init(tinymce_advanced_with_save_options);
