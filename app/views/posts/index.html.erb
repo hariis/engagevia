@@ -9,7 +9,7 @@
 <% @posts.each do |post| %>
   <div class="index"></div>
    <div class="<%= cycle('listing-line-odd', 'listing-line-even') %> post-item">
-    <span style="color:green"><%=  "#{count}." %> <% count = count + 1 %></span>
+    <span style="color:green"><%  "#{count}." %> <% count = count + 1 %></span>
     <% if post.url == "Add a link"  %>
       <%= link_to  h(post.subject.capitalize), post.get_url_for(@user,'show')  %>
     <% else %>
