@@ -38,8 +38,8 @@ right: 0px; */
 }
 #sticky-note {
     background-color: #f6f650;
-    color: #000000;    
-    right: 0px;    
+    color: #000000;
+    right: 0px;
     padding: 0px 7px;
     height: 260px;
     overflow:auto;
@@ -64,13 +64,13 @@ html,body {
 }
 #content {
   margin: 5px 275px;
-  padding: 10px; 
+  padding: 10px;
   margin:0 auto;
   text-align:left;
   color: #000;
 }
 #post-content{
-  margin: 5px 275px;  
+  margin: 5px 275px;
   margin:17px auto;
   overflow:hidden;
   text-align:left;
@@ -309,15 +309,15 @@ border: 2px solid #d7d7d7;
 padding: 3px;
 clear: right;
 }
-#post-body{  
+#post-body{
     float: left;
     padding-bottom:10px;
-    width:88%;    
+    width:88%;
 }
 
 #comments-section {
-    margin: auto;    
-    background-color: #fff;    
+    margin: auto;
+    background-color: #fff;
 }
 #comments-section a, #participants a {
    color: #0062f6;
@@ -331,8 +331,8 @@ clear: right;
 }
 
 .new-comment {
-    background-color: #d6f6a6;   
-    border-bottom: 2px dotted #68ac02;    
+    background-color: #d6f6a6;
+    border-bottom: 2px dotted #68ac02;
     border-bottom-color: #68ac02;
     margin-bottom:5px;
     background:#FFFFFF url(/images/topbluefade.gif) repeat-x scroll 0 0;
@@ -352,15 +352,15 @@ clear: right;
 .listing-line-odd {
         background-color: #a5d6fd;
 }
-.listing-line-even {	
+.listing-line-even {
         background-color: #fff;
 }
 .current-user-comment {
-        background-color: #d6f6a6;       
+        background-color: #d6f6a6;
 }
 
 .apply_border {
-        border-bottom: 1px dotted #32a3fe;     
+        border-bottom: 1px dotted #32a3fe;
 }
 .apply_comment_owner_border {
         border-bottom: 1px dotted #68ac02;
@@ -368,7 +368,7 @@ clear: right;
 .subject {
     font-size: 120%;
     margin-bottom: 5px;
-    font-weight: bold;   
+    font-weight: bold;
     padding-top:5px;
 }
 .in_place_editor_field, .inplacericheditor-form {
@@ -394,7 +394,7 @@ clear: right;
 }
 #you {
     background-color:#f3f371;
-    color:#000000;    
+    color:#000000;
 }
 
 div#participants ul li {
@@ -428,7 +428,12 @@ div#twitter_followers ul li {
     float: right;
     font-size: 14px;
 }
-
+.poststat {
+    float: left;
+    margin-left: 25px;
+    margin-top: 5px;
+    font-size: 14px;
+}
 #dashboard-view{
     width: 1230px;
     margin:0 auto;
@@ -514,7 +519,7 @@ h3 {
 .heading {
     color:#575455;
     font-size:32px;
-    margin:20px;
+    margin:20px 0px;
 }
 .sub-heading {
     color:#575455;
@@ -527,10 +532,10 @@ h3 {
     font-size: 18px;
     color:#575455;
     float:left;
-    margin-top: 24px;    
+    margin-top: 24px;
 }
 #add-new-comment {
-    
+
     margin-top:10em;
 }
 #comments {
@@ -555,7 +560,7 @@ h3 {
     font-weight:bold;
     text-align:center;
 }
-#invitations ul li {    
+#invitations ul li {
     overflow:inherit;
 }
 #new-comment-status{
