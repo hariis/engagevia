@@ -14,7 +14,7 @@ var tinymce_advanced_options = {
   skin_variant : "black",
   theme_advanced_resizing_min_width : 500,
   theme_advanced_resizing_max_width : 800,
-  plugins : "autoresize,paste,preview,safari,table,contextmenu,paste,imagepopup,emotions",
+  plugins : "autoresize,safari,emotions",
 
   width: "800",
   button_title_map: false,
@@ -23,9 +23,7 @@ var tinymce_advanced_options = {
   
   theme_advanced_buttons1: "bold,italic,underline,strikethrough,separator,undo,redo,separator,emotions,bullist,numlist,link",
   theme_advanced_buttons2: "",
-  theme_advanced_buttons3: "",
-  plugin_preview_width : "500",
-  plugin_preview_height : "600",
+  theme_advanced_buttons3: "",  
 
   theme_advanced_toolbar_location: "bottom",
   theme_advanced_resizing : true,
