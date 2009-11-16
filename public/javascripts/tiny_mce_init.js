@@ -14,7 +14,7 @@ var tinymce_advanced_options = {
   skin_variant : "black",
   theme_advanced_resizing_min_width : 500,
   theme_advanced_resizing_max_width : 800,
-  plugins : "autoresize,safari",
+  plugins : "",
 
   width: "800",
   button_title_map: false,
