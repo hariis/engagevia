@@ -14,14 +14,14 @@ var tinymce_advanced_options = {
   skin_variant : "black",
   theme_advanced_resizing_min_width : 500,
   theme_advanced_resizing_max_width : 800,
-  plugins : "autoresize,safari,emotions",
+  plugins : "autoresize,safari",
 
   width: "800",
   button_title_map: false,
   apply_source_formatting: true,
   theme_advanced_toolbar_align: "left",
   
-  theme_advanced_buttons1: "bold,italic,underline,strikethrough,separator,undo,redo,separator,emotions,bullist,numlist,link",
+  theme_advanced_buttons1: "bold,italic,underline,strikethrough,separator,undo,redo,separator,bullist,numlist,link",
   theme_advanced_buttons2: "",
   theme_advanced_buttons3: "",  
 
