@@ -8,7 +8,7 @@
                            <span id="url-text" class="url"><%= render :partial => 'update_url_text', :object => @post  %></span><%= image_tag '/images/pencil.png' %>
                            <span id="url-link"><%= render :partial => 'update_url_link', :object => @post %></span>
                            </div>
-                           <div><%= in_place_rich_editor_field :post, :description ,{}, :mode => 'tinymce_advanced_with_save_options' %><%= image_tag '/images/pencil.png' %></div>
+                           <div><%= in_place_rich_editor_field :post, :description ,{}, :size => '75', :mode => 'tinymce_advanced_with_save_options' %><%= image_tag '/images/pencil.png' %></div>
                         <% else %>
                            <div class="subject"> <%= @post.subject %></div>
                            <% if @post.url != "Add a link" %>
@@ -62,16 +62,17 @@
     <% end %>
     </div>
                     <div id="comments-section">
-                      <div id="comments">
                       <div id ="comments-heading" class="sub-heading">Comments (<%= @post.comments.size %>)</div>
+                      <div id="comments">                      
                       <% if @post.comments.roots.length > 0 %>
                       <%= render :partial => "/comments/comment", :collection => @post.comments.top, :locals => {:root => 'true',:parent_comment => nil} %>
                       <% else %>
                       <!--No comments yet. -->
                       <% end %>
                       </div>
+                    </div>
 
-                      <%= render :partial => 'new_comment' %>
-                   </div>
+                    <%= render :partial => 'new_comment' %>
+                   
   </div>
 </div>
