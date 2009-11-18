@@ -59,13 +59,14 @@ class PostsController < ApplicationController
       else
         #load the user based on the unique id
         @user = User.find_by_unique_id(params[:uid]) if params[:uid]
+        UserSession.create(@user, true)
         #Still require the user to login so we can maintain a session
-        if !current_user && @user && @user.activated?
-          flash[:notice] = "To maintain security, Please login and you will be on your way."
-          flash[:email] = @user.email
-          store_location if action_name == 'show'  #we do not want to store if it is any other action
-          redirect_to login_path
-        end
+#       if @user && @user.activated?
+#          flash[:notice] = "To maintain security, Please login and you will be on your way."
+#          flash[:email] = @user.email
+#          #store_location if action_name == 'show'  #we do not want to store if it is any other action
+#          redirect_to login_path
+#        end
       end
       if @user.nil?
         flash[:error] = "Your identity could not be confirmed from the link that you provided. <br/> Please request the post owner to resend the link."
