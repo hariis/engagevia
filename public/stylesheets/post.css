@@ -429,7 +429,7 @@ div#twitter_followers ul li {
     font-size: 14px;
 }
 .poststat {
-    float: left;
+    clear: both;
     margin-left: 0px;
     margin-top: 5px;
     font-size: 14px;
