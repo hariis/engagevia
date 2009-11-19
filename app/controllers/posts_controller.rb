@@ -59,7 +59,8 @@ class PostsController < ApplicationController
       else
         #load the user based on the unique id
         @user = User.find_by_unique_id(params[:uid]) if params[:uid]
-        UserSession.create(@user, true)
+        user_session = UserSession.find
+        UserSession.create(@user, true) if !user_session
         #Still require the user to login so we can maintain a session
 #       if @user && @user.activated?
 #          flash[:notice] = "To maintain security, Please login and you will be on your way."
