@@ -71,7 +71,7 @@ html,body {
 }
 #post-content{
   margin: 5px 275px;
-  margin:17px auto;
+  margin:17px;
   overflow:hidden;
   text-align:left;
   color: #000;
