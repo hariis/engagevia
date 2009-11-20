@@ -65,7 +65,7 @@
         <li><%= link_to "Admin", admin_path %></li>
     <% end %>
    <% else %>
-     <li id="non-member-name"style="color:#FF60B0;"> <%="Welcome #{current_user.display_name}" %></li>
+     <li id="non-member-name"style="color:#FF60B0;"> <%="Welcome #{@user.display_name}" %></li>
    <% end %>
 </ul>
 </div>
