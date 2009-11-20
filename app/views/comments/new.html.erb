@@ -1,7 +1,8 @@
 <h2>You are replying to </h2>
-<span style="background-color:#dcdcdc;margin-bottom:10px;">
-<%= truncate(@parent_comment.body,  100) %> </span><span style="color:#0062F6;font-size:85%;"> by <%= @parent_comment.owner.display_name(@post) %></span>
-
+<div style="background-color:#e9e2e2;margin-bottom:10px;">
+<span style="font-size:12px;">
+<%= @parent_comment.body %> </span><span style="color:#0062F6;font-size:10px;"> by <%= @parent_comment.owner.display_name(@post) %></span>
+</div>
 <%  form_remote_tag :url => { :controller => 'comments', :action => "create", :pcid => "#{@parent_comment.id}",:pid => "#{@post.unique_id}",:uid => params[:uid] }, :html => {:id => 'comment_form' },
       :before => "Element.show('n-spinner');",
       :complete => "Element.hide('n-spinner')" do %>
