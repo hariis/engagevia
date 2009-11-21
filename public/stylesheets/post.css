@@ -386,9 +386,9 @@ clear: right;
     text-align:justify;
 }
 .url {
-    font-size:70%;
+    font-size:90%;
     clear:both;
-    padding-left:12px;
+    padding-left:2px;
     padding-top:5px;
     color: #0062f6;
 }

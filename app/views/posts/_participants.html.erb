@@ -9,7 +9,7 @@
     <% unless @post.engagements.empty? %>
         <% @post.engagements.each do |engagement| %>
         <% if engagement.invitee.id == @user.id  %>
-        <li id='you'><%= image_tag "user_red.png" %> You
+        <li id='you'><%= image_tag "user_red.png" %> Me
           <span id="notify-option">
                <% if engagement.notify_me? %>
                   <%= image_tag "email.png", :id => "enabled" %><%= image_tag "email_delete.png", :id => "disabled" , :style => "display:none;" %>
@@ -22,9 +22,9 @@
         <% else %>         
 
         <% if engagement.invitee.member? %>
-          <li><%= image_tag "user_green.png" %> <%=  engagement.invitee.display_name(nil,engagement) %>
+          <li><%= image_tag "user_green.png" %> <%=  engagement.invitee.display_name(nil,engagement).capitalize %>
         <% else %>
-          <li><%= image_tag "user_green.png" %> <%=  engagement.invitee.display_name(nil,engagement) %>
+          <li><%= image_tag "user_green.png" %> <%=  engagement.invitee.display_name(nil,engagement).capitalize %>
         <% end  %>
                   
 
