@@ -38,7 +38,8 @@
               <ul>
                 <% engagements_by_invite.sort.each do |invited_by, engagements| %>
                       <li>
-                        <span class="inviter"><%= User.find(invited_by).display_name %> invited</span> <br/>
+                        <% inviter = User.find(invited_by) %>
+                        <span class="inviter"><%= inviter.id == @user.id ? "I" : inviter.display_name %> invited</span> <br/>
                         <% invitees = [] %>
                         <% engagements_by_date = engagements.group_by { |t| t.invited_when } if engagements %>
                         <% engagements_by_date.sort.each do |invited_when, engagements| %>
