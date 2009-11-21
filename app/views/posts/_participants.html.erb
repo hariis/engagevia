@@ -22,9 +22,9 @@
         <% else %>         
 
         <% if engagement.invitee.member? %>
-          <li><%= image_tag "user_green.png" %> <%=  engagement.invitee.display_name(nil,engagement) %>
+          <li><%= image_tag "user_green.png" %> <%=  engagement.invitee.display_name(nil,engagement).capitalize %>
         <% else %>
-          <li><%= image_tag "user_green.png" %> <%=  engagement.invitee.display_name(nil,engagement) %>
+          <li><%= image_tag "user_green.png" %> <%=  engagement.invitee.display_name(nil,engagement).capitalize %>
         <% end  %>
                   
 

@@ -10,7 +10,7 @@
                            </div>
                            <div><%= in_place_rich_editor_field :post, :description ,{}, :size => '75', :mode => 'tinymce_advanced_with_save_options' %><%= image_tag '/images/pencil.png' %></div>
                         <% else %>
-                           <div class="subject"> <%= @post.subject %></div>
+                           <div class="subject"> <%= @post.subject.capitalize %></div>
                            <% if @post.url != "Add a link" %>
                            <div class="url">Check out:<%= link_to h(@post.url) , h(@post.url) %></div>
                            <% end %>
