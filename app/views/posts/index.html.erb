@@ -14,8 +14,8 @@
     <% if post.url != "Add a link" %>
     <br/><span style="font-size:14px;"><%= link_to  h(post.url), h(post.url) %> </span>
     <% end %>
-      
-    <span class="poststat"><%= link_to "#{get_comments_count(post)} | #{get_participants_count(post)} | " + "Last updated "+ "#{time_ago_in_words(post.updated_at)}" + " ago" , post.get_url_for(@user,'show'), :class => 'dashboard-comments' %></span>
+
+    <span class="poststat"><%= link_to "#{get_comments_count(post)} | #{get_participants_count(post)} | " + "Updated "+ "#{time_ago_in_words(post.updated_at)}" + " ago " + "by #{last_updated_by(post)}" , post.get_url_for(@user,'show'), :class => 'dashboard-comments' %></span>
 
     <span class="timestamp">started by <%= post.owner.email == current_user.email ? "Me" : post.owner.display_name.capitalize %>
       <% if post.owner == @user %>
