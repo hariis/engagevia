@@ -492,13 +492,13 @@ margin-top:5%;
 }
 #whatis {
     float: left;
+    margin-top:20px;
 }
 ul#participants-list li:hover {
     border-top: 2px solid #fff;
     border-bottom: 2px solid #fff;
     background-color:#f3f390;
     color:#000;
-    margin-top:20px;
 }
 ul#participants-list li.new-p:hover {
     color: #fff;
