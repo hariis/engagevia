@@ -56,6 +56,7 @@ html,body {
   background:#333333 none repeat scroll 0 0;
   min-width:1625px;
   line-height: 1.2em;
+  width: 100%;
   /* background-image: url('/images/pattern_096.gif'); */
 }
 #wrapper{
@@ -191,7 +192,6 @@ background: #f95b08 url('/images/bg-widgets.png') repeat-x scroll 0 0;
 overflow:hidden;
 padding:10px 20px 7px 30px;
 height:33px;
-width:100%;
 }
 #header {
 /* background: #575455 url('/images/bg-header.png') repeat-x scroll 0 0; */
@@ -199,9 +199,7 @@ width:100%;
 overflow:hidden;
 padding:10px 20px 7px 30px;
 height:58px;
-width:100%;
 margin: 0 auto;
-width: 1200px;
 }
 * html #header {
 height:1%;
@@ -275,7 +273,6 @@ background-color:#e4a1e4;
 }
 #home-content {
 overflow:hidden;
-width:100%;
 font-size: 14px;
 }
 #dashboard-content {
@@ -483,7 +480,6 @@ h3 {
     height:33px;
     padding-bottom:1em;
     text-align:center;
-    width:100%;
     color: #fff;
     font-size:85%;
     position:absolute;
@@ -496,7 +492,6 @@ h3 {
     height:33px;
     padding-bottom:1em;
     text-align:center;
-    width:100%;
     color: #fff;
     font-size:85%;
     position:relative;
