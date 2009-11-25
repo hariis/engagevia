@@ -65,7 +65,6 @@ html,body {
 }
 #content {
   margin: 5px 275px;
-  padding: 10px;
   margin:0 auto;
   text-align:left;
   color: #000;
@@ -183,6 +182,17 @@ outline-style:none;
 outline-width:medium;
 margin-top:10px;
 }
+#signup input {
+    background-color:yellow;
+    font-size:20px;
+    font-weight:bold;
+    margin-left:18%;
+    margin-top:10px;
+    outline-color:-moz-use-text-color;
+    outline-style:none;
+    outline-width:medium;
+    padding:8px;
+}
 form {
 margin:0;
 padding:0;
@@ -192,6 +202,13 @@ background: #f95b08 url('/images/bg-widgets.png') repeat-x scroll 0 0;
 overflow:hidden;
 padding:10px 20px 7px 30px;
 height:33px;
+}
+.banner {
+    color:yellow;
+    font-size:21px;
+    font-style:italic;
+    font-weight:bold;
+    text-align:center;
 }
 #header {
 /* background: #575455 url('/images/bg-header.png') repeat-x scroll 0 0; */
@@ -279,7 +296,6 @@ font-size: 14px;
     overflow:hidden;
     width:100%;
     font-size: 18px;
-    width:90%;
 }
 .features {
 padding:2px 0 0;
@@ -453,19 +469,36 @@ div#twitter_followers ul li {
    margin-left:120px;
 }
 #signup{
-float: right;
+float: left;
 color:#fff;
 background-color:#5b5b5b;
 padding: 10px;
 width:420px;
 -moz-border-radius:14px;
 -moz-box-shadow:2px 2px 14px #FFFFFF;
+margin-left:33%;
+margin-top:5%;
+}
+#howto{
+    color:#000;
+    background-color:#8dee14;
+    padding: 10px;
+    width:820px;
+    -moz-border-radius:14px;
+    -moz-box-shadow:2px 2px 14px #f1f444;
+    float: right;
+    clear:right;
+    margin-top: 30px;
+}
+#whatis {
+    float: left;
 }
 ul#participants-list li:hover {
     border-top: 2px solid #fff;
     border-bottom: 2px solid #fff;
     background-color:#f3f390;
     color:#000;
+    margin-top:20px;
 }
 ul#participants-list li.new-p:hover {
     color: #fff;
