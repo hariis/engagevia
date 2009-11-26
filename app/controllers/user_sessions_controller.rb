@@ -12,7 +12,7 @@ class UserSessionsController < ApplicationController
     if !@user.nil?
         if @user.member?
             if @user.activated?
-                @user_session = UserSession.new(params[:user_session])
+                @user_session = UserSession.new(params[:user_session], true)
                 if @user_session.save
                   #flash[:notice] = "Welcome #{@user.display_name}! "
                   redirect_back_or_default(posts_url)
