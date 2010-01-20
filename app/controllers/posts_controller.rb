@@ -110,6 +110,10 @@ class PostsController < ApplicationController
 
   # GET /posts/1
   # GET /posts/1.xml
+  def ushow
+    @user = current_user
+    show
+  end
   def show
     @post = params[:pid] ? Post.find_by_unique_id(params[:pid]) : nil
     if @post
