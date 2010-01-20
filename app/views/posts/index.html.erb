@@ -12,7 +12,7 @@
     <span style="color:green"><%  "#{count}." %> <% count = count + 1 %></span>
     <div style="clear:both;"><%= link_to  h(post.subject.capitalize), post.get_url_for(@user,'ushow')  %></div>
     <% if post.url != "Add a link" %>
-    <span style="font-size:14px;clear:both;"><%= link_to  h(post.url), h(post.url) %> </span>
+    <div style="font-size:14px;clear:both;"><%= link_to  h(post.url), h(post.url) %> </div>
     <% end %>
 
     <span class="poststat"><%= link_to "#{get_comments_count(post)} | #{get_participants_count(post)} | " + "Updated "+ "#{time_ago_in_words(post.updated_at)}" + " ago " + "by #{last_updated_by(post)}" , post.get_url_for(@user,'ushow'), :class => 'dashboard-comments' %></span>
