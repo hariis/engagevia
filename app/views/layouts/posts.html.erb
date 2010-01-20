@@ -96,7 +96,7 @@
   
 <%= yield  %>
 
-<% if controller.action_name == 'show' %>
+<% if controller.action_name == 'show' || controller.action_name == 'ushow' %>
     <div id="footer-d">
 <% else %>
      <div id="footer">

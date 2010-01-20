@@ -1,8 +1,8 @@
 class PostsController < ApplicationController
   layout :choose_layout, :except => [:plaxo]
   
-  before_filter :load_user, :except => [:new, :create,:dashboard,:privacy,:about,:blog,:contact,:plaxo, :ushow]
-  before_filter :check_activated_member, :except => [:new, :show,:send_invites, :create, :dashboard, :index, :privacy,:about,:blog,:contact,:plaxo]
+  before_filter :load_user, :except => [:new, :create,:dashboard,:privacy,:about,:blog,:contact,:plaxo]
+  before_filter :check_activated_member, :except => [:new, :ushow,:send_invites, :create, :dashboard, :index, :privacy,:about,:blog,:contact,:plaxo]
   
   def privacy
   end
@@ -53,7 +53,7 @@ class PostsController < ApplicationController
   end
 
   def load_user
-    if (action_name == 'show' || action_name == 'send_invites')
+    if (action_name == 'ushow' || action_name == 'send_invites')
       
       if current_user && current_user.activated?
         @user = current_user
@@ -110,11 +110,7 @@ class PostsController < ApplicationController
 
   # GET /posts/1
   # GET /posts/1.xml
-  def ushow
-    @user = User.find_by_unique_id(params[:uid]) if params[:uid]
-    if @user.nil?
-        flash[:error] = "There is some problem with this Dashboard page. Please refresh or login and try again."        
-    end
+  def ushow       
     @post = params[:pid] ? Post.find_by_unique_id(params[:pid]) : nil
     if @post
       if @post.tag_list == ""
