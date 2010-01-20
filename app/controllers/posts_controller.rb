@@ -111,7 +111,10 @@ class PostsController < ApplicationController
   # GET /posts/1
   # GET /posts/1.xml
   def ushow
-    @user = current_user
+    @user = User.find_by_unique_id(params[:uid]) if params[:uid]
+    if @user.nil?
+        flash[:error] = "There is some problem with this Dashboard page. Please refresh or login and try again."        
+    end
     @post = params[:pid] ? Post.find_by_unique_id(params[:pid]) : nil
     if @post
       if @post.tag_list == ""
