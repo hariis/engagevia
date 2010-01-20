@@ -54,28 +54,20 @@ class PostsController < ApplicationController
 
   def load_user
     if (action_name == 'show' || action_name == 'send_invites')
-      @user = User.find_by_unique_id(params[:uid]) if params[:uid]
-      if @user && @user.activated? && !current_user   #If user is a member and not logged, make them log in
-          flash[:notice] = "Since you are already a member, please login for the complete experience."
+      
+      if current_user && current_user.activated?
+        @user = current_user
+      else
+        #load the user based on the unique id
+        @user = User.find_by_unique_id(params[:uid]) if params[:uid]
+        #if user is member, so force login
+        if @user && @user.activated?
+          flash[:notice] = "Please login and you will be on your way."
           flash[:email] = @user.email
           store_location if action_name == 'show'  #we do not want to store if it is any other action
           redirect_to login_path
-       end
-#      if current_user && current_user.activated?
-#        @user = current_user
-#      else
-#        #load the user based on the unique id
-#        @user = User.find_by_unique_id(params[:uid]) if params[:uid]
-#        user_session = UserSession.find
-#        UserSession.create(@user, true) if !user_session
-#        #Still require the user to login so we can maintain a session
-##       if @user && @user.activated?
-##          flash[:notice] = "To maintain security, Please login and you will be on your way."
-##          flash[:email] = @user.email
-##          #store_location if action_name == 'show'  #we do not want to store if it is any other action
-##          redirect_to login_path
-##        end
-#      end
+        end
+      end
       if @user.nil?
         flash[:error] = "Your identity could not be confirmed from the link that you provided. <br/> Please request the post owner to resend the link."
         force_logout
