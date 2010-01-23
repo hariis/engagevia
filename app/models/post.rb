@@ -64,6 +64,10 @@ class Post < ActiveRecord::Base
   end
 
   def get_url_for(user,action)
-    DOMAIN + "posts/" + action + "?pid=#{self.unique_id};uid=#{user.unique_id}"
+    if action == 'ushow'
+      DOMAIN + "posts/" + action + "/#{self.unique_id}"
+    else
+      DOMAIN + "posts/" + action + "?pid=#{self.unique_id};uid=#{user.unique_id}"
+    end
   end
 end
