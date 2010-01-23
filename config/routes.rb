@@ -1,6 +1,6 @@
 ActionController::Routing::Routes.draw do |map|
   map.root :controller => 'posts', :action => 'dashboard'
-  #map.connect '/posts/ushow', :controller => 'posts', :action => 'ushow',  :conditions => { :method => :get }
+  map.connect '/posts/ushow', :controller => 'posts', :action => 'ushow',  :conditions => { :method => :get }
   #map.connect '/posts/show', :controller => 'posts', :action => 'show',  :conditions => { :method => :get }
   map.connect '/posts/send_invites', :controller => 'posts', :action => 'send_invites'
   map.connect '/posts/plaxo', :controller => 'posts', :action => 'plaxo'
