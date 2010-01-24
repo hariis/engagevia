@@ -72,7 +72,7 @@
   <div id="widgets">
     <ul>
       <li id="invite-status"></li>      
-      <li><%= image_tag "group_add.png" %> <%= facebox_link_to "Invite Friends",  :url => @post.get_url_for(@user,'send_invites') %></li>
+      <li><%= image_tag "group_add.png" %> <%= facebox_link_to "Invite Friends",  :url => @post.get_url_for(current_user,'send_invites') %></li>
      <%  if !current_user || !current_user.activated? %>
         <li style="float:right"><%= link_to "Become a Member", new_user_path %> </li>
        </ul>
@@ -88,7 +88,7 @@
 <p><%= flash[:error] %></p>
   </div>
 <% end %>
-  <% if @user.non_member? && @user.first_name == 'firstname' %>
+  <% if !current_user && @user.non_member? && @user.first_name == 'firstname' %>
   <div id="name-request">
     <%= render :partial => 'name_request' %>
   </div>

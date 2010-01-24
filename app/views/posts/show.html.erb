@@ -4,7 +4,27 @@ If you clicked on the link from your email, please try copying the pasting the l
 
 <% else %>  
 <div id="home-content">
-<%= render :partial => 'participants', :object => @participants %>
-<%= render :partial => 'forum' %>
+                    <div id="parent-post">
+                      <div id="post-body">
+                        <% if @post.owner == current_user %>
+                           <div class="subject"> <%= in_place_editor_field :post, 'subject',{}, :size => '80', :text_between_controls => ' or ',:save_text => 'save' %> <%= image_tag '/images/pencil.png' %></div>
+                           <div>
+                           <span id="url-text" class="url"><%= render :partial => 'update_url_text', :object => @post  %></span><%= image_tag '/images/pencil.png' %>
+                           <span id="url-link"><%= render :partial => 'update_url_link', :object => @post %></span>
+                           </div>
+                           <div><%= in_place_rich_editor_field :post, :description ,{}, :size => '75', :mode => 'tinymce_advanced_with_save_options' %><%= image_tag '/images/pencil.png' %></div>
+                        <% else %>
+                           <div class="subject"> <%= @post.subject.capitalize %></div>
+                           <% if @post.url != "Add a link" %>
+                           <div class="url">Check out:<%= link_to h(@post.url) , h(@post.url) %></div>
+                           <% end %>
+                           <div class="description"> <%= @post.description %></div>
+                        <% end %>
+                      </div>
+                      <span style="color:#0062f6;">
+                      <%= "#{@post.owner.display_name} <br/> #{@post.created_at.to_s(:short)}" %></span>
+                      <span style="color:#0062f6;float:right;width:8%;">
+                      <%= image_tag @post.owner.avatar.url(:thumb) if @post.owner.avatar.file? %></span>
+                    </div>
 </div>
 <% end %>

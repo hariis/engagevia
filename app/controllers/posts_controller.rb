@@ -2,7 +2,7 @@ class PostsController < ApplicationController
   layout :choose_layout, :except => [:plaxo]
   
   before_filter :load_user, :except => [:new, :create,:dashboard,:privacy,:about,:blog,:contact,:plaxo,:ushow,:show]
-  before_filter :check_activated_member, :except => [:new, :show,:send_invites, :create, :dashboard, :index, :privacy,:about,:blog,:contact,:plaxo]
+  before_filter :check_activated_member, :except => [:new, :ushow,:show,:send_invites, :create, :dashboard, :index, :privacy,:about,:blog,:contact,:plaxo]
   
   def privacy
   end
@@ -113,7 +113,7 @@ class PostsController < ApplicationController
   def ushow       
     @post = params[:id] ? Post.find_by_unique_id(params[:id]) : nil
     
-    @user = current_user
+    #@user = current_user
     if @post
       if @post.tag_list == ""
         @post.tag_list = "Click here to Add"

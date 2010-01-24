@@ -37,8 +37,8 @@ class UserSessionsController < ApplicationController
   def destroy  
     @user_session = UserSession.find  
     @user_session.destroy  
-    flash[:notice] = "Successfully logged out."
-    logger.info 'Signing off'
+    #flash[:notice] = "Successfully logged out."
+    #logger.info 'Signing off'
     redirect_to root_url
   end  
   def method_missing(methodname, *args)
