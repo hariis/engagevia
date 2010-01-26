@@ -24,6 +24,7 @@ class PostsController < ApplicationController
       @posts = Post.find(:all)
       @participants = Engagement.find(:all)
       @comments = Comment.find(:all)
+      @user = current_user
     else
       redirect_to root_path
     end
@@ -42,7 +43,7 @@ class PostsController < ApplicationController
     if [ 'new', 'index' ].include? action_name
       'application'
     elsif ['show','ushow'].include? action_name
-    'posts'
+    'application'
     elsif ['dashboard','privacy','about','blog','contact', 'admin'].include? action_name
       'application'  #the one with shorter width content section
     end
