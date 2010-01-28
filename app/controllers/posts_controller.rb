@@ -1,8 +1,8 @@
 class PostsController < ApplicationController
   layout :choose_layout, :except => [:plaxo]
   
-  before_filter :load_user, :except => [:new, :create,:dashboard,:privacy,:about,:blog,:contact,:plaxo,:ushow,:show]
-  before_filter :check_activated_member, :except => [:new, :ushow,:show,:send_invites, :create, :dashboard, :index, :privacy,:about,:blog,:contact,:plaxo]
+  before_filter :load_user, :except => [:new, :create,:dashboard,:privacy,:about,:blog,:contact,:plaxo]
+  before_filter :check_activated_member, :except => [:new,:ushow, :show,:send_invites, :create, :dashboard, :index, :privacy,:about,:blog,:contact,:plaxo]
   
   def privacy
   end
@@ -31,19 +31,19 @@ class PostsController < ApplicationController
   end
 
   def method_missing(methodname, *args)
-#       @methodname = methodname
-#       @args = args
-#       if methodname == :controller
-#         controller = 'posts'
-#       else
-#         render 'posts/404', :status => 404, :layout => false
-#       end
+       @methodname = methodname
+       @args = args
+       if methodname == :controller
+         controller = 'posts'
+       else
+         render 'posts/404', :status => 404, :layout => false
+       end
    end
   def choose_layout
     if [ 'new', 'index' ].include? action_name
       'application'
     elsif ['show','ushow'].include? action_name
-    'application'
+    'posts'
     elsif ['dashboard','privacy','about','blog','contact', 'admin'].include? action_name
       'application'  #the one with shorter width content section
     end
@@ -113,8 +113,7 @@ class PostsController < ApplicationController
   # GET /posts/1.xml
   def ushow       
     @post = params[:id] ? Post.find_by_unique_id(params[:id]) : nil
-    
-    #@user = current_user
+    @user = current_user
     if @post
       if @post.tag_list == ""
         @post.tag_list = "Click here to Add"

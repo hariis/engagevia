@@ -34,7 +34,7 @@ Rails::Initializer.run do |config|
   # config.active_record.observers = :cacher, :garbage_collector, :forum_observer
 
   config.action_controller.session_store = :active_record_store
-  
+  config.action_controller.session[:domain] = '.engagevia.com'
   # Set Time.zone default to the specified zone and make Active Record auto-convert to this zone.
   # Run "rake -D time" for a list of tasks for finding time zone names.
   #config.time_zone = 'UTC'
