@@ -131,8 +131,8 @@ class PostsController < ApplicationController
   end
   def show
     @post = params[:pid] ? Post.find_by_unique_id(params[:pid]) : nil
-    @post = params[:id] ? Post.find_by_unique_id(params[:id]) : @post
-    @user = current_user
+    #@post = params[:id] ? Post.find_by_unique_id(params[:id]) : @post
+    
     if @post
       if @post.tag_list == ""
         @post.tag_list = "Click here to Add"
