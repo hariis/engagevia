@@ -1,8 +1,9 @@
 class PostsController < ApplicationController
   layout :choose_layout, :except => [:plaxo]
   
-  before_filter :load_user, :except => [:new, :create,:dashboard,:privacy,:about,:blog,:contact,:plaxo]
-  before_filter :check_activated_member, :except => [:new,:show,:send_invites, :create, :dashboard, :index, :privacy,:about,:blog,:contact,:plaxo]
+  before_filter :load_user, :except => [:new, :create,:dashboard,:privacy,:about,:blog,:contact,:plaxo,:help]
+  before_filter :check_activated_member,
+    :except => [:new,:show,:send_invites, :create, :dashboard, :index, :privacy,:about,:blog,:contact,:plaxo,:help]
   
   def privacy
   end
@@ -18,7 +19,8 @@ class PostsController < ApplicationController
 
   def plaxo    
   end
-
+  def help    
+  end
   def admin
     if current_user && current_user.admin?
       @posts = Post.find(:all)
@@ -44,7 +46,7 @@ class PostsController < ApplicationController
       'application'
     elsif ['show','ushow'].include? action_name
     'posts'
-    elsif ['dashboard','privacy','about','blog','contact', 'admin'].include? action_name
+    elsif ['dashboard','privacy','about','blog','contact', 'admin','help'].include? action_name
       'application'  #the one with shorter width content section
     end
   end

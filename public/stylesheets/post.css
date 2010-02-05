@@ -29,6 +29,9 @@ width:250px;
 top: 134px;
 right: 0px; */
 }
+#js_snippet textarea {
+    width:750px;
+}
 #howto{
     color:#fff;
     background:transparent url('/images/shadow-bg-left2.png') no-repeat scroll center bottom;
@@ -547,7 +550,7 @@ div#twitter_followers ul li {
 ul#participants-list li:hover {
     border-top: 2px solid #fff;
     border-bottom: 2px solid #fff;
-    background-color:#f3f390;
+    background-color:#f1f1bc;
     color:#000;
 }
 ul#participants-list li.new-p:hover {

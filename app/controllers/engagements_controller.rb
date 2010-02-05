@@ -30,7 +30,18 @@ class EngagementsController < ApplicationController
 
   def destroy
   end
-
+  def resend_invite
+    eng_exists = Engagement.find(params[:id]) if params[:id]
+    if eng_exists
+      @participants = {}
+      eng_exists.invitee = invitee
+      @participants[invitee] = eng_exists
+      @post.send_invitations(@participants,@user) if @participants.size > 0      
+      render :update do |page|        
+        page.replace_html "resend", "Invite sent"
+      end
+    end
+  end
  def get_followers
     # Renders "hello david"
      #render :inline => "<%= 'hello ' + name %>", :locals => { :name => "david" }

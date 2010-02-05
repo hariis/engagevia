@@ -47,6 +47,11 @@
                     <% else %>
                       No photo available
                    <% end %>
+                      <% if @post.owner.id == @user.id && engagement.invitee.id != @user.id %>
+                          <div id="resend" style="float:right;margin-bottom:10px;">
+                              <%= button_to_remote 'Resend Invite', :url => {:controller => 'engagements', :action => 'resend_invite', :id => engagement.id} %>
+                           </div>
+                      <% end %>
                       <% if engagement.invitee.id == @user.id  %>
                             <div id="notification" style="float:right;margin-bottom:10px;">
                                 <% if engagement.notify_me? %>
