@@ -2,7 +2,7 @@ class PostsController < ApplicationController
   layout :choose_layout, :except => [:plaxo]
   
   before_filter :load_user, :except => [:new, :create,:dashboard,:privacy,:about,:blog,:contact,:plaxo]
-  before_filter :check_activated_member, :except => [:new,:ushow, :show,:send_invites, :create, :dashboard, :index, :privacy,:about,:blog,:contact,:plaxo]
+  before_filter :check_activated_member, :except => [:new,:show,:send_invites, :create, :dashboard, :index, :privacy,:about,:blog,:contact,:plaxo]
   
   def privacy
   end
@@ -54,7 +54,7 @@ class PostsController < ApplicationController
   end
 
   def load_user
-    if (action_name == 'show' || action_name == 'ushow' || action_name == 'send_invites')
+    if (action_name == 'show'  || action_name == 'send_invites')
       
       if current_user && current_user.activated?
         @user = current_user
@@ -110,28 +110,9 @@ class PostsController < ApplicationController
   end
 
   # GET /posts/1
-  # GET /posts/1.xml
-  def ushow       
-    @post = params[:id] ? Post.find_by_unique_id(params[:id]) : nil
-    @user = current_user
-    if @post
-      if @post.tag_list == ""
-        @post.tag_list = "Click here to Add"
-      end
-      @engagement = Engagement.new
-    else
-      flash[:error] = "We could not locate this post. Please check the address and try again."
-      render 'posts/404', :status => 404, :layout => false and return
-    end
-
-    respond_to do |format|
-      format.html  { render :action => :show }
-      format.xml  { render :xml => @post }
-    end
-  end
+  # GET /posts/1.xml  
   def show
     @post = params[:pid] ? Post.find_by_unique_id(params[:pid]) : nil
-    #@post = params[:id] ? Post.find_by_unique_id(params[:id]) : @post
     
     if @post
       if @post.tag_list == ""

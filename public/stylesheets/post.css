@@ -29,6 +29,68 @@ width:250px;
 top: 134px;
 right: 0px; */
 }
+#howto{
+    color:#fff;
+    background:transparent url('/images/shadow-bg-left2.png') no-repeat scroll center bottom;
+    height:400px;
+    width:641px;
+    float: left;
+    clear:right;
+    line-height:1.5;
+    text-align:left;
+    padding: 0 20px;
+}
+#howto-blurb {
+    float:left;
+    margin:0 0 100px;
+    width:623px;
+    color: #fff;
+}
+#howto ol li {
+    padding-left:3px;
+}
+#blurb {
+    float:left;
+    margin:0 0 100px;
+    width:623px;
+    color: #fff;
+}
+
+#about{
+    background:transparent url('/images/shadow-bg-left2.png') no-repeat scroll center bottom;
+    color:#fff;
+    float:left;
+    font-size:24px;
+    font-weight:bold;
+    line-height:1.5;
+    text-align:center;
+    width:100%;
+    height:400px;
+    width:641px;
+}
+div.blurb_about_line {
+float:left;
+font-size:22px;
+line-height:24px;
+margin:7px 0 0;
+text-align:left;
+vertical-align:middle;
+padding-left: 65px;
+clear:both;
+}
+div.blurb_about {
+color:#0B84E8;
+font-size:24px;
+font-weight:bold;
+line-height:1.5;
+text-align:center;
+padding:20px 0 0;
+clear: both;
+}
+#container {
+ width: 925px;
+margin: 0 auto;
+}
 #participants{
     background-color:#0B84E8;
     margin-top:10px;
@@ -54,7 +116,7 @@ html,body {
   -moz-background-inline-policy:continuous;
   -moz-background-origin:padding;
   background:#333333 none repeat scroll 0 0;
-  min-width:1625px;
+  min-width:925px;
   line-height: 1.2em;
   width: 100%;
   /* background-image: url('/images/pattern_096.gif'); */
@@ -182,22 +244,34 @@ outline-style:none;
 outline-width:medium;
 margin-top:10px;
 }
-#signup input {    
+#signup-btn input {
     font-size:20px;
-    font-weight:bold;
-    margin-left:18%;
-    margin-top:10px;
+    font-weight:bold;   
     outline-color:-moz-use-text-color;
     outline-style:none;
     outline-width:medium;
     padding:8px;
+    color:#ff0000;
+}
+#signup {
+    float: left;
+    color:#fff;
+    margin:50px 0 0 20px;
+}
+#signup-blurb{
+background-color:#5b5b5b;
+padding: 10px;
+width:220px;
+-moz-border-radius:14px;
+-moz-box-shadow:2px 2px 14px #FFFFFF;
+margin:20px 0 0 20px;
 }
 form {
 margin:0;
 padding:0;
 }
 #widgets {
-background: #f95b08 url('/images/bg-widgets.png') repeat-x scroll 0 0;
+background: transparent url('/images/bg-widgets.png') repeat-x scroll 0 0;
 overflow:hidden;
 padding:10px 20px 7px 30px;
 height:33px;
@@ -467,32 +541,9 @@ div#twitter_followers ul li {
 #notify-option {
    margin-left:120px;
 }
-#signup{
-float: left;
-color:#fff;
-background-color:#5b5b5b;
-padding: 10px;
-width:420px;
--moz-border-radius:14px;
--moz-box-shadow:2px 2px 14px #FFFFFF;
-margin-left:10%;
-margin-top:5%;
-}
-#howto{
-    color:#000;
-    background-color:#8dee14;
-    padding: 10px;
-    width:820px;
-    -moz-border-radius:14px;
-    -moz-box-shadow:2px 2px 14px #f1f444;
-    float: right;
-    clear:right;
-    margin-top: 30px;
-}
-#whatis {
-    float: left;
-    margin-top:20px;
-}
+
+
+
 ul#participants-list li:hover {
     border-top: 2px solid #fff;
     border-bottom: 2px solid #fff;
@@ -516,6 +567,7 @@ h3 {
     font-size:85%;
     position:absolute;
     bottom: 0px;
+    width:100%;
 }
 #footer-d {
     background: #333333 url('/images/bg-widgets.png') repeat-x scroll 0 0;
