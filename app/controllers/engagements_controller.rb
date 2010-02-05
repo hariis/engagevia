@@ -36,9 +36,12 @@ class EngagementsController < ApplicationController
       @participants = {}
       @participants[eng_exists.invitee] = eng_exists
       @post.send_invitations(@participants,@post.owner) if @participants.size > 0
-      render :update do |page|        
-        page.replace_html "resend", "Invite sent"
-      end
+      @status = "Invite sent"
+    else
+      @status = "Error sending! Try again"
+    end
+    render :update do |page|
+        page.replace_html "resend", @status
     end
   end
  def get_followers
