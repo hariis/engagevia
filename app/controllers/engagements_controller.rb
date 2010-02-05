@@ -34,8 +34,7 @@ class EngagementsController < ApplicationController
     eng_exists = Engagement.find(params[:id]) if params[:id]
     if eng_exists
       @participants = {}
-      eng_exists.invitee = invitee
-      @participants[invitee] = eng_exists
+      @participants[eng_exists.invitee] = eng_exists
       @post.send_invitations(@participants,@post.owner) if @participants.size > 0
       render :update do |page|        
         page.replace_html "resend", "Invite sent"
