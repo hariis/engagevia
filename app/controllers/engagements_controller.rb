@@ -36,7 +36,7 @@ class EngagementsController < ApplicationController
       @participants = {}
       eng_exists.invitee = invitee
       @participants[invitee] = eng_exists
-      @post.send_invitations(@participants,@user) if @participants.size > 0      
+      @post.send_invitations(@participants,@post.owner) if @participants.size > 0
       render :update do |page|        
         page.replace_html "resend", "Invite sent"
       end
