@@ -23,45 +23,13 @@
                       <%= image_tag @post.owner.avatar.url(:thumb) if @post.owner.avatar.file? %></span>
                     </div>
     <div id="tags">
-      <strong style="float:left;">Keywords that describe this conversation:</strong><%= image_tag '/images/pencil.png' %>
+      <strong style="float:left;">Keywords:</strong><%= image_tag '/images/pencil.png' %>
       <span style="font-size:85%;">(separate multiple keywords with comma)</span>
       <%= in_place_editor_field :post, 'tag_list',{}, :size => '80',:text_between_controls => ' or ',:save_text => 'save' %>
 
     </div>
 
-    <div id="invitations">
-      <strong style="float:left;">Invitations sent:</strong><br/>
-    <% engagements = Engagement.find(:all,:conditions => ["post_id = ?", @post.id]) %>
-    <% if engagements.size > 1 %>
-          <% engagements_by_invite = engagements.group_by { |t| t.invited_by } if engagements %>
-          <% if engagements_by_invite %>
-              <ul>
-                <% engagements_by_invite.sort.each do |invited_by, engagements| %>
-                      <li>
-                        <% inviter = User.find(invited_by) %>
-                        <span class="inviter"><%= inviter.id == @user.id ? "I" : inviter.display_name %> invited</span> <br/>
-                        <% invitees = [] %>
-                        <% engagements_by_date = engagements.group_by { |t| t.invited_when } if engagements %>
-                        <% engagements_by_date.sort.each do |invited_when, engagements| %>
-                        <% engagements.each do |engagement| %>
-                            <% invitee = User.find(engagement.user_id) %>
-                            <% invitees << invitee.display_name(nil,engagement) if @post.owner.id != invitee.id %>
-                        <% end %>
-                        <% if invitees.length > 0 %>
-                        <span class="invitees">
-                        <%= invitees.join(", ") %> <%= distance_of_time_in_words(@post.created_at.utc, invited_when.utc) + " later" %></span> <br/>
-                        <% invitees = [] %>
-                        <% end %>
-                        <% end %>
-                      </li>
-
-                <% end %>
-              </ul>
-          <% end %>
-     <% else %>
-        No one has been invited yet.
-    <% end %>
-    </div>
+   
                     <div id="comments-section">
                       <div id ="comments-heading" class="sub-heading">Comments (<%= @post.comments.size %>)</div>
                       <div id="comments">                      

@@ -102,6 +102,16 @@ margin: 0 auto;
     -moz-border-radius:14px;
     -moz-box-shadow:2px 2px 14px #4B9CE0;
 }
+#invitations {
+    background-color:#89bee9;
+    /* width: 100%; */
+    padding: 5px;
+    margin-top:5px;
+    /* clear:both; */
+    overflow:auto;
+    -moz-border-radius:14px;
+    -moz-box-shadow:2px 2px 14px #4B9CE0;
+}
 #sticky-note {
     background-color: #f6f650;
     color: #000000;
@@ -588,14 +598,7 @@ h3 {
 #footer ul li,#footer-d ul li {
     display:inline;
 }
-#invitations {
-    background-color:#f6aff6;
-    width: 100%;
-    padding: 5px;
-    margin-top:5px;
-    clear:both;
-    overflow:auto;
-}
+
 #invite-status {
     color: #fff;
 }
