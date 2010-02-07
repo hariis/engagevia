@@ -41,7 +41,7 @@ class EngagementsController < ApplicationController
       @status = "Error sending! Try again"
     end
     render :update do |page|
-        page.replace_html "resend", @status
+        page.replace_html "resend_#{eng_exists.invitee.id}", @status
     end
   end
  def get_followers

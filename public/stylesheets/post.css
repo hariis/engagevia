@@ -48,6 +48,7 @@ right: 0px; */
     margin:0 0 100px;
     width:623px;
     color: #fff;
+    clear: both;
 }
 #howto ol li {
     padding-left:3px;
@@ -119,7 +120,7 @@ html,body {
   -moz-background-inline-policy:continuous;
   -moz-background-origin:padding;
   background:#333333 none repeat scroll 0 0;
-  min-width:925px;
+  min-width: 1625px;
   line-height: 1.2em;
   width: 100%;
   /* background-image: url('/images/pattern_096.gif'); */
@@ -257,7 +258,7 @@ margin-top:10px;
     color:#ff0000;
 }
 #signup {
-    float: left;
+    float: right;
     color:#fff;
     margin:50px 0 0 20px;
 }
@@ -372,6 +373,7 @@ font-size: 14px;
     overflow:hidden;
     width:100%;
     font-size: 18px;
+    width:925px;
 }
 .features {
 padding:2px 0 0;
@@ -544,8 +546,6 @@ div#twitter_followers ul li {
 #notify-option {
    margin-left:120px;
 }
-
-
 
 ul#participants-list li:hover {
     border-top: 2px solid #fff;
