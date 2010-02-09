@@ -78,28 +78,31 @@ def get_auth_from_twitter
   session[:request_token_secret] = @request_token.secret
   # Send to twitter.com to authorize
   redirect_to @request_token.authorize_url
-  return
 end
 def callback
-    @request_token = OAuth::RequestToken.new(User.consumer,
-    session[:request_token],
-    session[:request_token_secret])
-    # Exchange the request token for an access token.
-    @access_token = @request_token.get_access_token
-    @twitter_response = User.consumer.request(:get, '/account/verify_credentials.json', @access_token, { :scheme => :query_string })
-    case @twitter_response
-      when Net::HTTPSuccess
-        user_info = JSON.parse(@twitter_response.body)
-        unless user_info['screen_name']
-          @error_message = "Authentication failed"          
-        end
+    if (@user.token != "" && @user.secret != "")
+      getfollowers
+    else
+      @request_token = OAuth::RequestToken.new(User.consumer,
+      session[:request_token],
+      session[:request_token_secret])
+      # Exchange the request token for an access token.
+      @access_token = @request_token.get_access_token
+      @twitter_response = User.consumer.request(:get, '/account/verify_credentials.json', @access_token, { :scheme => :query_string })
+      case @twitter_response
+        when Net::HTTPSuccess
+          user_info = JSON.parse(@twitter_response.body)
+          unless user_info['screen_name']
+            @error_message = "Authentication failed"
+          end
 
-        # We have an authorized user, save the information to the database.
-        @user.update_attributes(:screen_name => user_info['screen_name'],:token => @access_token.token,:secret => @access_token.secret )
-        # Redirect to the show page
-        getfollowers
-      else
-          @error_message = "Authentication failed"          
+          # We have an authorized user, save the information to the database.
+          @user.update_attributes(:screen_name => user_info['screen_name'],:token => @access_token.token,:secret => @access_token.secret )
+          # Redirect to the show page
+          getfollowers
+        else
+            @error_message = "Authentication failed"
+      end
     end
      respond_to do |format|
         format.js {
