@@ -25,7 +25,7 @@
   
   
         <%= button_to_function "Invite via Twitter",
-                            visual_effect(:toggle_blind, "get_credentials", :duration => 0.5) %>
+                            visual_effect(:toggle_blind, "get_twitter_auth", :duration => 0.5) %>
         <div id="twitter-invite">
 
             <div id="twitter_followers"  style="height:600px;overflow:scroll;display: none;">
@@ -56,7 +56,21 @@
 
 
             </div>
-            
+          <div id="get_twitter_auth"  style="display: none;">
+              <p>
+                We’ll be sending you to Twitter in a moment to login and grant us access.
+                Once you allow us, we will display all your followers for you to choose.
+                </p>
+                <p>
+                    <%= submit_to_remote 'get_followers', 'Get My Followers',:method => 'get', :url => { :controller => 'engagements', :action => 'get_auth_from_twitter',:uid => "#{@user.unique_id}" },
+                              :before => "Element.toggle( 'get_credentials');Element.show('spinner');Element.show( 'twitter_followers');"  ,
+                              :with => "'twitid='+ escape($('twitter_id').value) + '&twitp=' + escape($('twitter_passwd').value)+ '&post_id=' + #{@post.id}",
+                              :update => { :success => "twitter_followers", :failure => "send-status" },
+                              :complete => "Element.hide('spinner')"%>
+
+                           or  <%= link_to_function "Cancel",   visual_effect(:toggle_blind, "get_credentials", :duration => 0.5) %>
+                  </p>
+          </div>
         </div>
 
 

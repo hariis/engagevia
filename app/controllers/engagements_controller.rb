@@ -44,9 +44,7 @@ class EngagementsController < ApplicationController
         page.replace_html "resend_#{eng_exists.invitee.id}", @status
     end
   end
- def get_followers
-    # Renders "hello david"
-     #render :inline => "<%= 'hello ' + name %>", :locals => { :name => "david" }
+ def get_followers   
      from_config = {}
      from_config[:twitid] = params[:twitid]
      from_config[:password] = params[:twitp]
@@ -73,6 +71,56 @@ class EngagementsController < ApplicationController
         }
       end
   end
+def get_auth_from_twitter
+  @request_token = User.consumer.get_request_token
+
+  session[:request_token] = @request_token.token
+  session[:request_token_secret] = @request_token.secret
+  # Send to twitter.com to authorize
+  redirect_to @request_token.authorize_url
+  return
+end
+def callback
+    @request_token = OAuth::RequestToken.new(User.consumer,
+    session[:request_token],
+    session[:request_token_secret])
+    # Exchange the request token for an access token.
+    @access_token = @request_token.get_access_token
+    @twitter_response = User.consumer.request(:get, '/account/verify_credentials.json', @access_token, { :scheme => :query_string })
+    case @twitter_response
+      when Net::HTTPSuccess
+        user_info = JSON.parse(@twitter_response.body)
+        unless user_info['screen_name']
+          @error_message = "Authentication failed"          
+        end
+
+        # We have an authorized user, save the information to the database.
+        @user.update_attributes(:screen_name => user_info['screen_name'],:token => @access_token.token,:secret => @access_token.secret )
+        # Redirect to the show page
+        getfollowers
+      else
+          @error_message = "Authentication failed"          
+    end
+     respond_to do |format|
+        format.js {
+              render_to_facebox  :partial => 'followers.html.erb', :object => @followers            
+        }
+    end
+ end
+
+def getfollowers 
+    @access_token = OAuth::AccessToken.new(User.consumer, @user.token, @user.secret)
+
+    @twitter_response = User.consumer.request(:get, '/statuses/followers.json', @access_token,
+    { :scheme => :query_string })
+    case @twitter_response
+    when Net::HTTPSuccess
+        @followers = JSON.parse(@twitter_response.body)        
+    else
+      # The user might have rejected this application. Or there was some other error during the request.
+      @error_message =  "There was a problem getting followers from Twitter.<br/> Please try again a little later."      
+    end   
+end
 
  def method_missing(methodname, *args)
        @methodname = methodname

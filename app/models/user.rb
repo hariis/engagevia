@@ -161,5 +161,9 @@ class User < ActiveRecord::Base
   def twitter_id
     (username != "" && username != 'nonmember' ) ? username : ""
   end
+
+  def self.consumer
+     OAuth::Consumer.new("2ABzvtWhFUCZFiluhc7bGg","byf0AI0N6iazhGK1AeZWOqmaOZzm0cKvsMmnu8uDIM",{:site => "http://twitter.com"})
+  end
 end
 
