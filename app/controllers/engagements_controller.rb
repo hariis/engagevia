@@ -1,5 +1,5 @@
 class EngagementsController < ApplicationController
-  before_filter :load_post, :except => [:set_notification]
+  before_filter :load_post, :except => [:set_notification, :get_auth_from_twitter, :callback]
   before_filter :load_user, :only => [:create, :get_followers]
 
   def load_user
@@ -76,12 +76,19 @@ def get_auth_from_twitter
 
   session[:request_token] = @request_token.token
   session[:request_token_secret] = @request_token.secret
+  session[:post_id] = params[:post_id] if params[:post_id]
+  session[:uid] = params[:uid] if params[:uid]
   # Send to twitter.com to authorize
   redirect_to @request_token.authorize_url
 end
 def callback
-    if (@user.token != "" && @user.secret != "")
-      getfollowers
+    @user = User.find_by_unique_id(session[:uid]) if session[:uid]
+    @post = Post.find(session[:post_id]) if session[:post_id]
+
+    if (@user.nil? || @post.nil?)
+        @error_message = "We are having problems locating your post. Please try inviting again."
+    elsif (@user.token != "" && @user.secret != "")
+       getfollowers
     else
       @request_token = OAuth::RequestToken.new(User.consumer,
       session[:request_token],

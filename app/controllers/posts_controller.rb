@@ -59,7 +59,10 @@ class PostsController < ApplicationController
     if (action_name == 'show'  || action_name == 'send_invites')
       
       if current_user && current_user.activated?
-        @user = current_user
+        @user = User.find_by_unique_id(params[:uid]) if params[:uid]
+        #Now check if this is the same user as the logged in user
+        #If not, then logout the current_user
+        force_logout if @user.id != current_user.id
       else
         #load the user based on the unique id
         @user = User.find_by_unique_id(params[:uid]) if params[:uid]

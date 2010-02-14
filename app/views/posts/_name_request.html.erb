@@ -1,4 +1,4 @@
-<h2>Please enter you name</h2>
+<h2 style ="color: #2B1E24;">Please enter you name</h2>
 <%  form_remote_tag :url => { :controller => 'users', :action => "update_name", :uid => params[:uid] },
           :before => "Element.show('n-spinner');",
           :complete => "Element.hide('n-spinner')" do %>
@@ -13,3 +13,5 @@
           <%= submit_tag 'Save' %><%= image_tag 'spinner.gif', :id=>"n-spinner", :style=>"display:none;" %>
         </p>
       <% end %>
+
+        This will be shown only to the participants of this Post.

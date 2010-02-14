@@ -4,28 +4,26 @@
         }
 </script>
 <div style="background-color:#0099cc;padding: 10px;">
-  <div id="send-status">
-
-  </div>
+  <div id="send-status">  </div>
   <%= button_to_function "Invite via Email",
                             visual_effect(:toggle_blind, "show_email_form", :duration => 0.5) %>
   <div id="show_email_form"  style="display: none;">
-  <%  form_remote_tag :url => { :controller => 'engagements', :action => "create", :post_id => "#{@post.id}", :invite_type => 'email',:uid => "#{@user.unique_id}" },
-    :before => "Element.show('e-spinner');",
-    :complete => "Element.hide('e-spinner')" do %>
-  <a href="#" onclick="showPlaxoABChooser('email_invitees', '/posts/plaxo'); return false"><img src="http://www.plaxo.com/images/abc/buttons/add_button.gif" alt="Add from my address book" /></a><br/>
-   
-  <div style="font-size: 10px;">Separate multiple addresses with a comma. <br/> Limit to 10 at a time. </div>
-  <%= text_area_tag :email_invitees ,"",  :class =>"mceNoEditor",:rows => 10, :cols => 43 %>
- <p style="margin-top: 10px;">   
-    <%= submit_tag 'Send Email Invites' %><%= image_tag 'spinner.gif', :id=>"e-spinner", :style=>"display:none;" %>
-  </p>
-<% end %>
+        <%  form_remote_tag :url => { :controller => 'engagements', :action => "create", :post_id => "#{@post.id}", :invite_type => 'email',:uid => "#{@user.unique_id}" },
+          :before => "Element.show('e-spinner');",
+          :complete => "Element.hide('e-spinner')" do %>
+        <a href="#" onclick="showPlaxoABChooser('email_invitees', '/posts/plaxo'); return false"><img src="http://www.plaxo.com/images/abc/buttons/add_button.gif" alt="Add from my address book" /></a><br/>
+
+        <div style="font-size: 10px;">Separate multiple addresses with a comma. <br/> Limit to 10 at a time. </div>
+        <%= text_area_tag :email_invitees ,"",  :class =>"mceNoEditor",:rows => 10, :cols => 43 %>
+       <p style="margin-top: 10px;">
+          <%= submit_tag 'Send Email Invites' %><%= image_tag 'spinner.gif', :id=>"e-spinner", :style=>"display:none;" %>
+        </p>
+      <% end %>
   </div>  
   
   
         <%= button_to_function "Invite via Twitter",
-                            visual_effect(:toggle_blind, "get_credentials", :duration => 0.5) %>
+                            visual_effect(:toggle_blind, "get_twitter_auth", :duration => 0.5) %>
         <div id="twitter-invite">
 
             <div id="twitter_followers"  style="height:600px;overflow:scroll;display: none;">
@@ -57,25 +55,16 @@
 
             </div>
           <div id="get_twitter_auth"  style="display: none;">
-              <p  style="font-size: 10px;">
-                We’ll be sending you to Twitter in a moment to login and grant us access.
-                Once you allow us, we will display all your followers for you to choose from.
-                </p>
-                <p>
-                    <%= submit_to_remote 'get_followers', 'Get My Followers',:method => 'get', :url => { :controller => 'engagements', :action => 'get_auth_from_twitter',:uid => "#{@user.unique_id}" },
-                              :before => "Element.toggle( 'get_twitter_auth');Element.show('spinner');Element.show( 'twitter_followers');"  ,
-                              :with => "'twitid='+ escape($('twitter_id').value) + '&twitp=' + escape($('twitter_passwd').value)+ '&post_id=' + #{@post.id}",
-                              :update => { :success => "twitter_followers", :failure => "send-status" },
-                              :complete => "Element.hide('spinner')"%>
+                <% form_tag("/engagements/get_auth_from_twitter?post_id=#{@post.id};uid=#{@user.unique_id}") do %>
 
-                           or  <%= link_to_function "Cancel",   visual_effect(:toggle_blind, "get_twitter_auth", :duration => 0.5) %>
+                  <p  style="font-size: 12px;">
+                    We’ll be sending you to Twitter in a moment to login and grant us access.
+                    Once you allow us, we will display all your followers for you to choose from.
                   </p>
+                  <p>
+                  <%= submit_tag "Get My Followers", :disable_with => "Redirecting..." %>
+                  </p>
+                  <% end %>
           </div>
         </div>
-
-
-
-
-
-
 </div>

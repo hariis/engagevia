@@ -217,13 +217,14 @@ vertical-align:middle;
 }
 #name-request{
     padding: 5px;
-    background-color: #f8621d;
-    width:100%;
+    background-color: #4b9ce0;
+    width:50%;
     z-index:100;
     opacity: 0.9;
     position:fixed;
     top: 0px;
     text-align:center;
+    left:33%;
 }
 #flash-status{
     padding: 5px;
