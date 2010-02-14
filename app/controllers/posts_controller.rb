@@ -42,7 +42,7 @@ class PostsController < ApplicationController
        end
    end
   def choose_layout
-    if [ 'new', 'index' ].include? action_name
+    if [ 'new', 'index','create' ].include? action_name
       'application'
     elsif ['show','ushow'].include? action_name
     'posts'
@@ -164,24 +164,14 @@ class PostsController < ApplicationController
   # POST /posts.xml
   def create
     session[:post] = nil
-    @post =  Post.new(params[:post])
-    if @post.description.length == 0
-      @post.description = "Add your Initial thoughts"
-    end
-    if @post.url.length == 0
-      @post.url = "Add a link"
-    end
-
-    
-    @post.note = "Keep some notes here"
-    
+    @post =  Post.new(params[:post])     
     
     #create the user object if necessary
     if current_user && current_user.activated?
       @user = current_user
     else
-      if  validate_emails(params[:from_email])
-        @user = User.find_by_email(params[:from_email])
+      if  validate_emails(params[:email])
+        @user = User.find_by_email(params[:email])
       else
           flash[:notice] = "Your email is turning out to be not valid. Please check and try again"
           redirect_to new_post_path
@@ -196,7 +186,11 @@ class PostsController < ApplicationController
           return
       elsif @user.nil?
           #Create a nonmember user record
-          @user = User.create_non_member(params[:from_email])
+          if params[:email] == ""
+            @post.errors.add(:email, "cannot be empty")
+          else
+            @user = User.create_non_member(params[:email])
+          end          
       elsif @user.member? && !@user.activated?
           #The user has started the process of signing up but has not activated yet.
           #Save this post contents
@@ -212,20 +206,24 @@ class PostsController < ApplicationController
     end
 
     @post.unique_id = Post.generate_unique_id
-    @post.user_id = @user.id
-    
+    @post.user_id = @user.id if @user
+    if params[:subject] == nil
+      @post.errors.add(:subject, "cannot be empty")
+    end
+
+    if @post.errors.size == 0
+      if @post.description.length == 0
+        @post.description = "Add your Initial thoughts"
+      end
+      if @post.url.length == 0
+        @post.url = "Add a link"
+      end
+
+      @post.note = "Keep some notes here"
+    end
     respond_to do |format|
 
-      if @post.save
-        #&& @user.posts << @post
-         #save an engagement
-#          eng = Engagement.new
-#          eng.invited_by = @post.owner  #TODO Shoudl this be 0 ?
-#          eng.invited_when = Time.now.utc
-#          eng.post = @post
-#          eng.invitee = @post.owner
-#          eng.save      
-        
+      if @post.errors.size == 0 && @post.save
         if current_user && current_user.activated?
           flash[:notice] ='Your email contains the link to this post as well.<br/> '+
             'You can now start inviting your friends for the conversation.'
@@ -240,7 +238,7 @@ class PostsController < ApplicationController
         format.html { redirect_to(@post.get_url_for(@user,'show')) }
         #format.xml  { render :xml => @post, :status => :created, :location => @post }
       else
-        format.html { redirect_to new_post_path }
+        format.html { render :action => 'new'  } #redirect_to new_post_path
         #format.xml  { render :xml => @post.errors, :status => :unprocessable_entity }
       end
     end

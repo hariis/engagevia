@@ -1,5 +1,5 @@
 
-<h1>Start a Conversation</h1>
+<h2>Start a Conversation</h2>
 
 <% form_for(@post) do |f| %>
   <%= f.error_messages %>
@@ -7,7 +7,7 @@
   <% if current_user.nil? || !current_user.activated? %>
    <p>
     <%= label_tag "Your Email" %> (required) <br />
-    <%= text_field_tag :from_email,'', :size => 80  %>
+    <%= text_field_tag :email,'', :size => 80  %>
   </p>
   <% end %>
   <p>
