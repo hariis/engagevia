@@ -1,9 +1,8 @@
 
 <h2>Start a Conversation</h2>
 
-<% form_for(@post) do |f| %>
-  <%= f.error_messages %>
-
+<% form_for(@post) do |f| %>  
+  <%= f.error_messages :header_message => "Invalid Post!", :message => "Please address the following fields:", :header_tag => :h3 %>
   <% if current_user.nil? || !current_user.activated? %>
    <p>
     <%= label_tag "Your Email" %> (required) <br />
