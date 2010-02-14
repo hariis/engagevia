@@ -112,8 +112,9 @@ def callback
       end
     end
      respond_to do |format|
-        format.js {
-              render_to_facebox  :partial => 'followers.html.erb', :object => @followers            
+        format.html {
+              @engagement = Engagement.new
+              format.html {  render :controller => 'posts', :action => 'show' }
         }
     end
  end
