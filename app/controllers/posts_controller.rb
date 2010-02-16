@@ -207,7 +207,7 @@ class PostsController < ApplicationController
 
     @post.unique_id = Post.generate_unique_id
     @post.user_id = @user.id if @user
-    if params[:subject] == nil
+    if params[:post][:subject] == nil
       @post.errors.add(:subject, "cannot be empty")
     end
 
