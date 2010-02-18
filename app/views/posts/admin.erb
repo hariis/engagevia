@@ -1,4 +1,4 @@
-You are <%= @user.display_name   %>
+
 <h2>Statistics</h2>
 <ul>
   <li>Total Posts:        <%= @posts.count %></li>
@@ -12,6 +12,7 @@ You are <%= @user.display_name   %>
       <th>Created at</th>
       <th>Participants</th>
       <th>Comments</th>
+      <th>Tags</th>
   </tr>
 
   <% @posts.each do |post| %>
@@ -20,6 +21,7 @@ You are <%= @user.display_name   %>
         <td><%= post.created_at.to_s(:long) %></td>
         <td><%= post.participants.count %></td>
         <td><%= post.comments.count %></td>
+        <td><%= post.tag_list %></td>
     </tr>
   <% end %>
 </table>

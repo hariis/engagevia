@@ -50,8 +50,12 @@
   <%= f.label :avatar %><br />
   <%= f.file_field :avatar %>
 </p>
+<p>
+  <%= f.label "Tag yourself" %><span style="font-size:85%;">  (separate multiple tags with comma)</span><br />
+  <%= f.text_field :tag_list %>
+</p>
   <p>
-    <%= f.submit button_type %>
+    <%= f.submit button_type, :class => 'submit' %>
     <%  if button_type == 'Update' %>
       or <%= link_to ' Cancel', @user %>
     <% end %>

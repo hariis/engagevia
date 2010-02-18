@@ -1,6 +1,7 @@
 class User < ActiveRecord::Base
   require 'digest/md5'
   acts_as_tagger
+  acts_as_taggable
   has_attached_file :avatar, :styles => { :medium => "300x300>", :thumb => "32x32>" }
   has_many :posts
   has_many :comments

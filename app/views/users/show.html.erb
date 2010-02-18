@@ -28,3 +28,9 @@
   <b>LinkedIn Profile:</b>
   <%=h @user.linked_in_link %>
 </p>
+
+ <div id="tags">
+      <strong style="float:left;">Tag yourself:</strong><%= image_tag '/images/pencil.png' %>
+      <span style="font-size:85%;">(separate multiple tags with comma)</span>
+      <%= in_place_editor_field :user, 'tag_list',{}, :size => '80',:text_between_controls => ' or ',:save_text => 'save' %>
+ </div>

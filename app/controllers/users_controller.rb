@@ -23,6 +23,9 @@ class UsersController < ApplicationController
   def show
    if current_user && current_user.activated?
      @user = current_user
+     if @user.tag_list == ""
+        @user.tag_list = "Click here to Add"
+      end
    else     
      force_logout
      redirect_to login_path
@@ -185,6 +188,17 @@ class UsersController < ApplicationController
       end
     end
  end
+ def set_user_tag_list
+    @user = User.find(params[:id]) if params[:id]
+    @user.tag_list = params[:value]
+    @user.save
+
+    if params[:value] && params[:value].length > 0
+      render :text => @user.tag_list
+    else
+      render :text => "Click here to Add"
+    end
+  end
 private
   def load_user_using_perishable_token
     #You can lengthen that limit by changing:
@@ -209,5 +223,6 @@ private
       @user.facebook_link = params[:user][:facebook_link]
       @user.linked_in_link = params[:user][:linked_in_link]
       @user.blog_link = params[:user][:blog_link]
+      @user.tag_list = params[:user][:tag_list]
  end
 end
