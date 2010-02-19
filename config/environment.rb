@@ -45,5 +45,7 @@ Rails::Initializer.run do |config|
   # config.i18n.default_locale = :de
   DOMAIN = "http://www.engagevia.com/" if ENV['RAILS_ENV'] == 'production'
   DOMAIN = "http://localhost:3000/" if ENV['RAILS_ENV'] == 'development'
-  
+  TWOAUTH_KEY = "2ABzvtWhFUCZFiluhc7bGg"
+  TWOAUTH_SECRET = "byf0AI0N6iazhGK1AeZWOqmaOZzm0cKvsMmnu8uDIM"
+  TWOAUTH_SITE = "http://www.engagevia.com/callback"
 end
