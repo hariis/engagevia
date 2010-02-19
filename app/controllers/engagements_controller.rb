@@ -1,6 +1,9 @@
 class EngagementsController < ApplicationController
+  # include the oauth_system mixin
+  include OauthSystem
+  
   before_filter :load_post, :except => [:set_notification, :get_auth_from_twitter, :callback]
-  before_filter :load_user, :only => [:create, :get_followers]
+  before_filter :load_user, :only => [:create, :get_followers,:get_auth_from_twitter]
 
   def load_user
     @user = User.find_by_unique_id(params[:uid]) if params[:uid]
@@ -72,16 +75,17 @@ class EngagementsController < ApplicationController
       end
   end
 def get_auth_from_twitter
-  @request_token = User.consumer.get_request_token
-
-  session[:request_token] = @request_token.token
-  session[:request_token_secret] = @request_token.secret
-  session[:post_id] = params[:post_id] if params[:post_id]
-  session[:uid] = params[:uid] if params[:uid]
-  # Send to twitter.com to authorize
-  redirect_to @request_token.authorize_url
+#  @request_token = User.consumer.get_request_token
+#
+#  session[:request_token] = @request_token.token
+#  session[:request_token_secret] = @request_token.secret
+#  session[:post_id] = params[:post_id] if params[:post_id]
+#  session[:uid] = params[:uid] if params[:uid]
+#  # Send to twitter.com to authorize
+#  redirect_to @request_token.authorize_url
+   login_by_oauth
 end
-def callback
+def callback2
     @user = User.find_by_unique_id(session[:uid]) if session[:uid]
     @post = Post.find(session[:post_id]) if session[:post_id]
 
