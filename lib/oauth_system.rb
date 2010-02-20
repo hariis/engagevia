@@ -58,7 +58,7 @@ module OauthSystem
 			
 		rescue
 			# The user might have rejected this application. Or there was some other error during the request.
-			RAILS_DEFAULT_LOGGER.error "Failed to get user info via OAuth"
+			RAILS_DEFAULT_LOGGER.error "Failed to get user info via OAuth--" + err
 			flash[:error] = "Twitter API failure (account login)"
 			redirect_to root_url
 			return
