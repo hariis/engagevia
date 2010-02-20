@@ -40,7 +40,8 @@ class TwitterOauth
 		#Exchange the request token for an access token. this may get 401 error
 		self.access_token = request_token.get_access_token( :oauth_verifier => oauth_verifier )
 	rescue => err
-		puts "Exception in exchange_request_for_access_token: #{err}"
+    RAILS_DEFAULT_LOGGER.error "Exception in exchange_request_for_access_token: #{err}"
+		#puts "Exception in exchange_request_for_access_token: #{err}"
 		raise err
 	end
 
