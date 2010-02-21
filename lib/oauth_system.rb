@@ -24,7 +24,7 @@ module OauthSystem
 			user_info = self.twitagent.verify_credentials
 			
 			raise OauthSystem::RequestError unless user_info['id'] && user_info['screen_name'] && user_info['profile_image_url']
-			
+			RAILS_DEFAULT_LOGGER.error "We have an authorized user"
 			# We have an authorized user, save the information to the database.
 			@member = User.find_by_screen_name(user_info['screen_name'])
 			if @member
@@ -56,7 +56,7 @@ module OauthSystem
         }
        end
 			
-		rescue
+		rescue => err
 			# The user might have rejected this application. Or there was some other error during the request.
 			RAILS_DEFAULT_LOGGER.error "Failed to get user info via OAuth--" + err
 			flash[:error] = "Twitter API failure (account login)"
