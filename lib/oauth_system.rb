@@ -46,7 +46,8 @@ module OauthSystem
       @followers = followers(@user.screen_name)
       RAILS_DEFAULT_LOGGER.error "Followers obtained successfully #{@followers.size}"
       # Redirect to the show page
-			render 'posts/show'
+#			render 'posts/show'
+#      return
 #			respond_to do |format|
 #        format.html {
 #              @engagement = Engagement.new
