@@ -45,12 +45,14 @@ module OauthSystem
 			# Redirect to the show page
       @followers = followers(@user.screen_name)
       RAILS_DEFAULT_LOGGER.error "Followers obtained successfully #{@followers.size}"
-			respond_to do |format|
-        format.html {
-              @engagement = Engagement.new
-              format.html {  render 'posts/show' }
-        }
-       end			  
+      # Redirect to the show page
+			render 'posts/show'
+#			respond_to do |format|
+#        format.html {
+#              @engagement = Engagement.new
+#              format.html {  render 'posts/show' }
+#        }
+#       end
 		rescue => err
 			# The user might have rejected this application. Or there was some other error during the request.
 			RAILS_DEFAULT_LOGGER.error "Failed to get user info via OAuth--" + err

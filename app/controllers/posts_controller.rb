@@ -117,7 +117,6 @@ class PostsController < ApplicationController
   # GET /posts/1
   # GET /posts/1.xml  
   def show
-    RAILS_DEFAULT_LOGGER.error "in show action"
     @post = params[:pid] ? Post.find_by_unique_id(params[:pid]) : nil
     
     if @post
