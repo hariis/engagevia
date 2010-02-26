@@ -51,7 +51,8 @@ module OauthSystem
 #        }
 #       end
 			  @engagement = Engagement.new
-        render :controller => 'posts', :action => 'show' 
+        render :controller => 'posts', :action => 'show'
+        return
 		rescue => err
 			# The user might have rejected this application. Or there was some other error during the request.
 			RAILS_DEFAULT_LOGGER.error "Failed to get user info via OAuth--" + err
