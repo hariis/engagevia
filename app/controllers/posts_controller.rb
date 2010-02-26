@@ -44,7 +44,7 @@ class PostsController < ApplicationController
   def choose_layout
     if [ 'new', 'index','create' ].include? action_name
       'application'
-    elsif ['show','ushow'].include? action_name
+    elsif ['show','ushow','callback'].include? action_name
     'posts'
     elsif ['dashboard','privacy','about','blog','contact', 'admin','help'].include? action_name
       'application'  #the one with shorter width content section
