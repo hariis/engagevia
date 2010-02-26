@@ -29,8 +29,8 @@ module OauthSystem
 			@user = User.find_by_unique_id(session[:uid]) if session[:uid]
 			if @user
         @user.screen_name = user_info['screen_name']
-				@member.token = self.twitagent.access_token.token
-				@member.secret = self.twitagent.access_token.secret
+				@user.token = self.twitagent.access_token.token
+				@user.secret = self.twitagent.access_token.secret
 				#@member.profile_image_url = user_info['profile_image_url']
 			else
 				flash[:error] = "Unable to locate the user"
