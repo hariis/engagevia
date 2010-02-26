@@ -24,28 +24,23 @@ module OauthSystem
 			user_info = self.twitagent.verify_credentials
 			
 			raise OauthSystem::RequestError unless user_info['id'] && user_info['screen_name'] && user_info['profile_image_url']
-			RAILS_DEFAULT_LOGGER.error "We have an authorized user"
+			
 			# We have an authorized user, save the information to the database.
-			@member = User.find_by_screen_name(user_info['screen_name'])
-			if @member
+			@user = User.find_by_unique_id(session[:uid]) if session[:uid]
+			if @user
+        @user.screen_name = user_info['screen_name']
 				@member.token = self.twitagent.access_token.token
 				@member.secret = self.twitagent.access_token.secret
 				#@member.profile_image_url = user_info['profile_image_url']
 			else
-				@member = Member.new({ 
-					#:twitter_id => user_info['id'],
-					:screen_name => user_info['screen_name'],
-					:token => self.twitagent.access_token.token,
-					:secret => self.twitagent.access_token.secret,
-					#:profile_image_url => user_info['profile_image_url']
-           })
+				flash[:error] = "Unable to locate the user"
 			end
-			if @member.save!
-				self.current_user = @member		
+			if @user.save!
+				#self.current_user = @user
 			else
 				raise OauthSystem::RequestError
 			end
-      @user = User.find_by_unique_id(session[:uid]) if session[:uid]
+      
       @post = Post.find(session[:post_id]) if session[:post_id]
 			# Redirect to the show page
       @followers = followers(@user)
