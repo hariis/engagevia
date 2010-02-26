@@ -216,7 +216,7 @@ vertical-align:middle;
 }
 #flash-error{
     padding: 5px;
-    background-color: #f11601;
+    background-color: #fe8377;
     color: white;
     width:100%;
     z-index:100;
@@ -227,18 +227,26 @@ vertical-align:middle;
 }
 #name-request{
     padding: 5px;
-    background-color: #0099cc;
+    background-color: #BBDEFA;
     width:50%;
     z-index:100;
     position:fixed;
     top: 142px;
     text-align:center;
-    border:8px solid #77ceeb;
+    border:8px solid #6abcfd;
     margin-left:25%;
+}
+#invitation-title {
+    color: #0B84E8;
+}
+#name-request ul li{
+    float: left;
+    clear: both;
+    color: #0B84E8;
 }
 #flash-status{
     padding: 5px;
-    background-color: #1cd91c;
+    background-color: #bdf9bd;
     color:#fff;
     width:100%;
     z-index:100;

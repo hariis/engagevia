@@ -243,7 +243,8 @@ end
    
     render :update do |page|
        if @error_message.blank?
-        page.hide 'facebox'
+        #page.hide 'facebox'
+        page.hide 'name-request'
         page.insert_html :bottom, 'participants-list', :partial => 'participants'
         page.replace_html 'invite-status', "#{@participants? pluralize(@participants.size ,"participant") : "None"} added."
         #page.replace_html "send-status", @status_message
