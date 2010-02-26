@@ -4,7 +4,7 @@ class EngagementsController < ApplicationController
   
   before_filter :load_post, :except => [:set_notification, :get_auth_from_twitter, :callback]
   before_filter :load_user, :only => [:create, :get_followers,:get_auth_from_twitter]
-
+  layout 'posts'
   def load_user
     @user = User.find_by_unique_id(params[:uid]) if params[:uid]
   end

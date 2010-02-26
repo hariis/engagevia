@@ -5,8 +5,8 @@
                         <% if @post.owner == @user %>
                            <div class="subject"> <%= in_place_editor_field :post, 'subject',{}, :size => '80', :text_between_controls => ' or ',:save_text => 'save' %> <%= image_tag '/images/pencil.png' %></div>
                            <div>
-                           <span id="url-text" class="url"><%= render :partial => 'update_url_text', :object => @post  %></span><%= image_tag '/images/pencil.png' %>
-                           <span id="url-link"><%= render :partial => 'update_url_link', :object => @post %></span>
+                           <span id="url-text" class="url"><%= render :partial => 'posts/update_url_text', :object => @post  %></span><%= image_tag '/images/pencil.png' %>
+                           <span id="url-link"><%= render :partial => 'posts/update_url_link', :object => @post %></span>
                            </div>
                            <div><%= in_place_rich_editor_field :post, :description ,{}, :size => '75', :mode => 'tinymce_advanced_with_save_options' %><%= image_tag '/images/pencil.png' %></div>
                         <% else %>
