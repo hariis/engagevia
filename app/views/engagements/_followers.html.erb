@@ -7,16 +7,10 @@
           <ul>
             <% for follower in followers %>
               <li>
-                <%= check_box_tag "followers[]", follower.screen_name %>
-                <%= follower.name %>
+                <%= check_box_tag "followers[]", follower['screen_name'] %>
+                @<%= follower['screen_name'] %>
               </li>
-            <% end %>
-              <% for follower in followers %>
-              <li>
-                <%= check_box_tag "followers[]", follower.screen_name %>
-                <%= follower.name %>
-              </li>
-            <% end %>
+            <% end %>              
             </ul>
            <div id="twit-invite-btn" style="margin: 10px;">
                 <%= submit_tag 'Send Twitter Invites' %>
