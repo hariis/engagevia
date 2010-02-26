@@ -43,16 +43,14 @@ module OauthSystem
       
       @post = Post.find(session[:post_id]) if session[:post_id]
 			# Redirect to the show page
-      @followers = getfollowers #followers(@user)
-#			respond_to do |format|
-#        format.html {
-#              @engagement = Engagement.new
-#              format.html {  render :controller => 'posts', :action => 'show' }
-#        }
-#       end
-			  @engagement = Engagement.new
-        render :controller => 'posts', :action => 'show'
-        return
+      @followers = followers(@user.screen_name)
+      RAILS_DEFAULT_LOGGER.error "Followers obtained successfully #{@followers.size}"
+			respond_to do |format|
+        format.html {
+              @engagement = Engagement.new
+              format.html {  render :controller => 'posts', :action => 'show' }
+        }
+       end			  
 		rescue => err
 			# The user might have rejected this application. Or there was some other error during the request.
 			RAILS_DEFAULT_LOGGER.error "Failed to get user info via OAuth--" + err
