@@ -36,14 +36,14 @@ module OauthSystem
 				flash[:error] = "Unable to locate the user"
 			end
 			if @user.save!
-				#self.current_user = @user
+				self.current_user = @user
 			else
 				raise OauthSystem::RequestError
 			end
       
       @post = Post.find(session[:post_id]) if session[:post_id]
 			# Redirect to the show page
-      @followers = followers(@user)
+      @followers = getfollowers #followers(@user)
 			respond_to do |format|
         format.html {
               @engagement = Engagement.new
