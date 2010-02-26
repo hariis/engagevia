@@ -138,9 +138,9 @@ def getfollowers
 end
 
  def method_missing(methodname, *args)
-       @methodname = methodname
-       @args = args
-        render 'posts/404', :status => 404, :layout => false
+#       @methodname = methodname
+#       @args = args
+#        render 'posts/404', :status => 404, :layout => false
    end
  private
  def send_email_invites
