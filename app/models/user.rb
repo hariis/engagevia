@@ -22,8 +22,8 @@ class User < ActiveRecord::Base
   def assign_unique_id
     if email.slice(0..8) != "nonmember"
       self.unique_id = Digest::MD5.hexdigest(email + "Mount^Hood")
-    elsif username.size > 0
-      self.unique_id = Digest::MD5.hexdigest(username + "Mount^Hood")
+    elsif screen_name.size > 0
+      self.unique_id = Digest::MD5.hexdigest(screen_name + "Mount^Hood")
     end
     
   end
@@ -76,7 +76,7 @@ class User < ActiveRecord::Base
 
   def self.create_non_member(email)
     user = User.new
-    user.username = 'nonmember'
+    #user.username = 'nonmember'
     user.email = email
     user.password = 'mounthood'
     user.password_confirmation = 'mounthood'
@@ -90,7 +90,7 @@ class User < ActiveRecord::Base
 
   def self.create_non_member_by_twitter_id(follower_screen_name)
     user = User.new
-    user.username = follower_screen_name
+    user.screen_name = follower_screen_name
     user.email = "nonmember@nonmember.com"    
     user.password = 'mounthood'
     user.password_confirmation = 'mounthood'
@@ -145,7 +145,7 @@ class User < ActiveRecord::Base
     awesome_truncate(email, email.index('@'), "")
   end
   def get_twitter_name
-    "@" + username
+    "@" + screen_name
   end
   # Awesome truncate
   # First regex truncates to the length, plus the rest of that word, if any.
@@ -160,7 +160,7 @@ class User < ActiveRecord::Base
   end
 
   def twitter_id
-    (username != "" && username != 'nonmember' ) ? username : ""
+    (screen_name != "") ? screen_name : ""
   end
 
   def self.consumer

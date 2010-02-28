@@ -208,11 +208,8 @@ end
  def send_twitter_invites
     #Send twitter notifications
     #Get the twitter ids of the invitees
-    @followers = params[:followers]
-    @from_config = {}
-    @from_config[:twitid] = params[:twitter_id]
-    @from_config[:password] = params[:twitter_passwd]
-    if !params[:followers].nil?  &&  !params[:twitter_id].nil? && !params[:twitter_passwd].nil?
+    @followers = params[:followers]    
+    unless params[:followers].nil?
        #Get userid of invitees - involves creating dummy accounts
         @requested_participants = []
         @participants = {}
@@ -234,7 +231,7 @@ end
         end
      @error_message = ""
      begin
-        @post.send_twitter_notification(@from_config, @participants) if @participants.size > 0
+        send_twitter_notification(@participants) if @participants.size > 0
      rescue
         @error_message = "Unable to send invites.<br/> Please check your credentials <br/>and try again a little later."
      end
@@ -256,8 +253,14 @@ end
           :endcolor => "#cf6d0f", :duration => 50.0 }
         page.replace_html "participant-count", "(#{@post.engagements.size})"
        else
-         #page.replace_html "send-status", @error_message
+         page.replace_html "send-status", @error_message
        end
     end
  end
+ def send_twitter_notification(followers)
+   followers.each_key do |follower|
+      message = DOMAIN + "conversation/show/#{@post.unique_id}/#{follower.unique_id}"
+      update_status! "d #{follower.screen_name}" + " Join me for a conversation. The link is at " + message
+   end
+  end
 end

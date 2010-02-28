@@ -1,40 +1,53 @@
 <% form_for(@user, :html => { :multipart => true }) do |f| %>
-  <%= f.error_messages %>
-
+  <%= f.error_messages %>   
+ 
   <p>
     <%= f.label :email %> (required)<br />
     <%= f.text_field :email %>
+    <% if controller.action_name == 'new' %>
+    <br/><span style="font-size:85%;">(If you have received EngageVia invitations to your email address, then please use the same email address here)</span>
+     <% end %>
   </p>
-  <p>
+  <p style="float:left;">
     <%= f.label :first_name %> (required)<br />
     <%= f.text_field :first_name %>
   </p>
-  <p>
+  <p style="float:left;">
     <%= f.label :last_name %> (required)<br />
     <%= f.text_field :last_name %>
   </p>
   
-  <p>
-    <% if controller.action_name == 'edit' %>
-        <h4> Change Password </h4> 
-        <%= f.label :password, "New Password" %><br />
+  <p style="float:left;">
+    <% if controller.action_name == 'edit' %>        
+        <%= f.label :password, "Choose New Password" %><br/>
     <% else %>
-        <%= f.label :password %><br />
+        <%= f.label :password %><br/>
     <% end %>    
     <%= f.password_field :password %>
   </p>
-  <p>
+  <p style="float:left;">
     <%= f.label :password_confirmation %><br />
     <%= f.password_field :password_confirmation %>
   </p>
 
-  <hr/>
-  <h3>Optional - You can fill this later as well</h3>
-   <p>
-    <%= f.label :username, "Twitter ID" %><br />
-    <%= f.text_field :username %>
+  
+  <p style="float:left;clear:both;">
+    <%= f.label :screen_name, "Twitter ID" %><br />
+    <%= f.text_field :screen_name %>
+    <% if controller.action_name == 'new' %>
+    <br/><span style="font-size:85%;">If you have received EngageVia invitations to your twitter id, then please enter the same here </span>
+    <% end %>
   </p>
-   <p>
+ 
+<p style="clear:both;">
+  
+  <%= f.label "What kind of conversations would you like to be involved in?" %><br/>
+  <span style="font-size:85%;">(separate multiple keywords with comma) Ex: graphic designer,hiking,politics,parenting</span>
+  <%= f.text_field :tag_list, :size => '80' %>
+  <br/><span style="font-size:85%;">(you can update this anytime)</span>
+</p>
+<% if controller.action_name == 'edit' %>
+<p>
     <%= f.label "Facebook Profile" %><br />
     <%= f.text_field :facebook_link %>
   </p>
@@ -50,11 +63,8 @@
   <%= f.label :avatar %><br />
   <%= f.file_field :avatar %>
 </p>
-<p>
-  <%= f.label "Tag yourself" %><span style="font-size:85%;">  (separate multiple tags with comma)</span><br />
-  <%= f.text_field :tag_list %>
-</p>
-  <p>
+<% end %>
+  <p style="clear:both;">
     <%= f.submit button_type, :class => 'submit' %>
     <%  if button_type == 'Update' %>
       or <%= link_to ' Cancel', @user %>

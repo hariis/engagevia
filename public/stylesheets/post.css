@@ -238,6 +238,7 @@ vertical-align:middle;
 }
 #invitation-title {
     color: #0B84E8;
+    font-weight: bold;
 }
 #name-request ul li{
     float: left;
@@ -600,6 +601,9 @@ ul#participants-list li.new-p:hover {
 h3 {
     padding: 5px;
 }
+label {
+    font-weight: bold;
+}
 #footer {
     background: #333333 url('/images/bg-widgets.png') repeat-x scroll 0 0;
     overflow:hidden;
@@ -624,6 +628,7 @@ h3 {
     font-size:85%;
     position:relative;
     margin-top:30px;
+    clear:both;
 }
 #footer ul li,#footer-d ul li {
     display:inline;
