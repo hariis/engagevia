@@ -72,13 +72,13 @@ protected
 
 
     def twitagent( user_token = nil, user_secret = nil )
-		#RAILS_DEFAULT_LOGGER.info "twitagent"
-		self.twitagent = TwitterOauth.new( user_token, user_secret )  if user_token && user_secret
-		self.twitagent = TwitterOauth.new( ) unless @twitagent
-		@twitagent ||= raise OauthSystem::NotInitializedError
+      #RAILS_DEFAULT_LOGGER.info "twitagent"
+      self.twitagent = TwitterOauth.new( user_token, user_secret )  if user_token && user_secret
+      self.twitagent = TwitterOauth.new( ) unless @twitagent
+      @twitagent ||= raise OauthSystem::NotInitializedError
     end
     def twitagent=(new_agent)
-		@twitagent = new_agent || false
+      @twitagent = new_agent || false
     end
 	
 #    # Accesses the current user from the session.
@@ -182,5 +182,13 @@ protected
 		return
 	end
 
+  # Twitter REST API Method: direct_messages new
+	def send_direct_message!( screen_name, text )
+    self.twitagent(@user.token,@user.secret).send_direct_message!( screen_name, text )
+	rescue => err
+		RAILS_DEFAULT_LOGGER.error "Failed to send direct_messages via OAuth for #{@user.inspect}"
+		flash[:error] = "Twitter API failure (sending direct_messages)"
+		return
+  end
 	
 end

@@ -259,9 +259,8 @@ end
  end
  def send_twitter_notification(followers)
    followers.each_key do |follower|
-      message = DOMAIN + "conversation/show/#{@post.unique_id}/#{follower.unique_id}"
-      RAILS_DEFAULT_LOGGER.error "The post link is #{message}"
-      update_status! "d #{follower.screen_name}" + " Join me for a conversation. The link is at " + message
+      message = DOMAIN + "conversation/show/#{@post.unique_id}/#{follower.unique_id}"      
+      send_direct_message! follower.screen_name, "Please join me for a conversation at " + message + " about #{truncate(@post.subject,20,"...")}"
    end
   end
 end
