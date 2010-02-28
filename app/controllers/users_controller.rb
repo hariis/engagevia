@@ -214,7 +214,7 @@ private
     end
  end
  def assign_user_object
-      @user.username = params[:user][:username]
+      @user.username = params[:user][:screen_name]
       @user.screen_name = params[:user][:screen_name]
       @user.password = params[:user][:password]
       @user.password_confirmation = params[:user][:password_confirmation]

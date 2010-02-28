@@ -76,7 +76,7 @@ class User < ActiveRecord::Base
 
   def self.create_non_member(email)
     user = User.new
-    #user.username = 'nonmember'
+    user.username = 'nonmember'
     user.email = email
     user.password = 'mounthood'
     user.password_confirmation = 'mounthood'
@@ -90,6 +90,7 @@ class User < ActiveRecord::Base
 
   def self.create_non_member_by_twitter_id(follower_screen_name)
     user = User.new
+    user.username = follower_screen_name
     user.screen_name = follower_screen_name
     user.email = "nonmember@nonmember.com"    
     user.password = 'mounthood'
