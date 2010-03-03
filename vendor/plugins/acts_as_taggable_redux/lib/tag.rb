@@ -20,7 +20,7 @@ class Tag < ActiveRecord::Base
     tag_names = tag_names.delete_if { |t| t.empty? }
 
     # downcase all tags
-    tag_names = tag_names.map! { |t| t.downcase }
+    tag_names = tag_names.map! { |t| t.downcase.strip }
 
     # remove duplicates
     tag_names = tag_names.uniq

@@ -224,6 +224,7 @@ class PostsController < ApplicationController
     respond_to do |format|
 
       if @post.errors.size == 0 && @post.save
+        update_tags_for_all_participants        
         if current_user && current_user.activated?
           flash[:notice] ='Your email contains the link to this post as well.<br/> '+
             'You can now start inviting your friends for the conversation.'
@@ -315,6 +316,7 @@ class PostsController < ApplicationController
     @post.save
 
     if params[:value] && params[:value].length > 0
+      update_tags_for_all_participants
       render :text => @post.tag_list
     else
       render :text => "Click here to Add"
@@ -322,6 +324,15 @@ class PostsController < ApplicationController
   end
 
   private
+  def update_tags_for_all_participants
+    unless @post.tag_list.empty?
+      @post.owner.tag_list += "," + @post.tag_list and @post.owner.save
+      @post.engagements.each do |engagement|
+        engagement.invitee.tag_list += "," + @post.tag_list and engagement.invitee.save
+      end
+    end
+  end
+
   # GET /posts/1/edit
   def edit
     @post = Post.find(params[:id])
