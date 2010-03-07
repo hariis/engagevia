@@ -102,10 +102,11 @@ AND #{Tagging.table_name}.tag_id = #{Tag.table_name}.id",
 
         def tag_list(user = nil)
           unless user
-            tags.collect { |tag| tag.name.include?(" ") ? %("#{tag.name}") : tag.name }.join(", ")            
+            #tags.collect { |tag| tag.name.include?(" ") ? %("#{tag.name}") : tag.name }.join(", ")
+            tags.collect { |tag| tag.name }.join(", ")
           else
             #TODO: make it work if I pass in an int instead of a user object
-            tags.find(:all, :conditions => ["#{Tagging.table_name}.user_id = ?", user.id]).collect { |tag| tag.name.include?(" ") ? %("#{tag.name}") : tag.name }.uniq.join(", ")
+            tags.find(:all, :conditions => ["#{Tagging.table_name}.user_id = ?", user.id]).collect { |tag| tag.name }.uniq.join(", ")
           end
         end
 
@@ -115,9 +116,11 @@ AND #{Tagging.table_name}.tag_id = #{Tag.table_name}.id",
 
         def associated_tag_list(user_id = nil, post_id = nil)
           unless post_id
-               tags.find(:all, :conditions => ["#{Tagging.table_name}.taggable_id = ?", user_id]).collect { |tag| tag.name.include?(",") ? %("#{tag.name}") : tag.name }.uniq.join(", ")
+               #tags.find(:all, :conditions => ["#{Tagging.table_name}.taggable_id = ?", user_id]).collect { |tag| tag.name.include?(",") ? %("#{tag.name}") : tag.name }.uniq.join(", ")
+               tags.find(:all, :conditions => ["#{Tagging.table_name}.taggable_id = ?", user_id]).collect { |tag| tag.name }.uniq.join(", ")
           else
-               tags.find(:all, :conditions => ["#{Tagging.table_name}.taggable_id = ? and post_id = ?", user_id, post_id]).collect { |tag| tag.name.include?(",") ? %("#{tag.name}") : tag.name }.uniq.join(", ")
+               #tags.find(:all, :conditions => ["#{Tagging.table_name}.taggable_id = ? and post_id = ?", user_id, post_id]).collect { |tag| tag.name.include?(",") ? %("#{tag.name}") : tag.name }.uniq.join(", ")
+               tags.find(:all, :conditions => ["#{Tagging.table_name}.taggable_id = ? and post_id = ?", user_id, post_id]).collect { |tag| tag.name }.uniq.join(", ")
           end
         end
 
