@@ -2,9 +2,10 @@
 <%= button_to 'Start New Conversation', new_post_path, :class => 'submit' %>
 
 <% unless @posts.empty? %>
-  <div class="heading">My Conversations</div>
+  <div class="heading" style="display:none;">My Conversations</div>
 <% end %>
 
+  <div style="margin-top:10px;">
 <% count = 1 %>
 <% @posts.each do |post| %>
   <div class="index"></div>
@@ -25,5 +26,5 @@
 
    </div>
 <% end %>
-
+  </div>
 </div>
