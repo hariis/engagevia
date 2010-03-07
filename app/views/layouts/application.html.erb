@@ -31,14 +31,13 @@
 <a href="/"><%= image_tag "evlogo.png" %></a>
 </strong>
 <ul>
-  <li><%= link_to "Home", root_url %></li>
+  <li><% link_to "Home", root_url %></li>
   <% if current_user && current_user.activated? %>
-    <li><%= link_to "#{current_user.display_name} (#{current_user.posts.count})", posts_path if current_user.activated? %></li>
-    <li><%= link_to "My Account", :controller => 'users', :action => 'show' %></li>
+    <li><%= link_to "#{current_user.display_name}", :controller => 'users', :action => 'show' %></li>
+    <li><%= link_to "My Posts (#{current_user.posts.count})", posts_path if current_user.activated? %></li>
+    <li><%= link_to_if current_user.admin? , "My Contacts", {:controller => 'users', :action => 'show'} %></li>
     <li><%= link_to "Logout", logout_path %></li>
-    <% if current_user && current_user.admin? %>
-        <li><%= link_to "Admin", admin_path %></li>
-    <% end %>
+    <li><%= link_to_if current_user.admin?,  "Admin", admin_path %></li>
 
    <% else %>
      <li><%= link_to "Sign Up", new_user_path %></li>

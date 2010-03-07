@@ -222,9 +222,8 @@ class PostsController < ApplicationController
       @post.note = "Keep some notes here"
     end
     respond_to do |format|
-
       if @post.errors.size == 0 && @post.save
-        update_tags_for_all_participants        
+        update_tags_for_all_invitees(@post.get_all_participants)
         if current_user && current_user.activated?
           flash[:notice] ='Your email contains the link to this post as well.<br/> '+
             'You can now start inviting your friends for the conversation.'
@@ -311,28 +310,19 @@ class PostsController < ApplicationController
   end
 
  def set_post_tag_list
-    @post = Post.find(params[:id])
+    @post = Post.find(params[:id])    
+    #@post.user_id = nil #  We don't know the user here  WARNING: NEVER set this as this overrides the post.user_id
     @post.tag_list = params[:value]
     @post.save
-
-    if params[:value] && params[:value].length > 0
-      update_tags_for_all_participants
+    update_tags_for_all_invitees(@post.get_all_participants)
+    if params[:value] && params[:value].length > 0      
       render :text => @post.tag_list
     else
       render :text => "Click here to Add"
     end
   end
 
-  private
-  def update_tags_for_all_participants
-    unless @post.tag_list.empty?
-      @post.owner.tag_list += "," + @post.tag_list and @post.owner.save
-      @post.engagements.each do |engagement|
-        engagement.invitee.tag_list += "," + @post.tag_list and engagement.invitee.save
-      end
-    end
-  end
-
+  private  
   # GET /posts/1/edit
   def edit
     @post = Post.find(params[:id])

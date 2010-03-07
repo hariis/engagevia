@@ -190,6 +190,7 @@ class UsersController < ApplicationController
  end
  def set_user_tag_list
     @user = User.find(params[:id]) if params[:id]
+    @user.user_id = @user.id
     @user.tag_list = params[:value]
     @user.save
 
@@ -224,6 +225,7 @@ private
       @user.facebook_link = params[:user][:facebook_link]
       @user.linked_in_link = params[:user][:linked_in_link]
       @user.blog_link = params[:user][:blog_link]
+      @user.user_id = @user.id
       @user.tag_list = params[:user][:tag_list]
  end
 end

@@ -131,4 +131,15 @@ class ApplicationController < ActionController::Base
      def is_admin
       current_user.has_role?('admin')
      end
+
+     #Related to auto-tagging the users 
+    def update_tags_for_all_invitees(invitees)
+       admin = User.get_admin_user
+       invitees.each do |invitee|
+          admin.user_id = invitee.id
+          admin.post_id = @post.id
+          admin.set_associated_tag_list = @post.tag_list
+        end
+    end
+    
 end

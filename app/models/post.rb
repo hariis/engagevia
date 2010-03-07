@@ -66,4 +66,12 @@ class Post < ActiveRecord::Base
   def get_url_for(user,action)
       DOMAIN + "posts/" + action + "?pid=#{self.unique_id};uid=#{user.unique_id}"
   end
+
+  def get_all_participants
+    p = []
+    self.engagements.each do |engagement|
+      p << engagement.invitee
+    end
+    return p
+  end
 end

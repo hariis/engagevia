@@ -97,16 +97,52 @@ AND #{Tagging.table_name}.tag_id = #{Tag.table_name}.id",
 
         def user_id=(new_user_id)
           @new_user_id = new_user_id
-          super(new_user_id)
+          super(new_user_id) unless self.class.to_s == 'User'
         end
 
         def tag_list(user = nil)
           unless user
-            #result = tags.collect { |tag| tag.name.include?(" ") ? %("#{tag.name}") : tag.name }.join(", ")
-            result = tags.collect { |tag| tag.name }.join(", ")
+            tags.collect { |tag| tag.name.include?(" ") ? %("#{tag.name}") : tag.name }.join(", ")            
           else
             #TODO: make it work if I pass in an int instead of a user object
-            tags.find(:all, :conditions => ["#{Tagging.table_name}.user_id = ?", user.id]).collect { |tag| tag.name.include?(" ") ? %("#{tag.name}") : tag.name }.uniq.join(" ")
+            tags.find(:all, :conditions => ["#{Tagging.table_name}.user_id = ?", user.id]).collect { |tag| tag.name.include?(" ") ? %("#{tag.name}") : tag.name }.uniq.join(", ")
+          end
+        end
+
+        def post_id=(new_post_id)
+          @new_post_id = new_post_id
+        end
+
+        def associated_tag_list(user_id = nil, post_id = nil)
+          unless post_id
+               tags.find(:all, :conditions => ["#{Tagging.table_name}.taggable_id = ?", user_id]).collect { |tag| tag.name.include?(",") ? %("#{tag.name}") : tag.name }.uniq.join(", ")
+          else
+               tags.find(:all, :conditions => ["#{Tagging.table_name}.taggable_id = ? and post_id = ?", user_id, post_id]).collect { |tag| tag.name.include?(",") ? %("#{tag.name}") : tag.name }.uniq.join(", ")
+          end
+        end
+
+        def set_associated_tag_list=(new_tag_list)
+          unless associated_tag_list(@new_user_id,@new_post_id) == new_tag_list
+            @new_associated_tag_list = new_tag_list
+            update_associated_tags
+          end
+        end
+
+        def update_associated_tags
+          if @new_associated_tag_list
+            Tag.transaction do
+              taggings.find(:all, :conditions => "taggable_id = #{@new_user_id} and post_id = #{@new_post_id}").each do |tagging|
+                  tagging.destroy
+                end
+
+              Tag.parse(@new_associated_tag_list).each do |name|
+                Tag.find_or_create_by_name(name).tag(User.find(@new_user_id) , self.id ,  @new_post_id)
+              end
+
+              tags.reset
+              taggings.reset
+              @new_associated_tag_list = nil
+            end
           end
         end
 

@@ -205,7 +205,7 @@ vertical-align:middle;
 }
 #flash-notice{
     padding: 5px;
-    background-color: #1cd91c;
+    background-color: #4B9CE0;
     color: white;
     position:fixed;
     top: 0px;
@@ -216,7 +216,7 @@ vertical-align:middle;
 }
 #flash-error{
     padding: 5px;
-    background-color: #fe8377;
+    background-color: #f42b30;
     color: white;
     width:100%;
     z-index:100;
@@ -247,7 +247,7 @@ vertical-align:middle;
 }
 #flash-status{
     padding: 5px;
-    background-color: #bdf9bd;
+    background-color: #4B9CE0;
     color:#fff;
     width:100%;
     z-index:100;
@@ -322,11 +322,12 @@ padding:10px 20px 7px 30px;
 height:33px;
 }
 .banner {
-    color:yellow;
+    color:#fff;
     font-size:21px;
-    font-style:italic;
-    font-weight:bold;
+    font-style:normal;
+    font-weight:normal;
     text-align:center;
+    letter-spacing:0.1em;
 }
 #header {
 /* background: #575455 url('/images/bg-header.png') repeat-x scroll 0 0; */
@@ -668,7 +669,15 @@ label {
 }
 #tags {
     clear:both;
-    background-color:#fedba1;
+    background-color:#fff;
+    width: 100%;
+    padding: 5px;
+    margin-top:5px;
+    overflow:auto;
+}
+#assoc-tags{
+    clear:both;
+    background-color:#e8e3e3;
     width: 100%;
     padding: 5px;
     margin-top:5px;

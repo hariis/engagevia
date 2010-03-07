@@ -175,7 +175,7 @@ end
                     end
                   end
                    #update the participants' tags with post tags
-                   @participants.each_key {|p| p.tag_list += "," + @post.tag_list and p.save} unless @post.tag_list.empty?
+                   update_tags_for_all_invitees(@participants.keys)
                    #now send emails
                   @post.send_invitations(@participants,@user) if @participants.size > 0
                   #Delayed::Job.enqueue(MailingJob.new(@post, invitees))
@@ -231,7 +231,7 @@ end
           end
         end
         #update the participants' tags with post tags
-        @participants.each_key {|p| p.tag_list += "," + @post.tag_list and p.save} unless @post.tag_list.empty?
+        update_tags_for_all_invitees(@participants.keys)
      @error_message = ""
      begin
         send_twitter_notification(@participants) if @participants.size > 0

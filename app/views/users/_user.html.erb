@@ -43,7 +43,8 @@
   
   <%= f.label "What kind of conversations would you like to be involved in?" %><br/>
   <span style="font-size:85%;">(separate multiple keywords with comma) Ex: graphic designer,hiking,politics,parenting</span>
-  <%= f.text_field :tag_list, :size => '80' %>
+  <%= f.text_field :tag_list, :size => '80' , :value => @user.tag_list %>
+  
   <br/><span style="font-size:85%;">(you can update this anytime)</span>
 </p>
 <% if controller.action_name == 'edit' %>

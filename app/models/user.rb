@@ -1,7 +1,7 @@
-class User < ActiveRecord::Base
-  require 'digest/md5'
-  acts_as_tagger
+class User < ActiveRecord::Base  
   acts_as_taggable
+  acts_as_tagger
+  require 'digest/md5'
   has_attached_file :avatar, :styles => { :medium => "300x300>", :thumb => "32x32>" }
   has_many :posts
   has_many :comments
@@ -166,6 +166,9 @@ class User < ActiveRecord::Base
 
   def self.consumer
      OAuth::Consumer.new("2ABzvtWhFUCZFiluhc7bGg","byf0AI0N6iazhGK1AeZWOqmaOZzm0cKvsMmnu8uDIM",{:site => "http://twitter.com"})
+  end
+  def self.get_admin_user
+    UserRole.get_admin_user
   end
 end
 

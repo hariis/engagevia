@@ -1,7 +1,8 @@
+
+<div id="centered-heading"><%=h @user.display_name %></div>
+<div style="float:right;">
 <%= link_to 'Edit Settings', :controller => 'users', :action => 'edit', :id=> @user.unique_id %>
-<p>
-  <div id="centered-heading"><%=h @user.display_name %></div>
-</p>
+</div>
 <p>
 <b>Photo: </b><%= image_tag @user.avatar.url(:thumb) %>
 </p>
@@ -29,8 +30,17 @@
   <%=h @user.linked_in_link %>
 </p>
 
- <div id="tags">
+ <div id="tags" style="display:none;">
       <strong style="float:left;">Tag yourself:</strong><%= image_tag '/images/pencil.png' %>
       <span style="font-size:85%;">(separate multiple tags with comma)</span>
       <%= in_place_editor_field :user, 'tag_list',{}, :size => '80',:text_between_controls => ' or ',:save_text => 'save' %>
  </div>
+ <p id="tags">
+      <b>Tags: </b><br/>
+      <%=h @user.tag_list %>
+ </p>
+<p id="assoc-tags">
+  <b>Conversations you have been linked to:</b><br/>
+  <% admin = User.get_admin_user %>
+  <%=h admin.associated_tag_list @user %>
+</p>
