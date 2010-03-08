@@ -149,15 +149,12 @@ end
 
     if invitees_emails.length > 0
           if validate_emails(invitees_emails)
-                  valid_emails =[]
-                  valid_emails = string_to_array(invitees_emails)
-
                   #Limit sending only to first 10
 
                   #Get userid of invitees - involves creating dummy accounts
                   @requested_participants = []
                   @participants = {}
-                  @requested_participants = Post.get_invitees(valid_emails)
+                  @requested_participants = Post.get_invitees(@parsed_entries)
                   #Add them to engagement table
                   @requested_participants.each do |invitee|
                     if !invitee.nil?

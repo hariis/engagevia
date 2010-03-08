@@ -13,18 +13,21 @@
     <div class="blurb_about_line">> get feedback & recommendations</div>
     <div class="blurb_about_line">> brainstorm & collaborate on projects</div>
     <div class="blurb_about_line" style="padding-left:100px;"><i>& do much more</i></div>
-  <div class="blurb_about">within your trusted circle of friends & </div>
-  <div class="blurb_about">friends of your friends</div>
-    </div>
-</div>
-
-  <div id="signup">
-  <div id="signup-btn">
-    <%= button_to "Start a Conversation" , new_post_url %>
+    <div class="blurb_about">within your trusted circle of friends & friends of your friends</div>
   </div>
-  <div id="signup-blurb">
-   No Membership required and It's FREE! <br/>
 </div>
+<% bk_link = "javascript:location.href=' #{DOMAIN}posts/new?url='+encodeURIComponent(location.href)+';title='+encodeURIComponent(document.title)" %>
+  <div id="signup">
+      <div id="signup-btn">
+        <%= button_to "Start a Conversation" , new_post_url %>
+      </div>
+      <div class="signup-blurb">
+       No Membership required and It's FREE! <br/>
+      </div>
+      <div class="signup-blurb">
+        If you are not quite ready,
+        drag this link <%= link_to  "Start Conversation", bk_link, :title => "EngageVia bookmark"  %> up to your Bookmarks Toolbar.
+      </div>
   </div>
 
   <div id="howto-blurb">
@@ -33,16 +36,15 @@
      How to use EngageVia?
     </div>
 
-    <ol>
-      <% bk_link = "javascript:location.href=' #{DOMAIN}posts/new?url='+encodeURIComponent(location.href)+';title='+encodeURIComponent(document.title)" %>
+    <ol>      
       <li>Drag this <%= link_to  "EngageVia bookmarklet", bk_link, :title => "EngageVia bookmarklet"  %> to your browser's bookmarks.
-      <li>Click on it or simply visit <a title="EngageVia" href="http://www.engagevia.com/posts/new">EngageVia</a> </li>
+      <li>Click on it or simply visit <a title="EngageVia" href="http://www.engagevia.com/posts/new">EngageVia</a>. </li>
       <li>Fill up the basic information and a conversation page is created. </li>
       <li>From that page, invite relevant friends from your address book. </li>
       <li>A unique link to the Conversation page is sent to them. </li>
       <li>Let your invitees invite relevant friends from their circle as well.</li>
       <li>All the invitees converge at one central location to engage in the conversation.<span style="font-style:italic;color:#ff0000;"> No membership required for anyone!</span>   </li>
-      <li>If you are a content publisher, please visit the <%=  link_to "Help" , "http://www.engagevia.com/help" %> page to get your javascript snippet to paste in your pages to facilitate private conversations.</li>
+      <li>If you are a content publisher, please visit the <%=  link_to "Help" , "http://www.engagevia.com/help" %> page to get your javascript snippet to paste in your pages to facilitate private conversations for your audience.</li>
     </ol>
       
  </div>

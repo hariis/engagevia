@@ -4,6 +4,7 @@ ActionController::Routing::Routes.draw do |map|
   map.connect '/posts/show', :controller => 'posts', :action => 'show',  :conditions => { :method => :get }
   map.connect '/posts/send_invites', :controller => 'posts', :action => 'send_invites'
   map.connect '/posts/plaxo', :controller => 'posts', :action => 'plaxo'
+  map.connect '/users/contacts', :controller => 'users', :action => 'contacts',  :conditions => { :method => :get }
   map.resources :comments, :collection => {:set_comment_body => :post}
   map.resources :users, :collection => {:activate => :post, :resendnewactivation => :get, :resendactivation => :post}
   map.resources :posts, :has_many => 'comments'

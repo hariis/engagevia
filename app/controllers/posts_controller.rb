@@ -321,7 +321,18 @@ class PostsController < ApplicationController
       render :text => "Click here to Add"
     end
   end
-
+  def get_reco_contacts
+    @post = Post.find(params[:pid])
+    keyword = @post.tag_list
+    unless keyword.blank?
+          @users  = User.find_tagged_with(keyword)
+    end
+    render :update do |page|
+        a = []
+        @users.each{|u| a << u.email}      
+        page.replace_html 'reco-contacts', "#{a.join(", ")}"
+    end
+  end
   private  
   # GET /posts/1/edit
   def edit

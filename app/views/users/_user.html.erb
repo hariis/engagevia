@@ -30,7 +30,7 @@
     <%= f.password_field :password_confirmation %>
   </p>
 
-  
+  <% if controller.action_name == 'xxx' %>
   <p style="float:left;clear:both;">
     <%= f.label :screen_name, "Twitter ID" %><br />
     <%= f.text_field :screen_name %>
@@ -38,7 +38,7 @@
     <br/><span style="font-size:85%;">If you have received EngageVia invitations to your twitter id, then please enter the same here </span>
     <% end %>
   </p>
- 
+ <% end %>
 <p style="clear:both;">
   
   <%= f.label "What kind of conversations would you like to be involved in?" %><br/>

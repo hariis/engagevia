@@ -60,13 +60,12 @@ class ApplicationController < ActionController::Base
     end
     #validating email
     def validate_emails(emails)
-            #Parse the string into an array
-              valid_emails =[]
-              valid_emails = string_to_array(emails)
+            #Parse the string into an array              
+              @parsed_entries = parse_emails(emails)
 
               offending_email = ""
               addresses = []
-              valid_emails.each {|email|
+              @parsed_entries.keys.each {|email|
                       if validate_simple_email(email)
                              addresses << email
                               next
@@ -98,35 +97,52 @@ class ApplicationController < ActionController::Base
            emailRE= /\A[\w\._%-]+@[\w\.-]+\.[a-zA-Z]{2,4}\z/
            return email =~ emailRE
      end
-     def string_to_array(stringitem)
-                  #Parse the string into an array
-                valid_array =[]
-                return if stringitem == nil
-                valid_array.concat(stringitem.split(/,/))
+     def parse_emails(stringitem)
+          parsed_entries = {}
+          #Parse the string into an array
+          valid_array =[]
+          return if stringitem == nil
+          valid_array.concat(stringitem.split(/,/))
 
-                # delete any blank emails
-                valid_array = valid_array.delete_if { |t| t.empty? }
+          # delete any blank emails
+          valid_array = valid_array.delete_if { |t| t.empty? }
 
-                # trim spaces around all tags
-                valid_array = valid_array.map! { |t| t.strip }
+          # trim spaces around all tags
+          valid_array = valid_array.map! { |t| t.strip }
 
-                # downcase all tags
-                valid_array = valid_array.map! { |t| t.downcase }
+          # downcase all tags
+          valid_array = valid_array.map! { |t| t.downcase }
 
-                # extract ab-style emails
-                 valid_array = valid_array.map! do |t|
-                   if t.include?('<')
-                     t.gsub!(/\A"/, '\1')
-                     str = t.split(/ /)
-                     str.delete_if{|x| x== ""}
-                     t = str[str.size-1].delete "<>"
-                   else
-                     t
-                  end
-                 end
+          # extract ab-style emails
+           valid_array = valid_array.map! do |t|
+             first_name = last_name = ""
+             if t.include?('<')
+               #t.gsub!(/\A"/, '\1')
+               t.gsub!(/\"(.*?)\"*/, '\1')
+               str = t.split(/ /)
+               str.delete_if{|x| x== ""}
+               t = str[str.size-1].delete "<>"
 
-                # remove duplicates
-                valid_array = valid_array.uniq               
+               #get their names if available               
+               if str.size == 2
+                 #if only name present, take it as first name
+                 first_name = str[str.size-2] unless str[str.size-2].include?('@')
+               else
+                 #if 3 or more, get the last but one as the last name
+                 last_name = str[str.size-2]
+                 #take the rest as first name
+                 left = str.size-2
+                 first_name = str[0,left].join(" ") unless str[0,left].nil?
+               end               
+             else
+               t
+             end
+             parsed_entries[t]=[first_name,last_name]
+           end
+
+          # remove duplicates
+          valid_array = valid_array.uniq
+          return parsed_entries
       end
      def is_admin
       current_user.has_role?('admin')

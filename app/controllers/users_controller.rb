@@ -200,6 +200,23 @@ class UsersController < ApplicationController
       render :text => "Click here to Add"
     end
   end
+
+ def contacts
+   @all_contacts = {}
+   #collect all participants from the posts you created
+   current_user.posts.each do |p|
+     p.get_all_participants.each do |c|
+       @all_contacts[c.id] = c
+     end
+   end
+   #collect all the post owners who invited you
+   all_engagements = Engagement.find(:all , :conditions => ["user_id = ?",current_user.id])
+   all_engagements.each do |e|
+     eng_owner = User.find(e.invited_by)
+     @all_contacts[eng_owner.id] = eng_owner
+   end
+   
+ end
 private
   def load_user_using_perishable_token
     #You can lengthen that limit by changing:

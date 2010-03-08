@@ -29,12 +29,10 @@ class Post < ActiveRecord::Base
 
   def self.get_invitees(invitees_emails)
     invitees = []
-    invitees_emails.each do |email|
+    invitees_emails.each_pair do |email,name|
       user = User.find_by_email(email)
-      if user.nil?
-        user = User.create_non_member(email)
-      end
-      invitees << user if !user.nil?
+      user = User.create_non_member(email,name[0],name[1]) if user.nil?
+      invitees << user unless user.nil?
     end
     return invitees
   end

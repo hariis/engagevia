@@ -15,12 +15,17 @@
 
         <div style="font-size: 10px;">Separate multiple addresses with a comma. <br/> Limit to 10 at a time. </div>
         <%= text_area_tag :email_invitees ,"",  :class =>"mceNoEditor",:rows => 10, :cols => 43 %>
+        <%= button_to_remote "Show Recommended Contacts",
+                        :url => { :action => "get_reco_contacts"},
+                        :with => "'pid=' + #{@post.id}" %>
+        <div id="reco-contacts"></div>
+        
        <p style="margin-top: 10px;">
           <%= submit_tag 'Send Email Invites' %><%= image_tag 'spinner.gif', :id=>"e-spinner", :style=>"display:none;" %>
         </p>
       <% end %>
   </div>  
-  
+  <hr>
   
         <%= button_to_function "Invite via Twitter",
                             visual_effect(:toggle_blind, "get_twitter_auth", :duration => 0.5) %>

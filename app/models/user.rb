@@ -74,15 +74,15 @@ class User < ActiveRecord::Base
     has_role?("admin")
   end
 
-  def self.create_non_member(email)
+  def self.create_non_member(email,fname="", lname="")
     user = User.new
     user.username = 'nonmember'
     user.email = email
     user.password = 'mounthood'
     user.password_confirmation = 'mounthood'
     user.add_role("non_member")
-    user.first_name = "firstname"
-    user.last_name = "lastname"
+    user.first_name = fname.blank? ? "firstname" : fname
+    user.last_name = lname.blank? ? "lastname": lname
     if user.save
       return user
     end
@@ -109,16 +109,16 @@ class User < ActiveRecord::Base
         #return get_display_name_via_engagement_or_post(post,engagement) if (post || engagement)
       elsif (post || engagement) #If not a member, check how he/she got invited
         #In case they have entered their first name, display that
-        if first_name != 'firstname' && last_name != 'last_name'
-          return first_name.titleize + " " + last_name.titleize
+        if first_name != 'firstname' || last_name != 'lastname'
+          return first_name.titleize + " " + (last_name == 'lastname' ? "" : last_name.titleize )
         else
           return get_display_name_via_engagement_or_post(post,engagement) if (post || engagement)
         end
       end
       #Last resort
         #In case they have entered their first name, display that
-        if first_name != 'firstname' && last_name != 'last_name'
-          return first_name.titleize + " " + last_name.titleize
+        if first_name != 'firstname' || last_name != 'lastname'
+          return first_name.titleize + " " + (last_name == 'lastname' ? "" : last_name.titleize )
         else
           return get_email_name  #currently used by layout
         end
