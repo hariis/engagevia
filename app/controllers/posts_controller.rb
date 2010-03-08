@@ -329,7 +329,7 @@ class PostsController < ApplicationController
     end
     render :update do |page|
         a = []
-        @users.each{|u| a << u.email.include?("nonmember") ? "@"+ u.screen_name : u.email}
+        @users.each{|u| a << u.get_contact_id }
         page.replace_html 'reco-contacts', "#{a.join(", ")}"
     end
   end

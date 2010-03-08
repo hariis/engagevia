@@ -174,5 +174,13 @@ class User < ActiveRecord::Base
   def self.get_admin_user
     UserRole.get_admin_user
   end
+
+  def get_contact_id
+    unless screen_name.blank?
+      return get_twitter_name
+    else
+      return get_email_name  #currently used by layout
+    end
+  end
 end
 
