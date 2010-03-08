@@ -116,12 +116,16 @@ class User < ActiveRecord::Base
         end
       end
       #Last resort
-        #In case they have entered their first name, display that
-        if first_name != 'firstname' || last_name != 'lastname'
-          return first_name.titleize + " " + (last_name == 'lastname' ? "" : last_name.titleize )
+      #In case they have entered their first name, display that
+      if first_name != 'firstname' || last_name != 'lastname'
+        return first_name.titleize + " " + (last_name == 'lastname' ? "" : last_name.titleize )
+      else
+        unless screen_name.blank?
+          return get_twitter_name
         else
           return get_email_name  #currently used by layout
         end
+      end
       
   end
   def get_display_name_via_engagement_or_post(post=nil,engagement=nil)
