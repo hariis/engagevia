@@ -176,10 +176,10 @@ class User < ActiveRecord::Base
   end
 
   def get_contact_id
-    unless screen_name.blank?
-      return get_twitter_name
+    unless email.include?("nonmember")
+      return email
     else
-      return get_email_name  #currently used by layout
+      return get_twitter_name  #currently used by get_reco_contacts
     end
   end
 end
