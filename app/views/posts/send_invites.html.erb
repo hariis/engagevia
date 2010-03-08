@@ -15,7 +15,7 @@
 
         <div style="font-size: 10px;">Separate multiple addresses with a comma. <br/> Limit to 10 at a time. </div>
         <%= text_area_tag :email_invitees ,"",  :class =>"mceNoEditor",:rows => 10, :cols => 43 %>
-        <%= button_to_remote "Show Recommended Contacts",
+        <%= button_to_remote "Show Recommended Email Contacts",
                         :url => { :action => "get_reco_contacts"},
                         :with => "'pid=' + #{@post.id}" %>
         <div id="reco-contacts"></div>
