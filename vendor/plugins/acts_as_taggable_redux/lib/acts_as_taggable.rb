@@ -30,7 +30,7 @@ module ActiveRecord
         end
 
         def tagged_with_scope(tags, options={})
-          options.assert_valid_keys([:match, :order, :user])
+          options.assert_valid_keys([:match, :order, :user, :contacts])
 
           tags = Tag.parse(tags)
           return [] if tags.empty?
@@ -38,7 +38,8 @@ module ActiveRecord
           group = "#{table_name}_taggings.taggable_id HAVING COUNT(#{table_name}_taggings.taggable_id) >= #{tags.size}" if options[:match] == :all
           conditions = sanitize_sql(["#{table_name}_tags.name IN (?)", tags])
           conditions += sanitize_sql([" AND #{table_name}_taggings.user_id = ?", options[:user]]) if options[:user]
-
+          conditions += sanitize_sql([" AND #{table_name}_taggings.taggable_id IN (?)", options[:contacts]]) unless options[:contacts].empty?
+          
           find_parameters = {
             :joins  =>  "LEFT OUTER JOIN #{Tagging.table_name} #{table_name}_taggings ON #{table_name}_taggings.taggable_id = #{table_name}.#{primary_key} AND #{table_name}_taggings.taggable_type = '#{name}' " +
                         "LEFT OUTER JOIN #{Tag.table_name} #{table_name}_tags ON #{table_name}_tags.id = #{table_name}_taggings.tag_id",
