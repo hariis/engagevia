@@ -186,20 +186,20 @@ class User < ActiveRecord::Base
   def get_inner_and_extended_contacts
     inner_circle = {}
     #get all users invited by you
-    Engagement.find_by_invited_by(id, :select => 'DISTINCT user_id').each do |e|
+    Engagement.find_all_by_invited_by(id, :select => 'DISTINCT user_id').each do |e|
        inner_circle[e.invitee] = User.find(e.invitee) unless e.invitee == id
     end
 
     #get all users that invited you
-    Engagement.find_by_user_id(id, :select => 'DISTINCT invited_by').each do |e|
+    Engagement.find_all_by_user_id(id, :select => 'DISTINCT invited_by').each do |e|
        inner_circle[e.invited_by] = User.find(e.invited_by) unless e.invitee == id
     end
 
     extended_circle = {}
    #get all participants from all posts you have participated in
-   Engagement.find_by_user_id(id, :select => 'DISTINCT post_id').each do |e|
+   Engagement.find_all_by_user_id(id, :select => 'DISTINCT post_id').each do |e|
      Post.find(e.post_id).get_all_participants.each do |p|
-       extended_circle[p] = User.find(p.invitee) unless (inner_circle.has_key?(p) || e.invitee == id)
+       extended_circle[p] = User.find(p) unless (inner_circle.has_key?(p) || p == id)
      end
    end
 

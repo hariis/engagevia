@@ -1,8 +1,8 @@
-<% unless @all_contacts.values.empty? %>
-  <div class="heading">My Contacts</div>
-<% end %>
 
-  Inner Circle
+<div class="heading">My Contacts</div>
+
+<div class="group">
+ <div class="group-name">Inner Circle</div>
 <% @ic.values.each do |contact| %>
 <%  next if contact.id == current_user.id %>
 <div class="contact <%= cycle('listing-line-odd', 'listing-line-even') %>">
@@ -12,7 +12,9 @@
   <div class="contact-info"><%= "Tags: " + contact.tag_list unless contact.tag_list.blank? %></div>
 </div>
 <% end %>
-Extended Circle
+ </div>
+<div class="group">
+  <div class="group-name">Extended Circle</div>
 <% @ec.values.each do |contact| %>
 <%  next if contact.id == current_user.id %>
 <div class="contact <%= cycle('listing-line-odd', 'listing-line-even') %>">
@@ -22,3 +24,6 @@ Extended Circle
   <div class="contact-info"><%= "Tags: " + contact.tag_list unless contact.tag_list.blank? %></div>
 </div>
 <% end %>
+</div>
+
+<div><hr></div>

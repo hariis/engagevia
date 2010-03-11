@@ -322,11 +322,15 @@ class PostsController < ApplicationController
     end
   end
   def get_reco_contacts
-    @post = Post.find(params[:pid])
-    @user = User.find_by_unique_id(params[:uid]) if params[:uid]
-    keyword = @post.tag_list
-    unless keyword.blank?
-          @users  = User.find_tagged_with(keyword, :contacts => @user.get_all_contacts)
+    pid_and_uid = params[:pid].split('&')
+    @users  = []
+    unless pid_and_uid.blank?
+        @post = Post.find(pid_and_uid[0].strip)
+        @user = User.find(pid_and_uid[1].strip)
+        keyword = @post.tag_list
+        unless keyword.blank?
+              @users  = User.find_tagged_with(keyword, :contacts => @user.get_all_contacts)
+        end
     end
     render :update do |page|
         a = []

@@ -202,7 +202,7 @@ class UsersController < ApplicationController
   end
 
  def contacts
-   @ic, @ec = get_inner_and_extended_contacts
+   @ic, @ec = current_user.get_inner_and_extended_contacts
  end
 private
   def load_user_using_perishable_token
