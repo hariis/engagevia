@@ -321,12 +321,11 @@ class PostsController < ApplicationController
       render :text => "Click here to Add"
     end
   end
-  def get_reco_contacts
-    pid_and_uid = params[:pid].split('&')
+  def get_reco_contacts    
     @users  = []
-    unless pid_and_uid.blank?
-        @post = Post.find(pid_and_uid[0].strip)
-        @user = User.find(pid_and_uid[1].strip)
+    unless (params[:pid].nil? || params[:uid].nil?)
+        @post = Post.find(params[:pid])
+        @user = User.find_by_unique_id(params[:uid])
         keyword = @post.tag_list
         unless keyword.blank?
               @users  = User.find_tagged_with(keyword, :contacts => @user.get_all_contacts)
