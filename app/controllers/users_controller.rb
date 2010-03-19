@@ -84,6 +84,7 @@ class UsersController < ApplicationController
     else      
       @user = User.new
       @user.email = params[:user][:email]
+      @user.username = "member"  #currently this field is not used -this is a dummy value
       assign_user_object
     end
 
@@ -219,8 +220,8 @@ private
     end
  end
  def assign_user_object
-      @user.username = params[:user][:screen_name]
-      @user.screen_name = params[:user][:screen_name]
+#      @user.username = params[:user][:screen_name]
+#      @user.screen_name = params[:user][:screen_name]
       @user.password = params[:user][:password]
       @user.password_confirmation = params[:user][:password_confirmation]
       @user.avatar = params[:user][:avatar] if params[:user][:avatar] != nil

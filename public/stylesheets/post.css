@@ -123,7 +123,7 @@ margin: 0 auto;
     overflow:auto;
 }
 html,body {
-  font-size: 100%;
+  font-size: 14px;
   font-family:    Sans-Serif,Arial,'Lucida Grande';
   color:#2b1e24;
   padding:0px;
@@ -132,8 +132,7 @@ html,body {
   -moz-background-inline-policy:continuous;
   -moz-background-origin:padding;
   background:#333333 none repeat scroll 0 0;
-  min-width: 1625px;
-  line-height: 1.2em;
+  min-width: 1625px;  
   width: 100%;
   /* background-image: url('/images/pattern_096.gif'); */
 }
@@ -179,7 +178,7 @@ html,body {
   margin:0 auto;
   text-align:left;
   color: #222222;
-  width:800px;
+  width:925px;
 }
 #shadow {
     width:1050px;
@@ -258,6 +257,9 @@ vertical-align:middle;
 #header .logo img {
     width: 260px;
 }
+#wide-header .logo img {
+    width: 260px;
+}
 a {
 color:#0B84E8;
 outline-color:-moz-use-text-color;
@@ -303,6 +305,7 @@ input.submit  {
     float: right;
     color:#fff;
     margin:50px 0 0 20px;
+    width:265px;
 }
 .signup-blurb{
 background-color:#5b5b5b;
@@ -312,9 +315,13 @@ width:235px;
 -moz-box-shadow:2px 2px 14px #FFFFFF;
 margin:20px 0 0 0;
 }
+.signup-blurb a {
+    border:1px solid;
+}
 form {
-margin:0;
+margin:0 auto;
 padding:0;
+width:725px;
 }
 #widgets {
 background: transparent url('/images/bg-widgets.png') repeat-x scroll 0 0;
@@ -337,8 +344,20 @@ overflow:hidden;
 padding:10px 20px 7px 30px;
 height:58px;
 margin: 0 auto;
+width:925px;
+}
+#wide-header {
+overflow: hidden;
+padding: 10px 20px 7px 30px;
+height: 58px;
+margin: 0 auto;
+width: 90%;
 }
 * html #header {
+height:1%;
+overflow:visible;
+}
+* html #wide-header {
 height:1%;
 overflow:visible;
 }
@@ -352,29 +371,29 @@ height:53px;
 overflow:hidden;
 width:251px;
 }
-#header ul {
-float:right;
-list-style-image:none;
-list-style-position:outside;
-list-style-type:none;
-margin:18px 0 0;
-overflow:hidden;
-padding:0;
+#header ul,#wide-header ul {
+    float:right;
+    list-style-image:none;
+    list-style-position:outside;
+    list-style-type:none;
+    margin:18px 0 0;
+    overflow:hidden;
+    padding:0;
 }
-#header ul li {
-display:inline;
-float:left;
-margin-left:-2px;
-padding: 2px;
+#header ul li,#wide-header ul li {
+    display:inline;
+    float:left;
+    margin-left:-2px;
+    padding: 2px;
 }
-#header ul li a {
-color:#0B84E8;
-text-decoration:none;
-padding:0 13px;
+#header ul li a, #wide-header ul li a {
+    color:#0B84E8;
+    text-decoration:none;
+    padding:0 13px;
 }
-#header ul li a.active, #header ul li a:hover {
-color:#FFFFFF;
-background-color:#4b9ce0;
+#header ul li a.active, #header ul li a:hover,#wide-header ul li a.active, #wide-header ul li a:hover {
+    color:#FFFFFF;
+    background-color:#4b9ce0;
 }
 ul li {
     list-style-image:none;
@@ -415,7 +434,7 @@ font-size: 14px;
 #dashboard-content {
     overflow:hidden;
     width:100%;
-    font-size: 18px;
+    font-size: 20px;
     width:925px;
     margin:0 auto;
 }
@@ -545,15 +564,13 @@ div#twitter_followers ul li {
 }
 
 .post-item {
-    padding: 5px;
-    font-size: 18px;
+    padding: 5px;    
     overflow:auto;
     border-left: 6px solid #0B84E8;
     border-bottom:1px solid #0B84E8;
 }
 .post-item a {
     color: #0B84E8;
-    font-weight:bold;
 }
 .post-item a:hover {
     color: #6c0c0c;
@@ -570,7 +587,7 @@ div#twitter_followers ul li {
     font-size: 14px;
 }
 #dashboard-view{
-    width: 1230px;
+    width: 925px;
     margin:0 auto;
     color:fuchsia;
 }
