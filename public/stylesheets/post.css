@@ -172,7 +172,7 @@ html,body {
 }
 #gen-content {
   margin: 0 275px;
-  padding: 10px;
+  padding: 2px 0px 7px;
   background-color: #BBDEFA;
   font-size: 14px;
   margin:0 auto;
@@ -660,6 +660,7 @@ label {
     color:#575455;
     font-size:32px;
     margin:20px 0px;
+    padding-left: 3px;
 }
 .sub-heading {
     color:#575455;
@@ -734,6 +735,7 @@ label {
 }
 .group-name {
     font-weight: bold;
+    padding-left: 5px;
 }
 .group {
     font-size: 12px;    
