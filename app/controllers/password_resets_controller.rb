@@ -7,6 +7,11 @@ class PasswordResetsController < ApplicationController
   end
 
   def create
+    #if params[:email].empty?
+    #  flash[:error] = "Email cannot be blank"
+    #  render :action => :new and return
+    #end
+
     @user = User.find_by_email(params[:email])
     if @user
       @user.deliver_password_reset_instructions!
