@@ -2,7 +2,7 @@
 <div class="heading">My Contacts</div>
 
 <div class="group">
- <div class="group-name">Inner Circle</div>
+ <div class="group-name">Inner Circle (<%= @ic.values.size %>)</div>
 <% @ic.values.each do |contact| %>
 <%  next if contact.id == current_user.id %>
 <div class="contact <%= cycle('listing-line-odd', 'listing-line-even') %>">
@@ -14,7 +14,7 @@
 <% end %>
  </div>
 <div class="group">
-  <div class="group-name">Extended Circle</div>
+  <div class="group-name">Extended Circle (<%= @ec.values.size %>)</div>
 <% @ec.values.each do |contact| %>
 <%  next if contact.id == current_user.id %>
 <div class="contact <%= cycle('listing-line-odd', 'listing-line-even') %>">
