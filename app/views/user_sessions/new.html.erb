@@ -1,7 +1,7 @@
  <div id="centered-heading">Login</div>
 
 <% form_for(@user_session) do |f| %>
-  <%= f.error_messages %>
+  <%= error_messages_for :user_session, :header_message => '',:message => '' %>
 
   <p>
     <%= f.label :email %><br />
@@ -16,4 +16,6 @@
   </p>
 <% end %>
 
+  <div style="padding-left:700px;font-size:12px;">
 <%= link_to "Forgot Password", new_password_reset_path %> | <%= link_to "Resend Activation", resendnewactivation_users_path %>
+  </div>

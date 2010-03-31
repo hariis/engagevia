@@ -66,8 +66,8 @@ class UsersController < ApplicationController
         "Please check your email and click on the activation link."
         redirect_to root_url
     else
-      flash[:notice] = "No user was found with that email address."
-      redirect_to root_url
+      flash[:notice] = "No user was found with that email address."      
+      render 'resendnewactivation'
     end
   end
 
