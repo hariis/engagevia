@@ -9,7 +9,7 @@ class ApplicationController < ActionController::Base
 
   ExceptionNotifier.exception_recipients = %w(hrajagopal@yahoo.com satish.fnu@gmail.com)
 
-  # Scrub sensitive parameters from your log
+  #Scrub sensitive parameters from your log
    filter_parameter_logging :password
   
   helper_method :current_user
