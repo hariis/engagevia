@@ -33,7 +33,7 @@ var tinymce_advanced_options = {
 var tinymce_advanced_with_save_options = {
   mode : "textareas",
   theme : "advanced",  
-  plugins: 'save,autoresize,paste,preview,safari,table,contextmenu,paste,imagepopup,emotions',
+  plugins: 'save,autoresize,paste,preview,safari,table,contextmenu,paste,emotions',
   editor_deselector : "mceNoEditor",
   theme_advanced_resizing_min_width : 500,
   theme_advanced_resizing_max_width : 800,
@@ -43,7 +43,7 @@ var tinymce_advanced_with_save_options = {
   apply_source_formatting: true,
   theme_advanced_toolbar_align: "left",
   theme_advanced_buttons1: "save,cancel,formatselect,outdent,indent,seperator,undo,redo,separator,emotions",
-  theme_advanced_buttons2: "justifyleft,justifycenter,justifyright,separator,bold,italic,separator,bullist,numlist,link,separator,imagepopup,table,separator",
+  theme_advanced_buttons2: "justifyleft,justifycenter,justifyright,separator,bold,italic,separator,bullist,numlist,link,separator,table,separator",
   theme_advanced_buttons3: "",
   save_enablewhendirty : true,
 

@@ -1,4 +1,4 @@
-
+<% unless participants.nil? %>
   <% participants.each_pair do |invitee,engagement| %>
   <li  class= 'new-p'>
           <%= image_tag "user_green.png" %> <%=  invitee.display_name(nil,engagement) %>
@@ -22,3 +22,4 @@
     </li>
   <% end %>
 
+<% end %>

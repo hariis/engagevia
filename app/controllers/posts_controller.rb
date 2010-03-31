@@ -3,8 +3,8 @@ class PostsController < ApplicationController
   
   before_filter :load_user, :except => [:new, :create,:dashboard,:privacy,:about,:blog,:contact,:plaxo,:help]
   before_filter :check_activated_member,
-    :except => [:new,:show,:send_invites, :create, :dashboard, :index, :privacy,:about,:blog,:contact,:plaxo,:help]
-  
+    :except => [:new,:show, :create, :dashboard, :index, :privacy,:about,:blog,:contact,:plaxo,:help]
+
   def privacy
   end
   
@@ -134,20 +134,7 @@ class PostsController < ApplicationController
       format.xml  { render :xml => @post }
     end
   end  
-  def send_invites
-    if params[:pid]
-      @post = Post.find_by_unique_id(params[:pid])
-      @engagement = Engagement.new
-    else
-      render 'posts/404', :status => 404, :layout => false and return
-    end
-
-    respond_to do |format|
-      format.html # show.html.erb
-      format.xml  { render :xml => @post }
-      format.js { render_to_facebox }
-    end
-  end
+  
   # GET /posts/new
   # GET /posts/new.xml
   def new
@@ -304,7 +291,7 @@ class PostsController < ApplicationController
     #@post.note = params[:value]
     if @post.update_attributes(:note => params[:value])
       render :text => @post.note
-    else
+    elsesend
       render :text => "There was a problem saving your note. Please refresh and try again."
     end
   end

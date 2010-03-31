@@ -19,6 +19,7 @@ module OauthSystem
 	# controller method to handle twitter callback (expected after login_by_oauth invoked)
 	def callback
 		begin
+      @post = Post.find(session[:post_id]) if session[:post_id]
 			self.twitagent.exchange_request_for_access_token( session[:request_token], session[:request_token_secret], params[:oauth_verifier] )
 			
 			user_info = self.twitagent.verify_credentials
@@ -41,10 +42,13 @@ module OauthSystem
 				raise OauthSystem::RequestError
 			end
       
-      @post = Post.find(session[:post_id]) if session[:post_id]
-			# Redirect to the show page
-      @followers = followers(@user.screen_name)
-      RAILS_DEFAULT_LOGGER.error "Followers obtained successfully #{@followers.size}"
+      flash[:notice] = "We have successfully accessed your Twitter account. <br/><br/>
+                        Please click on the 'Invite Friends' link on your post page to see your followers and invite them."
+      #redirect_to @post.get_url_for(@user,'show')
+      #return
+      # Redirect to the show page
+      #@followers = followers(@user.screen_name)
+      #RAILS_DEFAULT_LOGGER.error "Followers obtained successfully #{@followers.size}"
       # Redirect to the show page
 #			render 'posts/show'
 #      return
@@ -58,7 +62,11 @@ module OauthSystem
 			# The user might have rejected this application. Or there was some other error during the request.
 			RAILS_DEFAULT_LOGGER.error "Failed to get user info via OAuth--" + err
 			flash[:error] = "Twitter API failure (account login)"
-			redirect_to root_url
+      if @post && @user
+        redirect_to @post.get_url_for(@user,'show')
+      else
+        redirect_to root_url
+      end			
 			return
 		end
 	end
@@ -124,8 +132,9 @@ protected
       session[:post_id] = params[:post_id] if params[:post_id]
       session[:uid] = params[:uid] if params[:uid]
 			# Send to twitter.com to authorize
-			redirect_to request_token.authorize_url
-			return
+			# redirect_to request_token.authorize_url
+			# return
+      @authorization_url = request_token.authorize_url
 		rescue
 			# The user might have rejected this application. Or there was some other error during the request.
 			RAILS_DEFAULT_LOGGER.error "Failed to login via OAuth"

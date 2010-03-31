@@ -2,8 +2,8 @@ class EngagementsController < ApplicationController
   # include the oauth_system mixin
   include OauthSystem
   
-  before_filter :load_post, :except => [:set_notification, :get_auth_from_twitter, :callback]
-  before_filter :load_user, :only => [:create, :get_followers,:get_auth_from_twitter]
+  before_filter :load_post, :except => [:set_notification, :callback]
+  before_filter :load_user, :only => [:create, :get_followers, :get_auth_from_twitter, :send_invites]
   layout 'posts'
   def load_user
     @user = User.find_by_unique_id(params[:uid]) if params[:uid]
@@ -25,9 +25,13 @@ class EngagementsController < ApplicationController
   def create
     #Save the engagements
     if params[:invite_type] == 'email'
-      send_email_invites
+      if params[:email_invitees]
+        send_email_invites(params[:email_invitees])
+      else
+        send_ev_invites
+      end
     else
-      send_twitter_invites
+      send_twitter_invites(params[:followers])
     end
   end
 
@@ -47,44 +51,7 @@ class EngagementsController < ApplicationController
         page.replace_html "resend_#{eng_exists.invitee.id}", @status
     end
   end
- def get_followers   
-     from_config = {}
-     from_config[:twitid] = params[:twitid]
-     from_config[:password] = params[:twitp]
 
-     @error_message = ""
-     begin
-        @followers = Engagement.get_followers(from_config)
-        if @followers.size == 0
-          @error_message = "There was a problem connecting to Twitter.<br/> Please try again a little later."
-        elsif @followers.blank?
-          @error_message = "No followers found."
-        end
-     rescue Exception => e
-       if e.type.inspect == "Twitter::Unauthorized"
-        @error_message = "Could not login to Twitter.<br/> Please check your credentials <br/>and try again a little later. "
-       else
-        @error_message = "There was a problem talking to Twitter.<br/> Please try again a little later."
-       end
-     end
-     respond_to do |format|
-        format.js {            
-              render_to_facebox  :partial => 'followers.html.erb', :object => @followers
-            #page.show "twit-invite-btn"
-        }
-      end
-  end
-def get_auth_from_twitter
-#  @request_token = User.consumer.get_request_token
-#
-#  session[:request_token] = @request_token.token
-#  session[:request_token_secret] = @request_token.secret
-#  session[:post_id] = params[:post_id] if params[:post_id]
-#  session[:uid] = params[:uid] if params[:uid]
-#  # Send to twitter.com to authorize
-#  redirect_to @request_token.authorize_url
-   login_by_oauth
-end
 def callback2
     @user = User.find_by_unique_id(session[:uid]) if session[:uid]
     @post = Post.find(session[:post_id]) if session[:post_id]
@@ -123,18 +90,17 @@ def callback2
     end
  end
 
-def getfollowers 
-    @access_token = OAuth::AccessToken.new(User.consumer, @user.token, @user.secret)
-
-    @twitter_response = User.consumer.request(:get, '/statuses/followers.json', @access_token,
-    { :scheme => :query_string })
-    case @twitter_response
-    when Net::HTTPSuccess
-        @followers = JSON.parse(@twitter_response.body)        
+def get_auth_from_twitter
+  login_by_oauth  #in lib/oauth_system
+end
+def get_followers
+    @followers = []
+    if @user.token.blank?
+      login_by_oauth  #in lib/oauth_system
     else
-      # The user might have rejected this application. Or there was some other error during the request.
-      @error_message =  "There was a problem getting followers from Twitter.<br/> Please try again a little later."      
-    end   
+       OauthSystem.twitagent(@user.token,@user.secret)
+       @followers = followers(@user.screen_name)
+    end
 end
 
  def method_missing(methodname, *args)
@@ -142,78 +108,176 @@ end
 #       @args = args
 #        render 'posts/404', :status => 404, :layout => false
    end
- private
- def send_email_invites
-   #Send email invites
-    invitees_emails = params[:email_invitees]
 
-    if invitees_emails.length > 0
-          if validate_emails(invitees_emails)
-                  #Limit sending only to first 10
+   def send_invites          
+      @engagement = Engagement.new
+      #data for invite from ev tab      
+      @ic, @ec = @user.get_inner_and_extended_contacts
+      keywords = @post.tag_list
+      @reco_users  = []
+      @reco_users_ids = []
+      unless keywords.blank?
+            @reco_users  = @user.get_recommended_contacts(keywords, @ic.keys + @ec.keys)
+            @reco_users.each{|u| @reco_users_ids << u.id }
+      end
 
-                  #Get userid of invitees - involves creating dummy accounts
-                  @requested_participants = []
-                  @participants = {}
-                  @requested_participants = Post.get_invitees(@parsed_entries)
-                  #Add them to engagement table
-                  @requested_participants.each do |invitee|
-                    if !invitee.nil?
-                      eng_exists = Engagement.find(:first, :conditions => ['user_id = ? and post_id = ?',invitee.id, @post.id])
-                      if eng_exists.nil?
-                          eng = Engagement.new
-                          eng.invited_by = @user.id
-                          eng.invited_when = Time.now.utc
-                          eng.post = @post
-                          eng.invitee = invitee
-                          eng.invited_via = 'email'
-                          eng.save
-                          @participants[invitee] = eng
-                      end
-                    end
-                  end
-                   #update the participants' tags with post tags
-                   update_tags_for_all_invitees(@participants.keys)
-                   #now send emails
-                  @post.send_invitations(@participants,@user) if @participants.size > 0
-                  #Delayed::Job.enqueue(MailingJob.new(@post, invitees))
 
-                  @status_message = "<div id='success'>Invitations sent</div>"
-          else
-                  @status_message = "<div id='failure'>There was some problem sending. <br/>" + @invalid_emails_message + "</div>"
+      #data for twitter tab
+      if @user.token.blank?
+        @followers = nil  #redirect to twitter for authorization
+        login_by_oauth #sets the @authorization_url
+      else
+        @followers = []
+        OauthSystem.twitagent(@user.token,@user.secret)
+         @followers = followers(@user.screen_name)
+      end    
 
-          end
-
-    else
-              @status_message = "<div id='failure'>Please enter valid email addresses and try again.</div>"
+    respond_to do |format|
+      format.html # show.html.erb
+      format.xml  { render :xml => @post }
+      format.js { render_to_facebox }
     end
-
+  end
+  
+ private
+ def send_email_invites(email_ids)      
+   create_engagements_and_send(email_ids)
    
     render :update do |page|
-        page.hide 'facebox'
-        page.insert_html :bottom, 'participants-list', :partial => 'participants'
-        page.replace_html 'invite-status', "#{@participants? pluralize(@participants.size ,"participant") : "None"} added."
-        #page.replace_html "send-status", @status_message
-        #page.select("send-status").each { |b| b.visual_effect :highlight, :startcolor => "#fb3f37",
-				#								:endcolor => "#cf6d0f", :duration => 5.0 }
+      if @status_message.blank?
+        #page.hide 'facebox'
+        page.insert_html :bottom, 'participants-list', :partial => 'participants', :locals => { :participants => @email_participants }
+        page.replace_html 'invite-status', "#{@email_participants ? pluralize(@email_participants.size ,"participant") : "None"} added."
+        page.replace_html "send-status", "#{@email_participants ? pluralize(@email_participants.size ,"invitation") : "None"} sent."
+        page.select("#send-status").each { |b| b.visual_effect :fade, :startcolor => "#4B9CE0",
+												:endcolor => "#cf6d0f", :duration => 15.0 }
         page.select(".new-p").each { |b| b.visual_effect :highlight, :startcolor => "#fb3f37",
 												:endcolor => "#cf6d0f", :duration => 5.0 }
         page.select("#invite-status").each { |b| b.visual_effect :fade, :startcolor => "#fb3f37",
-												:endcolor => "#cf6d0f", :duration => 5.0 }
+												:endcolor => "#cf6d0f", :duration => 15.0 }
         page.replace_html "participant-count", "(#{@post.engagements.size})"
+      else
+        page.replace_html "send-status", @status_message
+      end
     end
  end
 
- def send_twitter_invites
-    #Send twitter notifications
-    #Get the twitter ids of the invitees
-    @followers = params[:followers]    
-    unless params[:followers].nil?
+ def create_engagements_and_send(invitees_emails)
+   @email_participants = {}
+   @status_message = ""
+   if invitees_emails.length > 0
+       if validate_emails(invitees_emails)  #returns @parsed_entries
+            #Limit sending only to first 10
+
+            #Get userid of invitees - involves creating dummy accounts
+            requested_participants = []
+            requested_participants = Post.get_invitees(@parsed_entries)
+            #Add them to engagement table
+            requested_participants.each do |invitee|
+              if !invitee.nil?
+                eng_exists = Engagement.find(:first, :conditions => ['user_id = ? and post_id = ?',invitee.id, @post.id])
+                if eng_exists.nil?
+                    eng = Engagement.new
+                    eng.invited_by = @user.id
+                    eng.invited_when = Time.now.utc
+                    eng.post = @post
+                    eng.invitee = invitee
+                    eng.invited_via = 'email'
+                    eng.save
+                    @email_participants[invitee] = eng
+                end
+              end
+            end
+             #update the participants' tags with post tags
+             update_tags_for_all_invitees(@email_participants.keys)
+             #now send emails
+            @post.send_invitations(@email_participants,@user) if @email_participants.size > 0
+            #Delayed::Job.enqueue(MailingJob.new(@post, invitees))            
+        else
+                @status_message = "<div id='failure'>There was some problem sending the invitation(s). <br/>" + @invalid_emails_message + "</div>"
+        end
+    else
+        @status_message = "<div id='failure'>Please enter valid email addresses and try again.</div>"
+    end
+ end
+ def send_ev_invites
+   #separate the email ids from twitter ids
+   contacts = params[:ev_contacts].split(',') unless params[:ev_contacts].nil?
+   email_ids = []
+   twitter_ids = []
+   unless contacts.blank?
+     contacts.each do |c|
+       #get contact_ids from the users
+       contact_id = User.find_by_unique_id(c).get_contact_id
+       #separate emails from twitter ids
+       contact_id.include?('@') ? email_ids << contact_id : twitter_ids << contact_id
+     end
+   end
+   #call send_email_invites
+   unless email_ids.blank?     
+      create_engagements_and_send(email_ids.join(','))
+   end
+   #call send_twitter_invites
+   unless twitter_ids.blank?
+      create_engagements_and_dm(twitter_ids)
+   end
+
+    render :update do |page|
+      if @status_message.blank? && @error_message.blank?
+        #page.hide 'facebox'
+        page.insert_html :bottom, 'participants-list', :partial => 'participants', :locals => { :participants => @email_participants }
+        page.insert_html :bottom, 'participants-list', :partial => 'participants', :locals => { :participants => @twitter_participants }
+
+        total_count = 0
+        total_count = @email_participants.size unless @email_participants.blank?
+        total_count += @twitter_participants.size unless @twitter_participants.blank?
+
+        page.replace_html 'invite-status', "#{total_count > 0 ? pluralize(total_count ,"participant") : "None"} added."
+        page.replace_html "send-status", "#{total_count > 0 ? pluralize(total_count ,"invitation") : "None"} sent."
+
+
+        page.select("#send-status").each { |b| b.visual_effect :fade, :startcolor => "#4B9CE0",
+												:endcolor => "#cf6d0f", :duration => 15.0 }
+        page.select(".new-p").each { |b| b.visual_effect :highlight, :startcolor => "#fb3f37",
+												:endcolor => "#cf6d0f", :duration => 5.0 }
+        page.select("#invite-status").each { |b| b.visual_effect :fade, :startcolor => "#fb3f37",
+												:endcolor => "#cf6d0f", :duration => 15.0 }
+        page.replace_html "participant-count", "(#{@post.engagements.size})"
+      else
+        page.replace_html "send-status", @status_message + "<br/>" + @error_message
+      end
+    end
+ end
+ def send_twitter_invites(twitter_followers)    
+    create_engagements_and_dm(twitter_followers)
+   
+    render :update do |page|
+       if @error_message.blank?
+        #page.hide 'facebox'        
+        page.insert_html :bottom, 'participants-list', :partial => 'participants', :locals => { :participants => @twitter_participants }
+        page.replace_html 'invite-status', "#{@twitter_participants ? pluralize(@twitter_participants.size ,"participant") : "None"} added."
+        page.replace_html "send-status", "#{@twitter_participants ? pluralize(@twitter_participants.size ,"invitation") : "None"} sent."
+        page.select("#send-status").each { |b| b.visual_effect :fade, :startcolor => "#4B9CE0",
+												:endcolor => "#cf6d0f", :duration => 15.0 }
+        page.select(".new-p").each { |b| b.visual_effect :highlight, :startcolor => "#fb3f37",
+												:endcolor => "#cf6d0f", :duration => 5.0 }
+        page.select("#invite-status").each { |b| b.visual_effect :fade, :startcolor => "#fb3f37",
+          :endcolor => "#cf6d0f", :duration => 15.0 }
+        page.replace_html "participant-count", "(#{@post.engagements.size})"
+       else
+         page.replace_html "send-status", @error_message
+       end
+    end
+ end
+ def create_engagements_and_dm(twitter_followers)
+   @twitter_participants = {}
+   unless twitter_followers.nil?
        #Get userid of invitees - involves creating dummy accounts
-        @requested_participants = []
-        @participants = {}
-        @requested_participants = Post.get_twitter_invitees(@followers)
+        requested_participants = []
+
+        requested_participants = Post.get_twitter_invitees(twitter_followers)
         #Add them to engagement table
-        @requested_participants.each do |invitee|
+        requested_participants.each do |invitee|
           #check if each user has already been invited
           eng_exists = Engagement.find(:first, :conditions => ['user_id = ? and post_id = ?',invitee.id, @post.id])
           if eng_exists.nil?
@@ -224,37 +288,18 @@ end
               eng.invitee = invitee
               eng.invited_via = 'twitter'
               eng.save
-              @participants[invitee] = eng
+              @twitter_participants[invitee] = eng
           end
         end
         #update the participants' tags with post tags
-        update_tags_for_all_invitees(@participants.keys)
+        update_tags_for_all_invitees(@twitter_participants.keys)
      @error_message = ""
      begin
-        send_twitter_notification(@participants) if @participants.size > 0
+        send_twitter_notification(@twitter_participants) if @twitter_participants.size > 0
      rescue
-        @error_message = "Unable to send invites.<br/> Please check your credentials <br/>and try again a little later."
+        @error_message = "<div id='failure'>There was some problem sending the invitation(s) via Twitter.<br/> Please try again a little later.</div>"
      end
-             
-    end
-   
-    render :update do |page|
-       if @error_message.blank?
-        #page.hide 'facebox'
-        page.hide 'name-request'
-        page.insert_html :bottom, 'participants-list', :partial => 'participants'
-        page.replace_html 'invite-status', "#{@participants? pluralize(@participants.size ,"participant") : "None"} added."
-        #page.replace_html "send-status", @status_message
-        #page.select("send-status").each { |b| b.visual_effect :highlight, :startcolor => "#fb3f37",
-				#								:endcolor => "#cf6d0f", :duration => 5.0 }
-        page.select(".new-p").each { |b| b.visual_effect :highlight, :startcolor => "#fb3f37",
-												:endcolor => "#cf6d0f", :duration => 5.0 }
-        page.select("#invite-status").each { |b| b.visual_effect :fade, :startcolor => "#fb3f37",
-          :endcolor => "#cf6d0f", :duration => 50.0 }
-        page.replace_html "participant-count", "(#{@post.engagements.size})"
-       else
-         page.replace_html "send-status", @error_message
-       end
+
     end
  end
  def send_twitter_notification(followers)

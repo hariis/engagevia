@@ -210,5 +210,8 @@ class User < ActiveRecord::Base
     ic,ec = get_inner_and_extended_contacts
     ic.keys + ec.keys
   end
+  def get_recommended_contacts(keywords, all_contacts)
+    User.find_tagged_with(keywords, :contacts => all_contacts)
+  end
 end
 
