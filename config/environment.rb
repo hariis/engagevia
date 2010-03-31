@@ -33,8 +33,8 @@ Rails::Initializer.run do |config|
   # Activate observers that should always be running
   # config.active_record.observers = :cacher, :garbage_collector, :forum_observer
 
-  #config.action_controller.session_store = :active_record_store
-  #config.action_controller.session = {:domain => '.engagevia.com'}
+  config.action_controller.session_store = :active_record_store
+  config.action_controller.session = {:domain => '.engagevia.com'}
 
   # Set Time.zone default to the specified zone and make Active Record auto-convert to this zone.
   # Run "rake -D time" for a list of tasks for finding time zone names.
@@ -50,7 +50,8 @@ Rails::Initializer.run do |config|
   TWOAUTH_SITE = "http://twitter.com"
   TWOAUTH_CALLBACK = "http://www.engagevia.com/callback"
 
-  ActionView::Base.field_error_proc = Proc.new do |html_tag, instance|
+  #redefining the error fields display
+  config.action_view.field_error_proc = Proc.new do |html_tag, instance|
   "<span class=\"fieldWithErrors\">#{html_tag}</span>"
 end
 end
