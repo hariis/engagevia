@@ -3,7 +3,7 @@ class EngagementsController < ApplicationController
   include OauthSystem
   
   before_filter :load_post, :except => [:set_notification, :callback]
-  before_filter :load_user, :only => [:create, :get_followers, :get_auth_from_twitter, :send_invites]
+  before_filter :load_user, :only => [:create, :get_auth_from_twitter, :send_invites]
   layout 'posts'
   def load_user
     @user = User.find_by_unique_id(params[:uid]) if params[:uid]
@@ -92,15 +92,6 @@ def callback2
 
 def get_auth_from_twitter
   login_by_oauth  #in lib/oauth_system
-end
-def get_followers
-    @followers = []
-    if @user.token.blank?
-      login_by_oauth  #in lib/oauth_system
-    else
-       OauthSystem.twitagent(@user.token,@user.secret)
-       @followers = followers(@user.screen_name)
-    end
 end
 
  def method_missing(methodname, *args)
