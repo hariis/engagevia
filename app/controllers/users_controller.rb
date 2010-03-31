@@ -54,6 +54,11 @@ class UsersController < ApplicationController
   end
 
   def resendactivation
+    #if params[:email].empty?
+    #  flash[:error] = "Email cannot be blank"
+    #  render :action => :resendnewactivation and return
+    #end
+
     @user = User.find_by_email(params[:email])
     if @user
         @user.deliver_account_confirmation_instructions!

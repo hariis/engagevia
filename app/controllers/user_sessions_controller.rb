@@ -6,7 +6,12 @@ class UserSessionsController < ApplicationController
     @user_session.email = flash[:email]
   end
 
-  def create  
+  def create
+    if params[:user_session][:email].empty?
+      flash[:error] = "Email cannot be blank"
+      redirect_to login_url and return
+    end
+
     @user = User.find_by_email(params[:user_session][:email])
 
     if !@user.nil?
