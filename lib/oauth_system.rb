@@ -71,6 +71,10 @@ module OauthSystem
 		end
 	end
 
+  def get_followers(user_token,user_secret,screen_name)
+    twitagent(user_token,user_secret)
+    followers(screen_name)
+  end
 protected
   
     # Inclusion hook to make #current_user, #logged_in? available as ActionView helper methods.

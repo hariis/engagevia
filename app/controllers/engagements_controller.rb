@@ -128,8 +128,7 @@ end
         login_by_oauth #sets the @authorization_url
       else
         @followers = []
-        OauthSystem.twitagent(@user.token,@user.secret)
-         @followers = followers(@user.screen_name)
+        @followers = get_followers(@user.token,@user.secret,@user.screen_name)
       end    
 
     respond_to do |format|
