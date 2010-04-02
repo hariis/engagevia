@@ -16,7 +16,7 @@ var tinymce_advanced_options = {
   theme_advanced_resizing_max_width : 800,
   plugins : "",
 
-  width: "780",
+  width: "760",
   button_title_map: false,
   apply_source_formatting: true,
   theme_advanced_toolbar_align: "left",

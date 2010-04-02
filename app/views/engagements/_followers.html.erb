@@ -1,11 +1,12 @@
 
-<%= image_tag 'spinner.gif', :id=>"spinner", :style=>"display:none;" %>
+<%= image_tag 'spinner.gif', :id=>"t-spinner", :style=>"display:none;" %>
 <% if !followers.blank? %>
 
     <%  form_remote_tag :url => { :controller => 'engagements', :action => "create", :post_id => "#{@post.id}", :invite_type => 'twitter',:uid => "#{@user.unique_id}" },
-      :before => "Element.show('spinner');",
-      :complete => "Element.hide('spinner')" do %>
-          <ul>
+      :before => "Element.show('t-spinner');",
+      :complete => "Element.hide('t-spinner')" do %>
+        <div style="height:400px;width: 300px;overflow:auto;">
+            <ul>
             <% for follower in followers %>
               <li>
                 <%= check_box_tag "followers[]", follower['screen_name'] %>
@@ -13,6 +14,7 @@
               </li>
             <% end %>              
             </ul>
+        </div>
            <div id="twit-invite-btn" style="margin: 10px;">
                 <%= submit_tag 'Send Twitter Invites' %>
            </div>

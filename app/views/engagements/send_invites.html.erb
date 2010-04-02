@@ -26,7 +26,7 @@
                   color:#222222;
                   font-weight:bold;
                   }
-        .ui-tabs {width: 768px;}
+        .ui-tabs {width: 768px;font-family:inherit;}
 
     </style>
     <script type="text/javascript">
@@ -237,9 +237,7 @@
                         
                         <%=  button_to_function "Redirect me to Twitter", "openWindow(\'#{@authorization_url}\')"  %>
                   <% else %>
-                          <div style="height:400px;width: 300px;overflow:auto;">
-                            <%= render :partial => 'engagements/followers' %>
-                          </div>
+                         <%= render :partial => 'engagements/followers' %>                         
                   <% end %>
               </div>
           <div id="send-status" style="background-color:#378314;font-weight:bold;color:#fff;"></div>

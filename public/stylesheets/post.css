@@ -132,7 +132,6 @@ html,body {
   -moz-background-inline-policy:continuous;
   -moz-background-origin:padding;
   background:#333333 none repeat scroll 0 0;
-  min-width: 1625px;  
   width: 100%;
   /* background-image: url('/images/pattern_096.gif'); */
 }
@@ -172,7 +171,7 @@ html,body {
 }
 #gen-content {
   margin: 0 275px;
-  padding: 2px 0px 7px;
+  padding: 2px 7px;
   background-color: #BBDEFA;
   font-size: 14px;
   margin:0 auto;
@@ -430,6 +429,7 @@ background-color:#e4a1e4;
 #home-content {
 overflow:hidden;
 font-size: 14px;
+min-width: 1625px;
 }
 #dashboard-content {
     overflow:hidden;
