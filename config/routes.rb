@@ -1,4 +1,6 @@
 ActionController::Routing::Routes.draw do |map|
+  map.resources :groups
+
   map.root :controller => 'posts', :action => 'dashboard'
   map.connect '/callback', :controller => 'engagements', :action => 'callback'
   map.connect '/posts/show', :controller => 'posts', :action => 'show',  :conditions => { :method => :get }

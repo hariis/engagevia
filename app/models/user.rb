@@ -9,6 +9,8 @@ class User < ActiveRecord::Base
   has_many :posts, :through => :engagements
   has_many :user_roles, :dependent => :destroy
   has_many :roles, :through => :user_roles
+  has_many :memberships
+  has_many :groups, :through => :memberships
 
   validates_presence_of :first_name, :last_name
 
