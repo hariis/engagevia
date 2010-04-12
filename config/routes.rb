@@ -1,5 +1,4 @@
 ActionController::Routing::Routes.draw do |map|
-  map.resources :groups
 
   map.root :controller => 'posts', :action => 'dashboard'
   map.connect '/callback', :controller => 'engagements', :action => 'callback'
@@ -7,13 +6,15 @@ ActionController::Routing::Routes.draw do |map|
   map.connect '/posts/send_invites', :controller => 'posts', :action => 'send_invites'
   map.connect '/posts/plaxo', :controller => 'posts', :action => 'plaxo'
   map.connect '/users/contacts', :controller => 'users', :action => 'contacts',  :conditions => { :method => :get }
+  map.connect '/users/groups', :controller => 'users', :action => 'groups',  :conditions => { :method => :get }
   map.resources :comments, :collection => {:set_comment_body => :post}
   map.resources :users, :collection => {:activate => :post, :resendnewactivation => :get, :resendactivation => :post}
   map.resources :posts, :has_many => 'comments'
   map.resources :engagements, :collection => { :get_followers => :get, :resend_invite => :post, :get_auth_from_twitter => :get }
   map.resources :user_sessions
   map.resources :password_resets
-  
+  map.resources :groups, :collection => { :add_contact_to_groups => :get}
+
   map.about "about", :controller => 'posts', :action => 'about'
   map.privacy "privacy", :controller => 'posts', :action => 'privacy'
   map.blog "blog", :controller => 'posts', :action => 'blog'

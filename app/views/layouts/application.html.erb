@@ -33,7 +33,8 @@
   <% if current_user && current_user.activated? %>
     <li><%= link_to "#{h current_user.display_name}", :controller => 'users', :action => 'show' %></li>
     <li><%= link_to "My Posts (#{current_user.posts.count})", posts_path if current_user.activated? %></li>
-    <li><%= link_to_if current_user.admin? , "My Contacts", {:controller => 'users', :action => 'contacts'} %></li>
+    <li><%= link_to_if current_user.admin?, "My Contacts", {:controller => 'users', :action => 'contacts'} %></li>
+    <li><%= link_to_if current_user.admin?, "Groups", {:controller => 'users', :action => 'groups' }%></li>
     <li><%= link_to "Logout", logout_path %></li>
     <li><%= link_to_if current_user.admin?,  "Admin", admin_path %></li>
 

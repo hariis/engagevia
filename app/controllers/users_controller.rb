@@ -5,7 +5,7 @@ class UsersController < ApplicationController
   layout "application"
 
   before_filter :load_user_using_perishable_token, :only => [:activate]
-  before_filter :is_admin , :only => [:index,:destroy]
+  before_filter :is_admin , :only => [:index, :destroy]
   before_filter :require_user, :except => [:new, :create, :activate, :resendactivation, :resendnewactivation, :update_name]
 
   def is_admin
@@ -70,7 +70,6 @@ class UsersController < ApplicationController
       render 'resendnewactivation'
     end
   end
-
 
   def create
     @user = User.find_by_email(params[:user][:email])
@@ -209,7 +208,14 @@ class UsersController < ApplicationController
 
  def contacts
    @ic, @ec = current_user.get_inner_and_extended_contacts
+   
+   update_contacts(@ic, 'ic')
+   update_contacts(@ec, 'ec')
  end
+
+ def groups
+ end
+ 
 private
   def load_user_using_perishable_token
     #You can lengthen that limit by changing:
@@ -238,4 +244,29 @@ private
       @user.user_id = @user.id
       @user.tag_list = params[:user][:tag_list]
  end
+ 
+ def update_contacts(circle, circle_name)
+     #add the existing inner_contact to the membership table. This should be done only once for existing user.
+     group_exists = Group.find(:first, :conditions => ['user_id = ? and name = ?', current_user, circle_name])
+     if group_exists.nil?
+        group = Group.new
+        group.name = circle_name
+        group.public = false
+        group.user_id = current_user.id
+        group.save
+     end
+     ic_group = group_exists.nil? ? group : group_exists
+
+     circle.values.each do |contact|
+        next if contact.id == current_user.id 
+        mem_exists = Membership.find(:first, :conditions => ['group_id = ? and user_id = ?', ic_group.id, contact.id])
+        if mem_exists.nil?
+            membership = Membership.new
+            membership.user_id = contact.id
+            membership.group = ic_group
+            membership.save
+        end
+     end
+ end   
+
 end

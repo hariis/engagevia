@@ -152,6 +152,56 @@ end
     end
  end
 
+ def create_membership_and_add_to_contacts_old(requested_participants)
+    @participants = @post.get_all_participants
+    @participants.each do |participant|
+      if participant.id == current_user.id
+        update_contact(current_user, requested_participants, 'ic')
+      else
+        update_contact(participant, requested_participants, 'ec')
+      end
+    end
+ end
+ 
+ def create_membership_and_add_to_contacts(requested_participants)
+    @participants = @post.get_all_participants
+    @participants.each do |participant|
+      if participant.id == current_user.id
+        update_contact(current_user, requested_participants, 'ic')
+        #requested_participants.each do |invitee|
+        #  update_contact(invitee, current_user, 'ic')
+        #end
+      else
+        update_contact(participant, requested_participants, 'ec')
+      end
+    end
+ end
+    
+ def update_contact(participant, requested_participants, circle_name)
+    group_exists = Group.find(:first, :conditions => ['user_id = ? and name = ?', participant.id, circle_name])
+    if group_exists.nil?
+      new_group = Group.new
+      new_group.name = circle_name
+      new_group.public = false
+      new_group.user_id = participant.id
+      new_group.save
+    end
+    group = group_exists.nil? ? new_group : group_exists
+    
+    requested_participants.each do |invitee|
+      if !invitee.nil?
+        #check if the membership entry already exists        
+        mem_exists = Membership.find(:first, :conditions => ['user_id = ? and group_id = ?', invitee.id, group.id])
+        if mem_exists.nil?
+          membership = Membership.new
+          membership.group = group
+          membership.user = invitee
+          membership.save
+        end
+      end
+    end  
+ end
+  
  def create_engagements_and_send(invitees_emails)
    @email_participants = {}
    @status_message = ""
@@ -162,6 +212,10 @@ end
             #Get userid of invitees - involves creating dummy accounts
             requested_participants = []
             requested_participants = Post.get_invitees(@parsed_entries)
+
+            #create membership and add requested_participants to the inner contact.
+            create_membership_and_add_to_contacts(requested_participants)
+
             #Add them to engagement table
             requested_participants.each do |invitee|
               if !invitee.nil?
