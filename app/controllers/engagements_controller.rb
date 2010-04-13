@@ -198,6 +198,7 @@ end
     
     requested_participants.each do |invitee|
       if !invitee.nil?
+        next if ((participant.id == invitee.id) &&  circle_name == 'ec')
         #check if the membership entry already exists        
         mem_exists = Membership.find(:first, :conditions => ['user_id = ? and group_id = ?', invitee.id, group.id])
         if mem_exists.nil?
