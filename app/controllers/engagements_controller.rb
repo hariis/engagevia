@@ -168,17 +168,25 @@ end
     @participants.each do |participant|
       if participant.id == current_user.id
         update_contact(current_user, requested_participants, 'ic')
-        #requested_participants.each do |invitee|
-        #  update_contact(invitee, current_user, 'ic')
-        #end
+        requested_participants.each do |invitee|
+           inviter_user = []
+           inviter_user[0] = current_user
+           update_contact(invitee, inviter_user, 'ic')
+        end
       else
         update_contact(participant, requested_participants, 'ec')
+        requested_participants.each do |invitee|
+           inviter_user = []
+           inviter_user[0] = participant
+           update_contact(invitee, inviter_user, 'ec')
+        end
       end
     end
  end
     
  def update_contact(participant, requested_participants, circle_name)
     group_exists = Group.find(:first, :conditions => ['user_id = ? and name = ?', participant.id, circle_name])
+    new_group = nil
     if group_exists.nil?
       new_group = Group.new
       new_group.name = circle_name
@@ -213,9 +221,6 @@ end
             requested_participants = []
             requested_participants = Post.get_invitees(@parsed_entries)
 
-            #create membership and add requested_participants to the inner contact.
-            create_membership_and_add_to_contacts(requested_participants)
-
             #Add them to engagement table
             requested_participants.each do |invitee|
               if !invitee.nil?
@@ -234,6 +239,9 @@ end
             end
              #update the participants' tags with post tags
              update_tags_for_all_invitees(@email_participants.keys)
+             
+             #create membership and add requested_participants to the inner contact.
+             create_membership_and_add_to_contacts(@email_participants.keys)
              #now send emails
             @post.send_invitations(@email_participants,@user) if @email_participants.size > 0
             #Delayed::Job.enqueue(MailingJob.new(@post, invitees))            
