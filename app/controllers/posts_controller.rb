@@ -37,6 +37,8 @@ class PostsController < ApplicationController
        @args = args
        if methodname == :controller
          controller = 'posts'
+       elsif @_params && @_params['path'][1] == 'editable.css'
+         #just ignore
        else
          render 'posts/404', :status => 404, :layout => false
        end
@@ -291,7 +293,7 @@ class PostsController < ApplicationController
     #@post.note = params[:value]
     if @post.update_attributes(:note => params[:value])
       render :text => @post.note
-    elsesend
+    else
       render :text => "There was a problem saving your note. Please refresh and try again."
     end
   end
