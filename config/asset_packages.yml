@@ -3,6 +3,7 @@ javascripts:
 - proto:
   - prototype
   - effects
+  - controls
   - scriptaculous
 - tinyeditor:
   - patch_inplaceeditor_1-8-2
