@@ -65,7 +65,7 @@ var tinymce_advanced_stripped_options = {
   editor_deselector : "mceNoEditor",
   plugins : "",
   height : "20",
-  width: "80",
+  width: "200",
   button_title_map: false,
   apply_source_formatting: true,
   theme_advanced_toolbar_align: "left",

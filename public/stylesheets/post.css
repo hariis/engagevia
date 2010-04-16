@@ -323,6 +323,11 @@ margin:0 auto;
 padding:0;
 width:725px;
 }
+#sticky-note form {
+    margin:0 auto;
+    padding:0;
+    width:200px;
+}
 #widgets {
 background: transparent url('/images/bg-widgets.png') repeat-x scroll 0 0;
 overflow:hidden;
