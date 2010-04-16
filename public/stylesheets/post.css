@@ -19,7 +19,7 @@ width:250px;
 }
 
 #right {
-    float:right;
+    float:left;
     width:450px;
     min-width:250px;
     margin: 17px 10px;
@@ -155,6 +155,7 @@ html,body {
   color: #000;
 }
 #post-content{
+    float: left;
   margin: 5px 275px;
   margin:17px;
   overflow:hidden;
@@ -350,7 +351,7 @@ overflow: hidden;
 padding: 10px 20px 7px 30px;
 height: 58px;
 margin: 0 auto;
-width: 90%;
+width: 1238px;
 }
 * html #header {
 height:1%;
@@ -429,7 +430,9 @@ background-color:#e4a1e4;
 #home-content {
 overflow:hidden;
 font-size: 14px;
-min-width: 1625px;
+margin:0 auto;
+min-width:1238px;
+width:1000px;
 }
 #dashboard-content {
     overflow:hidden;
