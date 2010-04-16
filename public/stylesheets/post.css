@@ -20,7 +20,7 @@ width:250px;
 
 #right {
     float:left;
-    width:450px;
+    width:80px;
     min-width:250px;
     margin: 17px 10px;
     color:#FFFFFF;
@@ -710,6 +710,7 @@ label {
 }
 #invitations ul li {
     overflow:inherit;
+    margin-left:-40px;
 }
 #new-comment-status{
     margin-top: 10px;
@@ -721,9 +722,10 @@ label {
     float: left;
 }
 .invitees {
-    padding-left:25px;
     float: left;
     clear:both;
+    padding-bottom:4px;
+    padding-left:10px;
 }
 .contact {
     padding: 5px;
