@@ -1,15 +1,10 @@
-
 jQuery.noConflict();
 var $j = jQuery;
-
-
 $j(function(){  // $(document).ready shorthand
    $j('#flash-notice').fadeOut(5000);
     // Tabs
    $j('#tabs').tabs();
 });
-
-
 function clearElements(el){
     var object = new Array();
     object[0] = document.getElementById(el).getElementsByTagName('input');

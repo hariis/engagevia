@@ -1,14 +1,10 @@
 --- 
 javascripts: 
-- base: 
+- proto:
   - prototype
   - effects
   - controls
-  - patch_inplaceeditor_1-8-2
-  - patch_inplaceeditor_editonblank_1-8-2
-  - tiny_mce/tiny_mce
-  - tiny_mce_init
-  - inplacericheditor
+- rest: 
   - jquery-1.3.2.min
   - jquery-ui-1.7.2.custom.min
   - application
