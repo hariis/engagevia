@@ -1,5 +1,8 @@
 
 <h2>Statistics</h2>
+
+<h3><%= link_to 'Click here', :controller => :users, :action => :migrate_existing_contacts %> to migrate existing contacts (Caution! Needs to be done only once)</h3>
+
 <ul>
   <li>Total Posts:        <%= @posts.count %></li>
   <li>Total Participants: <%= @participants.count %></li>

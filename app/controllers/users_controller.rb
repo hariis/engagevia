@@ -208,15 +208,19 @@ class UsersController < ApplicationController
 
  def contacts
    @ic, @ec = current_user.get_inner_and_extended_contacts
-   
-   #users = User.find(:all)
-   #users.each do |selected_user|
-   #@ic, @ec = selected_user.get_inner_and_extended_contacts
-   #    update_contacts(@ic, 'ic', selected_user)
-   #    update_contacts(@ec, 'ec', selected_user)
-   #end
  end
 
+ def migrate_existing_contacts
+   users = User.find(:all)
+   users.each do |selected_user|
+   @ic, @ec = selected_user.get_inner_and_extended_contacts
+       update_contacts(@ic, 'ic', selected_user)
+       update_contacts(@ec, 'ec', selected_user)
+   end
+   
+   render 'groups'
+ end
+ 
  def groups
  end
  
