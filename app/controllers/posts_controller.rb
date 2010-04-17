@@ -174,12 +174,20 @@ class PostsController < ApplicationController
           redirect_to login_path
           return
       elsif @user.nil?
-          #Create a nonmember user record
-          if params[:email] == ""
-            @post.errors.add(:email, "cannot be empty")
+          #Create a nonmember user record  after checking email veracity
+          unless params[:email].blank?
+              unless params[:email] =~ /^[a-zA-Z][\w\.-]*[a-zA-Z0-9]@[a-zA-Z0-9][\w\.-]*[a-zA-Z0-9]\.[a-zA-Z][a-zA-Z\.]*[a-zA-Z]$/
+                  @post.errors.add(:email, "Your email address does not appear to be valid")
+              else
+                  @post.errors.add(:email, "Your email domain name appears to be incorrect") unless validate_email_domain(params[:email])
+              end
           else
+              @post.errors.add(:email, "cannot be empty")
+          end
+          #If there are no errors looged then go ahead
+          if @post.errors.size == 0
             @user = User.create_non_member(params[:email])
-          end          
+          end
       elsif @user.member? && !@user.activated?
           #The user has started the process of signing up but has not activated yet.
           #Save this post contents

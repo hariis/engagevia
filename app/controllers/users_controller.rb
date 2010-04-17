@@ -87,15 +87,28 @@ class UsersController < ApplicationController
       end
     else      
       @user = User.new
-      @user.email = params[:user][:email]
-      @user.username = "member"  #currently this field is not used -this is a dummy value
-      assign_user_object
+      #verify email veracity and proceed only if success
+      unless params[:user][:email].blank?
+          unless params[:user][:email] =~ /^[a-zA-Z][\w\.-]*[a-zA-Z0-9]@[a-zA-Z0-9][\w\.-]*[a-zA-Z0-9]\.[a-zA-Z][a-zA-Z\.]*[a-zA-Z]$/
+              @user.errors.add(:email, "Your email address does not appear to be valid")
+          else
+              @user.errors.add(:email, "Your email domain name appears to be incorrect") unless validate_email_domain(params[:user][:email])
+          end
+      else
+          @user.errors.add(:email, "cannot be empty")
+      end
+     #If there are no errors looged then go ahead
+      if @user.errors.size == 0
+        @user.email = params[:user][:email]
+        @user.username = "member"  #currently this field is not used -this is a dummy value
+        assign_user_object
+      end
     end
 
     respond_to do |format|
    
       #if @user.save
-      if @user.save_without_session_maintenance #dont login and goto to home page
+      if @user.errors.size == 0 && @user.save_without_session_maintenance #dont login and goto to home page
         @user.add_role("member")
         @user.add_role("admin") if User.find(:all).size < 3 # first two users are admin
         @user.deliver_account_confirmation_instructions!

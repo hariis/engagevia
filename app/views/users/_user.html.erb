@@ -4,7 +4,7 @@
     <h2 style="color:#ff0000;">Please verify the fields and try again!</h2>
       <% write_errors = true %>
       <% @user.errors.each do |error| %>
-        <% if (error[0].include?('email') || error[0].include?('name')) %>
+        <% if ( (error[0].include?('email') && error[1].include?('blank')) || error[0].include?('name')) %>
             <% write_errors = false %>
          <% end %>
       <% end %>
@@ -12,7 +12,7 @@
             <div id="errorExplanation" class="errorExplanation">              
             <ul>
             <% @user.errors.each do |error| %>              
-                  <% if error[1].include?('confirmation') || (error[0] == ('password') && error[1].include?('too short'))  %>
+                  <% if error[0].include?('email') || error[1].include?('confirmation') || (error[0] == ('password') && error[1].include?('too short'))  %>
                   <li><%= error[0].capitalize + " " + error[1]  %> </li>
                   <% end %>
              <% end %>
