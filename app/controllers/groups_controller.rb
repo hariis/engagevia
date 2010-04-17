@@ -1,6 +1,15 @@
 class GroupsController < ApplicationController
   # GET /groups
   # GET /groups.xml
+  
+  before_filter :is_admin
+  
+  def is_admin
+    if !(current_user && current_user.admin?)
+      redirect_to root_url
+    end
+  end
+  
   def index
     @groups = Group.all
 
