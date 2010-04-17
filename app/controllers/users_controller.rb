@@ -5,11 +5,13 @@ class UsersController < ApplicationController
   layout "application"
 
   before_filter :load_user_using_perishable_token, :only => [:activate]
-  before_filter :is_admin , :only => [:index, :destroy]
+  before_filter :is_admin , :only => [:index, :destroy, :groups, :contacts]
   before_filter :require_user, :except => [:new, :create, :activate, :resendactivation, :resendnewactivation, :update_name]
 
   def is_admin
-    current_user && current_user.admin?
+    if !(current_user && current_user.admin?)
+      redirect_to root_url
+    end
   end
 
   def index
