@@ -190,7 +190,7 @@
                           <ul id="gallery" class="gallery ui-helper-reset ui-helper-clearfix">
                              <h4 class="ui-widget-header"><%= image_tag "group_add.png" %> My Network</h4>
                               <% @ic.values.each do |contact| %>
-                                    <%  next if contact.id == current_user.id %>
+                                    <%  next if contact.id == @user.id %>
                                     <li class="ui-widget-content ui-corner-tr">
                                           <h5 class="ui-name"><%= contact.display_name %></h5>
                                           <a href="link/to/trash/script/when/we/have/js/off" title="Click to Invite this contact" class="ui-icon ui-icon-mail-closed">Invite</a>
@@ -198,7 +198,7 @@
                                     </li>
                                   <% end %>
                                     <% @ec.values.each do |contact| %>
-                                    <%  next if contact.id == current_user.id %>
+                                    <%  next if contact.id == @user.id %>
                                     <li class="ui-widget-content ui-corner-tr">
                                           <h5 class="ui-name"><%= contact.display_name %></h5>
                                           <a href="link/to/trash/script/when/we/have/js/off" title="Click to Invite this contact" class="ui-icon ui-icon-mail-closed">Invite</a>

@@ -278,8 +278,8 @@ end
     render :update do |page|
       if @status_message.blank? && @error_message.blank?
         #page.hide 'facebox'
-        page.insert_html :bottom, 'participants-list', :partial => 'participants', :locals => { :participants => @email_participants }
-        page.insert_html :bottom, 'participants-list', :partial => 'participants', :locals => { :participants => @twitter_participants }
+        page.insert_html :bottom, 'participants-list', :partial => 'participants', :locals => { :participants => @email_participants } unless @email_participants.blank?
+        page.insert_html :bottom, 'participants-list', :partial => 'participants', :locals => { :participants => @twitter_participants } unless @twitter_participants.blank?
 
         total_count = 0
         total_count = @email_participants.size unless @email_participants.blank?
