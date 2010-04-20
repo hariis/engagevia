@@ -3,6 +3,9 @@ Hi there!<br/><br/>
 
 <%= @comment.owner.display_name  %> has added a new comment to <em><%= @post.subject %></em>.<br/>
 
+<div style="background-color: #dcdcdc; padding: 3px;">
+  <%=  comment.body %>
+</div>
 Please visit this url to view comment and follow the conversation:<br/>
 
    <%= link_to @post_url, @post_url %>  <br/><br/>

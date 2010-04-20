@@ -49,7 +49,7 @@ Rails::Initializer.run do |config|
   TWOAUTH_SECRET = "byf0AI0N6iazhGK1AeZWOqmaOZzm0cKvsMmnu8uDIM"
   TWOAUTH_SITE = "http://twitter.com"
   TWOAUTH_CALLBACK = "http://www.engagevia.com/callback"
-
+  EV_TAGLINE = "Simplest way to engage in Ad hoc Conversations & Collaborate with friends in your circle and <br/>your extended circle."
   #redefining the error fields display
   config.action_view.field_error_proc = Proc.new do |html_tag, instance|
   "<span class=\"fieldWithErrors\">#{html_tag}</span>"

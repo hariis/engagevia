@@ -5,7 +5,7 @@ class UsersController < ApplicationController
   layout "application"
 
   before_filter :load_user_using_perishable_token, :only => [:activate]
-  before_filter :is_admin , :only => [:index, :destroy, :groups, :contacts]
+  before_filter :is_admin , :only => [:index, :destroy] #:contacts, :groups
   before_filter :require_user, :except => [:new, :create, :activate, :resendactivation, :resendnewactivation, :update_name]
 
   def is_admin
