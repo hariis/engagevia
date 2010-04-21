@@ -48,12 +48,12 @@ class UserSessionsController < ApplicationController
     redirect_to root_url
   end  
   def method_missing(methodname, *args)
-#       @methodname = methodname
-#       @args = args
-#       if methodname == :controller
-#         controller = 'posts'
-#       else
-#         render 'posts/404', :status => 404, :layout => false
-#       end
+       @methodname = methodname
+       @args = args
+       if methodname == :controller
+         controller = 'posts'
+       else
+         render 'posts/404', :status => 404, :layout => false
+       end
    end
 end
