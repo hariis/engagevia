@@ -1,0 +1,23 @@
+<div id="form_<%= @parent_comment.id %>" style="border:8px solid #6abcfd;padding: 5px;">
+<h2>You are replying to </h2>
+<div style="background-color:#e9e2e2;margin-bottom:10px;padding:5px;">
+<span style="font-size:12px;">
+<%= @parent_comment.body %> </span><span style="color:#0062F6;font-size:10px;"> by <%= @parent_comment.owner.display_name(@post) %></span>
+</div>
+
+<div id="new-reply-comment-status"> </div>
+
+<%  form_remote_tag :url => { :controller => 'comments', :action => "create", :pcid => "#{@parent_comment.id}",:pid => "#{@post.unique_id}",:uid => params[:uid] }, :html => {:id => "reply_comment_form_#{@parent_comment.id}" },
+      :before => "Element.show('n-spinner');document.getElementById('reply_comment_form_#{@parent_comment.id}').getElementsByTagName('textarea')[0].value =  tinyMCE.get('comment_body_#{@parent_comment.id}').getContent();",
+      :complete => "Element.hide('n-spinner')" do %>
+    
+    <%= text_area_tag "comment_body_#{@parent_comment.id}", nil,:rows => 10, :cols => 100 %><br/>
+    <%= javascript_tag("tinyMCE.execCommand('mceAddControl', false, 'comment_body_#{@parent_comment.id}');") -%>
+
+
+   <p style="margin-top: 10px;">
+      <%= submit_tag 'Add' %><%= image_tag 'spinner.gif', :id=>"n-spinner", :style=>"display:none;" %> or
+      <%= link_to_function("Never Mind", nil, :id => "r-c") do |page| page['reply-to-comment'].hide end %>
+    </p>
+  <% end %>
+</div>
