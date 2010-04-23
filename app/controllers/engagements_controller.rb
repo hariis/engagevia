@@ -170,43 +170,80 @@ end
         update_contact(current_user, requested_participants, 'ic')
         requested_participants.each do |invitee|
            inviter_user = []
-           inviter_user[0] = current_user
+           inviter_user << current_user
            update_contact(invitee, inviter_user, 'ic')
         end
       else
         update_contact(participant, requested_participants, 'ec')
         requested_participants.each do |invitee|
            inviter_user = []
-           inviter_user[0] = participant
+           inviter_user << participant
            update_contact(invitee, inviter_user, 'ec')
         end
       end
     end
  end
     
- def update_contact(participant, requested_participants, circle_name)
-    group_exists = Group.find(:first, :conditions => ['user_id = ? and name = ?', participant.id, circle_name])
-    new_group = nil
-    if group_exists.nil?
-      new_group = Group.new
-      new_group.name = circle_name
-      new_group.public = false
-      new_group.user_id = participant.id
-      new_group.save
+ def update_contact(participant, requested_participants, circle_name)    
+    ic_group = Group.find(:first, :conditions => ['user_id = ? and name = ?', participant.id, 'ic'])
+    ec_group = Group.find(:first, :conditions => ['user_id = ? and name = ?', participant.id, 'ec'])
+   
+    #create both ic and ec if they dont exists
+    if ic_group.nil?
+      group = Group.new
+      group.name = 'ic'
+      group.public = false
+      group.user_id = participant.id
+      group.save
+      ic_group = group
     end
-    group = group_exists.nil? ? new_group : group_exists
+    
+   if ec_group.nil?
+      group = Group.new
+      group.name = 'ec'
+      group.public = false
+      group.user_id = participant.id
+      group.save
+      ec_group = group
+    end
     
     requested_participants.each do |invitee|
       if !invitee.nil?
         next if ((participant.id == invitee.id) &&  circle_name == 'ec')
-        #check if the membership entry already exists        
-        mem_exists = Membership.find(:first, :conditions => ['user_id = ? and group_id = ?', invitee.id, group.id])
-        if mem_exists.nil?
-          membership = Membership.new
-          membership.group = group
-          membership.user = invitee
-          membership.save
+        
+        ic_mem = Membership.find(:first, :conditions => ['user_id = ? and group_id = ?', invitee.id, ic_group.id])
+        ec_mem = Membership.find(:first, :conditions => ['user_id = ? and group_id = ?', invitee.id, ec_group.id])
+        
+        #check if the membership entry already exists                
+        if circle_name == 'ic'
+          #ignore..already exists..else check for ec
+          if ic_mem.nil?
+              if ec_mem.nil?
+                membership = Membership.new
+                membership.group = ic_group
+                membership.user = invitee
+                membership.save
+              else #ec exists..update it to ic
+                ec_mem.group = ic_group
+                ec_mem.user = invitee
+                ec_mem.save
+                #membership.update_attributes(params[:group])
+              end
+          end
         end
+ 
+        if circle_name == 'ec'
+          #ignore..ic already exists
+          if ic_mem.nil?
+              if ec_mem.nil?
+                  membership = Membership.new
+                  membership.group = ec_group
+                  membership.user = invitee
+                  membership.save
+              end
+          end
+        end
+ 
       end
     end  
  end
