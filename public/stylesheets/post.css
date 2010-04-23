@@ -236,6 +236,14 @@ vertical-align:middle;
     border:8px solid #6abcfd;
     margin-left:25%;
 }
+#reply-to-comment {    
+    background-color: #fff;
+    width:50%;
+    z-index:100;
+    position:absolute;
+    top: 100px;
+    margin-left:25%;
+}
 #invitation-title {
     color: #0B84E8;
     font-weight: bold;

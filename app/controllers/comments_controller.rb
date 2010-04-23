@@ -38,18 +38,29 @@ class CommentsController < ApplicationController
     respond_to do |format|
       format.html # new.html.erb
       format.xml  {  }
-      format.js { render_to_facebox }
+      format.js { 
+        render :update do |page|
+          page.show 'reply-to-comment'
+          page << "if ( $j('#form_#{@parent_comment.id}').length == 0 )"
+          page.replace_html 'reply-to-comment', :partial => 'new'
+      end
+      }  #render_to_facebox
     end
   end
    # POST /comments
   # POST /comments.xml
   def create
     @comment = Comment.new
-    if params[:comment_body] != nil && params[:comment_body] != ""
-      @comment.body = params[:comment_body]
+    comment_body = params[:pcid].nil? ? params[:comment_body] : params["comment_body_#{params[:pcid]}"]
+    if comment_body != nil && comment_body != ""
+      @comment.body = comment_body
     else
       render :update do |page|
-        page.replace_html "new-comment-status", "Please enter your valuable comments"
+        if params[:pcid].nil?
+          page.replace_html "new-comment-status", "Please enter your valuable comments"
+        else
+          page.replace_html "new-reply-comment-status", "Please enter your valuable comments"
+        end
       end
       return
     end
@@ -72,7 +83,8 @@ class CommentsController < ApplicationController
             page.replace_html "new-comment-status", "Thank you for your comment."
             page.replace_html "new-comment-body", ""
         else
-            page.hide 'facebox'
+            #page.hide 'facebox'            
+            page.hide 'reply-to-comment'
             page.insert_html :bottom, "children_for_#{params[:pcid]}", :partial => "/comments/comment", :object => @comment,  :locals => {:root => nil,:parent_comment => @parent_comment}
             page.replace_html "comments-heading", "Comments (#{@post.comments.size})"
             page.select("comments-heading").each { |b| b.visual_effect :highlight, :startcolor => "#fb3f37",
