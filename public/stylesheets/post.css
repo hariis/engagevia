@@ -750,3 +750,20 @@ label {
     float:left;
     width: 50%;
 }
+
+#group-layout-right {
+    float:left;
+    min-width:400px;
+    margin: 17px 10px;
+    color:#FFFFFF;
+    padding: 0px 7px;
+}
+
+#group-layout-left {
+    position: absolute;
+    left: 0px;
+    min-width: 200px;
+    margin: 17px 10px;
+    color:#FFFFFF;
+    padding: 0px 7px;
+}

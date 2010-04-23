@@ -236,7 +236,13 @@ class UsersController < ApplicationController
    render 'groups'
  end
  
- def groups
+ def groups   
+   group = params[:id].nil? ? 'ic' : params[:id]
+   if group.nil? || group == 'ic'
+     render 'groups_ic'
+   else
+     render 'groups_ec'
+   end
  end
  
 private
