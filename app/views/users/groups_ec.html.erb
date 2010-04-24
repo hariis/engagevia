@@ -15,17 +15,14 @@
 
 <div id="group-layout-right">
     <div class="group">      
-        <div class="group-name"> Extended Circle </div>
-        <% current_user.groups.each do |group| %>      
-              <% next if group.name != 'ec'%>
-              <% group.memberships.each do |membership| %>
-                  <div class="contact <%= cycle('listing-line-odd', 'listing-line-even') %>">
-                      <div class="contact-name"><%= membership.user.display_name %></div>
-                      <div class="contact-info"><%= "email: " + membership.user.email unless membership.user.email.include?("nonmember") %></div>
-                      <div class="contact-info"><%= "twitter: @" + membership.user.screen_name unless membership.user.screen_name.blank? %></div>
-                      <div class="contact-info"><%= "Tags: " + membership.user.tag_list unless membership.user.tag_list.blank? %></div>
-                  </div>
-              <% end %>
+        <div class="group-name"> Extended Circle (<%= current_user.get_extended_circle_contacts.count %>)</div>
+        <% current_user.get_extended_circle_contacts.each do |contact| %>      
+            <div class="contact <%= cycle('listing-line-odd', 'listing-line-even') %>">
+                <div class="contact-name"><%= contact.display_name %></div>
+                <div class="contact-info"><%= "email: " + contact.email unless contact.email.include?("nonmember") %></div>
+                <div class="contact-info"><%= "twitter: @" + contact.screen_name unless contact.screen_name.blank? %></div>
+                <div class="contact-info"><%= "Tags: " + contact.tag_list unless contact.tag_list.blank? %></div>
+            </div>
         <% end %>
     </div>
 </div>

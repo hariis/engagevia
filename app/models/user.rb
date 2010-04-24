@@ -216,6 +216,7 @@ class User < ActiveRecord::Base
     end
     return inner.flatten
   end
+  
   def get_extended_circle_contacts
     ext = []
     groups.each do |g|
@@ -223,6 +224,7 @@ class User < ActiveRecord::Base
     end
     return ext.flatten
   end
+  
   def get_all_contacts
     #ic,ec = get_inner_and_extended_contacts
     #ic.keys + ec.keys
@@ -232,6 +234,7 @@ class User < ActiveRecord::Base
     end
     return all_users.flatten
   end
+  
   def get_ids_for_all_contacts
     all_contact_ids = []
     get_all_contacts.each {|c| all_contact_ids << c.id}
