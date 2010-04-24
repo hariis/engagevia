@@ -17,7 +17,7 @@
 
    <p style="margin-top: 10px;">
       <%= submit_tag 'Add' %><%= image_tag 'spinner.gif', :id=>"n-spinner", :style=>"display:none;" %> or
-      <%= link_to_function("Never Mind", nil, :id => "r-c") do |page| page['reply-to-comment'].hide end %>
+      <%= link_to_function("Never Mind", nil, :id => "r-c") do |page| page['reply-to-comment'].hide; page["form_#{@parent_comment.id}"].hide end %>
     </p>
   <% end %>
 </div>

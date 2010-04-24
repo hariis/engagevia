@@ -43,6 +43,8 @@ class CommentsController < ApplicationController
           page.show 'reply-to-comment'
           page << "if ( $j('#form_#{@parent_comment.id}').length == 0 )"
           page.insert_html :bottom, 'reply-to-comment', :partial => 'new'
+          page << "if ( $j('#form_#{@parent_comment.id}').length == 1 )"
+          page.show "form_#{@parent_comment.id}"
       end
       }  #render_to_facebox
     end
