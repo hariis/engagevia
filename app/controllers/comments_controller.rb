@@ -39,7 +39,7 @@ class CommentsController < ApplicationController
       format.html # new.html.erb
       format.xml  {  }
       format.js { 
-        render :update do |page|
+        render :update do |page|          
           page.show 'reply-to-comment'
           page << "if ( $j('#form_#{@parent_comment.id}').length == 0 )"
           page.replace_html 'reply-to-comment', :partial => 'new'

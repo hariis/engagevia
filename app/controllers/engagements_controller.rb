@@ -103,15 +103,14 @@ end
    def send_invites          
       @engagement = Engagement.new
       #data for invite from ev tab      
-      @ic, @ec = @user.get_inner_and_extended_contacts
+      @ic, @ec = @user.get_inner_and_extended_contacts      
       keywords = @post.tag_list
       @reco_users  = []
       @reco_users_ids = []
       unless keywords.blank?
-            @reco_users  = @user.get_recommended_contacts(keywords, @ic.keys + @ec.keys)
+            @reco_users  = User.get_recommended_contacts(keywords, @user.get_ids_for_all_contacts)
             @reco_users.each{|u| @reco_users_ids << u.id }
       end
-
 
       #data for twitter tab
       if @user.token.blank?

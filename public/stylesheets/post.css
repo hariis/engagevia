@@ -240,9 +240,9 @@ vertical-align:middle;
     background-color: #fff;
     width:50%;
     z-index:100;
-    position:absolute;
-    top: 100px;
+    position:fixed;
     margin-left:25%;
+    min-width: 800px;
 }
 #invitation-title {
     color: #0B84E8;
@@ -327,7 +327,6 @@ margin:20px 0 0 0;
     border:1px solid;
 }
 form {
-margin:0 auto;
 padding:0;
 width:725px;
 }

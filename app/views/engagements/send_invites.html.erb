@@ -26,6 +26,9 @@
                   color:#222222;
                   font-weight:bold;
                   }
+                  .reco-name {
+                    color: #008000 !important;
+                  }
         .ui-tabs {width: 768px;font-family:inherit;}
 
     </style>
@@ -189,18 +192,26 @@
                        
                           <ul id="gallery" class="gallery ui-helper-reset ui-helper-clearfix">
                              <h4 class="ui-widget-header"><%= image_tag "group_add.png" %> My Network</h4>
-                              <% @ic.values.each do |contact| %>
+                              <% @user.get_inner_circle_contacts.each do |contact| %>
                                     <%  next if contact.id == @user.id %>
                                     <li class="ui-widget-content ui-corner-tr">
+                                          <% if @reco_users_ids.include?(contact.id) %>
+                                          <h5 class="ui-name reco-name"><%= contact.display_name %></h5>
+                                          <% else %>
                                           <h5 class="ui-name"><%= contact.display_name %></h5>
+                                          <% end %>
                                           <a href="link/to/trash/script/when/we/have/js/off" title="Click to Invite this contact" class="ui-icon ui-icon-mail-closed">Invite</a>
                                           <input type="hidden" value="<%= contact.unique_id %>">
                                     </li>
                                   <% end %>
-                                    <% @ec.values.each do |contact| %>
+                                    <% @user.get_extended_circle_contacts.each do |contact| %>
                                     <%  next if contact.id == @user.id %>
                                     <li class="ui-widget-content ui-corner-tr">
+                                          <% if @reco_users_ids.include?(contact.id) %>
+                                          <h5 class="ui-name reco-name"><%= contact.display_name %></h5>
+                                          <% else %>
                                           <h5 class="ui-name"><%= contact.display_name %></h5>
+                                          <% end %>
                                           <a href="link/to/trash/script/when/we/have/js/off" title="Click to Invite this contact" class="ui-icon ui-icon-mail-closed">Invite</a>
                                           <input type="hidden" value="<%= contact.unique_id %>">
                                     </li>

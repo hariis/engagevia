@@ -14,17 +14,16 @@ var tinymce_advanced_options = {
   skin_variant : "black",
   theme_advanced_resizing_min_width : 500,
   theme_advanced_resizing_max_width : 800,
-  plugins : "",
+  plugins : "autoresize,paste,safari,table,paste,emotions",
 
   width: "760",
   button_title_map: false,
   apply_source_formatting: true,
   theme_advanced_toolbar_align: "left",
-  
-  theme_advanced_buttons1: "bold,italic,underline,strikethrough,separator,undo,redo,separator,bullist,numlist,link",
-  theme_advanced_buttons2: "",
-  theme_advanced_buttons3: "",  
 
+  theme_advanced_buttons1: "formatselect,outdent,indent,seperator,undo,redo,separator,emotions",
+  theme_advanced_buttons2: "justifyleft,justifycenter,justifyright,separator,bold,italic,separator,bullist,numlist,link,separator,table",
+  theme_advanced_buttons3: "", //you have to have this to get an empty third row otherwise you get some elements 
   theme_advanced_toolbar_location: "bottom",
   theme_advanced_resizing : true,
   theme_advanced_blockformats : "p,h2,h3,blockquote"
@@ -38,7 +37,7 @@ var tinymce_advanced_with_save_options = {
   theme_advanced_resizing_min_width : 500,
   theme_advanced_resizing_max_width : 800,
   height : "20",
-   width: "800",
+   width: "780",
   button_title_map: false,
   apply_source_formatting: true,
   theme_advanced_toolbar_align: "left",

@@ -150,7 +150,7 @@ class User < ActiveRecord::Base
     end
   end
   def get_email_name
-    awesome_truncate(email, email.index('@'), "")
+    awesome_truncate(email, email.index('@'), "").capitalize
   end
   def get_twitter_name
     "@" + screen_name
@@ -209,11 +209,34 @@ class User < ActiveRecord::Base
     return inner_circle,extended_circle
   end
 
-  def get_all_contacts
-    ic,ec = get_inner_and_extended_contacts
-    ic.keys + ec.keys
+  def get_inner_circle_contacts
+    inner = []
+    groups.each do |g|
+      inner << g.users if g.name == 'ic' && !g.users.nil?
+    end
+    return inner.flatten
   end
-  def get_recommended_contacts(keywords, all_contacts)
+  def get_extended_circle_contacts
+    ext = []
+    groups.each do |g|
+      ext << g.users if g.name == 'ec' && !g.users.nil?
+    end
+    return ext.flatten
+  end
+  def get_all_contacts
+    #ic,ec = get_inner_and_extended_contacts
+    #ic.keys + ec.keys
+    all_users = []
+    groups.each do |g|
+      all_users << g.users
+    end
+    return all_users.flatten
+  end
+  def get_ids_for_all_contacts
+    all_contact_ids = []
+    get_all_contacts.each {|c| all_contact_ids << c.id}
+  end
+  def self.get_recommended_contacts(keywords, all_contacts)
     User.find_tagged_with(keywords, :contacts => all_contacts)
   end
 end
