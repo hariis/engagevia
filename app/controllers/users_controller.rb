@@ -245,6 +245,10 @@ class UsersController < ApplicationController
    end
  end
  
+ def display_profile
+   @user = User.find(params[:id])
+ end
+ 
 private
   def load_user_using_perishable_token
     #You can lengthen that limit by changing:
@@ -297,5 +301,5 @@ private
         end
      end
  end   
-
+ 
 end
