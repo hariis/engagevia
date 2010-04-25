@@ -1,0 +1,45 @@
+
+<div id="centered-heading"><%=h @user.display_name %>
+<span style="font-size:8pt">
+</span></div>
+<p>
+<b>Photo: </b><%= image_tag @user.avatar.url(:thumb) %>
+</p>
+
+<p>
+  <b>Email:</b>
+  <%=h @user.email %>
+</p>
+
+<p>
+  <b>Twitter Profile:</b>
+   <%= @user.screen_name.blank? ? "" : "http://twitter.com/" + @user.screen_name %>
+</p>
+
+<p>
+  <b>Blog:</b>
+  <%=h @user.blog_link %>
+</p>
+<p>
+  <b>Facebook Profile:</b>
+  <%=h @user.facebook_link %>
+</p>
+<p>
+  <b>LinkedIn Profile:</b>
+  <%=h @user.linked_in_link %>
+</p>
+
+ <div id="tags" style="display:none;">
+      <strong style="float:left;">Tag yourself:</strong><%= image_tag '/images/pencil.png' %>
+      <span style="font-size:85%;">(separate multiple tags with comma)</span>
+      <%= in_place_editor_field :user, 'tag_list',{}, :size => '80',:text_between_controls => ' or ',:save_text => 'save' %>
+ </div>
+ <p id="tags">
+      <b>Tags: </b><br/>
+      <%=h @user.tag_list %>
+ </p>
+<p id="assoc-tags">
+  <b>Conversations you have been linked to:</b><br/>
+  <% admin = User.get_admin_user %>
+  <%=h admin.associated_tag_list @user %>
+</p>
