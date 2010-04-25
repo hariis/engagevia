@@ -1,0 +1,12 @@
+ <div id="centered-heading">Resend Activation</div>
+ <div style="width:725px;margin:auto;">
+Not a problem! <br/>
+Give us your email address and we will email you instructions to reactivate your account.<br />
+<br />
+ </div>
+<% form_tag resendactivation_users_path do %>
+
+  <%= text_field_tag "email", '', :size => 30  %><br />
+  <br />
+  <%= submit_tag "Resend my activation code" %>
+  <% end %>
