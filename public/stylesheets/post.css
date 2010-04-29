@@ -324,7 +324,9 @@ width:235px;
 margin:20px 0 0 0;
 }
 .signup-blurb a {
-    border:1px solid;
+    color:#BBDEFA;
+    font-size:13px;
+    text-decoration:underline;
 }
 form {
 padding:0;

@@ -76,4 +76,18 @@ class Post < ActiveRecord::Base
     end
     return p
   end
+
+  def get_all_member_participants_for_display
+    m = []
+    get_all_participants.each do |p|
+      m << p if p.member?
+    end
+    for_display = ""
+    if m.size > 0
+      for_display = m[0].first_name + (" and " + m[1].first_name if m.size > 1)
+      for_display += m.size > 1 ? " are members " : " is a member "
+      for_display += "of EngageVia"
+    end
+    return for_display
+  end
 end

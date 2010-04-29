@@ -37,7 +37,7 @@ class PostsController < ApplicationController
        @args = args
        if methodname == :controller
          controller = 'posts'
-       elsif @_params && @_params['path'] && @_params['path'][1] == 'editable.css'
+       elsif methodname == 'images' || @_params && @_params['path'] && @_params['path'][1] == 'editable.css'
          #render :nothing
        else
          render 'posts/404', :status => 404, :layout => false
@@ -64,7 +64,7 @@ class PostsController < ApplicationController
         @user = User.find_by_unique_id(params[:uid]) if params[:uid]
         #Now check if this is the same user as the logged in user
         #If not, then logout the current_user
-        force_logout if @user.id != current_user.id
+        force_logout if @user && @user.id != current_user.id
       else
         #load the user based on the unique id
         @user = User.find_by_unique_id(params[:uid]) if params[:uid]
