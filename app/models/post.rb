@@ -84,10 +84,15 @@ class Post < ActiveRecord::Base
     end
     for_display = ""
     if m.size > 0
-      for_display = m[0].first_name + (" and " + m[1].first_name if m.size > 1)
-      for_display += m.size > 1 ? " are members " : " is a member "
-      for_display += "of EngageVia"
+      for_display = m[0].first_name
     end
+    if m.size > 1
+      for_display += (" and " + m[1].first_name )
+    end
+
+    for_display += m.size > 1 ? " are members " : " is a member "
+    for_display += "of EngageVia"
+    
     return for_display
   end
 end
