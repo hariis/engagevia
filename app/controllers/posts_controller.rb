@@ -38,7 +38,7 @@ class PostsController < ApplicationController
        if methodname == :controller
          controller = 'posts'
        elsif methodname == 'images' || @_params && @_params['path'] && @_params['path'][1] == 'editable.css'
-         #render :nothing
+         render :nothing => true 
        else
          render 'posts/404', :status => 404, :layout => false
        end
