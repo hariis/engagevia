@@ -8,7 +8,16 @@ Please visit this link to engage in this conversation:<br/>
 
    <%= link_to @post_url, @post_url %>  <br/><br/>
  
- <div style="margin-top: 3px;font-size:10px;color:#333333;">
+<div style="margin-top: 2px;">
+<% unless invitee.member? %>
+  NOTE: No account signup is required.
+<% end %>
+</div>
+
+Happy Engaging,<br/>
+-EngageVia Team<br/>
+
+<div style="margin-top: 3px;font-size:10px;">
 
 IMPORTANT NOTE: Please do not forward this mail or share this link provided to you <br/>
  as a way of inviting friends.<br/>
@@ -17,14 +26,12 @@ IMPORTANT NOTE: Please do not forward this mail or share this link provided to y
  Each one of your invitees will then get their own unique link.<br/>
 
 If the above link does not work try copying and pasting it into your browser.<br/>
-If you continue to have problem please feel free to contact us.<br/>
-</div>
-
-Happy Engaging,<br/>
--EngageVia Team<br/>
+If you continue to have problems, please feel free to contact us.<br/>
 
 NOTE:<br/>
 <span style="font-size:85%;color:#333333;">
 If you do not know <%= @post.owner.display_name  %>, please ignore this email and let us <a href="mailto:engagevia@gmail.com">know</a><br/>
 We sincerely apologize for the inconvenience.
 </span>
+</div>
+

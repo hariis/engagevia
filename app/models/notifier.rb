@@ -37,7 +37,7 @@ default_url_options[:host] = "www.engagevia.com"
     setup_email(post.owner)
     @subject    += " #{inviter.display_name} has invited you for a conversation on #{truncate(post.subject,20,"...")}"
     recipients invitee.email
-    body          :post_url  => DOMAIN + "posts/show?pid=#{post.unique_id};uid=#{invitee.unique_id}" ,:post => post, :inviter => inviter
+    body          :post_url  => DOMAIN + "posts/show?pid=#{post.unique_id};uid=#{invitee.unique_id}" ,:post => post, :inviter => inviter, :invitee => invitee
   end
 
   def comment_notification(post, comment, participant)
