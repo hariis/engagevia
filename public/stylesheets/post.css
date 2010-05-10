@@ -243,6 +243,7 @@ vertical-align:middle;
     position:fixed;
     margin-left:25%;
     min-width: 800px;
+    top: 0px;
 }
 #invitation-title {
     color: #0B84E8;
