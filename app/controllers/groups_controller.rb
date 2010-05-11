@@ -2,7 +2,11 @@ class GroupsController < ApplicationController
   # GET /groups
   # GET /groups.xml
   
-  before_filter :is_admin
+  before_filter :redirect_to_error #:is_admin
+  
+  def redirect_to_error
+    render 'views/posts/404', :status => 404, :layout => false
+  end
   
   def is_admin
     if !(current_user && current_user.admin?)
@@ -10,7 +14,7 @@ class GroupsController < ApplicationController
     end
   end
   
-  def index
+  def index1
     @groups = Group.all
 
     respond_to do |format|
