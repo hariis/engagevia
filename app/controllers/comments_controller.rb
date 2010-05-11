@@ -42,7 +42,7 @@ class CommentsController < ApplicationController
         render :update do |page|          
           page.show 'reply-to-comment'
           page << "if ( $j('#form_#{@parent_comment.id}').length == 0 )"
-          page.replace_html 'reply-to-comment', :partial => 'new'
+          page.insert_html :top, 'reply-to-comment', :partial => 'new'
           page << "if ( $j('#form_#{@parent_comment.id}').length == 1 )"
           page.show "form_#{@parent_comment.id}"
       end
