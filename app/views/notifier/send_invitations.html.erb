@@ -9,7 +9,7 @@ Please visit this link to engage in this conversation:<br/>
    <%= link_to @post_url, @post_url %>  <br/><br/>
  
 <div style="margin-top: 2px;">
-<% unless invitee.member? %>
+<% unless @invitee.member? %>
   NOTE: No account signup is required.
 <% end %>
 </div>
