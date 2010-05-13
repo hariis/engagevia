@@ -242,7 +242,9 @@ vertical-align:middle;
     position:fixed;
     margin-left:25%;
     min-width: 800px;
-    top: 0px;
+    top: 76px;
+    max-height:562px;
+    overflow: auto;
 }
 #invitation-title {
     color: #0B84E8;
