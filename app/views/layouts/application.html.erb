@@ -32,7 +32,7 @@
   <li><% link_to "Home", root_url %></li>
 
   <% if current_user && current_user.activated? %>
-      <li><%= link_to "My Posts (#{current_user.posts.count})", posts_path if current_user.activated? %></li>
+      <li><%= link_to "Posts (#{current_user.posts.count})", posts_path if current_user.activated? %></li>
       <% if current_user.admin? %>
           <li><%= link_to "Contacts", {:controller => 'users', :action => 'contacts'} %></li>
           <li><%= link_to "Groups", {:controller => 'users', :action => 'groups' }%></li>
