@@ -75,6 +75,9 @@ class CommentsController < ApplicationController
 
     if @post.comments << @comment
       @comment.deliver_comment_notification(@post)
+      update_contact(@post.owner)
+      update_contact(@user)
+      
       render :update do |page|
         if params[:pcid].nil?
             page.insert_html :top, 'comments', :partial => "/comments/comment", :object => @comment,  :locals => {:root => 'true',:parent_comment => nil}
@@ -166,4 +169,25 @@ class CommentsController < ApplicationController
       format.xml  { render :xml => @comment }
     end
   end
+  
+  def update_contact(participant)
+    ic_group = Group.find(:first, :conditions => ['user_id = ? and name = ?', participant.id, 'ic'])
+    ec_group = Group.find(:first, :conditions => ['user_id = ? and name = ?', participant.id, 'ec'])
+  
+    #both ic and ec group should exists. It was created in engagement controller
+    if !(ic_group.nil? || ec_group.nil?) 
+        ec_mem = Membership.find(:first, :conditions => ['user_id = ? and group_id = ?', participant.id, ec_group.id])
+        ic_mem = Membership.find(:first, :conditions => ['user_id = ? and group_id = ?', participant.id, ic_group.id])
+        
+        #ignore..if ic already exists..else check for ec
+        if ic_mem.nil?
+            if !ec_mem.nil? #Again ec_mem should exists, it was created in engagement controller. Upgrade it to ic
+              ec_mem.group = ic_group
+              ec_mem.user = participant
+              ec_mem.save
+            end
+        end          
+    end
+    #next if ((participant.id == invitee.id) &&  circle_name == 'ec')
+  end     
 end

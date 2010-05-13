@@ -151,18 +151,7 @@ end
     end
  end
 
- def create_membership_and_add_to_contacts_old(requested_participants)
-    @participants = @post.get_all_participants
-    @participants.each do |participant|
-      if participant.id == current_user.id
-        update_contact(current_user, requested_participants, 'ic')
-      else
-        update_contact(participant, requested_participants, 'ec')
-      end
-    end
- end
- 
- def create_membership_and_add_to_contacts(requested_participants)
+ def create_membership_and_add_to_contacts_oldway(requested_participants)
     @participants = @post.get_all_participants
     @participants.each do |participant|
       if participant.id == current_user.id
@@ -182,7 +171,30 @@ end
       end
     end
  end
-    
+
+  def create_membership_and_add_to_contacts(requested_participants)
+    @participants = @post.get_all_participants
+    @participants.each do |participant|
+      if participant.id == current_user.id
+        #A invites X, Y, Z
+        #X, Y, Z become mutually ec to A.
+        update_contact(current_user, requested_participants, 'ec')
+        requested_participants.each do |invitee|
+           inviter_user = []
+           inviter_user << current_user
+           update_contact(invitee, inviter_user, 'ec')
+        end
+      else
+        update_contact(participant, requested_participants, 'ec')
+        requested_participants.each do |invitee|
+           inviter_user = []
+           inviter_user << participant
+           update_contact(invitee, inviter_user, 'ec')
+        end
+      end
+    end
+ end
+
  def update_contact(participant, requested_participants, circle_name)    
     ic_group = Group.find(:first, :conditions => ['user_id = ? and name = ?', participant.id, 'ic'])
     ec_group = Group.find(:first, :conditions => ['user_id = ? and name = ?', participant.id, 'ec'])
