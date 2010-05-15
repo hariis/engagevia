@@ -4,6 +4,7 @@ class PostsController < ApplicationController
   before_filter :load_user, :except => [:new, :create,:dashboard,:privacy,:about,:blog,:contact,:plaxo,:help]
   before_filter :check_activated_member,
     :except => [:new,:show, :create, :dashboard, :index, :privacy,:about,:blog,:contact,:plaxo,:help]
+  in_place_edit_for :post, :note
 
   def privacy
   end

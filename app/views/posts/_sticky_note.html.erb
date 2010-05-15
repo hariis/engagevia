@@ -3,7 +3,9 @@
 <div id="sticky-note">
   <h3 style="border-bottom:1px solid #fff;text-align:center;">Sticky Note </h3>
   <% if @post.owner == @user  || true %>
-  <%= in_place_rich_editor_field :post, :note, {}, :mode => 'tinymce_advanced_stripped_options' %>
+  <span id="post_note_field"><%=h @post.note %></span>
+  <%= in_place_editor 'post_note_field',  :url => url_for(:action => :set_post_note, :id => @post.id), :rows =>  9, :cols => 30 %>
+  
   <% else %>
    <%= @post.note %>
    <% end %>

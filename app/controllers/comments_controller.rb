@@ -95,6 +95,7 @@ class CommentsController < ApplicationController
         else
             #page.hide 'facebox'            
             page.hide 'reply-to-comment'
+            page.hide "form_#{@parent_comment.id}"
             page.insert_html :bottom, "children_for_#{params[:pcid]}", :partial => "/comments/comment", :object => @comment,  :locals => {:root => nil,:parent_comment => @parent_comment}
             page.replace_html "comments-heading", "Comments (#{@post.comments.size})"
             page.select("comments-heading").each { |b| b.visual_effect :highlight, :startcolor => "#fb3f37",
