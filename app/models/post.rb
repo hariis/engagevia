@@ -95,4 +95,13 @@ class Post < ActiveRecord::Base
     
     return for_display
   end
+  def unread_comments_for(user, last_viewed_at)
+    unread = 0
+    comments.each do |comment|
+       if comment.owner != user && comment.updated_at > last_viewed_at
+         unread = unread + 1
+       end
+    end
+    return unread
+  end
 end

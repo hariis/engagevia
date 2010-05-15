@@ -76,10 +76,10 @@ class CommentsController < ApplicationController
     if @post.comments << @comment
       @comment.deliver_comment_notification(@post)
       update_contact(@post.owner)
-      update_contact(@user)
+      update_contact(@user)      
       
       render :update do |page|
-        if params[:pcid].nil?
+        if params[:pcid].nil?            
             page.insert_html :top, 'comments', :partial => "/comments/comment", :object => @comment,  :locals => {:root => 'true',:parent_comment => nil}
 
             page.replace_html "comments-heading", "Comments (#{@post.comments.size})"

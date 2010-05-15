@@ -522,15 +522,17 @@ clear: right;
     margin-left:5px;
 }
 .listing-line-odd {
-        background-color: #a5d6fd;
+        background-color: #E6F1F7;
 }
 .listing-line-even {
         background-color: #fff;
 }
 .current-user-comment {
-        background-color: #d6f6a6;
+        background-color: #ABD9F5;
 }
-
+.unread {
+    background-color: #fefd88 !important;
+}
 .apply_border {
         border-bottom: 1px dotted #32a3fe;
 }

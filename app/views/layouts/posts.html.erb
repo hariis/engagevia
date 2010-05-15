@@ -41,9 +41,9 @@
      <% end %>
   </div>
   
-  <% if flash[:notice] %>
+  <% if flash[:notice] || @comment_notice %>
   <div id="flash-notice">
-    <p><%= flash[:notice] %><%  flash[:notice] = nil %></p>
+    <p><%= flash[:notice] || @comment_notice %><%  flash[:notice] = nil %></p>
   </div>
 <% end %>
   <% if flash[:error] %>
