@@ -1,4 +1,6 @@
 class Comment < ActiveRecord::Base
+  after_create :update_contacts
+
   acts_as_tree
   named_scope :top, :conditions => {:parent_id => nil}  , :order => 'updated_at desc'
   belongs_to :owner, :class_name => 'User', :foreign_key => :user_id

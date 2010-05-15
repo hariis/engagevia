@@ -4,7 +4,6 @@ class CommentsController < ApplicationController
   
   before_filter :load_post
   before_filter :load_user
-  after_create :update_contacts
   
   def method_missing(methodname, *args)
        @methodname = methodname
