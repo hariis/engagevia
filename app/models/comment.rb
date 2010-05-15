@@ -1,5 +1,5 @@
 class Comment < ActiveRecord::Base
-  after_create :update_contacts
+  #after_create :update_contacts
 
   acts_as_tree
   named_scope :top, :conditions => {:parent_id => nil}  , :order => 'updated_at desc'
