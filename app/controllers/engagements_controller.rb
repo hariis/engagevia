@@ -172,30 +172,7 @@ end
     end
  end
 
-  def create_membership_and_add_to_contacts(requested_participants)
-    @participants = @post.get_all_participants
-    @participants.each do |participant|
-      if participant.id == current_user.id
-        #A invites X, Y, Z
-        #X, Y, Z become mutually ec to A.
-        update_contact(current_user, requested_participants, 'ec')
-        requested_participants.each do |invitee|
-           inviter_user = []
-           inviter_user << current_user
-           update_contact(invitee, inviter_user, 'ec')
-        end
-      else
-        update_contact(participant, requested_participants, 'ec')
-        requested_participants.each do |invitee|
-           inviter_user = []
-           inviter_user << participant
-           update_contact(invitee, inviter_user, 'ec')
-        end
-      end
-    end
- end
-
- def update_contact(participant, requested_participants, circle_name)    
+ def update_contact_oldway(participant, requested_participants, circle_name)    
     ic_group = Group.find(:first, :conditions => ['user_id = ? and name = ?', participant.id, 'ic'])
     ec_group = Group.find(:first, :conditions => ['user_id = ? and name = ?', participant.id, 'ec'])
    
@@ -256,6 +233,66 @@ end
         end
  
       end
+    end  
+ end
+ 
+ 
+  def create_membership_and_add_to_contacts(requested_participants)
+    @participants = @post.get_all_participants
+    @participants.each do |participant|
+        update_contact(participant, requested_participants, 'ec')
+        requested_participants.each do |invitee|
+           inviter_user = []
+           inviter_user << participant
+           update_contact(invitee, inviter_user, 'ec')
+        end
+    end
+ end
+
+  
+ def update_contact(participant, requested_participants, circle_name)    
+    ic_group = Group.find(:first, :conditions => ['user_id = ? and name = ?', participant.id, 'ic'])
+    ec_group = Group.find(:first, :conditions => ['user_id = ? and name = ?', participant.id, 'ec'])
+   
+    #create both ic and ec if they dont exists
+    if ic_group.nil?
+      group = Group.new
+      group.name = 'ic'
+      group.public = false
+      group.user_id = participant.id
+      group.save
+      ic_group = group
+    end
+    
+   if ec_group.nil?
+      group = Group.new
+      group.name = 'ec'
+      group.public = false
+      group.user_id = participant.id
+      group.save
+      ec_group = group
+    end
+    
+    requested_participants.each do |invitee|
+        if !invitee.nil?
+            next if ((participant.id == invitee.id) &&  circle_name == 'ec')
+
+            ic_mem = Membership.find(:first, :conditions => ['user_id = ? and group_id = ?', invitee.id, ic_group.id])
+            ec_mem = Membership.find(:first, :conditions => ['user_id = ? and group_id = ?', invitee.id, ec_group.id])
+
+            #check if the membership entry already exists                
+            if circle_name == 'ec'
+                #ignore..ic already exists
+                if ic_mem.nil?
+                    if ec_mem.nil?
+                        membership = Membership.new
+                        membership.group = ec_group
+                        membership.user = invitee
+                        membership.save
+                    end
+                end
+            end 
+        end
     end  
  end
   
