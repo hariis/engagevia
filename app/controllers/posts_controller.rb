@@ -130,11 +130,11 @@ class PostsController < ApplicationController
       end
       @engagement = Engagement.new
       #update the last_viewed_at      
-      @last_viewed_at = @post.last_viewed_at(current_user)
-      eng = current_user.engagements.find_by_post_id(@post.id)
+      @last_viewed_at = @post.last_viewed_at(@user)
+      eng = @user.engagements.find_by_post_id(@post.id)
       eng.update_attribute( :last_viewed_at, Time.now )
       #display the count of unread records
-      unread = @post.unread_comments_for(current_user, @last_viewed_at)
+      unread = @post.unread_comments_for(@user, @last_viewed_at)
       #comment_notice = unread > 0 ? pluralize(unread, 'comment') : "No new comments"
       @comment_notice = unread.to_s + " comments since your last visit"
     else
