@@ -104,4 +104,8 @@ class Post < ActiveRecord::Base
     end
     return unread
   end
+  def last_viewed_at(user)
+    eng = user.engagements.find_by_post_id(id)
+    return eng.last_viewed_at ? eng.last_viewed_at : Time.parse( "5/14" )
+  end
 end

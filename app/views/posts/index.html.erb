@@ -9,15 +9,15 @@
 <% @posts.each do |post| %>
   <div class="index"></div>
    <div class="<%= cycle('listing-line-odd', 'listing-line-even') %> post-item">
-    <span style="color:green"><%  "#{count}." %> <% count = count + 1 %></span>
-    <div style="font-weight:bold;clear:both;"><%= link_to  h(post.subject.capitalize), post.get_url_for(@user,'show')  %></div>
+    <span style="color:green"><%  "#{count}." %> <% count = count + 1 %></span>   
+    <div class ="<%= post.updated_at >= post.last_viewed_at(@user) ? "unread-post" : "read-post" %>"><%= link_to  h(post.subject.capitalize), post.get_url_for(@user,'show')  %></div>
     <% if post.url != "Add a link" %>
     <div style="font-weight:normal;clear:both;"><%= link_to  h(post.url), h(post.url) %> </div>
     <% end %>
 
     <span class="poststat"><%= link_to "#{get_comments_count(post)} | #{get_participants_count(post)} | " + "Updated "+ "#{time_ago_in_words(post.updated_at)}" + " ago " + "by #{last_updated_by(post)}" , post.get_url_for(@user,'show'), :class => 'dashboard-comments' %></span>
 
-    <span class="timestamp">started by <%= post.owner.email == current_user.email ? "Me" : post.owner.display_name.capitalize %>
+    <span class="timestamp">started by <%= post.owner.email == current_user.email ? "Me" : post.owner.display_name %>
       <% if post.owner == @user %>
           <%= link_to '[X]', post, :confirm => 'Are you sure? This will wipe out this conversation and all of its comments.', :method => :delete %>
       <% end %>

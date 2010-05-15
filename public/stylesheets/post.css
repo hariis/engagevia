@@ -533,6 +533,14 @@ clear: right;
 .unread {
     background-color: #fefd88 !important;
 }
+.unread-post{
+    font-weight:bold;
+    clear:both;
+}
+.read-post{
+    font-weight:normal;
+    clear:both;
+}
 .apply_border {
         border-bottom: 1px dotted #32a3fe;
 }
