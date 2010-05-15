@@ -4,6 +4,8 @@ class CommentsController < ApplicationController
   
   before_filter :load_post
   before_filter :load_user
+  after_create :update_contacts
+  
   def method_missing(methodname, *args)
        @methodname = methodname
        @args = args
@@ -32,6 +34,11 @@ class CommentsController < ApplicationController
     @post = Post.find_by_unique_id(params[:pid]) if params[:pid]
   end  
 
+  def update_contacts
+      update_contact(@post.owner)
+      update_contact(@user)
+  end
+  
   def new
     @comment = Comment.new
     @parent_comment = Comment.find(params[:pcid])
