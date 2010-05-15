@@ -131,7 +131,7 @@ class PostsController < ApplicationController
       @engagement = Engagement.new
       #update the last_viewed_at
       eng = current_user.engagements.find_by_post_id(@post.id)
-      @last_viewed_at = eng.last_viewed_at ? eng.last_viewed_at : Time.parse( "1/1" )
+      @last_viewed_at = eng.last_viewed_at ? eng.last_viewed_at : Time.parse( "5/14" )
       eng.update_attribute( :last_viewed_at, Time.now )
       #display the count of unread records
       unread = @post.unread_comments_for(current_user, @last_viewed_at)
