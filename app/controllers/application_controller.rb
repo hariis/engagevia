@@ -93,7 +93,7 @@ class ApplicationController < ActionController::Base
           email.gsub!(/\A"/, '\1')
            str = email.split(/ /)
            str.delete_if{|x| x== ""}
-           email = str[str.size-1].delete "<>"
+           email = str[str.size-1].delete "<>" if str[str.size-1]
            emailRE= /\A[\w\._%-]+@[\w\.-]+\.[a-zA-Z]{2,4}\z/
            return email =~ emailRE
      end
