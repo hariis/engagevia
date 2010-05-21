@@ -89,6 +89,7 @@ class CommentsController < ApplicationController
       render :update do |page|
         if params[:pcid].nil?
           if @comment.sticky?
+            @last_viewed_at = @post.last_viewed_at(@user)
             page.insert_html :top, 'comments-section', :partial => "/comments/sticky_comment", :object => @comment,  :locals => {:root => 'true',:parent_comment => nil}
           else
             page.insert_html :top, 'comments', :partial => "/comments/comment", :object => @comment,  :locals => {:root => 'true',:parent_comment => nil}
