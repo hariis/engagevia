@@ -2,7 +2,9 @@ class Comment < ActiveRecord::Base
   #after_create :update_contacts
 
   acts_as_tree
-  named_scope :top, :conditions => {:parent_id => nil}  , :order => 'updated_at desc'
+  named_scope :sticky, :conditions => {:sticky => 1}  , :order => 'updated_at desc'
+  named_scope :top, lambda { { :conditions => "parent_id IS NULL AND sticky = 0", :order => 'updated_at desc' } }
+  #named_scope :top, :conditions => {:parent_id => nil}  , :order => 'updated_at desc'
   belongs_to :owner, :class_name => 'User', :foreign_key => :user_id
   belongs_to :post
   validates_presence_of :body

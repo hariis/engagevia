@@ -4,8 +4,9 @@
         
         <%=  label_tag 'Comment' %><br/>
         <%= text_area_tag 'comment_body', nil,:rows => 10, :cols => 100 %><br/>
-
-
+        <%= hidden_field_tag :sticky_check_box, '0' %>
+        <%= check_box_tag :sticky_check_box, '1' %>
+        <%=  label_tag 'Make this sticky and allow Everyone to edit' %>
        <p style="margin-top: 10px;">
           <%= submit_tag 'Add' %><%= image_tag 'spinner.gif', :id=>"e-spinner", :style=>"display:none;" %>
         </p>

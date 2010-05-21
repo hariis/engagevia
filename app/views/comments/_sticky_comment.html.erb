@@ -1,0 +1,22 @@
+<% comment_type = " unread" if sticky_comment.updated_at >= @last_viewed_at %>
+
+<div class="<%= comment_type %>comment-body root" style="background-color:yellow;margin-bottom: 2px;">
+  <div style="float:left;">
+    <%= image_tag "pushpin.png" %>
+  </div>
+   <div style="font-size :70%;float:right;"><%= image_tag "comment.png" %>   <%= "#{sticky_comment.owner.display_name(@post)}" %><br/>
+    <%  if parent_comment && false %>
+        <%= "#{distance_of_time_in_words(parent_comment.created_at,sticky_comment.updated_at) + " later"}" %> <br/>
+      <% else %>
+        <%= "#{time_ago_in_words(sticky_comment.updated_at) + " ago"}" %> <br/>
+      <% end %>
+  </div>
+
+  <div id="comment_body_<%= sticky_comment.id %>" style="width:80%;text-align:justify;clear:both;margin:0 auto;">  <%= sticky_comment.body %></div>
+  <div id="edit-sticky">
+    <a href="#">Edit</a>
+   </div>
+  <%= in_place_rich_editor "comment_body_#{sticky_comment.id}"  ,:url => { :controller => :comments, :action => :set_comment_body, :pid => @post.unique_id, :id => sticky_comment.id, :uid => params[:uid]}, :mode => 'tinymce_advanced_options', :external_control => 'edit-sticky' %>
+  <div style="height:5px;"></div>
+  
+</div>

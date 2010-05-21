@@ -696,6 +696,7 @@ label {
     margin-top:14px;
     padding:5px;
     font-weight:bold;
+    clear: both;
 }
 .index {
     font-size: 20px;
@@ -709,6 +710,9 @@ label {
 }
 #comments {
     border-top:1px solid #FFFFFF;
+}
+#sticky-comments {
+    clear: both;
 }
 .user-bio {
     clear:both;

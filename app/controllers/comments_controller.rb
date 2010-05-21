@@ -77,6 +77,8 @@ class CommentsController < ApplicationController
     if params[:pcid] != nil
       @comment.parent_id = params[:pcid]
       @parent_comment = Comment.find(params[:pcid])
+    else
+      @comment.sticky = params[:sticky_check_box]
     end
 
     if @post.comments << @comment
@@ -85,12 +87,16 @@ class CommentsController < ApplicationController
       update_contact(@user)      
       
       render :update do |page|
-        if params[:pcid].nil?            
+        if params[:pcid].nil?
+          if @comment.sticky?
+            page.insert_html :top, 'comments-section', :partial => "/comments/sticky_comment", :object => @comment,  :locals => {:root => 'true',:parent_comment => nil}
+          else
             page.insert_html :top, 'comments', :partial => "/comments/comment", :object => @comment,  :locals => {:root => 'true',:parent_comment => nil}
 
             page.replace_html "comments-heading", "Comments (#{@post.comments.size})"
             page.select("comments-heading").each { |b| b.visual_effect :highlight, :startcolor => "#fb3f37",
                           :endcolor => "#cf6d0f", :duration => 5.0 }
+          end
             page.replace_html "new-comment-status", "Thank you for your comment."
             page.replace_html "new-comment-body", ""
         else
@@ -131,6 +137,7 @@ class CommentsController < ApplicationController
   def set_comment_body
     @comment = @post.comments.find(params[:id])
     @comment.body = params[:value] == "" ? "<i>Comment removed by author</i>" : params[:value]
+    @comment.user_id = @user.id if @comment.sticky?
     if @comment.save
       render :text => @comment.body
     else
