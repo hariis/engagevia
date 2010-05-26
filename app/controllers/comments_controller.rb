@@ -165,7 +165,7 @@ class CommentsController < ApplicationController
   # DELETE /comments/1.xml
   def destroy
     @comment = @post.comments.find(params[:id])
-    @comment.destroy if @comment.owner == @user
+    @comment.destroy if @comment.owner == @user && @comment.sticky?
 
     respond_to do |format|
       format.html { redirect_to(@post, @comment) }

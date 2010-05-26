@@ -1,3 +1,4 @@
+<div id="name-request-status" style="color:#ff0000;"></div>
 <h2 style ="color: #2B1E24;">Please enter your name</h2>
 <%  form_remote_tag :url => { :controller => 'users', :action => "update_name", :uid => params[:uid] },
           :before => "Element.show('n-spinner');",
