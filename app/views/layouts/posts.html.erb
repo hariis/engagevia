@@ -30,6 +30,11 @@
    <% end %>
 </ul>
 </div>
+  <%  if !current_user || !current_user.activated? %>
+    <div class="banner" style="height:33px; padding:10px 20px 7px 30px;">
+      <i>Why just Share when you can </i> <span style="color:orange;">Engage in Conversations & Collaborate with your friends with no signup required</span>
+    </div>
+  <% end %>
   <div id="widgets">
     <ul>
       <li id="invite-status"></li>      

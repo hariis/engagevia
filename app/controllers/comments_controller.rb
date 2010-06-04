@@ -26,8 +26,7 @@ class CommentsController < ApplicationController
         flash[:error] = "Your identity could not be confirmed from the link that you provided. <br/> Please request the post owner to resend the link."
         force_logout
         redirect_to login_path
-      end
-      return
+      end      
   end
   def load_post
     @post = Post.find_by_unique_id(params[:pid]) if params[:pid]
@@ -90,7 +89,7 @@ class CommentsController < ApplicationController
         if params[:pcid].nil?
           if @comment.sticky?
             @last_viewed_at = @post.last_viewed_at(@user)
-            page.insert_html :top, 'comments-section', :partial => "/comments/sticky_comment", :object => @comment,  :locals => {:root => 'true',:parent_comment => nil}
+            page.insert_html :top, 'sticky-comments', :partial => "/comments/sticky_comment", :object => @comment,  :locals => {:root => 'true',:parent_comment => nil}
           else
             page.insert_html :top, 'comments', :partial => "/comments/comment", :object => @comment,  :locals => {:root => 'true',:parent_comment => nil}
 
@@ -160,19 +159,25 @@ class CommentsController < ApplicationController
       end
     end
   end
-  private
+  
   # DELETE /comments/1
   # DELETE /comments/1.xml
   def destroy
-    @comment = @post.comments.find(params[:id])
+    @comment = Comment.find(params[:id])
     @comment.destroy if @comment.owner == @user && @comment.sticky?
 
     respond_to do |format|
       format.html { redirect_to(@post, @comment) }
       format.xml  { head :ok }
+      format.js {
+        render :update do |page|
+          page.select("sticky_#{@comment.id}").each { |b| b.fade }
+          page.remove "sticky_#{@comment.id}"
+        end
+      }
     end
   end
-
+ private
    # GET /comments/1
   # GET /comments/1.xml
   def show

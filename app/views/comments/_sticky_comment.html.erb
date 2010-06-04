@@ -1,6 +1,6 @@
-<% comment_type = " unread" if sticky_comment.updated_at >= @last_viewed_at %>
+<% comment_type = "unread" if sticky_comment.updated_at >= @last_viewed_at %>
 
-<div class="<%= comment_type %>comment-body root" style="background-color:yellow;margin-bottom: 2px;" id="sticky_<%= sticky_comment.id %>">
+<div class="comment-body root <%= comment_type %>" style="background-color:yellow;margin-bottom: 2px;" id="sticky_<%= sticky_comment.id %>">
   <div style="float:left;">
     <%= image_tag "pushpin.png" %>
   </div>
@@ -13,12 +13,17 @@
   </div>
 
   <div id="comment_body_<%= sticky_comment.id %>" style="width:80%;text-align:justify;clear:both;margin:0 auto;">  <%= sticky_comment.body %></div>
-  <div id="edit-sticky">
-    <a href="#">Edit</a>
-   </div>
-  <%  link_to_remote "Delete", :url => { :action => "destroy", :id => sticky_comment.id } %>
-
-  <%= in_place_rich_editor "comment_body_#{sticky_comment.id}"  ,:url => { :controller => :comments, :action => :set_comment_body, :pid => @post.unique_id, :id => sticky_comment.id, :uid => params[:uid]}, :mode => 'tinymce_advanced_options', :external_control => 'edit-sticky' %>
+  <div style="float:right;">
+      <span id="edit_sticky_<%= sticky_comment.id %>">
+        <a href="#">Edit</a>
+       </span>
+      <% if sticky_comment.owner == @user %>
+      <%=  link_to_remote "| Delete", :url => { :controller => 'comments', :action => "destroy", :id => sticky_comment.id , :pid => @post.unique_id, :uid => params[:uid]} ,
+                      :confirm => "Are you sure you want to delete this sticky post?",
+                      :method => :delete %>
+      <% end %>
+  </div>
+  <%= in_place_rich_editor "comment_body_#{sticky_comment.id}"  ,:url => { :controller => :comments, :action => :set_comment_body, :pid => @post.unique_id, :id => sticky_comment.id, :uid => params[:uid]}, :mode => 'tinymce_advanced_options', :external_control => "edit_sticky_#{sticky_comment.id}" %>
   <div style="height:5px;"></div>
   
 </div>
