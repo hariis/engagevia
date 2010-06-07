@@ -205,18 +205,22 @@ class UsersController < ApplicationController
 #       return
 #      end
       #If everything is ok
-      if @error_message.blank? && @user.save
-        flash[:notice] = "Welcome #{@user.display_name}!"
-        render :update do |page|
-          page.visual_effect :blind_up, 'name-request'
-          page.replace_html "non-member-name", flash[:notice]
-          page.select("non-member-name").each { |b| b.visual_effect :highlight, :startcolor => "#f3add0",
-											:endcolor => "#ffffff", :duration => 5.0 }
-        end
-      else
-        render :update do |page|
-          page.replace_html "name-request-status", @error_message
-        end
+      respond_to do |format|
+        format.js {
+                if @error_message.blank? && @user.save
+                  flash[:notice] = "Welcome #{@user.display_name}!"
+                  render :update do |page|
+                    page.visual_effect :blind_up, 'name-request'
+                    page.replace_html "non-member-name", flash[:notice]
+                    page.select("non-member-name").each { |b| b.visual_effect :highlight, :startcolor => "#f3add0",
+                                :endcolor => "#ffffff", :duration => 5.0 }
+                  end
+                else
+                  render :update do |page|
+                    page.replace_html "name-request-status", @error_message
+                  end
+                end
+        }
       end
     end
  end
