@@ -97,7 +97,8 @@ class PostsController < ApplicationController
   end
 
   def dashboard
-
+    @user_session = UserSession.new
+    @user_session.email = flash[:email]
   end
 
   def index
@@ -345,6 +346,22 @@ class PostsController < ApplicationController
         page.replace_html 'reco-contacts', "#{a.join(", ")}"
     end
   end
+  
+  def migrate_existing_contacts
+     @posts = Post.find(:all)
+     @posts.each do |post|
+        if post.comments.count > 0
+            @comments = post.comments.find(:all)
+              @comments.each do |comment|
+              if comment.owner != post.owner
+                update_contact(post.owner, comment.owner)
+              end
+            end
+        end        
+     end
+   render 'users/groups_ec'
+  end
+
   private  
   # GET /posts/1/edit
   def edit
@@ -364,6 +381,46 @@ class PostsController < ApplicationController
         format.html { render :action => "edit" }
         format.xml  { render :xml => @post.errors, :status => :unprocessable_entity }
       end
+    end
+  end
+
+  def update_contact(post_owner, comment_owner)
+    ic_group = Group.find(:first, :conditions => ['user_id = ? and name = ?', post_owner.id, 'ic'])
+    ec_group = Group.find(:first, :conditions => ['user_id = ? and name = ?', post_owner.id, 'ec'])
+  
+    #create both ic and ec if they dont exists
+    if ic_group.nil?
+      group = Group.new
+      group.name = 'ic'
+      group.public = false
+      group.user_id = post_owner.id
+      group.save
+      ic_group = group
+    end
+    
+    if ec_group.nil?
+      group = Group.new
+      group.name = 'ec'
+      group.public = false
+      group.user_id = post_owner.id
+      group.save
+      ec_group = group
+    end
+   
+    #both ic and ec group should exists. It was created above
+    if !(ic_group.nil? || ec_group.nil?) 
+        ec_mem = Membership.find(:first, :conditions => ['user_id = ? and group_id = ?', @comment_owner.id, ec_group.id])
+        ic_mem = Membership.find(:first, :conditions => ['user_id = ? and group_id = ?', @comment_owner.id, ic_group.id])
+        
+        #ignore..if ic & ec already exists..else create ec
+        if ic_mem.nil?
+            if ec_mem.nil? #Again ec_mem should exists, it was created in engagement controller. Upgrade it to ic
+                membership = Membership.new
+                membership.group = ec_group
+                membership.user = @comment_owner
+                membership.save
+            end
+        end          
     end
   end
 
