@@ -4,6 +4,7 @@ $j(function(){  // $(document).ready shorthand
    $j('#flash-notice').fadeOut(5000);
     // Tabs
    $j('#tabs').tabs();
+   $j('input[name=sticky_check_box]').attr('checked', false);
 });
 function clearElements(el){
     var object = new Array();
