@@ -128,15 +128,15 @@ class PostsController < ApplicationController
       if @post.tag_list == ""
         @post.tag_list = "Click here to Add"
       end
-      @engagement = Engagement.new
-      #update the last_viewed_at      
-      @last_viewed_at = @post.last_viewed_at(@user)
-      eng = @user.engagements.find_by_post_id(@post.id)
-      eng.update_attribute( :last_viewed_at, Time.now )
       #display the count of unread records
-      unread = @post.unread_comments_for(@user, @last_viewed_at)
+      unread = @post.unread_comments_for(@user)
       #comment_notice = unread > 0 ? pluralize(unread, 'comment') : "No new comments"
       @comment_notice = unread.to_s + " comments since your last visit"
+      @last_viewed_at = @post.last_viewed_at(@user)
+
+      @engagement = Engagement.new      
+      eng = @user.engagements.find_by_post_id(@post.id)
+      eng.update_attribute( :last_viewed_at, Time.now )      
     else
       flash[:error] = "We could not locate this post. Please check the address and try again."
       render 'posts/404', :status => 404, :layout => false and return
