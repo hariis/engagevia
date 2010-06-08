@@ -79,7 +79,7 @@ class CommentsController < ApplicationController
 
     if @post.comments << @comment
       @comment.deliver_comment_notification(@post)      
-      #update_contact(@post.owner)
+      update_contact(@post.owner)
       render :update do |page|
         if params[:pcid].nil?
           if @comment.sticky?
