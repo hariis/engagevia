@@ -28,14 +28,10 @@ class CommentsController < ApplicationController
         redirect_to login_path
       end      
   end
+
   def load_post
     @post = Post.find_by_unique_id(params[:pid]) if params[:pid]
   end  
-
-  def update_contacts
-      update_contact(@post.owner)
-      update_contact(@user)
-  end
   
   def new
     @comment = Comment.new
@@ -54,7 +50,8 @@ class CommentsController < ApplicationController
       }  #render_to_facebox
     end
   end
-   # POST /comments
+  
+  # POST /comments
   # POST /comments.xml
   def create
     @comment = Comment.new
@@ -81,10 +78,8 @@ class CommentsController < ApplicationController
     end
 
     if @post.comments << @comment
-      @comment.deliver_comment_notification(@post)
-      update_contact(@post.owner)
-      update_contact(@user)      
-      
+      @comment.deliver_comment_notification(@post)      
+      #update_contact(@post.owner)
       render :update do |page|
         if params[:pcid].nil?
           if @comment.sticky?
@@ -114,6 +109,7 @@ class CommentsController < ApplicationController
       page.replace_html "new-comment-status", "There was a problem saving your description. Please refresh and try again."
     end
   end
+  
   def create_reply_comment
     if params[:value] == "Click here to add your comment" || params[:value] == ""
       render :text => "Click here to add your comment"
@@ -129,6 +125,7 @@ class CommentsController < ApplicationController
     if @post.comments << @comment
       render :text => @comment.body
       @comment.deliver_comment_notification(@post)   
+      update_contact(@post.owner)
     else
       render :text => "There was a problem saving your description. Please refresh and try again."
     end    
@@ -190,20 +187,44 @@ class CommentsController < ApplicationController
   end
   
   def update_contact(participant)
+    if @post.owner.id == @user.id
+      return 
+    end
+    
     ic_group = Group.find(:first, :conditions => ['user_id = ? and name = ?', participant.id, 'ic'])
     ec_group = Group.find(:first, :conditions => ['user_id = ? and name = ?', participant.id, 'ec'])
   
-    #both ic and ec group should exists. It was created in engagement controller
+    #create both ic and ec if they dont exists
+    if ic_group.nil?
+      group = Group.new
+      group.name = 'ic'
+      group.public = false
+      group.user_id = participant.id
+      group.save
+      ic_group = group
+    end
+    
+    if ec_group.nil?
+      group = Group.new
+      group.name = 'ec'
+      group.public = false
+      group.user_id = participant.id
+      group.save
+      ec_group = group
+    end
+   
+    #both ic and ec group should exists. It was created above
     if !(ic_group.nil? || ec_group.nil?) 
-        ec_mem = Membership.find(:first, :conditions => ['user_id = ? and group_id = ?', participant.id, ec_group.id])
-        ic_mem = Membership.find(:first, :conditions => ['user_id = ? and group_id = ?', participant.id, ic_group.id])
+        ec_mem = Membership.find(:first, :conditions => ['user_id = ? and group_id = ?', @user.id, ec_group.id])
+        ic_mem = Membership.find(:first, :conditions => ['user_id = ? and group_id = ?', @user.id, ic_group.id])
         
-        #ignore..if ic already exists..else check for ec
+        #ignore..if ic & ec already exists..else create ec
         if ic_mem.nil?
-            if !ec_mem.nil? #Again ec_mem should exists, it was created in engagement controller. Upgrade it to ic
-              ec_mem.group = ic_group
-              ec_mem.user = participant
-              ec_mem.save
+            if ec_mem.nil? #Again ec_mem should exists, it was created in engagement controller. Upgrade it to ic
+                membership = Membership.new
+                membership.group = ec_group
+                membership.user = @user
+                membership.save
             end
         end          
     end

@@ -327,7 +327,7 @@ end
              update_tags_for_all_invitees(@email_participants.keys)
              
              #create membership and add requested_participants to the inner contact.
-             create_membership_and_add_to_contacts(@email_participants.keys)
+             #create_membership_and_add_to_contacts(@email_participants.keys)
              #now send emails
             @post.send_invitations(@email_participants,@user) if @email_participants.size > 0
             #Delayed::Job.enqueue(MailingJob.new(@post, invitees))            

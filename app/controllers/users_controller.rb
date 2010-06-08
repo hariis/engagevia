@@ -241,7 +241,7 @@ class UsersController < ApplicationController
    @ic, @ec = current_user.get_inner_and_extended_contacts
  end
 
- def migrate_existing_contacts
+ def migrate_existing_contacts1
    users = User.find(:all)
    users.each do |selected_user|
    @ic, @ec = selected_user.get_inner_and_extended_contacts
