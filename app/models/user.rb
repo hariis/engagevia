@@ -242,5 +242,10 @@ class User < ActiveRecord::Base
   def self.get_recommended_contacts(keywords, all_contacts)
     User.find_tagged_with(keywords, :contacts => all_contacts)
   end
+
+  def join_ec_of(post_owner)
+    ec = Group.find_or_create_by_user_id(:user_id => post_owner.id, :name => 'ec')
+    Membership.find_or_create_by_user_id(:user_id => id, :group_id => ec.id)
+  end
 end
 

@@ -79,7 +79,8 @@ class CommentsController < ApplicationController
 
     if @post.comments << @comment
       @comment.deliver_comment_notification(@post)      
-      update_contact(@post.owner)
+      #update_contact(@post.owner)
+      @user.join_ec_of(@post.owner) if @post.owner != @user.id
       render :update do |page|
         if params[:pcid].nil?
           if @comment.sticky?
@@ -125,7 +126,8 @@ class CommentsController < ApplicationController
     if @post.comments << @comment
       render :text => @comment.body
       @comment.deliver_comment_notification(@post)   
-      update_contact(@post.owner)
+      #update_contact(@post.owner)
+      @user.join_ec_of(@post.owner) if @post.owner != @user.id
     else
       render :text => "There was a problem saving your description. Please refresh and try again."
     end    

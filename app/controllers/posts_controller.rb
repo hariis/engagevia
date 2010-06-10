@@ -355,7 +355,8 @@ class PostsController < ApplicationController
             unless comments.nil?
               comments.each do |comment|
                 if comment.owner != post.owner
-                  update_contact(post.owner, comment.owner)
+                  #update_contact(post.owner, comment.owner)
+                  comment.owner.join_ec_of(post.owner)
                 end
               end
             end
