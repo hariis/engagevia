@@ -70,12 +70,11 @@
                         <b>Twitter Profile:</b><br/>                         
                          <%= engagement.invitee.screen_name.blank? ? "" : "http://twitter.com/" + engagement.invitee.screen_name %><br/>
                         <b>Blog:</b><br/>
-                        <%=h engagement.invitee.blog_link %><br/>
+                        <%= link_to engagement.invitee.blog_link, engagement.invitee.blog_link %><br/>
                         <b>Facebook Profile:</b><br/>
                         <%=h engagement.invitee.facebook_link %><br/>
                         <b>LinkedIn Profile:</b><br/>
                         <%=h engagement.invitee.linked_in_link %><br/>
-
                     </div>
              </div>
         </li>

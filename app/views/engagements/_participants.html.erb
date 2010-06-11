@@ -18,6 +18,16 @@
                     <% else %>
                       No photo available
                    <% end %>
+                      <div class ="user-bio">
+                        <b>Twitter Profile:</b><br/>
+                         <%= invitee.screen_name.blank? ? "" : "http://twitter.com/" + invitee.screen_name %><br/>
+                        <b>Blog:</b><br/>
+                        <%=  link_to invitee.blog_link, invitee.blog_link %><br/>
+                        <b>Facebook Profile:</b><br/>
+                        <%=h invitee.facebook_link %><br/>
+                        <b>LinkedIn Profile:</b><br/>
+                        <%=h invitee.linked_in_link %><br/>
+                    </div>
              </div>
     </li>
   <% end %>
