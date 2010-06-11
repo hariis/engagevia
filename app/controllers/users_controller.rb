@@ -240,17 +240,6 @@ class UsersController < ApplicationController
  def contacts
    @ic, @ec = current_user.get_inner_and_extended_contacts
  end
-
- def migrate_existing_contacts1
-   users = User.find(:all)
-   users.each do |selected_user|
-   @ic, @ec = selected_user.get_inner_and_extended_contacts
-       update_contacts(@ic, 'ic', selected_user)
-       update_contacts(@ec, 'ec', selected_user)
-   end
-   
-   render 'groups'
- end
  
  def groups   
    group = params[:id].nil? ? 'ic' : params[:id]
@@ -292,30 +281,5 @@ private
       @user.blog_link = params[:user][:blog_link]
       @user.user_id = @user.id
       @user.tag_list = params[:user][:tag_list]
- end
- 
- def update_contacts(circle, circle_name, selected_user)
-     #add the existing inner_contact to the membership table. This should be done only once for existing user.
-     group_exists = Group.find(:first, :conditions => ['user_id = ? and name = ?', selected_user, circle_name])
-     if group_exists.nil?
-        group = Group.new
-        group.name = circle_name
-        group.public = false
-        group.user_id = selected_user.id
-        group.save
-     end
-     ic_group = group_exists.nil? ? group : group_exists
-
-     circle.values.each do |contact|
-        next if contact.id == selected_user.id 
-        mem_exists = Membership.find(:first, :conditions => ['group_id = ? and user_id = ?', ic_group.id, contact.id])
-        if mem_exists.nil?
-            membership = Membership.new
-            membership.user_id = contact.id
-            membership.group = ic_group
-            membership.save
-        end
-     end
- end   
- 
+ end 
 end

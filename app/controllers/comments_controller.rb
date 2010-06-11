@@ -79,7 +79,6 @@ class CommentsController < ApplicationController
 
     if @post.comments << @comment
       @comment.deliver_comment_notification(@post)      
-      #update_contact(@post.owner)
       @user.join_ec_of(@post.owner) if @post.owner != @user.id
       render :update do |page|
         if params[:pcid].nil?
@@ -126,7 +125,6 @@ class CommentsController < ApplicationController
     if @post.comments << @comment
       render :text => @comment.body
       @comment.deliver_comment_notification(@post)   
-      #update_contact(@post.owner)
       @user.join_ec_of(@post.owner) if @post.owner != @user.id
     else
       render :text => "There was a problem saving your description. Please refresh and try again."
@@ -187,49 +185,5 @@ class CommentsController < ApplicationController
       format.xml  { render :xml => @comment }
     end
   end
-  
-  def update_contact(participant)
-    if @post.owner.id == @user.id
-      return 
-    end
     
-    ic_group = Group.find(:first, :conditions => ['user_id = ? and name = ?', participant.id, 'ic'])
-    ec_group = Group.find(:first, :conditions => ['user_id = ? and name = ?', participant.id, 'ec'])
-  
-    #create both ic and ec if they dont exists
-    if ic_group.nil?
-      group = Group.new
-      group.name = 'ic'
-      group.public = false
-      group.user_id = participant.id
-      group.save
-      ic_group = group
-    end
-    
-    if ec_group.nil?
-      group = Group.new
-      group.name = 'ec'
-      group.public = false
-      group.user_id = participant.id
-      group.save
-      ec_group = group
-    end
-   
-    #both ic and ec group should exists. It was created above
-    if !(ic_group.nil? || ec_group.nil?) 
-        ec_mem = Membership.find(:first, :conditions => ['user_id = ? and group_id = ?', @user.id, ec_group.id])
-        ic_mem = Membership.find(:first, :conditions => ['user_id = ? and group_id = ?', @user.id, ic_group.id])
-        
-        #ignore..if ic & ec already exists..else create ec
-        if ic_mem.nil?
-            if ec_mem.nil? #Again ec_mem should exists, it was created in engagement controller. Upgrade it to ic
-                membership = Membership.new
-                membership.group = ec_group
-                membership.user = @user
-                membership.save
-            end
-        end          
-    end
-    #next if ((participant.id == invitee.id) &&  circle_name == 'ec')
-  end     
 end
