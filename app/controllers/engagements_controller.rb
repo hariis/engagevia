@@ -21,7 +21,21 @@ class EngagementsController < ApplicationController
      end
      @engagement.save
   end
-
+  def set_all_notifications
+    @post = Post.find(params[:post_id])
+    engagements = Engagement.find(:all, :conditions => ['post_id = ?',  @post.id] )
+    engagements.each do |eng|
+        if params[:set] == 'true'
+          eng.notify_me = true
+       else
+          eng.notify_me = false
+       end
+       eng.save
+    end
+    render :update do |page|
+        page.replace_html "all-notifications", :partial => "all_notifications"
+    end
+  end
   def create
     #Save the engagements
     if params[:invite_type] == 'email'

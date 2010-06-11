@@ -108,4 +108,11 @@ class Post < ActiveRecord::Base
     eng = user.engagements.find_by_post_id(id)
     return eng.last_viewed_at ? eng.last_viewed_at : Time.parse( "5/14" )
   end
+
+  def notification_status
+    #get one engagement of the post and return its status
+    unless engagements.empty?
+        engagements[0].notify_me?
+    end
+  end
 end

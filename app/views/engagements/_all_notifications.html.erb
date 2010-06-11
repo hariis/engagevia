@@ -1,0 +1,5 @@
+<% if @post.notification_status %>
+    <%= button_to_remote 'Disable All Notifications', :url => {:controller => 'engagements', :action => 'set_all_notifications', :post_id => @post.id, :set => 'false'} %>
+  <% else %>
+    <%= button_to_remote 'Enable All Notifications', :url => {:controller => 'engagements', :action => 'set_all_notifications', :post_id => @post.id, :set => 'true'} %>
+<% end %>
