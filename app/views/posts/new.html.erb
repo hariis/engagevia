@@ -15,12 +15,12 @@
   </p>
   
   <p>
-    <%= f.label :url , "Link to a Website" %><br />
+    <%= f.label :url , "Link to a Website" %> (optional)<br />
     <%= f.text_field :url , :size=> 80, :maxlength => 80 %>
   </p>
 
   <p>
-    <%= f.label :tag_list, "Keywords that describe this conversation" %><br />
+    <%= f.label :tag_list, "Tags" %><br />
     <%= f.text_field :tag_list , :size=> 80, :maxlength => 80 %><br/>
     <span class ="info"> (separate multiple keywords with comma) </span>
   </p>

@@ -17,7 +17,7 @@
 <strong class="logo">
 <a href="/"><%= image_tag "evlogo.png" %></a>
 </strong>
-<ul>
+<ul>  
   <li><% link_to "Home", root_url %></li>
   <% if current_user && current_user.activated? %>
     <li><%= link_to "Posts (#{current_user.posts.count})", posts_path if current_user.activated? %></li>
@@ -30,24 +30,26 @@
     <li><%= link_to "#{h current_user.display_name}", :controller => 'users', :action => 'show' %></li>
     <li><%= link_to "Logout", logout_path %></li>    
    <% else %>
-     <li id="non-member-name"style="color:#FF60B0;float:right;"> <%="Welcome #{@user.display_name}" %></li>     
+     <li id="non-member-name"style="color:#FF60B0;float:right;"> <%="Welcome #{@user.display_name}" %></li>
+     <li style="float:right;"><%= button_to "Become a Member", new_user_path %> </li>
    <% end %>
-     <li style="float:right;"><%= button_to "Start New Conversation" , new_post_url %></li>
+     
 </ul>
 </div>
   <%  if !current_user || !current_user.activated? %>
     <div class="banner" style="height:33px; padding:10px 20px 7px 30px;">
       <i>Why just Share when you can </i> <span style="color:orange;">Engage in Conversations & Collaborate with your friends with no signup required</span>
-    </div>
+    </div>  
   <% end %>
+  <%= button_to "Start New Conversation" , new_post_url %>
   <div id="widgets">
     <ul>
       <li id="invite-status"></li>      
-      <li><%= image_tag "group_add.png" %> <%= facebox_link_to "Invite Friends",  :url => @post.get_url_for(@user,'send_invites') %></li>
+      <li><%= image_tag "group_add.png" %> <%= facebox_link_to "Invite Friends to this Conversation",  :url => @post.get_url_for(@user,'send_invites') %></li>
      <%  if !current_user || !current_user.activated? %>
         
         <li style="color:#FF60B0;float:right;"><%= @post.get_all_member_participants_for_display %></li>
-        <li style="float:right;margin-top:-20px;"><%= button_to "Become a Member", new_user_path %> </li>
+        
      <% end %>
         
         </ul>
