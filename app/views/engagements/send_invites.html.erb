@@ -168,8 +168,9 @@
                       <li><a href="#show_email_form">Invite from other Addressbooks</a></li>
                       <% if @user.admin? %>
                       <li><a href="#invite-ev">Invite from EngageVia</a></li>
-                      <% end %>
+                      
                       <li><a href="#get_twitter_auth">Invite via Twitter</a></li>
+                      <% end %>
               </ul>
 
               <div id="show_email_form">
@@ -203,7 +204,7 @@
                                           <h5 class="ui-name"><%= contact.display_name %></h5>
                                           <% end %>
                                           <a href="link/to/trash/script/when/we/have/js/off" title="Click to Invite this contact" class="ui-icon ui-icon-mail-closed">Invite</a>
-                                          <input type="hidden" value="<%= contact.unique_id %>">
+                                          <input type="hidden" value="<%= contact.unique_id %>"/>
                                     </li>
                                   <% end %>
                                     <% @user.get_extended_circle_contacts.each do |contact| %>
