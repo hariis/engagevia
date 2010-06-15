@@ -22,4 +22,13 @@ class Comment < ActiveRecord::Base
   def touch_post    
     post.update_attribute(:updated_at, self.updated_at)
   end
+  
+  def touch_comment
+    comment = self
+    while comment.parent_id != nil
+      comment = Comment.find(comment.parent_id)
+    end
+    comment.update_attribute(:updated_at, self.updated_at)
+  end
+  
 end
