@@ -55,9 +55,14 @@
         </ul>
   </div>
   
-  <% if flash[:notice] || @comment_notice %>
+  <% unless @comment_notice.blank? %>
+  <div style="background-color:#fefd88;color:#000;height:24px;padding-top:6px;text-align:center;font-weight:bold;">
+    <%= @comment_notice %>
+  </div>
+  <% end %>
+  <% if flash[:notice] %>
   <div id="flash-notice">
-    <p><%= flash[:notice] || @comment_notice %><%  flash[:notice] = nil %></p>
+    <p><%= flash[:notice] %><%  flash[:notice] = nil %></p>
   </div>
 <% end %>
   <% if flash[:error] %>

@@ -50,7 +50,7 @@ default_url_options[:host] = "www.engagevia.com"
   protected
     def setup_email(user)      
       @from        = "EngageVia <EngageVia-notifier@engagevia.com>"
-      headers         "Reply-to" => "EngageVia-notifier@engagevia.com"
+      headers         "Reply-to" => "engagevia@gmail.com"
       @subject     = ""
       @sent_on     = Time.zone.now
       @content_type = "text/html"
