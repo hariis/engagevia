@@ -78,6 +78,7 @@ class CommentsController < ApplicationController
     end
 
     if @post.comments << @comment
+      @comment.touch_root_parent_comment unless params[:pcid].nil?
       @comment.deliver_comment_notification(@post)      
       @user.join_ec_of(@post.owner) if @post.owner.id != @user.id
       render :update do |page|
@@ -126,6 +127,7 @@ class CommentsController < ApplicationController
       render :text => @comment.body
       @comment.deliver_comment_notification(@post)   
       @user.join_ec_of(@post.owner) if @post.owner.id != @user.id
+      @comment.touch_root_parent_comment
     else
       render :text => "There was a problem saving your description. Please refresh and try again."
     end    
@@ -136,6 +138,7 @@ class CommentsController < ApplicationController
     @comment.body = params[:value] == "" ? "<i>Comment removed by author</i>" : params[:value]
     @comment.user_id = @user.id if @comment.sticky?
     if @comment.save
+      @comment.touch_root_parent_comment
       render :text => @comment.body
     else
       render :text => "There was a problem saving your description. Please refresh and try again."
