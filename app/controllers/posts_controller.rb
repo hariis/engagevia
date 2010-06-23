@@ -27,9 +27,10 @@ class PostsController < ApplicationController
       @posts = Post.find(:all)
       @participants = Engagement.find(:all)
       @comments = Comment.find(:all)
-      nonmembers = User.find(:all, :conditions => ["username = ?", "nonmember" ])
+      #nonmembers = User.find(:all, :conditions => ["username = ?", "nonmember" ])
       @users = User.find(:all)
-      @members = @users.count - nonmembers.count
+      #@members = @users.count - nonmembers.count
+      @members = User.find_by_sql "select users.id,email,first_name,last_name from users,user_roles WHERE users.id = user_roles.user_id AND role_id = 5;"
     else
       redirect_to root_path
     end
@@ -232,7 +233,7 @@ class PostsController < ApplicationController
     end
     respond_to do |format|
       if @post.errors.size == 0 && @post.save
-        update_tags_for_all_invitees(@post.get_all_participants)
+        update_tags_for_all_invitees(@post.get_all_participants)  #At this point, the only participant is the post creator
         if current_user && current_user.activated?
           flash[:notice] ='Your email contains the link to this post as well.<br/> '+
             'You can now start inviting your friends for the conversation.'

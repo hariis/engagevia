@@ -79,6 +79,7 @@ class CommentsController < ApplicationController
 
     if @post.comments << @comment
       #@comment.touch_root_parent_comment unless params[:pcid].nil?
+      update_tags_for(@user) if @post.is_first_comment?(@user)
       @comment.deliver_comment_notification(@post)      
       @user.join_ec_of(@post.owner) if @post.owner.id != @user.id
       render :update do |page|

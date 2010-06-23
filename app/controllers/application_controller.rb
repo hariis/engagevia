@@ -148,16 +148,25 @@ class ApplicationController < ActionController::Base
       current_user.has_role?('admin')
      end
 
-     #Related to auto-tagging the users 
+     #Related to auto-tagging the users
     def update_tags_for_all_invitees(invitees)
        admin = User.get_admin_user
        invitees.each do |invitee|
-          admin.user_id = invitee.id
-          admin.post_id = @post.id
-          admin.set_associated_tag_list = @post.tag_list
+          if @post.owner.id == invitee.id || @post.comments_by(invitee) > 0 #Do this only if user had added atleast 1 comment
+            admin.user_id = invitee.id
+            admin.post_id = @post.id
+            admin.set_associated_tag_list = @post.tag_list
+          end
         end
     end
-    
+
+    def update_tags_for(commenter)
+      admin = User.get_admin_user
+      admin.user_id = commenter.id
+      admin.post_id = @post.id
+      admin.set_associated_tag_list = @post.tag_list
+    end
+
     require 'resolv'
     def validate_email_domain(email)
           domain = email.match(/\@(.+)/)[1]

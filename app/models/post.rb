@@ -115,4 +115,17 @@ class Post < ActiveRecord::Base
         engagements[0].notify_me?
     end
   end
+
+  def is_first_comment?(user)
+    comments_by_user = comments.find(:all, :conditions => ['user_id = ?',user.id])
+    return comments_by_user.count == 1 unless comments_by_user.nil?
+    return false
+  end
+
+  def comments_by(user)
+    total = 0
+    comments_by_user = comments.find(:all, :conditions => ['user_id = ?',user.id])
+    total = comments_by_user.size unless comments_by_user.nil?
+    return total
+  end
 end

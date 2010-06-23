@@ -192,8 +192,8 @@ end
                 end
               end
             end
-             #update the participants' tags with post tags
-             update_tags_for_all_invitees(@email_participants.keys)
+             #update the participants' tags with post tags - Now done only on first comment
+             #update_tags_for_all_invitees(@email_participants.keys)
              
              #create membership and add requested_participants to the inner contact.
              #create_membership_and_add_to_contacts(@email_participants.keys)
@@ -299,7 +299,7 @@ end
           end
         end
         #update the participants' tags with post tags
-        update_tags_for_all_invitees(@twitter_participants.keys)
+        #update_tags_for_all_invitees(@twitter_participants.keys)
      @error_message = ""
      begin
         send_twitter_notification(@twitter_participants) if @twitter_participants.size > 0
