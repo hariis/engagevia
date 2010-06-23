@@ -20,20 +20,20 @@
 <ul>  
   <li><% link_to "Home", root_url %></li>
   <% if current_user && current_user.activated? %>
-    <li><%= link_to "Posts (#{current_user.posts.count})", posts_path if current_user.activated? %></li>
+      <li><%= link_to "Posts (#{current_user.posts.count})", posts_path if current_user.activated? %></li>
 
-    <% if current_user.admin? %>
-          <li><%= link_to "Contacts", {:controller => 'users', :action => 'contacts'} %></li>
-          <li><%= link_to "Groups", {:controller => 'users', :action => 'groups' }%></li>
-          <li><%= link_to "Admin", admin_path %></li>
-    <% end %>    
-    <li><%= link_to "#{h current_user.display_name}", :controller => 'users', :action => 'show' %></li>
-    <li><%= link_to "Logout", logout_path %></li>    
-   <% else %>
-     <li id="non-member-name"style="color:#FF60B0;float:right;"> <%="Welcome #{@user.display_name}" %></li>
-     <li style="float:right;"><%= button_to "Become a Member", new_user_path %> </li>
-   <% end %>
-     
+      <% if current_user.admin? %>
+            <li><%= link_to "Contacts", {:controller => 'users', :action => 'contacts'} %></li>
+            <li><%= link_to "Groups", {:controller => 'users', :action => 'groups' }%></li>
+            <li><%= link_to "Admin", admin_path %></li>
+      <% end %>    
+          <li><%= link_to "#{h current_user.display_name}", :controller => 'users', :action => 'show' %></li>
+          <li><%= link_to "Logout", logout_path %></li>    
+      <% else %>
+          <span style="font-size:16px;"><li><%= link_to "Welcome #{@user.display_name} (Become a Member)", new_user_path %></li>
+          <li><%= link_to "Start New Conversation", new_post_url %></li></span>
+      <% end %>
+
 </ul>
 </div>
   <%  if !current_user || !current_user.activated? %>
@@ -41,7 +41,6 @@
       <i>Why just Share when you can </i> <span style="color:orange;">Engage in Conversations & Collaborate with your friends with no signup required</span>
     </div>  
   <% end %>
-  <%= button_to "Start New Conversation" , new_post_url %>
   <div id="widgets">
     <ul>
       <li id="invite-status"></li>      
