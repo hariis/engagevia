@@ -27,9 +27,9 @@ class PostsController < ApplicationController
       @posts = Post.find(:all)
       @participants = Engagement.find(:all)
       @comments = Comment.find(:all)
-      nonmembers = User.find(:all, :conditions => ["username = ?", "nonmember" ])
+      
       @users = User.find(:all)
-      @members = @users.count - nonmembers.count
+      @members_count = Post.get_members_count
     else
       redirect_to root_path
     end
