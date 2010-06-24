@@ -76,15 +76,6 @@ class Post < ActiveRecord::Base
     end
     return p
   end
-
-  def self.get_members_count
-    member = []
-    users = User.find(:all)
-    users.each do |user|
-      member << user if user.member?
-    end
-    return member.size
-  end
   
   def get_all_member_participants_for_display
     m = []
