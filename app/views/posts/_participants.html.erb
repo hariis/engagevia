@@ -69,11 +69,7 @@
                         <b>Twitter Profile:</b><br/>                         
                          <%= engagement.invitee.screen_name.blank? ? "" : "http://twitter.com/" + engagement.invitee.screen_name %><br/>
                         <b>Blog:</b><br/>
-                        <% if !engagement.invitee.blog_link.nil? %>
-                           <%= link_to engagement.invitee.blog_link, engagement.invitee.blog_link %> <br/>
-                        <% else %>
-                          <br/>
-                        <% end %>
+                        <%= link_to engagement.invitee.blog_link, engagement.invitee.blog_link if !engagement.invitee.blog_link.nil? %> <br/>
                         <b>Facebook Profile:</b><br/>
                         <%=h engagement.invitee.facebook_link %><br/>
                         <b>LinkedIn Profile:</b><br/>
