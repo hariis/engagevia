@@ -31,7 +31,6 @@
         <% else %>
           <li><%= image_tag "user_green.png" %> <%=  engagement.invitee.display_name(nil,engagement).titleize %>
         <% end  %>
-                  
 
         <% end  %>  
            <!-- common to both -->
@@ -70,7 +69,11 @@
                         <b>Twitter Profile:</b><br/>                         
                          <%= engagement.invitee.screen_name.blank? ? "" : "http://twitter.com/" + engagement.invitee.screen_name %><br/>
                         <b>Blog:</b><br/>
-                        <%= link_to engagement.invitee.blog_link, engagement.invitee.blog_link %><br/>
+                        <% if !engagement.invitee.blog_link.nil? %>
+                           <%= link_to engagement.invitee.blog_link, engagement.invitee.blog_link %> <br/>
+                        <% else %>
+                          <br/>
+                        <% end %>
                         <b>Facebook Profile:</b><br/>
                         <%=h engagement.invitee.facebook_link %><br/>
                         <b>LinkedIn Profile:</b><br/>
