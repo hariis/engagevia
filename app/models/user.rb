@@ -209,6 +209,14 @@ class User < ActiveRecord::Base
     return inner_circle,extended_circle
   end
 
+  def get_contacts_for_invite_from_engagevia
+    all_contacts = []
+    groups.each do |g|
+      all_contacts << g.users if g.name == 'ic' || g.name == 'ec' && !g.users.nil?
+    end
+    return all_contacts.flatten
+  end
+    
   def get_inner_circle_contacts
     inner = []
     groups.each do |g|
