@@ -25,8 +25,12 @@
     <%= f.text_field :tag_list , :size=> 80, :maxlength => 80 %><br/>    
   </p>
 
+  <p>
+    <%= f.check_box :allow_others_to_invite %><%= f.label :allow_others_to_invite, " Allow others to invite"%>
+  </p> 
+ 
   <p>    
-    <% f.check_box :public %><% f.label :public , "Allow Outsiders to Join" %>
+    <% f.check_box :public %><% f.label :public , " Allow Outsiders to Join" %>
   </p>
   
   <p>

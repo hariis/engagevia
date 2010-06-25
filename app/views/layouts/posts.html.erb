@@ -43,8 +43,10 @@
   <% end %>
   <div id="widgets">
     <ul>
-      <li id="invite-status"></li>      
-      <li><%= image_tag "group_add.png" %> <%= facebox_link_to "Invite Friends to this Conversation",  :url => @post.get_url_for(@user,'send_invites') %></li>
+      <li id="invite-status"></li>
+      <% if @post.allow_others_to_invite  || @post.owner.id == current_user.id %>
+        <li><%= image_tag "group_add.png" %> <%= facebox_link_to "Invite Friends to this Conversation",  :url => @post.get_url_for(@user,'send_invites') %></li>
+     <% end %>
      <%  if !current_user || !current_user.activated? %>
         
         <li style="color:#FF60B0;float:right;"><%= @post.get_all_member_participants_for_display %></li>
