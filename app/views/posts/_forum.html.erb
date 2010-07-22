@@ -16,7 +16,7 @@
                            <% end %>
                            <div class="description"> <%= @post.description %></div>
                         <% end %>
-                           <div><%= image_tag @post.avatar.url(:medium) %></div>
+                           <div><%= image_tag @post.avatar.url(:medium)  if @post.avatar? %></div>
                       </div>
                       <span style="color:#0062f6;">
                       <%= "#{@post.owner.display_name} <br/> #{@post.created_at.to_s(:short)}" %></span>

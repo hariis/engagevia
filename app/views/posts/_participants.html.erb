@@ -46,7 +46,7 @@
                       page.show "more_link_down_#{engagement.invitee.id}"
                end  %>
             <div id="user-details_<%=engagement.invitee.id %>"  style="display:none;">
-                    <% if engagement.invitee.avatar.file? %>
+                    <% if engagement.invitee.avatar? %>
                       <%= image_tag engagement.invitee.avatar.url(:thumb) %>
                     <% else %>
                       No photo available
