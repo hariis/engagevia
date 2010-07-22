@@ -2,7 +2,7 @@
   <div id="participants">
     <h3 style="border-bottom:1px solid #fff;"><%= image_tag "group.png" %>Participants <span id="participant-count">(<%= @post.engagements.size %>)</span></h3>
     <% if @user.admin? || (@post.owner.id == @user.id && !@post.engagements.empty? && @user.admin?) %>
-        <div id="all-notifications" style="margin-bottom:10px;">
+        <div id="all-notifications" style="margin-bottom:10px;display:none;">
             <% if @post.notification_status %>
               <%= button_to_remote 'Disable All Notifications', :url => {:controller => 'engagements', :action => 'set_all_notifications', :post_id => @post.id, :set => 'false'} %>
             <% else %>

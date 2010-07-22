@@ -20,15 +20,20 @@
   </p>
 
   <p>
-    <%= f.label :tag_list, "Tags" %><br />
+    <%= f.label :tag_list, "Tags (optional)" %><br />
     <span class ="info">(separate multiple tags with comma) Ex: economics, technology, parenting, arts</span>
     <%= f.text_field :tag_list , :size=> 80, :maxlength => 80 %><br/>    
   </p>
 
   <p>
-    <%= f.check_box :allow_others_to_invite %><%= f.label :allow_others_to_invite, " Allow others to invite"%>
-  </p> 
- 
+    <%= f.check_box :allow_others_to_invite %><%= f.label :allow_others_to_invite, " Allow participants to invite"%>
+  </p>
+
+  <p>
+    <%= f.label "Post a picture: (optional)" %><br />
+    <%= f.file_field :avatar %>
+  </p>
+
   <p>    
     <% f.check_box :public %><% f.label :public , " Allow Outsiders to Join" %>
   </p>

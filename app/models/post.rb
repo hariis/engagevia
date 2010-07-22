@@ -9,9 +9,10 @@ class Post < ActiveRecord::Base
   has_many :participants, :through => :engagements, :source => :invitee, :class_name => 'User', :foreign_key => :user_id
   has_many :participants_to_notify, :through => :engagements, :source => :invitee, :class_name => 'User', :foreign_key => :user_id,
            :conditions => 'engagements.notify_me = 1'
-
+  has_attached_file :avatar, :styles => { :medium => "300x300>" }
   validates_presence_of :subject
-
+  validates_attachment_size :avatar, :less_than => 5.megabytes
+  validates_attachment_content_type :avatar, :content_type => ['image/jpeg', 'image/png']
   after_create :send_post_link
 
   def send_post_link      

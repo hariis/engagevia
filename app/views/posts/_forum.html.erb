@@ -7,8 +7,8 @@
                            <div>
                            <span id="url-text" class="url"><%= render :partial => 'posts/update_url_text', :object => @post  %></span><% image_tag '/images/pencil.png' %>
                            <span id="url-link"><%= render :partial => 'posts/update_url_link', :object => @post %></span>
-                           </div>
-                           <div><%= in_place_rich_editor_field :post, :description ,{}, :size => '75', :mode => 'tinymce_advanced_with_save_options' %><% image_tag '/images/pencil.png' %></div>
+                           </div>                           
+                           <div><%= in_place_rich_editor_field :post, :description ,{}, :size => '75', :mode => 'tinymce_advanced_with_save_options' %><% image_tag '/images/pencil.png' %></div>                           
                         <% else %>
                            <div class="subject"> <%= @post.subject.capitalize %></div>
                            <% if @post.url != "Add a link" %>
@@ -16,6 +16,7 @@
                            <% end %>
                            <div class="description"> <%= @post.description %></div>
                         <% end %>
+                           <div><%= image_tag @post.avatar.url(:medium) %></div>
                       </div>
                       <span style="color:#0062f6;">
                       <%= "#{@post.owner.display_name} <br/> #{@post.created_at.to_s(:short)}" %></span>
