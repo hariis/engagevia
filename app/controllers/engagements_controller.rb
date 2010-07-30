@@ -73,7 +73,9 @@ class EngagementsController < ApplicationController
       engagement.destroy
       
       render :update do |page|
-          page.remove "participant_details_#{engagement.invitee.id}"
+          page.select("#participant_details_#{engagement.invitee.id}").each { |b| b.visual_effect :fade, :startcolor => "#ff0000",
+												:endcolor => "#cf6d0f", :duration => 5.0 }
+          #page.replace_html "participant_details_#{engagement.invitee.id}", ""
       end
   end
 
