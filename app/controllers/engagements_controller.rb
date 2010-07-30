@@ -2,7 +2,7 @@ class EngagementsController < ApplicationController
   # include the oauth_system mixin
   include OauthSystem
   
-  before_filter :load_post, :except => [:set_notification, :callback]
+  before_filter :load_post, :except => [:set_notification, :callback, :exclude]
   before_filter :load_user, :only => [:create, :get_auth_from_twitter, :send_invites]
   layout 'posts'
   def load_user
@@ -21,6 +21,7 @@ class EngagementsController < ApplicationController
      end
      @engagement.save
   end
+
   def set_all_notifications
     @post = Post.find(params[:post_id])
     engagements = Engagement.find(:all, :conditions => ['post_id = ?',  @post.id] )
@@ -51,6 +52,7 @@ class EngagementsController < ApplicationController
 
   def destroy
   end
+  
   def resend_invite
     eng_exists = Engagement.find(params[:id]) if params[:id]
     if eng_exists
@@ -65,7 +67,17 @@ class EngagementsController < ApplicationController
         page.replace_html "resend_#{eng_exists.invitee.id}", @status
     end
   end
+        
+  def exclude
+      engagement = Engagement.find(params[:id]) if params[:id]
+      engagement.destroy
+      
+      render :update do |page|
+          page.remove "participant_details_#{engagement.invitee.id}"
+      end
+  end
 
+  
 def callback2
     @user = User.find_by_unique_id(session[:uid]) if session[:uid]
     @post = Post.find(session[:post_id]) if session[:post_id]
@@ -141,7 +153,7 @@ end
       format.js { render_to_facebox }
     end
   end
-  
+
  private
  def send_email_invites(email_ids)      
    create_engagements_and_send(email_ids)

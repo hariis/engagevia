@@ -10,52 +10,63 @@
            <% end %>
        </div>
    <% end %>
-    <ul id="participants-list">
+   
+   <ul id="participants-list">
     <% unless @post.engagements.empty? %>
         <% @post.engagements.each do |engagement| %>
-        <% if engagement.invitee.id == @user.id  %>
-        <li id='you'><%= image_tag "user_red.png" %> Me
-          <span id="notify-option">
-               <% if engagement.notify_me? %>
-                  <%= image_tag "email.png", :id => "enabled" %><%= image_tag "email_delete.png", :id => "disabled" , :style => "display:none;" %>
-               <% else %>
-                  <%= image_tag "email.png", :id => "enabled", :style => "display:none;" %><%= image_tag "email_delete.png", :id => "disabled"  %>
-               <% end %>              
-          </span>
-                
-              
-        <% else %>         
+            <div id="participant_details_<%=engagement.invitee.id %>" >
+        
+            <% if engagement.invitee.id == @user.id  %>
+                <li id='you'><%= image_tag "user_red.png" %> Me
+                  <span id="notify-option">
+                       <% if engagement.notify_me? %>
+                          <%= image_tag "email.png", :id => "enabled" %><%= image_tag "email_delete.png", :id => "disabled" , :style => "display:none;" %>
+                       <% else %>
+                          <%= image_tag "email.png", :id => "enabled", :style => "display:none;" %><%= image_tag "email_delete.png", :id => "disabled"  %>
+                       <% end %>              
+                  </span>           
+            <% else %>         
+                  <% if engagement.invitee.member? %>
+                    <li><%= image_tag "user_green.png" %> <%=  engagement.invitee.display_name(nil,engagement).titleize %>
+                  <% else %>
+                    <li><%= image_tag "user_green.png" %> <%=  engagement.invitee.display_name(nil,engagement).titleize %>
+                  <% end  %>
+            <% end  %>  
 
-        <% if engagement.invitee.member? %>
-          <li><%= image_tag "user_green.png" %> <%=  engagement.invitee.display_name(nil,engagement).titleize %>
-        <% else %>
-          <li><%= image_tag "user_green.png" %> <%=  engagement.invitee.display_name(nil,engagement).titleize %>
-        <% end  %>
+        <!-- common to both -->
+        <%= link_to_function( (image_tag ("bullet_arrow_down.png")),  :id => "more_link_down_#{engagement.invitee.id}") do |page|
+                page.visual_effect  :toggle_blind, "user-details_#{engagement.invitee.id}"
+                page.show "more_link_up_#{engagement.invitee.id}"
+                page.hide "more_link_down_#{engagement.invitee.id}"
+                #page.replace_html 'more_link', "#{image_tag "bullet_arrow_up.png"}"
+         end  %>
 
-        <% end  %>  
-           <!-- common to both -->
-              <%= link_to_function( (image_tag ("bullet_arrow_down.png")),  :id => "more_link_down_#{engagement.invitee.id}") do |page|
-                      page.visual_effect  :toggle_blind, "user-details_#{engagement.invitee.id}"
-                      page.show "more_link_up_#{engagement.invitee.id}"
-                      page.hide "more_link_down_#{engagement.invitee.id}"
-                      #page.replace_html 'more_link', "#{image_tag "bullet_arrow_up.png"}"
-               end  %>
-              <%= link_to_function( (image_tag ("bullet_arrow_up.png")),  :id => "more_link_up_#{engagement.invitee.id}", :style => 'display:none;') do |page|
-                      page.visual_effect  :toggle_blind, "user-details_#{engagement.invitee.id}"
-                      page.hide "more_link_up_#{engagement.invitee.id}"
-                      page.show "more_link_down_#{engagement.invitee.id}"
-               end  %>
-            <div id="user-details_<%=engagement.invitee.id %>"  style="display:none;">
+         <%= link_to_function( (image_tag ("bullet_arrow_up.png")),  :id => "more_link_up_#{engagement.invitee.id}", :style => 'display:none;') do |page|
+                page.visual_effect  :toggle_blind, "user-details_#{engagement.invitee.id}"
+                page.hide "more_link_up_#{engagement.invitee.id}"
+                page.show "more_link_down_#{engagement.invitee.id}"
+         end  %>
+
+               <div id="user-details_<%=engagement.invitee.id %>"  style="display:none;">
                     <% if engagement.invitee.avatar? %>
                       <%= image_tag engagement.invitee.avatar.url(:thumb) %>
                     <% else %>
-                      No photo available
+                      No photo available <br/>
                    <% end %>
+
                       <% if @post.owner.id == @user.id && engagement.invitee.id != @user.id %>
                           <div id="resend_<%= engagement.invitee.id %>" style="float:right;margin-bottom:10px;">
                               <%= button_to_remote 'Resend Invite', :url => {:controller => 'engagements', :action => 'resend_invite', :id => engagement.id, :post_id => @post.id} %>
-                           </div>
+                          </div>
                       <% end %>
+
+                     <% if @post.owner.id == @user.id && engagement.invitee.id != @user.id %>
+                        <div id="exclude_<%= engagement.invitee.id %>" style="float:left;margin-bottom:10px;">
+                            <%= button_to_remote 'Exclude', :url => {:controller => 'engagements', :action => 'exclude', :id => engagement.id, :confirm => 'Are you sure? This will exculde you out of this conversation.'} %>
+                       </div>
+                     <% end %>
+
+
                       <% if engagement.invitee.id == @user.id  %>
                             <div id="notification" style="float:right;margin-bottom:10px;">
                                 <% if engagement.notify_me? %>
@@ -64,7 +75,8 @@
                                   <%= button_to_remote 'Enable Notification', :url => {:controller => 'engagements', :action => 'set_notification', :id => engagement.id, :set => 'true'} %>
                                <% end %>
                            </div>
-                       <% end %>                      
+                       <% end %> 
+
                     <div class ="user-bio">
                         <b>Twitter Profile:</b><br/>                         
                          <%= engagement.invitee.screen_name.blank? ? "" : "http://twitter.com/" + engagement.invitee.screen_name %><br/>
@@ -77,6 +89,7 @@
                     </div>
              </div>
         </li>
+      </div>
        <% end %>
     <%  end %>
     </ul>
