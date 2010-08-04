@@ -27,12 +27,12 @@
             <li><%= link_to "Groups", {:controller => 'users', :action => 'groups' }%></li>
             <li><%= link_to "Admin", admin_path %></li>
       <% end %>    
-          <li><%= link_to "#{h current_user.display_name}", :controller => 'users', :action => 'show' %></li>
-          <li><%= link_to "Logout", logout_path %></li>    
-      <% else %>
-          <span style="font-size:16px;"><li><%= link_to "Welcome #{@user.display_name} (Become a Member)", new_user_path %></li>
-          <li><%= link_to "Start New Conversation", new_post_url %></li></span>
-      <% end %>
+      <li><%= link_to "#{h current_user.display_name}", :controller => 'users', :action => 'show' %></li>
+      <li><%= link_to "Logout", logout_path %></li>    
+  <% else %>
+      <span style="font-size:16px;"><li><%= link_to "Welcome #{@user.display_name} (Become a Member)", new_user_path %></li>
+      <li><%= link_to "Start New Conversation", new_post_url %></li></span>
+  <% end %>
 
 </ul>
 </div>
@@ -44,8 +44,9 @@
   <div id="widgets">
     <ul>
       <li id="invite-status"></li>
-      <% if @post.allow_others_to_invite  || @post.owner.id == current_user.id %>
-        <li><%= image_tag "group_add.png" %> <%= facebox_link_to "Invite Friends to this Conversation",  :url => @post.get_url_for(@user,'send_invites') %></li>
+      <% if @post.allow_others_to_invite || @post.owner.id == current_user.id %>
+        <li><%= image_tag "group_add.png" %> <%= facebox_link_to "Invite Friends to this Conversation",  :url => @post.get_url_for(@user, 'send_invites') %></li>
+        <li><%= image_tag "group_add.png" %> <%= facebox_link_to "Post to Facebook",  :url => @post.get_url_for(@user, 'send_invites') %></li>
      <% end %>
      <%  if !current_user || !current_user.activated? %>
         
