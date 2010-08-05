@@ -1,7 +1,5 @@
 <% comment_owner = sticky_comment.owner == @user %>
-<% if !@readonly %>
-    <% comment_type = "unread" if !comment_owner && sticky_comment.updated_at >= @last_viewed_at %>
-<% end %>
+<% comment_type = "unread" if !comment_owner && sticky_comment.updated_at >= @last_viewed_at %>
 
 <div class="comment-body root <%= comment_type %>" style="background-color:yellow;margin-bottom: 2px;" id="sticky_<%= sticky_comment.id %>">
   <div style="float:left;">

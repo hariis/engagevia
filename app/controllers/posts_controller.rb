@@ -128,34 +128,35 @@ class PostsController < ApplicationController
   # GET /posts/1
   # GET /posts/1.xml  
   def show
-    @post = params[:pid] ? Post.find_by_unique_id(params[:pid]) : nil
+      @post = params[:pid] ? Post.find_by_unique_id(params[:pid]) : nil
     
-    if @post
-      
-      if @readonly == false
-          if @post.tag_list == ""
-            @post.tag_list = "Click here to Add"
+      if @post
+          if @readonly
+              @last_viewed_at = Time.now
+          else            
+              if @post.tag_list == ""
+                @post.tag_list = "Click here to Add"
+              end
+
+              #display the count of unread records
+              unread = @post.unread_comments_for(@user)
+              #comment_notice = unread > 0 ? pluralize(unread, 'comment') : "No new comments"
+              @comment_notice = unread.to_s + " comments since your last visit"
+              @last_viewed_at = @post.last_viewed_at(@user)
+
+              @engagement = Engagement.new      
+              eng = @user.engagements.find_by_post_id(@post.id)
+              eng.update_attribute( :last_viewed_at, Time.now )      
           end
-
-          #display the count of unread records
-          unread = @post.unread_comments_for(@user)
-          #comment_notice = unread > 0 ? pluralize(unread, 'comment') : "No new comments"
-          @comment_notice = unread.to_s + " comments since your last visit"
-          @last_viewed_at = @post.last_viewed_at(@user)
-
-          @engagement = Engagement.new      
-          eng = @user.engagements.find_by_post_id(@post.id)
-          eng.update_attribute( :last_viewed_at, Time.now )      
+      else
+          flash[:error] = "We could not locate this post. Please check the address and try again."
+          render 'posts/404', :status => 404, :layout => false and return
       end
-    else
-      flash[:error] = "We could not locate this post. Please check the address and try again."
-      render 'posts/404', :status => 404, :layout => false and return
-    end
-    
-    respond_to do |format|
-      format.html # show.html.erb
-      format.xml  { render :xml => @post }
-    end
+
+      respond_to do |format|
+          format.html # show.html.erb
+          format.xml  { render :xml => @post }
+      end
   end  
   
   # GET /posts/new
