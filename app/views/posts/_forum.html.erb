@@ -26,29 +26,33 @@
     <div id="tags">
       <strong style="float:left;">Keywords:</strong><%= image_tag '/images/pencil.png' %>
       <span style="font-size:85%;">(separate multiple keywords with comma)</span>
-      <%= in_place_editor_field :post, 'tag_list',{}, :size => '70',:text_between_controls => ' or ',:save_text => 'save' %>
+      <% if !@readonly %>
+            <%= in_place_editor_field :post, 'tag_list',{}, :size => '70',:text_between_controls => ' or ',:save_text => 'save' %>
+      <% else%>
+             <br/><%= @post.tag_list %>
+      <% end %>
     </div>
 
-   
+
                     <div id="comments-section">
                       <div id="sticky-comments">
                       <% if @post.comments.sticky.length > 0 %>
-                        <%= render :partial => "/comments/sticky_comment", :collection => @post.comments.sticky, :locals => {:root => 'true',:parent_comment => nil} %>
+                            <%= render :partial => "/comments/sticky_comment", :collection => @post.comments.sticky, :locals => {:root => 'true',:parent_comment => nil} %>
                       <% else %>
-                        <!--No comments yet. -->
+                            <!--No comments yet. -->
                       <% end %>
                       </div>
                       <div id ="comments-heading" class="sub-heading">Comments (<%= @post.comments.size - @post.comments.sticky.length %>)</div>
-                      <div id="comments">                      
-                      <% if @post.comments.roots.length > 0 %>
-                      <%= render :partial => "/comments/comment", :collection => @post.comments.top, :locals => {:root => 'true',:parent_comment => nil} %>
-                      <% else %>
-                      <!--No comments yet. -->
-                      <% end %>
-                      </div>
+                          <div id="comments">                      
+                                <% if @post.comments.roots.length > 0 %>
+                                     <%= render :partial => "/comments/comment", :collection => @post.comments.top, :locals => {:root => 'true',:parent_comment => nil} %>
+                                <% else %>
+                                        <!--No comments yet. -->
+                                <% end %>
+                          </div>
                     </div>
-
-                    <%= render :partial => 'posts/new_comment' %>
-                   
+    <% if !@readonly %>
+        <%= render :partial => 'posts/new_comment' %>
+    <% end %>               
   </div>
 </div>

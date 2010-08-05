@@ -61,40 +61,45 @@ class PostsController < ApplicationController
   end
 
   def load_user
-    if (action_name == 'show'  || action_name == 'send_invites')
-      
-      if current_user && current_user.activated?
-        @user = User.find_by_unique_id(params[:uid]) if params[:uid]
-        #Now check if this is the same user as the logged in user
-        #If not, then logout the current_user
-        force_logout if @user && @user.id != current_user.id
-      else
-        #load the user based on the unique id
-        @user = User.find_by_unique_id(params[:uid]) if params[:uid]
-        #if user is member, so force login
-        if @user && @user.activated?
-          flash[:notice] = "Please login and you will be on your way."
-          flash[:email] = @user.email
-          store_location if action_name == 'show'  #we do not want to store if it is any other action
-          redirect_to login_path
-        end
+      if (action_name == 'show' || action_name == 'send_invites')
+          if !params[:uid].nil?
+              if current_user && current_user.activated?
+                  @user = User.find_by_unique_id(params[:uid]) if params[:uid]
+                  #Now check if this is the same user as the logged in user
+                  #If not, then logout the current_user
+                  force_logout if @user && @user.id != current_user.id
+              else
+                  #load the user based on the unique id
+                  @user = User.find_by_unique_id(params[:uid]) if params[:uid]
+                  #if user is member, so force login
+                  if @user && @user.activated?
+                      flash[:notice] = "Please login and you will be on your way."
+                      flash[:email] = @user.email
+                      store_location if action_name == 'show'  #we do not want to store if it is any other action
+                      redirect_to login_path
+                  end
+              end
+              if @user.nil?
+                  flash[:error] = "Your identity could not be confirmed from the link that you provided. <br/> Please request the post owner to resend the link."
+                  force_logout
+                  redirect_to login_path
+              end
+          else
+              @readonly = true
+              @user = User.new
+          end
       end
-      if @user.nil?
-        flash[:error] = "Your identity could not be confirmed from the link that you provided. <br/> Please request the post owner to resend the link."
-        force_logout
-        redirect_to login_path
-      end      
-    end
-    if (action_name == 'index')
-      if current_user && current_user.activated?
-        @user = current_user
-      else
-        flash[:notice] = "Dashboard is a member-only feature. Please signup to enjoy the feature."
-        redirect_to root_path
-       return
+
+      if (action_name == 'index')
+          if current_user && current_user.activated?
+              @user = current_user
+          else
+              flash[:notice] = "Dashboard is a member-only feature. Please signup to enjoy the feature."
+              redirect_to root_path
+              return
+          end
       end
-    end
-  end
+  end  #load_user
 
   def dashboard
     @user_session = UserSession.new
@@ -123,30 +128,35 @@ class PostsController < ApplicationController
   # GET /posts/1
   # GET /posts/1.xml  
   def show
-    @post = params[:pid] ? Post.find_by_unique_id(params[:pid]) : nil
+      @post = params[:pid] ? Post.find_by_unique_id(params[:pid]) : nil
     
-    if @post
-      if @post.tag_list == ""
-        @post.tag_list = "Click here to Add"
-      end
-      #display the count of unread records
-      unread = @post.unread_comments_for(@user)
-      #comment_notice = unread > 0 ? pluralize(unread, 'comment') : "No new comments"
-      @comment_notice = unread.to_s + " comments since your last visit"
-      @last_viewed_at = @post.last_viewed_at(@user)
+      if @post
+          if @readonly
+              @last_viewed_at = Time.now
+          else            
+              if @post.tag_list == ""
+                @post.tag_list = "Click here to Add"
+              end
 
-      @engagement = Engagement.new      
-      eng = @user.engagements.find_by_post_id(@post.id)
-      eng.update_attribute( :last_viewed_at, Time.now )      
-    else
-      flash[:error] = "We could not locate this post. Please check the address and try again."
-      render 'posts/404', :status => 404, :layout => false and return
-    end
-    
-    respond_to do |format|
-      format.html # show.html.erb
-      format.xml  { render :xml => @post }
-    end
+              #display the count of unread records
+              unread = @post.unread_comments_for(@user)
+              #comment_notice = unread > 0 ? pluralize(unread, 'comment') : "No new comments"
+              @comment_notice = unread.to_s + " comments since your last visit"
+              @last_viewed_at = @post.last_viewed_at(@user)
+
+              @engagement = Engagement.new      
+              eng = @user.engagements.find_by_post_id(@post.id)
+              eng.update_attribute( :last_viewed_at, Time.now )      
+          end
+      else
+          flash[:error] = "We could not locate this post. Please check the address and try again."
+          render 'posts/404', :status => 404, :layout => false and return
+      end
+
+      respond_to do |format|
+          format.html # show.html.erb
+          format.xml  { render :xml => @post }
+      end
   end  
   
   # GET /posts/new
