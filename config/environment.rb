@@ -21,7 +21,7 @@ Rails::Initializer.run do |config|
   # config.gem "aws-s3", :lib => "aws/s3"
   config.gem 'authlogic'
   config.gem 'twitter'
-
+  config.gem "oauth2", :version => "0.0.8"
   # Only load the plugins named here, in the order given (default is alphabetical).
   # :all can be used as a placeholder for all plugins not explicitly named
   # config.plugins = [ :exception_notification, :ssl_requirement, :all ]
@@ -32,8 +32,8 @@ Rails::Initializer.run do |config|
 
   # Activate observers that should always be running
   # config.active_record.observers = :cacher, :garbage_collector, :forum_observer  
-  #config.action_controller.session_store = :active_record_store
-  #config.action_controller.session = {:domain => '.engagevia.com'}
+  config.action_controller.session_store = :active_record_store
+  config.action_controller.session = {:domain => '.engagevia.com'}
   # Set Time.zone default to the specified zone and make Active Record auto-convert to this zone.
   # Run "rake -D time" for a list of tasks for finding time zone names.
   #config.time_zone = 'UTC'
