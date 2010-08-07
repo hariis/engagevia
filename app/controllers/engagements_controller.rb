@@ -3,7 +3,7 @@ class EngagementsController < ApplicationController
   include OauthSystem
   
   before_filter :load_post, :except => [:set_notification, :callback, :exclude, :fb_authorize,:fb_callback]
-  before_filter :load_user, :only => [:create, :get_auth_from_twitter, :send_invites, :send_fb_invites]
+  before_filter :load_user, :only => [:create, :get_auth_from_twitter, :send_invites, :share_open_invites]
   layout 'posts', :except => [:callback, :fb_callback]
   layout 'logo_footer' , :only => [:callback, :fb_callback]
   def load_user
@@ -156,7 +156,18 @@ end
       format.js { render_to_facebox }
     end
   end
- def send_fb_invites
+ def share_open_invites
+   @engagement = Engagement.new
+    #data for invite from ev tab
+    @ic, @ec = @user.get_inner_and_extended_contacts
+    keywords = @post.tag_list
+    @reco_users  = []
+    @reco_users_ids = []
+    unless keywords.blank?
+          @reco_users  = User.get_recommended_contacts(keywords, @user.get_ids_for_all_contacts)
+          @reco_users.each{|u| @reco_users_ids << u.id }
+    end
+    #data for fb tab
    @authorization_url = @post.get_fb_auth_url
    session[:post_id] = params[:post_id] if params[:post_id]
    session[:uid] = params[:uid] if params[:uid]
