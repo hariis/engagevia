@@ -156,6 +156,23 @@ end
       format.js { render_to_facebox }
     end
   end
+ 
+ def join_conversation
+    @invitee = User.find_by_unique_id(params[:iid]) if params[:iid]
+    respond_to do |format|
+      format.html
+      format.xml { render :xml => @post }
+      format.js { render_to_facebox }
+    end
+ end
+ 
+ def join
+     @user = User.find_by_unique_id(params[:iid]) if params[:iid]
+     if params[:email]
+        send_email_invites(params[:email], false)
+    end
+ end
+ 
  def send_fb_invites
    @authorization_url = @post.get_fb_auth_url
    session[:post_id] = params[:post_id] if params[:post_id]
@@ -200,29 +217,36 @@ end
  #Facebook authorization
  
  private
- def send_email_invites(email_ids)      
-   create_engagements_and_send(email_ids)
+ def send_email_invites(email_ids, join = true)      
+   create_engagements_and_send(email_ids, join)
    
     render :update do |page|
       if @status_message.blank?
         #page.hide 'facebox'
-        page.insert_html :bottom, 'participants-list', :partial => 'participants', :locals => { :participants => @email_participants }
-        page.replace_html 'invite-status', "#{@email_participants ? pluralize(@email_participants.size ,"participant") : "None"} added."
-        page.replace_html "send-status", "#{@email_participants ? pluralize(@email_participants.size ,"invitation") : "None"} sent."
-        page.select("#send-status").each { |b| b.visual_effect :fade, :startcolor => "#4B9CE0",
-												:endcolor => "#cf6d0f", :duration => 15.0 }
-        page.select(".new-p").each { |b| b.visual_effect :highlight, :startcolor => "#fb3f37",
-												:endcolor => "#cf6d0f", :duration => 5.0 }
-        page.select("#invite-status").each { |b| b.visual_effect :fade, :startcolor => "#fb3f37",
-												:endcolor => "#cf6d0f", :duration => 15.0 }
-        page.replace_html "participant-count", "(#{@post.engagements.size})"
+  
+       if join
+            page.replace_html "send-status", "#{@email_participants ? pluralize(@email_participants.size ,"invitation") : "None"} sent."
+            page.insert_html :bottom, 'participants-list', :partial => 'participants', :locals => { :participants => @email_participants }
+            page.replace_html "participant-count", "(#{@post.engagements.size})"        
+        else
+            page.replace_html "send-status", "Notification email has been send. Check your email and click on the link to participate in the conversation"
+        end
+            page.replace_html 'invite-status', "#{@email_participants ? pluralize(@email_participants.size ,"participant") : "None"} added."
+
+            page.select("#send-status").each { |b| b.visual_effect :fade, :startcolor => "#4B9CE0",
+                                                                                                    :endcolor => "#cf6d0f", :duration => 15.0 }
+            page.select(".new-p").each { |b| b.visual_effect :highlight, :startcolor => "#fb3f37",
+                                                                                                    :endcolor => "#cf6d0f", :duration => 5.0 }
+            page.select("#invite-status").each { |b| b.visual_effect :fade, :startcolor => "#fb3f37",
+                                                                                                    :endcolor => "#cf6d0f", :duration => 15.0 }
+
       else
         page.replace_html "send-status", @status_message
       end
     end
  end
  
- def create_engagements_and_send(invitees_emails)
+ def create_engagements_and_send(invitees_emails, join = true)
    @email_participants = {}
    @status_message = ""
    if invitees_emails.length > 0
@@ -244,6 +268,7 @@ end
                     eng.post = @post
                     eng.invitee = invitee
                     eng.invited_via = 'email'
+                    #eng.join = join
                     eng.save
                     @email_participants[invitee] = eng
                 end
