@@ -65,7 +65,7 @@ class Post < ActiveRecord::Base
   def get_url_for(user,action)
     if action == 'show'
       DOMAIN + "posts/" + action + "?pid=#{self.unique_id}&uid=#{user.unique_id}"
-    elsif action == 'send_invites' || action == 'send_fb_invites'
+    elsif action == 'send_invites' || action == 'share_open_invites'
       DOMAIN + "engagements/" + action + "?post_id=#{self.id};uid=#{user.unique_id}"    
     elsif action == 'join_conversation'
       DOMAIN + "engagements/" + action + "?post_id=#{self.id};iid=#{user.unique_id}"    
