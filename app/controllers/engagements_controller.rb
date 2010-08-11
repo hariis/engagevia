@@ -2,10 +2,12 @@ class EngagementsController < ApplicationController
   # include the oauth_system mixin
   include OauthSystem
   
+
   before_filter :load_post, :except => [:set_notification, :callback, :exclude]
   before_filter :load_user, :only => [:create, :get_auth_from_twitter, :send_invites]
   layout 'posts', :except => [:callback]
   layout 'logo_footer' , :only => [:callback]
+
   def load_user
     @user = User.find_by_unique_id(params[:uid]) if params[:uid]
   end
@@ -75,7 +77,7 @@ class EngagementsController < ApplicationController
       
       render :update do |page|
           page.select("#participant_details_#{engagement.invitee.id}").each { |b| b.visual_effect :fade, :startcolor => "#ff0000",
-												:endcolor => "#cf6d0f", :duration => 3.0 }
+												:endcolor => "#cf6d0f", :duration => 2.0 }
           #page.replace_html "participant_details_#{engagement.invitee.id}", ""
       end
   end
@@ -129,58 +131,82 @@ end
 #        render 'posts/404', :status => 404, :layout => false
    end
 
- def send_invites          
+ def send_invites
       @engagement = Engagement.new
-      #data for invite from ev tab      
-      @ic, @ec = @user.get_inner_and_extended_contacts      
+      #data for invite from ev tab
+      @ic, @ec = @user.get_inner_and_extended_contacts
       keywords = @post.tag_list
-      @reco_users  = []
+      @reco_users = []
       @reco_users_ids = []
       unless keywords.blank?
-            @reco_users  = User.get_recommended_contacts(keywords, @user.get_ids_for_all_contacts)
+            @reco_users = User.get_recommended_contacts(keywords, @user.get_ids_for_all_contacts)
             @reco_users.each{|u| @reco_users_ids << u.id }
       end
 
       #data for twitter tab
       if @user.token.blank?
-        @followers = nil  #redirect to twitter for authorization
+        @followers = nil #redirect to twitter for authorization
         login_by_oauth #sets the @authorization_url
       else
         @followers = []
         @followers = get_followers(@user.token,@user.secret,@user.screen_name)
-      end    
+      end
 
     respond_to do |format|
       format.html # show.html.erb
-      format.xml  { render :xml => @post }
+      format.xml { render :xml => @post }
       format.js { render_to_facebox }
     end
   end
+
+
+ 
+ def dlg_join_conversation
+    @invitee = User.find_by_unique_id(params[:iid]) if params[:iid]
+    respond_to do |format|
+      format.html
+      format.xml { render :xml => @post }
+      format.js { render_to_facebox }
+    end
+ end
+ 
+ def join_conversation
+     @user = User.find_by_unique_id(params[:iid]) if params[:iid]
+     if params[:email]
+        send_email_invites(params[:email], false)
+    end
+ end 
  
  private
- def send_email_invites(email_ids)      
-   create_engagements_and_send(email_ids)
+ def send_email_invites(email_ids, join_conversation = true)      
+   create_engagements_and_send(email_ids, join_conversation)
    
     render :update do |page|
       if @status_message.blank?
-        #page.hide 'facebox'
-        page.insert_html :bottom, 'participants-list', :partial => 'participants', :locals => { :participants => @email_participants }
-        page.replace_html 'invite-status', "#{@email_participants ? pluralize(@email_participants.size ,"participant") : "None"} added."
-        page.replace_html "send-status", "#{@email_participants ? pluralize(@email_participants.size ,"invitation") : "None"} sent."
-        page.select("#send-status").each { |b| b.visual_effect :fade, :startcolor => "#4B9CE0",
-												:endcolor => "#cf6d0f", :duration => 15.0 }
-        page.select(".new-p").each { |b| b.visual_effect :highlight, :startcolor => "#fb3f37",
-												:endcolor => "#cf6d0f", :duration => 5.0 }
-        page.select("#invite-status").each { |b| b.visual_effect :fade, :startcolor => "#fb3f37",
-												:endcolor => "#cf6d0f", :duration => 15.0 }
-        page.replace_html "participant-count", "(#{@post.engagements.size})"
+         #page.hide 'facebox'
+         if join_conversation
+              page.replace_html "send-status", "#{@email_participants ? pluralize(@email_participants.size ,"invitation") : "None"} sent."
+              page.insert_html :bottom, 'participants-list', :partial => 'participants', :locals => { :participants => @email_participants }
+              page.replace_html "participant-count", "(#{@post.engagements.size})"        
+         else
+              page.replace_html "send-status", "#{@email_participants.size > 0  ? 
+                                "Notification email has been send. Check your email and click on the link to participate in the conversation." : "None sent."}"
+         end
+         page.replace_html 'invite-status', "#{@email_participants ? pluralize(@email_participants.size ,"participant") : "None"} added."
+
+         page.select("#send-status").each { |b| b.visual_effect :fade, :startcolor => "#4B9CE0",
+                                                                                                :endcolor => "#cf6d0f", :duration => 15.0 }
+         page.select(".new-p").each { |b| b.visual_effect :highlight, :startcolor => "#fb3f37",
+                                                                                                :endcolor => "#cf6d0f", :duration => 5.0 }
+         page.select("#invite-status").each { |b| b.visual_effect :fade, :startcolor => "#fb3f37",
+                                                                                                :endcolor => "#cf6d0f", :duration => 15.0 }
       else
-        page.replace_html "send-status", @status_message
+            page.replace_html "send-status", @status_message
       end
     end
  end
  
- def create_engagements_and_send(invitees_emails)
+ def create_engagements_and_send(invitees_emails, join_conversation = true)
    @email_participants = {}
    @status_message = ""
    if invitees_emails.length > 0
@@ -202,6 +228,7 @@ end
                     eng.post = @post
                     eng.invitee = invitee
                     eng.invited_via = 'email'
+                    eng.joined = join_conversation
                     eng.save
                     @email_participants[invitee] = eng
                 end
@@ -309,6 +336,7 @@ end
               eng.post = @post
               eng.invitee = invitee
               eng.invited_via = 'twitter'
+              eng.joined = true
               eng.save
               @twitter_participants[invitee] = eng
           end

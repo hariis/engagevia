@@ -82,11 +82,12 @@ class PostsController < ApplicationController
               if @user.nil?
                   flash[:error] = "Your identity could not be confirmed from the link that you provided. <br/> Please request the post owner to resend the link."
                   force_logout
-                  redirect_to login_path
+                  redirect_to root_path
               end
           else
+              @user = User.find_by_unique_id(params[:iid]) if params[:iid]
               @readonly = true
-              @user = User.new
+              #@user = User.new
           end
       end
 
@@ -158,6 +159,57 @@ class PostsController < ApplicationController
           format.xml  { render :xml => @post }
       end
   end  
+  
+  def join
+      @post = Post.find_by_unique_id(params[:pid]) if params[:pid]
+      @invitee = User.find_by_unique_id(params[:iid]) if params[:iid]
+
+      #email = params[:email] if params[:email]
+      email = satish.fnu@gmail.com #for testing :todo remove this line
+         
+      #if  validate_emails(params[:email])
+      if  validate_emails(email)
+        #@user = User.find_by_email(params[:email])
+        @user = User.find_by_email(email)
+      else
+          flash[:notice] = "Your email is turning out to be not valid. Please check and try again"
+          #Todo: Ask for the email again
+          return
+      end
+      
+      if current_user && current_user.activated?
+          force_logout if @user && @user.id != current_user.id
+      end   
+      
+      #if user is member, 
+      if @user && @user.activated?
+          if current_user && current_user.activated? #already logged in
+              #Do nothing
+          else
+              #Save this post contents and force login
+              session[:post] = @post
+              #session[:email] = params[:email]
+              session[:email] = email
+              session[:invitee] = @invitee
+              flash[:notice] = "Your email is registered with an account. <br/> Please login first."
+              store_location
+              redirect_to login_path
+              return
+          end
+          #Send invite(create engagement) and redirect to show  page
+      else
+        #handling non-member
+        
+      end
+        
+        
+        
+      if @readonly #Should not allow to join for any other scenarios
+          #email = params[:email] if params[:email]
+          email = satish.fnu@gmail.com #for testing :todo remove this line
+          
+      end
+  end
   
   # GET /posts/new
   # GET /posts/new.xml

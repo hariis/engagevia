@@ -45,11 +45,13 @@
     <ul>
       <li id="invite-status"></li>
       <% if @readonly %>
-            <li><% image_tag "group_add.png" %> <% link_to "Join this Conversation",  :url => @post.get_url_for(@user, 'send_invites') %></li>
+          <li><%= image_tag "group_add.png" %> <%= facebox_link_to "Join this Conversation",  :url => @post.get_url_for(@user, 'dlg_join_conversation') %></li>
       <% else %>
           <% if @post.allow_others_to_invite || @post.owner.id == current_user.id %>
-            <li><%= image_tag "group_add.png" %> <%= facebox_link_to "Invite Specific Friends",  :url => @post.get_url_for(@user, 'send_invites') %></li>
-            <li> <%= facebox_link_to "Share Open Invites",  :url => @post.get_url_for(@user,'share_open_invites') %></li>
+              <li><%= image_tag "group_add.png" %> <%= facebox_link_to "Invite Friends to this Conversation",  :url => @post.get_url_for(@user, 'send_invites') %></li>
+              <li> <%= facebox_link_to "Post to Facebook",  :url => @post.get_url_for(@user, 'send_fb_invites') %></li>
+              <li><%= image_tag "group_add.png" %> <%= facebox_link_to "Invite Specific Friends",  :url => @post.get_url_for(@user, 'send_invites') %></li>
+              <li> <%= facebox_link_to "Share Open Invites",  :url => @post.get_url_for(@user,'share_open_invites') %></li>
           <% end %>
       <% end %>       
       

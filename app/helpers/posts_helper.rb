@@ -12,4 +12,12 @@ module PostsHelper
     all_comments.size > 0 ? all_comments[0].owner.display_name : post.owner.display_name
   end
 
+  def get_joined_participants_count(post)
+    participants_count = 0
+    post.engagements.each do |engagement|
+       participants_count = participants_count + 1 if engagement.joined == true
+    end
+    return participants_count
+  end
+     
 end
