@@ -2,10 +2,10 @@ class EngagementsController < ApplicationController
   # include the oauth_system mixin
   include OauthSystem
   
-  before_filter :load_post, :except => [:set_notification, :callback, :exclude, :fb_authorize,:fb_callback]
-  before_filter :load_user, :only => [:create, :get_auth_from_twitter, :send_invites, :share_open_invites]
-  layout 'posts', :except => [:callback, :fb_callback]
-  layout 'logo_footer' , :only => [:callback, :fb_callback]
+  before_filter :load_post, :except => [:set_notification, :callback, :exclude]
+  before_filter :load_user, :only => [:create, :get_auth_from_twitter, :send_invites]
+  layout 'posts', :except => [:callback]
+  layout 'logo_footer' , :only => [:callback]
   def load_user
     @user = User.find_by_unique_id(params[:uid]) if params[:uid]
   end
@@ -156,59 +156,6 @@ end
       format.js { render_to_facebox }
     end
   end
- def share_open_invites
-   @engagement = Engagement.new
-    #data for invite from ev tab
-    @ic, @ec = @user.get_inner_and_extended_contacts
-    keywords = @post.tag_list
-    @reco_users  = []
-    @reco_users_ids = []
-    unless keywords.blank?
-          @reco_users  = User.get_recommended_contacts(keywords, @user.get_ids_for_all_contacts)
-          @reco_users.each{|u| @reco_users_ids << u.id }
-    end
-    #data for fb tab
-   @authorization_url = @post.get_fb_auth_url
-   session[:post_id] = params[:post_id] if params[:post_id]
-   session[:uid] = params[:uid] if params[:uid]
-   respond_to do |format|
-      format.html # show.html.erb
-      format.xml  { render :xml => @post }
-      format.js { render_to_facebox }
-    end
- end
- def fb_authorize
-    redirect_to OAuthClient.web_server.authorize_url(
-      :redirect_uri => auth_callback_url,
-      :scope => 'email,offline_access,publish_stream'
-    )
-  end
-
-  def fb_callback
-    begin
-      access_token = OAuthClient.web_server.access_token(
-        params[:code], :redirect_uri => auth_callback_url
-      )
-      @post = Post.find(session[:post_id]) if session[:post_id]
-      @user = User.find_by_unique_id(session[:uid]) if session[:uid]
-      @fb_user = FacebookUser.create_from_fb(access_token, @user)
-
-      #make up the generic url
-      @fb_url = @post.get_readonly_url(@user)
-      #make up the message
-      wall_message = "I am engaged in a conversation about '#{@post.subject}' at EngageVia." +
-        "If you are interested, you can join me. The link to the conversation is here " +
-        "#{@fb_url}"
-      @fb_user.post(wall_message)
-      flash[:notice] = "The open invitation has been successfully posted to your Facebook Profile. <br/><br/>
-                        Please close this window and proceed with your conversation."
-    rescue => err
-      RAILS_DEFAULT_LOGGER.error "Failed to get callback from Facebook" + err
-      flash[:notice] = "There was a problem posting the open invitation to your Profile. <br/><br/>
-                        Please close this window and try again later."
-    end
-  end
- #Facebook authorization
  
  private
  def send_email_invites(email_ids)      

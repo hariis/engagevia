@@ -13,6 +13,7 @@ ActionController::Routing::Routes.draw do |map|
   map.resources :engagements, :collection => { :get_followers => :get, :resend_invite => :post, :get_auth_from_twitter => :get }
   map.resources :user_sessions
   map.resources :password_resets
+  map.resources :shared_posts
   #map.resources :groups, :collection => { :add_contact_to_groups => :get}
 
   map.about "about", :controller => 'posts', :action => 'about'
