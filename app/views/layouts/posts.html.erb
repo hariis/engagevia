@@ -45,7 +45,7 @@
     <ul>
       <li id="invite-status"></li>
       <% if @readonly %>
-          <li><%= image_tag "group_add.png" %> <%= facebox_link_to "Join this Conversation",  :url => @post.get_url_for(@user, 'join_conversation') %></li>
+          <li><%= image_tag "group_add.png" %> <%= facebox_link_to "Join this Conversation",  :url => @post.get_url_for(@user, 'dlg_join_conversation') %></li>
       <% else %>
           <% if @post.allow_others_to_invite || @post.owner.id == current_user.id %>
               <li><%= image_tag "group_add.png" %> <%= facebox_link_to "Invite Friends to this Conversation",  :url => @post.get_url_for(@user, 'send_invites') %></li>

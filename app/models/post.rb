@@ -22,6 +22,7 @@ class Post < ActiveRecord::Base
       eng.invited_when = Time.now.utc
       eng.post = self
       eng.invitee = self.owner
+      eng.joined = true
       eng.save
   end
   def self.generate_unique_id
@@ -67,7 +68,7 @@ class Post < ActiveRecord::Base
       DOMAIN + "posts/" + action + "?pid=#{self.unique_id}&uid=#{user.unique_id}"
     elsif action == 'send_invites' || action == 'share_open_invites'
       DOMAIN + "engagements/" + action + "?post_id=#{self.id};uid=#{user.unique_id}"    
-    elsif action == 'join_conversation'
+    elsif action == 'dlg_join_conversation'
       DOMAIN + "engagements/" + action + "?post_id=#{self.id};iid=#{user.unique_id}"    
     end
   end

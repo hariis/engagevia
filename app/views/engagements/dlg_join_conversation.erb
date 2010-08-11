@@ -1,0 +1,34 @@
+<script type="text/javascript">
+  function openWindow(url) {
+    var w = 480, h = 340;
+
+      if (document.all) {
+         /* the following is only available after onLoad */
+         w = document.body.clientWidth;
+         h = document.body.clientHeight;
+      }
+      else if (document.layers) {
+         w = window.innerWidth;
+         h = window.innerHeight;
+      }
+      var popW = 800, popH = 450;
+      var leftPos = (w)/2, topPos = (h)/2;
+      window.open(url, 'Authorize','width=' + popW + ',height='+popH+',top='+topPos+ ',left='+leftPos);
+
+      return false;
+    }
+
+
+</script>
+
+<div style="background-color:#BBDEFA;padding: 10px;">
+    If member <%= link_to "Click here to login", login_path %><br/><br/>
+    <% form_remote_tag :url => { :controller => 'engagements', :action => "join_conversation", :post_id => "#{@post.id}", :invite_type => 'email', :iid => "#{@invitee.unique_id}" } do %>
+        Non members provide your email<br/><%= text_field_tag :email, "", :size => '40' %><br/><br/>
+        <%= submit_tag "Join the Conversation" %>
+    <% end %>
+    
+    <br/><div id="send-status" style="background-color:#378314;font-weight:bold;color:#fff;"></div>
+</div>
+
+
