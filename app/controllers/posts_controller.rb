@@ -122,7 +122,7 @@ class PostsController < ApplicationController
       redirect_to new_post_path
       return
     end
-
+    @shared_posts = @user.posts_shared.find(:all, :order => 'updated_at desc' )
     respond_to do |format|
       format.html # index.html.erb
       format.xml  { render :xml => @posts }

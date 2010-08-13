@@ -6,7 +6,9 @@ class User < ActiveRecord::Base
   has_many :posts
   has_many :comments
   has_many :engagements
+  has_many :shared_posts
   has_many :posts, :through => :engagements
+  has_many :posts_shared, :through => :shared_posts, :source => :post, :class_name => 'Post', :foreign_key => :post_id
   has_many :user_roles, :dependent => :destroy
   has_many :roles, :through => :user_roles
   has_many :groups

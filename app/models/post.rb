@@ -6,7 +6,9 @@ class Post < ActiveRecord::Base
   has_many :comments, :dependent => :destroy
   belongs_to :owner, :class_name => 'User', :foreign_key => :user_id
   has_many :engagements, :dependent => :destroy
+  has_many :shared_posts, :dependent => :destroy
   has_many :participants, :through => :engagements, :source => :invitee, :class_name => 'User', :foreign_key => :user_id
+  has_many :potential_participants, :through => :shared_posts, :source => :invitee, :class_name => 'User', :foreign_key => :user_id
   has_many :participants_to_notify, :through => :engagements, :source => :invitee, :class_name => 'User', :foreign_key => :user_id,
            :conditions => 'engagements.notify_me = 1'
   has_attached_file :avatar, :styles => { :medium => "300x300>" }
@@ -66,10 +68,13 @@ class Post < ActiveRecord::Base
   def get_url_for(user,action)
     if action == 'show'
       DOMAIN + "posts/" + action + "?pid=#{self.unique_id}&uid=#{user.unique_id}"
-    elsif action == 'send_invites' || action == 'share_open_invites'
-      DOMAIN + "engagements/" + action + "?post_id=#{self.id};uid=#{user.unique_id}"    
+
+    elsif action == 'send_invites' 
+      DOMAIN + "engagements/" + action + "?post_id=#{self.id};uid=#{user.unique_id}"
+    elsif action == 'share_open_invites'
+      DOMAIN + "shared_posts/" + action + "?post_id=#{self.id};uid=#{user.unique_id}"    
     elsif action == 'dlg_join_conversation'
-      DOMAIN + "engagements/" + action + "?post_id=#{self.id};iid=#{user.unique_id}"    
+      DOMAIN + "engagements/" + action + "?post_id=#{self.id};iid=#{user.unique_id}"
     end
   end
   def get_readonly_url(inviter)

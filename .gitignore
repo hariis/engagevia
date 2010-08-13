@@ -11,3 +11,4 @@ public/system
 tmp
 vendor/plugins/query_trace/
 vendor/gems
+test
