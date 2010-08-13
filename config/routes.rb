@@ -10,7 +10,7 @@ ActionController::Routing::Routes.draw do |map|
   map.resources :comments, :collection => {:set_comment_body => :post}
   map.resources :users, :collection => {:activate => :post, :resendnewactivation => :get, :resendactivation => :post, :display_profile => :get}
   map.resources :posts, :has_many => 'comments', :collection => {:migrate_existing_contacts => :get}
-  map.resources :engagements, :collection => { :get_followers => :get, :resend_invite => :post, :get_auth_from_twitter => :get }
+  map.resources :engagements, :collection => { :get_followers => :get, :resend_invite => :post, :get_auth_from_twitter => :get, :join => :get, :dlg_join_conversation => :get }
   map.resources :user_sessions
   map.resources :password_resets
   #map.resources :groups, :collection => { :add_contact_to_groups => :get}

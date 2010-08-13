@@ -2,7 +2,7 @@ class EngagementsController < ApplicationController
   # include the oauth_system mixin
   include OauthSystem
   
-  before_filter :load_post, :except => [:set_notification, :callback, :exclude, :fb_authorize, :fb_callback]
+  before_filter :load_post, :except => [:set_notification, :callback, :exclude, :fb_authorize, :fb_callback, :join]
   before_filter :load_user, :only => [:create, :get_auth_from_twitter, :send_invites, :share_open_invites]
   layout 'posts', :except => [:callback, :fb_callback]
   layout 'logo_footer' , :only => [:callback, :fb_callback]
@@ -10,6 +10,7 @@ class EngagementsController < ApplicationController
   def load_user
     @user = User.find_by_unique_id(params[:uid]) if params[:uid]
   end
+  
   def load_post
     @post = Post.find(params[:post_id])
   end
@@ -159,21 +160,42 @@ end
   end
  
  def dlg_join_conversation
-    @invitee = User.find_by_unique_id(params[:iid]) if params[:iid]
+    if current_user && current_user.activated?
+       @user = User.find_by_unique_id(params[:iid]) if params[:iid]
+       create_engagements_and_send(current_user.email)
+       redirect_to(@post.get_url_for(current_user,'show'))
+       return
+    end
+    
+    @invited_by = User.find_by_unique_id(params[:iid]) if params[:iid]
     respond_to do |format|
-      format.html
-      format.xml { render :xml => @post }
-      format.js { render_to_facebox }
+        format.html
+        format.xml { render :xml => @post }
+        format.js { render_to_facebox }
     end
  end
  
  def join_conversation
      @user = User.find_by_unique_id(params[:iid]) if params[:iid]
-     if params[:email]
-        send_email_invites(params[:email], false)
-    end
+     if @user && @user.activated?
+         page.replace_html "send-status", "Our records indicate that you are a member. Please use the above login link to join this conversation."
+     else
+         if params[:email]
+            send_email_invites(params[:email], false)
+         end
+     end
  end
  
+ #handling - user is a member and currently not logged in.
+ def join
+      #@invited_by = User.find_by_unique_id(params[:iid]) if params[:iid]
+      session[:jn_post] = params[:pid]
+      session[:jn_invited_by] = params[:iid]
+      session[:jn_eng_pending] = true
+      store_location
+      redirect_to login_path
+ end    
+   
  def share_open_invites
    @engagement = Engagement.new
     #data for invite from ev tab
