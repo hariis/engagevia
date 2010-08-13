@@ -177,8 +177,11 @@ end
  
  def join_conversation
      @user = User.find_by_unique_id(params[:iid]) if params[:iid]
-     if @user && @user.activated?
-         page.replace_html "send-status", "Our records indicate that you are a member. Please use the above login link to join this conversation."
+     invitee = User.find_by_email(params[:email]) if params[:email]
+     if invitee && invitee.activated?
+         render :update do |page|
+            page.replace_html "send-status", "Our records indicate that you are a member. Please use the above login link to join this conversation."
+         end
      else
          if params[:email]
             send_email_invites(params[:email], false)
