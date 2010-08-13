@@ -22,8 +22,9 @@
 </script>
 
 <div style="background-color:#BBDEFA;padding: 10px;">
-    If member <%= link_to "Click here to login", login_path %><br/><br/>
-    <% form_remote_tag :url => { :controller => 'engagements', :action => "join_conversation", :post_id => "#{@post.id}", :invite_type => 'email', :iid => "#{@invitee.unique_id}" } do %>
+    If member <%= link_to "Click here to login", :controller => 'engagements', :action => "join", :pid => "#{@post.unique_id}", :iid => "#{@invited_by.unique_id}"  %><br/><br/>
+    
+    <% form_remote_tag :url => { :controller => 'engagements', :action => "join_conversation", :post_id => "#{@post.id}", :invite_type => 'email', :iid => "#{@invited_by.unique_id}" } do %>
         Non members provide your email<br/><%= text_field_tag :email, "", :size => '40' %><br/><br/>
         <%= submit_tag "Join the Conversation" %>
     <% end %>

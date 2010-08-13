@@ -86,8 +86,11 @@ class PostsController < ApplicationController
               end
           else
               @user = User.find_by_unique_id(params[:iid]) if params[:iid]
-              @readonly = true
-              #@user = User.new
+              if current_user && current_user.activated?
+                  @readonly = true  if @user && @user.id != current_user.id
+              else
+                  @readonly = true
+              end
           end
       end
 
@@ -130,8 +133,21 @@ class PostsController < ApplicationController
   # GET /posts/1.xml  
   def show
       @post = params[:pid] ? Post.find_by_unique_id(params[:pid]) : nil
-    
       if @post
+          #Check for jn_eng_pending
+          eng_pending = session[:jn_eng_pending]
+          if eng_pending
+              if session[:jn_post] == params[:pid]
+                  @invited_by = User.find_by_unique_id(session[:jn_invited_by]) if session[:jn_invited_by]
+                  CreateEngagementEntry()
+                  session[:jn_post] = nil
+                  session[:jn_invited_by] = nil
+                  session[:jn_eng_pending] = false
+                  redirect_to(@post.get_url_for(@current_user,'show')) 
+                  return
+              end
+          end  
+
           if @readonly
               @last_viewed_at = Time.now
           else            
@@ -147,6 +163,7 @@ class PostsController < ApplicationController
 
               @engagement = Engagement.new      
               eng = @user.engagements.find_by_post_id(@post.id)
+              eng.update_attribute(:joined, true)
               eng.update_attribute( :last_viewed_at, Time.now )      
           end
       else
@@ -159,58 +176,7 @@ class PostsController < ApplicationController
           format.xml  { render :xml => @post }
       end
   end  
-  
-  def join
-      @post = Post.find_by_unique_id(params[:pid]) if params[:pid]
-      @invitee = User.find_by_unique_id(params[:iid]) if params[:iid]
-
-      #email = params[:email] if params[:email]
-      email = satish.fnu@gmail.com #for testing :todo remove this line
-         
-      #if  validate_emails(params[:email])
-      if  validate_emails(email)
-        #@user = User.find_by_email(params[:email])
-        @user = User.find_by_email(email)
-      else
-          flash[:notice] = "Your email is turning out to be not valid. Please check and try again"
-          #Todo: Ask for the email again
-          return
-      end
-      
-      if current_user && current_user.activated?
-          force_logout if @user && @user.id != current_user.id
-      end   
-      
-      #if user is member, 
-      if @user && @user.activated?
-          if current_user && current_user.activated? #already logged in
-              #Do nothing
-          else
-              #Save this post contents and force login
-              session[:post] = @post
-              #session[:email] = params[:email]
-              session[:email] = email
-              session[:invitee] = @invitee
-              flash[:notice] = "Your email is registered with an account. <br/> Please login first."
-              store_location
-              redirect_to login_path
-              return
-          end
-          #Send invite(create engagement) and redirect to show  page
-      else
-        #handling non-member
-        
-      end
-        
-        
-        
-      if @readonly #Should not allow to join for any other scenarios
-          #email = params[:email] if params[:email]
-          email = satish.fnu@gmail.com #for testing :todo remove this line
-          
-      end
-  end
-  
+ 
   # GET /posts/new
   # GET /posts/new.xml
   def new
@@ -447,5 +413,21 @@ class PostsController < ApplicationController
       end
     end
   end
-
+  
+  def CreateEngagementEntry
+    @email_participants = {}
+    eng_exists = Engagement.find(:first, :conditions => ['user_id = ? and post_id = ?', @current_user.id, @post.id])
+    if eng_exists.nil?
+        eng = Engagement.new
+        eng.invited_by = @invited_by.id
+        eng.invited_when = Time.now.utc
+        eng.post = @post
+        eng.invitee = @current_user
+        eng.invited_via = 'email'
+        eng.joined = true
+        eng.save
+        @email_participants[@current_user] = eng
+    end
+     @post.send_invitations(@email_participants, @current_user) if @email_participants.size > 0
+  end
 end
