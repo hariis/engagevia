@@ -25,7 +25,7 @@
                          <% else %>
                             <%= image_tag "email.png", :id => "enabled", :style => "display:none;" %><%= image_tag "email_delete.png", :id => "disabled"  %>
                          <% end %>              
-                    </span>           
+                    </span>
               <% else %>         
                     <% if engagement.invitee.member? %>
                       <li><%= image_tag "user_green.png" %> <%=  engagement.invitee.display_name(nil,engagement).titleize %>

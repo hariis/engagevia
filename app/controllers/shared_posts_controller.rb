@@ -116,8 +116,8 @@ class SharedPostsController < ApplicationController
               end
             end
 
-             #now send emails
-            @post.send_invitations(@email_participants,@user) if @email_participants.size > 0
+             #now send emails or daily digest once a day
+            #@post.send_invitations(@email_participants,@user) if @email_participants.size > 0
             #Delayed::Job.enqueue(MailingJob.new(@post, invitees))
         else
                 @status_message = "<div id='failure'>There was some problem sharing the invitation(s). <br/>" + @invalid_emails_message + "</div>"

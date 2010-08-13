@@ -22,19 +22,20 @@
   
 <% count = 1 %>
 <% @shared_posts.each do |post| %>
+  <% shared_post = post.get_shared_post(@user) %>
   <div class="index"></div>
    <div class="<%= cycle('listing-line-odd', 'listing-line-even') %> post-item">
     <span style="color:green"><%  "#{count}." %> <% count = count + 1 %></span>
-    <div class ="read-post"><%= link_to  h(post.subject.capitalize), post.get_url_for(@user,'show')  %></div>
+    <div class ="read-post"><%= link_to  h(post.subject.capitalize), post.get_readonly_url(shared_post.shared_by)  %></div>
     <% if post.url != "Add a link" %>
     <div style="font-weight:normal;clear:both;"><%= link_to  h(post.url), h(post.url) %> </div>
     <% end %>
 
-    <span class="poststat"><%= link_to "#{get_comments_count(post)} | #{get_participants_count(post)} | " + "Updated "+ "#{time_ago_in_words(post.updated_at)}" + " ago " + "by #{last_updated_by(post)}  | " , post.get_url_for(@user,'show'), :class => 'dashboard-comments' %>
-    <%= link_to "Join" , { :action => "" },:class => 'join-link' %>
+    <span class="poststat"><%= link_to "#{get_comments_count(post)} | #{get_participants_count(post)} | " + "Updated "+ "#{time_ago_in_words(post.updated_at)}" + " ago " + "by #{last_updated_by(post)}  | " + "Shared by #{shared_post.shared_by.display_name}" , post.get_readonly_url(shared_post.shared_by), :class => 'dashboard-comments' %>
+    <%= link_to "Join" , post.get_join_from_ev_url_for(shared_post,@user),:class => 'join-link' %>
     </span>
 
-    <span class="timestamp">started by <%= post.owner.email == current_user.email ? "Me" : post.owner.display_name %>      
+    <span class="timestamp">started by <%= post.owner.id == current_user.id ? "me" : post.owner.display_name %>
     </span>
 
    </div>
@@ -56,7 +57,7 @@
 
     <span class="poststat"><%= link_to "#{get_comments_count(post)} | #{get_participants_count(post)} | " + "Updated "+ "#{time_ago_in_words(post.updated_at)}" + " ago " + "by #{last_updated_by(post)}" , post.get_url_for(@user,'show'), :class => 'dashboard-comments' %></span>
 
-    <span class="timestamp">started by <%= post.owner.email == current_user.email ? "Me" : post.owner.display_name %>
+    <span class="timestamp">started by <%= post.owner.email == current_user.email ? "me" : post.owner.display_name %>
       <% if post.owner == @user %>
           <%= link_to '[X]', post, :confirm => 'Are you sure? This will wipe out this conversation and all of its comments.', :method => :delete %>
       <% end %>

@@ -80,6 +80,9 @@ class Post < ActiveRecord::Base
   def get_readonly_url(inviter)
     DOMAIN + "posts/show" + "?pid=#{self.unique_id}&iid=#{inviter.unique_id}"
   end
+  def get_join_from_ev_url_for(sp,user)
+    DOMAIN + "engagements/join_from_ev" + "?spid=#{sp.id};uid=#{user.unique_id}"
+  end
   def get_fb_auth_url
     DOMAIN + "authorize"
   end
@@ -141,5 +144,8 @@ class Post < ActiveRecord::Base
     comments_by_user = comments.find(:all, :conditions => ['user_id = ?',user.id])
     total = comments_by_user.size unless comments_by_user.nil?
     return total
+  end
+  def get_shared_post(user)
+    SharedPost.find(:first, :select => :shared_by ,:conditions => ['user_id = ? and post_id = ?',user.id, self.id])    
   end
 end

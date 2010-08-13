@@ -4,7 +4,7 @@ class EngagementsController < ApplicationController
   
 
   before_filter :load_post, :except => [:set_notification, :callback, :exclude]
-  before_filter :load_user, :only => [:create, :get_auth_from_twitter, :send_invites]
+  before_filter :load_user, :only => [:create, :get_auth_from_twitter, :send_invites,:join_from_ev]
   layout 'posts', :except => [:callback]
   layout 'logo_footer' , :only => [:callback]
 
@@ -176,7 +176,26 @@ end
         send_email_invites(params[:email], false)
     end
  end 
- 
+
+ def join_from_ev
+    #user joins a converstaion from the dashboard
+    #get the shared_post id
+    sp = SharedPost.find(params[:spid])
+    #add the engagement record
+    eng = Engagement.new
+    eng.invited_by = sp.shared_by
+    eng.invited_when = Time.now.utc
+    eng.post_id = sp.post_id
+    eng.user_id = sp.user_id
+    eng.invited_via = 'shared_via_ev'
+    eng.joined = true
+    eng.save
+    #remove the record from shared_post
+    sp.destroy
+    #redirect to post/show
+    @post = Post.find(eng.post_id)
+    redirect_to @post.get_url_for(@user,'show')
+ end
  private
  def send_email_invites(email_ids, join_conversation = true)      
    create_engagements_and_send(email_ids, join_conversation)
