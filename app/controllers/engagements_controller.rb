@@ -193,7 +193,7 @@ end
          end
      else
          if params[:email]
-            send_email_invites(params[:email], false)
+            send_email_invites(params[:email], false) 
          end
      end
  end
