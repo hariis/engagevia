@@ -53,8 +53,8 @@ class Post < ActiveRecord::Base
     return invitees
   end
 
-  def send_invitations(invitees,inviter)
-    invitees.each_key{|invitee| Notifier.deliver_send_invitations(self, invitee,inviter)}
+  def send_invitations(invitees,inviter,share = false)
+    invitees.each_key{|invitee| Notifier.deliver_send_invitations(self, invitee,inviter, share)}
   end
 #  def send_twitter_notification(followers)
 #   httpauth = Twitter::HTTPAuth.new(from_config[:twitid], from_config[:password])
@@ -81,7 +81,7 @@ class Post < ActiveRecord::Base
     DOMAIN + "posts/show" + "?pid=#{self.unique_id}&iid=#{inviter.unique_id}"
   end
   def get_join_from_ev_url_for(sp,user)
-    DOMAIN + "engagements/join_from_ev" + "?spid=#{sp.id};uid=#{user.unique_id}"
+    DOMAIN + "engagements/join" + "?spid=#{sp.id};uid=#{user.unique_id}"
   end
   def get_fb_auth_url
     DOMAIN + "authorize"
@@ -146,6 +146,6 @@ class Post < ActiveRecord::Base
     return total
   end
   def get_shared_post(user)
-    SharedPost.find(:first, :select => :shared_by ,:conditions => ['user_id = ? and post_id = ?',user.id, self.id])    
+    SharedPost.find(:first, :select => 'id, shared_by' ,:conditions => ['user_id = ? and post_id = ?',user.id, self.id])
   end
 end

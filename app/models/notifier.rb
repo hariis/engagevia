@@ -33,11 +33,15 @@ default_url_options[:host] = "www.engagevia.com"
     body          :post_url  => DOMAIN + "posts/show?pid=#{post.unique_id}&uid=#{post.owner.unique_id}" , :post => post
   end
 
-  def send_invitations(post, invitee, inviter)
+  def send_invitations(post, invitee, inviter, share)
     setup_email(post.owner)
-    @subject    += " #{inviter.display_name} has invited you for a conversation on #{truncate(post.subject,20,"...")}"
+    if share
+      @subject    += " #{inviter.display_name} would like to engage in a conversation on #{truncate(post.subject,20,"...")}"
+    else
+      @subject    += " #{inviter.display_name} has invited you for a conversation on #{truncate(post.subject,20,"...")}"
+    end
     recipients invitee.email
-    body          :post_url  => DOMAIN + "posts/show?pid=#{post.unique_id}&uid=#{invitee.unique_id}" ,:post => post, :inviter => inviter, :invitee => invitee
+    body          :post_url  => DOMAIN + "posts/show?pid=#{post.unique_id}&uid=#{invitee.unique_id}" ,:post => post, :inviter => inviter, :invitee => invitee, :share => share
   end
 
   def comment_notification(post, comment, participant)

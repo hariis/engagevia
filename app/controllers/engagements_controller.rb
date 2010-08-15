@@ -3,7 +3,7 @@ class EngagementsController < ApplicationController
   include OauthSystem
 
   before_filter :load_post, :except => [:set_notification, :callback, :exclude, :join]
-  before_filter :load_user, :only => [:create, :get_auth_from_twitter, :send_invites,:join_from_ev]
+  before_filter :load_user, :only => [:create, :get_auth_from_twitter, :send_invites]
 
   layout 'posts', :except => [:callback]
   layout 'logo_footer' , :only => [:callback]
@@ -181,11 +181,6 @@ end
  def join_conversation
      @user = User.find_by_unique_id(params[:iid]) if params[:iid]
 
-     if params[:email]
-        send_email_invites(params[:email], false)
-    end
- end 
-
      invitee = User.find_by_email(params[:email]) if params[:email]
      if invitee && invitee.activated?
          render :update do |page|
@@ -193,19 +188,22 @@ end
          end
      else
          if params[:email]
-            send_email_invites(params[:email], false) 
+            send_email_invites(params[:email], false)
          end
      end
- end
+ end 
  
  #handling - user is a member and currently not logged in.
  def join
-      #@invited_by = User.find_by_unique_id(params[:iid]) if params[:iid]
+   if params[:spid] == nil
       session[:jn_post] = params[:pid]
       session[:jn_invited_by] = params[:iid]
       session[:jn_eng_pending] = true
       store_location
       redirect_to login_path
+   else
+     join_from_ev
+   end
  end      
 
 def join_from_ev
@@ -225,6 +223,7 @@ def join_from_ev
     sp.destroy
     #redirect to post/show
     @post = Post.find(eng.post_id)
+    @user = User.find_by_unique_id(params[:uid]) if params[:uid]
     redirect_to @post.get_url_for(@user,'show')
  end
  private

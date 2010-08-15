@@ -1,8 +1,15 @@
 
 Hi there!<br/><br/>
 
-<%= @inviter.display_name  %> is requesting you to join a conversation on <br/>
-<em><%= @post.subject %></em><br/>
+<%  if @share %>
+  <%= @inviter.display_name  %> would like to engage in a conversation on <br/>
+  <em><%= @post.subject %></em><br/>
+  If you are interested, you can join.
+<% else %>
+  <%= @inviter.display_name  %> is requesting you to join a conversation on <br/>
+  <em><%= @post.subject %></em><br/>
+<% end %>
+
 
 Please visit this link to engage in this conversation:<br/>
 
@@ -21,7 +28,7 @@ Please visit this link to engage in this conversation:<br/>
 Happy Engaging,<br/>
 -EngageVia Team<br/>
 
-<div style="margin-top: 3px;font-size:10px;">
+<div style="margin-top: 3px;font-size:12px;">
 
 IMPORTANT NOTE: Please do not forward this mail or share this link provided to you <br/>
  as a way of inviting friends.<br/>

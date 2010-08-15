@@ -23,15 +23,16 @@
 <% count = 1 %>
 <% @shared_posts.each do |post| %>
   <% shared_post = post.get_shared_post(@user) %>
+  <% shared_by = User.find(shared_post.shared_by) %>
   <div class="index"></div>
    <div class="<%= cycle('listing-line-odd', 'listing-line-even') %> post-item">
     <span style="color:green"><%  "#{count}." %> <% count = count + 1 %></span>
-    <div class ="read-post"><%= link_to  h(post.subject.capitalize), post.get_readonly_url(shared_post.shared_by)  %></div>
+    <div class ="read-post"><%= link_to  h(post.subject.capitalize), post.get_readonly_url(shared_by)  %></div>
     <% if post.url != "Add a link" %>
     <div style="font-weight:normal;clear:both;"><%= link_to  h(post.url), h(post.url) %> </div>
     <% end %>
 
-    <span class="poststat"><%= link_to "#{get_comments_count(post)} | #{get_participants_count(post)} | " + "Updated "+ "#{time_ago_in_words(post.updated_at)}" + " ago " + "by #{last_updated_by(post)}  | " + "Shared by #{shared_post.shared_by.display_name}" , post.get_readonly_url(shared_post.shared_by), :class => 'dashboard-comments' %>
+    <span class="poststat"><%= link_to "#{get_comments_count(post)} | #{get_participants_count(post)} | " + "Updated "+ "#{time_ago_in_words(post.updated_at)}" + " ago " + "by #{last_updated_by(post)}  | " + "Shared by #{shared_by.display_name}" , post.get_readonly_url(shared_by), :class => 'dashboard-comments' %>
     <%= link_to "Join" , post.get_join_from_ev_url_for(shared_post,@user),:class => 'join-link' %>
     </span>
 
