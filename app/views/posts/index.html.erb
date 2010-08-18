@@ -51,7 +51,7 @@
   <div class="index"></div>
    <div class="<%= cycle('listing-line-odd', 'listing-line-even') %> post-item">
     <span style="color:green"><%  "#{count}." %> <% count = count + 1 %></span>    
-    <div class ="<%= post.unread_comments_for(@user) > 0 ? "unread-post" : "read-post" %>"><%= link_to  h(post.subject.capitalize), post.get_url_for(@user,'show')  %></div>
+    <div><%= link_to  h(post.subject.capitalize), post.get_url_for(@user,'show'),:class => "#{post.unread_comments_for(@user) > 0 ? "unread-post" : "read-post"}"   %></div>
     <% if post.url != "Add a link" %>
     <div style="font-weight:normal;clear:both;"><%= link_to  h(post.url), h(post.url) %> </div>
     <% end %>
