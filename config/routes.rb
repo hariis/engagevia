@@ -14,6 +14,8 @@ ActionController::Routing::Routes.draw do |map|
   map.resources :user_sessions
   map.resources :password_resets
   map.resources :shared_posts
+  map.resources :experiences, :collection => { :capture_experience => :get }
+  
   #map.resources :groups, :collection => { :add_contact_to_groups => :get}
 
   map.about "about", :controller => 'posts', :action => 'about'
