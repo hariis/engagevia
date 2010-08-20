@@ -159,8 +159,6 @@ end
       format.js { render_to_facebox }
     end
   end
-
-
  
  def dlg_join_conversation
     if current_user && current_user.activated?
@@ -188,6 +186,10 @@ end
          end
      else
          if params[:email]
+           #TODO
+           #Got to remove the shared_post record, if present
+           #This won't be present if this join is happening througg a FB click
+           #Will be present if an email share was done
             send_email_invites(params[:email], false)
          end
      end

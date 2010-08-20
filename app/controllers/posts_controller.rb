@@ -84,13 +84,19 @@ class PostsController < ApplicationController
                   force_logout
                   redirect_to root_path
               end
+#          else
+#              @user = User.find_by_unique_id(params[:iid]) if params[:iid]
+#              if current_user && current_user.activated?
+#                  @readonly = true  if @user && @user.id != current_user.id
+#              else
+#                  @readonly = true
+#              end
+          end
+          #If iid is present in url, then it is a shared invite
+          if params[:iid]
+              @readonly = true
           else
-              @user = User.find_by_unique_id(params[:iid]) if params[:iid]
-              if current_user && current_user.activated?
-                  @readonly = true  if @user && @user.id != current_user.id
-              else
-                  @readonly = true
-              end
+              @readonly = false
           end
       end
 
