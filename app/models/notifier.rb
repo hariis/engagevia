@@ -52,9 +52,16 @@ default_url_options[:host] = "www.engagevia.com"
     recipients    participant.email
     body          :post_url  => DOMAIN + "posts/show?pid=#{post.unique_id}&uid=#{participant.unique_id}" ,:post => post, :comment => comment
   end
-
+  
+  def send_experience(experience)
+    setup_email()  #TODO: we are not using this argument.
+    @subject    +=   "User Feedback"
+    recipients    "engagevia@gmail.com"
+    body          :experience => experience
+  end
+  
   protected
-    def setup_email(user)      
+    def setup_email(user=nil)      
       @from        = "EngageVia <EngageVia-notifier@engagevia.com>"
       headers         "Reply-to" => "engagevia@gmail.com"
       @subject     = ""

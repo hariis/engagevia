@@ -171,7 +171,7 @@ end
     @invited_by = User.find_by_unique_id(params[:iid]) if params[:iid]
     respond_to do |format|
         format.html
-        format.xml { render :xml => @post }
+        #format.xml { render :xml => @post }
         format.js { render_to_facebox }
     end
  end
