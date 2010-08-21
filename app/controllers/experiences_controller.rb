@@ -10,17 +10,20 @@ class ExperiencesController < ApplicationController
  end
  
  def store_experience
-     experience = Experience.new
-     experience.title = params[:title]
-     experience.description = params[:description]
-     experience.othercomments = params[:othercomments] || ""
-     experience.email = params[:email]  || ""
-     experience.name = params[:name]  || ""
-     
-     #store_location
-     Notifier.deliver_send_experience(experience)
-     #redirect_back_or_default(root_url)
-     #redirect_to :controller => 'posts', :action => 'admin'
-     #return
+     render :update do |page|       
+         if params[:description] != ""
+             experience = Experience.new
+             experience.description = params[:description]
+             experience.othercomments = params[:othercomments] || ""
+             experience.email = params[:email]  || "Not provided"
+             experience.name = params[:name]  || "Anonymous"
+
+             Notifier.deliver_send_experience(experience)
+             page.hide 'facebox'
+             #flash[:notice] = "Thank you very much for sharing your feedback."
+         else
+             page.replace_html "feedback-status", "Please add some details and share again"       
+         end
+     end
  end
 end

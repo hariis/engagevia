@@ -1,3 +1,3 @@
 class Experience
-  attr_accessor :title, :description, :othercomments, :email, :name 
+  attr_accessor :description, :othercomments, :email, :name 
 end

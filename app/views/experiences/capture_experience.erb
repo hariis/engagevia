@@ -22,13 +22,11 @@
 
 <div style="background-color:#BBDEFA;padding: 10px;">   
     <% form_remote_tag :url => { :controller => 'experiences', :action => "store_experience" } do %>
-        Title<br/><%= text_field_tag :title, "", :size => '97' %><br/><br/>
         Details<br/><%= text_area_tag :description, "", :cols => 70, :rows => 5 %><br/><br/>
-        Any other comment(Optional)<br/><%= text_area_tag :othercomments, "", :cols => 70, :rows => 3 %><br/><br/>
-        Email(Optional)<br/><%= text_field_tag :email, "", :size => '97' %><br/><br/>
-        Name(Optional)<br/><%= text_field_tag :name, "", :size => '97' %><br/><br/>
+        Any other comment (optional)<br/><%= text_area_tag :othercomments, "", :cols => 70, :rows => 3 %><br/><br/>
+        Email (optional)<br/><%= text_field_tag :email, "", :size => '97' %><br/><br/>
+        Name (optional)<br/><%= text_field_tag :name, "", :size => '97' %><br/><br/>
         
-
         <%= submit_tag "Share Feedback" %>
     <% end %>
     
