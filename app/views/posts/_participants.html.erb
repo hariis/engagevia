@@ -96,7 +96,7 @@
     </ul>
 
   </div>
-<% unless @readonly %>
+<% unless @readonlypost %>
    <div id="invitations">
       <strong style="float:left;">Invitations sent:</strong><br/>
     <% engagements = Engagement.find(:all,:conditions => ["post_id = ?", @post.id]) %>

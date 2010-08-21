@@ -19,7 +19,7 @@
   <% if comment.owner == @user  %>
       <%= in_place_rich_editor "comment_body_#{comment.id}"  ,:url => { :controller => :comments, :action => :set_comment_body, :pid => @post.unique_id, :id => comment.id, :uid => params[:uid]}, :mode => 'tinymce_advanced_options' %>
   <% end %>
-  <% if !@readonly %>
+  <% if !@readonlypost %>
       <span style="float:left;clear:left;">
           <% facebox_link_to "#{image_tag("comment_add.png")} reply2",  :url => comment.get_url_for_new_comment(@post,@user) %>
           <%= link_to_remote "#{image_tag("comment_add.png")} reply",  :url => comment.get_url_for_new_comment(@post,@user) %>

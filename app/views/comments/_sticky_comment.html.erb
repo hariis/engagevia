@@ -14,7 +14,7 @@
   </div>
 
   <div id="comment_body_<%= sticky_comment.id %>" style="width:80%;text-align:justify;clear:both;margin:0 auto;">  <%= sticky_comment.body %></div>
-  <% if !@readonly %>
+  <% if !@readonlypost %>
       <div style="float:right;">
           <span id="edit_sticky_<%= sticky_comment.id %>">
             <a href="#">Edit | </a>

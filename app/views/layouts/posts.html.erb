@@ -43,7 +43,7 @@
       <li><%= link_to "#{h current_user.display_name}", :controller => 'users', :action => 'show' %></li>
       <li><%= link_to "Logout", logout_path %></li>    
   <% else %>
-      <% unless @readonly %>
+      <% unless @readonlypost %>
           <span style="font-size:16px;"><li><%= link_to "Welcome #{@user.display_name} (Become a Member)", new_user_path %></li>
           <li><%= link_to "Start New Conversation", new_post_url %></li></span>
       <% end %>
@@ -59,7 +59,7 @@
   <div id="widgets">
     <ul>
       <li id="invite-status"></li>
-      <% if @readonly %>
+      <% if @readonlypost %>
            <% if current_user && current_user.activated? %>
                 <li><%= image_tag "group_add.png" %> <%= link_to "Join this Conversation",  :controller => 'engagements', :action => 'dlg_join_conversation', :post_id => @post.id, :iid => @user.unique_id %></li>
            <% else %>

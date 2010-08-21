@@ -4,13 +4,18 @@ class SharedPostsController < ApplicationController
   before_filter :load_user, :only => [:create, :send_invites, :share_open_invites]
   layout 'posts', :except => [:fb_callback]
   layout 'logo_footer' , :only => [:fb_callback]
+  
+  #-----------------------------------------------------------------------------------------------------
   def load_user
     @user = User.find_by_unique_id(params[:uid]) if params[:uid]
   end
+  
+  #-----------------------------------------------------------------------------------------------------
   def load_post
     @post = Post.find(params[:post_id])
   end
 
+  #-----------------------------------------------------------------------------------------------------
   def share_open_invites
    @engagement = Engagement.new
     #data for invite from ev tab
@@ -33,15 +38,17 @@ class SharedPostsController < ApplicationController
     end
  end
 
-  #Facebook
+ #-----------------------------------------------------------------------------------------------------
+ #Facebook
  def fb_authorize
     redirect_to OAuthClient.web_server.authorize_url(
       :redirect_uri => auth_callback_url,
       :scope => 'email,offline_access,publish_stream'
     )
-  end
+ end
 
-  def fb_callback
+ #-----------------------------------------------------------------------------------------------------
+ def fb_callback
     begin
       access_token = OAuthClient.web_server.access_token(
         params[:code], :redirect_uri => auth_callback_url
@@ -64,68 +71,34 @@ class SharedPostsController < ApplicationController
       flash[:notice] = "There was a problem posting the open invitation to your Profile. <br/><br/>
                         Please close this window and try again later."
     end
-  end
+ end
 
-  def create
+ #-----------------------------------------------------------------------------------------------------
+ def create
       if params[:email_invitees]
         send_email_invites(params[:email_invitees])
       else
         send_ev_invites
       end
-  end
-  private
+ end
+  
+ #-----------------------------------------------------------------------------------------------------
+ private
+ #-----------------------------------------------------------------------------------------------------
  def send_email_invites(email_ids)
-   create_shared_post_and_send(email_ids)
-
-    render :update do |page|
-      if @status_message.blank?        
-        page.replace_html "send-status", "Shared with #{@email_participants ? pluralize(@email_participants.size ,"friend") : "None"}."
-        page.select("#send-status").each { |b| b.visual_effect :fade, :startcolor => "#4B9CE0",
-												:endcolor => "#cf6d0f", :duration => 15.0 }          
-      else
-        page.replace_html "send-status", @status_message
-      end
-    end
- end
-
- def create_shared_post_and_send(invitees_emails)
-   @email_participants = {}
-   @status_message = ""
-   if invitees_emails.length > 0
-       if validate_emails(invitees_emails)  #returns @parsed_entries
-            #Limit sending only to first 10
-
-            #Get userid of invitees - involves creating dummy accounts
-            requested_participants = []
-            requested_participants = Post.get_invitees(@parsed_entries)
-
-            #Add them to engagement table
-            requested_participants.each do |invitee|
-              if !invitee.nil?
-                sp_exists = SharedPost.find(:first, :conditions => ['user_id = ? and post_id = ?',invitee.id, @post.id])
-                if sp_exists.nil?
-                    sp = SharedPost.new
-                    sp.shared_by = @user.id
-                    sp.shared_when = Time.now.utc
-                    sp.post = @post
-                    sp.invitee = invitee
-                    #eng.invited_via = 'email'
-                    sp.save
-                    @email_participants[invitee] = sp
-                end
-              end
-            end
-
-             #now send emails or daily digest once a day
-            @post.send_invitations(@email_participants,@user,true) if @email_participants.size > 0
-            #Delayed::Job.enqueue(MailingJob.new(@post, invitees))
+      create_shared_post_and_send(email_ids)
+      render :update do |page|
+        if @status_message.blank?        
+          page.replace_html "send-status", "Shared with #{@email_participants ? pluralize(@email_participants.size ,"friend") : "None"}."
+          page.select("#send-status").each { |b| b.visual_effect :fade, :startcolor => "#4B9CE0",
+                                                                                                  :endcolor => "#cf6d0f", :duration => 15.0 }          
         else
-                @status_message = "<div id='failure'>There was some problem sharing the invitation(s). <br/>" + @invalid_emails_message + "</div>"
+          page.replace_html "send-status", @status_message
         end
-    else
-        @status_message = "<div id='failure'>Please enter valid email addresses and try again.</div>"
-    end
+      end
  end
+
+ #-----------------------------------------------------------------------------------------------------
  def send_ev_invites
    #separate the email ids from twitter ids
    contacts = params[:ev_contacts].split(',') unless params[:ev_contacts].nil?
@@ -163,4 +136,45 @@ class SharedPostsController < ApplicationController
       end
     end
  end
+ 
+ #-----------------------------------------------------------------------------------------------------
+ def create_shared_post_and_send(invitees_emails)
+     @email_participants = {}
+     @status_message = ""
+     if invitees_emails.length > 0
+         if validate_emails(invitees_emails)  #returns @parsed_entries
+              #Limit sending only to first 10
+
+              #Get userid of invitees - involves creating dummy accounts
+              requested_participants = []
+              requested_participants = Post.get_invitees(@parsed_entries)
+
+              #Add them to engagement table
+              requested_participants.each do |invitee|
+                if !invitee.nil?
+                  sp_exists = SharedPost.find(:first, :conditions => ['user_id = ? and post_id = ?', invitee.id, @post.id])
+                  if sp_exists.nil?
+                      sp = SharedPost.new
+                      sp.shared_by = @user.id
+                      sp.shared_when = Time.now.utc
+                      sp.post = @post
+                      sp.invitee = invitee
+                      eng.shared_via = 'email'
+                      sp.save
+                      @email_participants[invitee] = sp
+                  end
+                end
+              end
+
+              #now send emails or daily digest once a day
+              @post.send_invitations(@email_participants, @user, true) if @email_participants.size > 0
+              #Delayed::Job.enqueue(MailingJob.new(@post, invitees))
+          else
+              @status_message = "<div id='failure'>There was some problem sharing the invitation(s). <br/>" + @invalid_emails_message + "</div>"
+          end
+      else
+          @status_message = "<div id='failure'>Please enter valid email addresses and try again.</div>"
+      end
+ end
+ #-----------------------------------------------------------------------------------------------------
 end

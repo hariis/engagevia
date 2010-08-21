@@ -1,51 +1,12 @@
 class PostsController < ApplicationController
   layout :choose_layout, :except => [:plaxo]
   
-  before_filter :load_user, :except => [:new, :create,:dashboard,:privacy,:about,:blog,:contact,:plaxo,:help]
+  before_filter :load_user, :except => [:new, :create, :dashboard, :privacy, :about, :blog, :contact, :plaxo, :help]
   before_filter :check_activated_member,
-    :except => [:new,:show, :create, :dashboard, :index, :privacy,:about,:blog,:contact,:plaxo,:help]
+    :except => [:new, :show, :create, :dashboard, :index, :privacy, :about, :blog, :contact, :plaxo, :help]
   in_place_edit_for :post, :note
 
-  def privacy
-  end
-  
-  def about  
-  end
-
-  def contact
-  end
-
-  def blog
-  end
-
-  def plaxo    
-  end
-  def help    
-  end
-  def admin
-    if current_user && current_user.admin?
-      @posts = Post.find(:all)
-      @participants = Engagement.find(:all)
-      @comments = Comment.find(:all)
-      @members = User.find_by_sql "select users.id,email,first_name,last_name from users,user_roles WHERE users.id = user_roles.user_id AND role_id = 5;"
-      @members1 = User.find_by_sql "select id from user_roles WHERE role_id = 5;"
-      @users = User.find(:all)
-    else
-      redirect_to root_path
-    end
-  end
-
-  def method_missing(methodname, *args)
-       @methodname = methodname
-       @args = args
-       if methodname == :controller
-         controller = 'posts'
-       elsif methodname == 'images' || @_params && @_params['path'] && @_params['path'][1] == 'editable.css'
-         render :nothing => true 
-       else
-         render 'posts/404', :status => 404, :layout => false
-       end
-   end
+  #-----------------------------------------------------------------------------------------------------
   def choose_layout
     if [ 'new', 'index','create' ].include? action_name
       'application'
@@ -56,10 +17,12 @@ class PostsController < ApplicationController
     end
   end
 
+  #-----------------------------------------------------------------------------------------------------
   def check_activated_member
     current_user && current_user.activated?
   end
 
+  #-----------------------------------------------------------------------------------------------------
   def load_user
       if (action_name == 'show' || action_name == 'send_invites')
           if !params[:uid].nil?
@@ -87,16 +50,17 @@ class PostsController < ApplicationController
 #          else
 #              @user = User.find_by_unique_id(params[:iid]) if params[:iid]
 #              if current_user && current_user.activated?
-#                  @readonly = true  if @user && @user.id != current_user.id
+#                  @readonlypost = true  if @user && @user.id != current_user.id
 #              else
-#                  @readonly = true
+#                  @readonlypost = true
 #              end
           end
           #If iid is present in url, then it is a shared invite
           if params[:iid]
-              @readonly = true
+              @user = User.new
+              @readonlypost = true
           else
-              @readonly = false
+              @readonlypost = false
           end
       end
 
@@ -111,11 +75,13 @@ class PostsController < ApplicationController
       end
   end  #load_user
 
+  #-----------------------------------------------------------------------------------------------------
   def dashboard
     @user_session = UserSession.new
     @user_session.email = flash[:email]
   end
 
+  #-----------------------------------------------------------------------------------------------------
   def index
     @posts = @user.posts.find(:all, :order => 'updated_at desc')
     if @posts.count < 1
@@ -135,26 +101,27 @@ class PostsController < ApplicationController
     end
   end
 
+  #-----------------------------------------------------------------------------------------------------
   # GET /posts/1
   # GET /posts/1.xml  
   def show
       @post = params[:pid] ? Post.find_by_unique_id(params[:pid]) : nil
       if @post
           #Check for jn_eng_pending
-          eng_pending = session[:jn_eng_pending]
-          if eng_pending
-              if session[:jn_post] == params[:pid]
-                  @invited_by = User.find_by_unique_id(session[:jn_invited_by]) if session[:jn_invited_by]
-                  CreateEngagementEntry()
-                  session[:jn_post] = nil
-                  session[:jn_invited_by] = nil
-                  session[:jn_eng_pending] = false
-                  redirect_to(@post.get_url_for(@current_user,'show')) 
-                  return
-              end
-          end  
+          #eng_pending = session[:jn_eng_pending]
+          #if eng_pending
+          #    if session[:jn_post] == params[:pid]
+          #        @invited_by = User.find_by_unique_id(session[:jn_invited_by]) if session[:jn_invited_by]
+          #        CreateEngagementEntry()
+          #        session[:jn_post] = nil
+          #        session[:jn_invited_by] = nil
+          #        session[:jn_eng_pending] = false
+          #        redirect_to(@post.get_url_for(@current_user,'show')) 
+          #        return
+          #    end
+          #end  
 
-          if @readonly
+          if @readonlypost
               @last_viewed_at = Time.now
           else            
               if @post.tag_list == ""
@@ -183,6 +150,7 @@ class PostsController < ApplicationController
       end
   end  
  
+  #-----------------------------------------------------------------------------------------------------
   # GET /posts/new
   # GET /posts/new.xml
   def new
@@ -195,6 +163,7 @@ class PostsController < ApplicationController
     end
   end
 
+  #-----------------------------------------------------------------------------------------------------
   # POST /posts
   # POST /posts.xml
   def create
@@ -287,6 +256,7 @@ class PostsController < ApplicationController
     end
   end
   
+  #-----------------------------------------------------------------------------------------------------
   # DELETE /posts/1
   # DELETE /posts/1.xml
   def destroy
@@ -299,6 +269,7 @@ class PostsController < ApplicationController
     end
   end
 
+  #-----------------------------------------------------------------------------------------------------
   def set_post_description
     @post = Post.find(params[:id])
     if params[:value] && params[:value].length > 0
@@ -311,6 +282,7 @@ class PostsController < ApplicationController
     end
   end
 
+  #-----------------------------------------------------------------------------------------------------
   def set_post_subject
     @post = Post.find(params[:id])
     prior_subject = @post.subject
@@ -326,7 +298,7 @@ class PostsController < ApplicationController
     end
   end
 
-
+  #-----------------------------------------------------------------------------------------------------
   def set_post_url
     @post = Post.find(params[:id])
     if params[:value] && params[:value].length > 0
@@ -342,6 +314,7 @@ class PostsController < ApplicationController
     end
   end
 
+  #-----------------------------------------------------------------------------------------------------
   def set_post_note
     @post = Post.find(params[:id])
     #@post.note = params[:value]
@@ -352,7 +325,8 @@ class PostsController < ApplicationController
     end
   end
 
- def set_post_tag_list
+  #-----------------------------------------------------------------------------------------------------
+  def set_post_tag_list
     @post = Post.find(params[:id])    
     #@post.user_id = nil #  We don't know the user here  WARNING: NEVER set this as this overrides the post.user_id
     @post.tag_list = params[:value]
@@ -364,6 +338,8 @@ class PostsController < ApplicationController
       render :text => "Click here to Add"
     end
   end
+  
+  #-----------------------------------------------------------------------------------------------------
   def get_reco_contacts    
     @users  = []
     unless (params[:pid].nil? || params[:uid].nil?)
@@ -381,6 +357,7 @@ class PostsController < ApplicationController
     end
   end
   
+  #-----------------------------------------------------------------------------------------------------
   def migrate_existing_contacts
       @posts = Post.find(:all)
       @posts.each do |post|
@@ -398,11 +375,67 @@ class PostsController < ApplicationController
      redirect_to :controller => 'users', :action => 'groups'      
   end
 
+    #-----------------------------------------------------------------------------------------------------
+  def privacy
+  end
+  
+  #-----------------------------------------------------------------------------------------------------
+  def about  
+  end
+
+  #-----------------------------------------------------------------------------------------------------
+  def contact
+  end
+
+  #-----------------------------------------------------------------------------------------------------
+  def blog
+  end
+
+  #-----------------------------------------------------------------------------------------------------
+  def plaxo    
+  end
+  
+  #-----------------------------------------------------------------------------------------------------
+  def help    
+  end
+  
+  #-----------------------------------------------------------------------------------------------------
+  def admin
+    if current_user && current_user.admin?
+      @posts = Post.find(:all)
+      @participants = Engagement.find(:all)
+      @comments = Comment.find(:all)
+      @members = User.find_by_sql "select users.id,email,first_name,last_name from users,user_roles WHERE users.id = user_roles.user_id AND role_id = 5;"
+      @members1 = User.find_by_sql "select id from user_roles WHERE role_id = 5;"
+      @users = User.find(:all)
+    else
+      redirect_to root_path
+    end
+  end
+
+  #-----------------------------------------------------------------------------------------------------
+  def method_missing(methodname, *args)
+       @methodname = methodname
+       @args = args
+       if methodname == :controller
+         controller = 'posts'
+       elsif methodname == 'images' || @_params && @_params['path'] && @_params['path'][1] == 'editable.css'
+         render :nothing => true 
+       else
+         render 'posts/404', :status => 404, :layout => false
+       end
+  end
+  
+  #-----------------------------------------------------------------------------------------------------
   private  
+  #-----------------------------------------------------------------------------------------------------
+  
   # GET /posts/1/edit
   def edit
     @post = Post.find(params[:id])
   end
+  
+  #-----------------------------------------------------------------------------------------------------
   # PUT /posts/1
   # PUT /posts/1.xml
   def update
@@ -420,6 +453,7 @@ class PostsController < ApplicationController
     end
   end
   
+  #-----------------------------------------------------------------------------------------------------
   def CreateEngagementEntry
     @email_participants = {}
     eng_exists = Engagement.find(:first, :conditions => ['user_id = ? and post_id = ?', @current_user.id, @post.id])
@@ -436,4 +470,5 @@ class PostsController < ApplicationController
     end
      @post.send_invitations(@email_participants, @current_user) if @email_participants.size > 0
   end
+  #-----------------------------------------------------------------------------------------------------
 end

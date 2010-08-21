@@ -26,7 +26,7 @@
     <div id="tags">
       <strong style="float:left;">Keywords:</strong><%= image_tag '/images/pencil.png' %>
       <span style="font-size:85%;">(separate multiple keywords with comma)</span>
-      <% if !@readonly %>
+      <% if !@readonlypost %>
             <%= in_place_editor_field :post, 'tag_list',{}, :size => '70',:text_between_controls => ' or ',:save_text => 'save' %>
       <% else%>
              <br/><%= @post.tag_list %>
@@ -51,7 +51,7 @@
                                 <% end %>
                           </div>
                     </div>
-    <% if !@readonly %>
+    <% if !@readonlypost %>
         <%= render :partial => 'posts/new_comment' %>
     <% end %>               
   </div>

@@ -37,7 +37,8 @@ default_url_options[:host] = "www.engagevia.com"
     setup_email(post.owner)
     if share
       @subject    += " #{inviter.display_name} is having a conversation on #{truncate(post.subject,20,"...")}"
-      post_url = DOMAIN + "posts/show?pid=#{post.unique_id}&iid=#{inviter.unique_id}&uid=#{invitee.unique_id}"
+      #post_url = DOMAIN + "posts/show?pid=#{post.unique_id}&iid=#{inviter.unique_id}&uid=#{invitee.unique_id}"
+      post_url = DOMAIN + "posts/show?pid=#{post.unique_id}&iid=#{inviter.unique_id}"
     else
       @subject    += " #{inviter.display_name} has invited you for a conversation on #{truncate(post.subject,20,"...")}"
       post_url = DOMAIN + "posts/show?pid=#{post.unique_id}&uid=#{invitee.unique_id}"
