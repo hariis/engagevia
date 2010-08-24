@@ -33,7 +33,7 @@
     <% end %>
 
     <span class="poststat"><%= link_to "#{get_comments_count(post)} | #{get_participants_count(post)} | " + "Updated "+ "#{time_ago_in_words(post.updated_at)}" + " ago " + "by #{last_updated_by(post)}  | " + "Shared by #{shared_by.display_name}" , post.get_readonly_url(shared_by), :class => 'dashboard-comments' %>
-    <%= link_to "Join" , post.get_join_from_ev_url_for(shared_post,@user),:class => 'join-link' %>
+    <%= link_to "Join" , post.get_join_from_ev_url_for(shared_post), :class => 'join-link' %>
     </span>
 
     <span class="timestamp">started by <%= post.owner.id == current_user.id ? "me" : post.owner.display_name %>

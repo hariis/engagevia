@@ -58,6 +58,7 @@ class PostsController < ApplicationController
           #If iid is present in url, then it is a shared invite
           if params[:iid]
               @user = User.new
+              @user.unique_id = params[:iid] #you need this to craft the link for displaying dlg_join_conversation facebox
               @readonlypost = true
           else
               @readonlypost = false
@@ -135,9 +136,25 @@ class PostsController < ApplicationController
               @last_viewed_at = @post.last_viewed_at(@user)
 
               @engagement = Engagement.new      
+              #eng = @user.engagements.find_by_post_id(@post.id)
+              #eng.update_attribute(:joined, true)
+              #eng.update_attribute( :last_viewed_at, Time.now )      
+              
               eng = @user.engagements.find_by_post_id(@post.id)
-              eng.update_attribute(:joined, true)
-              eng.update_attribute( :last_viewed_at, Time.now )      
+              if eng.nil? 
+                  sp_exists = SharedPost.find(:first, :conditions => ['post_id = ? and user_id = ?', @post.id, @user.id])
+                  if !sp_exists.nil?
+                      create_engagement(sp_exists)
+                      sp_exists.destroy 
+                  else
+                    #TODO flag some appropriate error and move on
+                    #flash[:error] = "We could not locate this post. Please check the address and try again."
+                    #render 'posts/404', :status => 404, :layout => false and return
+                  end
+              else
+                  eng.update_attribute(:joined, true)
+                  eng.update_attribute( :last_viewed_at, Time.now )                      
+              end
           end
       else
           flash[:error] = "We could not locate this post. Please check the address and try again."
@@ -454,21 +471,15 @@ class PostsController < ApplicationController
   end
   
   #-----------------------------------------------------------------------------------------------------
-  def CreateEngagementEntry
-    @email_participants = {}
-    eng_exists = Engagement.find(:first, :conditions => ['user_id = ? and post_id = ?', @current_user.id, @post.id])
-    if eng_exists.nil?
-        eng = Engagement.new
-        eng.invited_by = @invited_by.id
-        eng.invited_when = Time.now.utc
-        eng.post = @post
-        eng.invitee = @current_user
-        eng.invited_via = 'email'
-        eng.joined = true
-        eng.save
-        @email_participants[@current_user] = eng
-    end
-     @post.send_invitations(@email_participants, @current_user) if @email_participants.size > 0
+  def create_engagement(shared_post)
+      eng = Engagement.new
+      eng.invited_by = shared_post.shared_by
+      eng.invited_when = Time.now.utc
+      eng.post = @post
+      eng.invitee = shared_post.invitee
+      eng.invited_via = shared_post.shared_via
+      eng.joined = true
+      eng.save
   end
   #-----------------------------------------------------------------------------------------------------
 end
