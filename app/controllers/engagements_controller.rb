@@ -211,40 +211,6 @@ end
      end
  end 
  
- #handling - user is a member and currently not logged in.
- def join1
-   if params[:spid] == nil
-      session[:jn_post] = params[:pid]
-      session[:jn_invited_by] = params[:iid]
-      session[:jn_eng_pending] = true
-      store_location
-      redirect_to login_path
-   else
-     join_from_ev
-   end
- end      
-
-def join_from_ev
-    #user joins a converstaion from the dashboard
-    #get the shared_post id
-    sp = SharedPost.find(params[:spid])
-    #add the engagement record
-    eng = Engagement.new
-    eng.invited_by = sp.shared_by
-    eng.invited_when = Time.now.utc
-    eng.post_id = sp.post_id
-    eng.user_id = sp.user_id
-    eng.invited_via = 'shared_via_ev'
-    eng.joined = true
-    eng.save
-    #remove the record from shared_post
-    sp.destroy
-    #redirect to post/show
-    @post = Post.find(eng.post_id)
-    @user = User.find_by_unique_id(params[:uid]) if params[:uid]
-    redirect_to @post.get_url_for(@user,'show')
- end
- 
  private
  def send_email_invites(email_ids)      
    create_engagements_and_send(email_ids)
