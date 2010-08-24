@@ -1,8 +1,8 @@
 class EngagementsController < ApplicationController
   # include the oauth_system mixin
   include OauthSystem
-
-  before_filter :load_post, :except => [:set_notification, :callback, :exclude, :join]
+ 
+  before_filter :load_post, :except => [:set_notification, :callback, :exclude, :join_conversation_facebox, :join_conversation_member_not_logged_in]
   before_filter :load_user, :only => [:create, :get_auth_from_twitter, :send_invites]
 
   layout 'posts', :except => [:callback]
@@ -160,15 +160,19 @@ end
     end
   end
  
- def dlg_join_conversation
+ def join_conversation_facebox
+    @post = Post.find_by_id(params[:pid])
+    @invited_by = User.find_by_unique_id(params[:iid]) if params[:iid]
     if current_user && current_user.activated?
-       @user = User.find_by_unique_id(params[:iid]) if params[:iid]
-       create_engagements_and_send(current_user.email)
-       redirect_to(@post.get_url_for(current_user,'show'))
-       return
+        #Handling scenario 1
+        #If the user is a member and already logged in:
+        #Create Engagement record
+        #Delete SharedPost record, if it exists.
+        #Send mail
+        join_conversation_member_logged_in()
+        return
     end
     
-    @invited_by = User.find_by_unique_id(params[:iid]) if params[:iid]
     respond_to do |format|
         format.html
         #format.xml { render :xml => @post }
@@ -176,27 +180,39 @@ end
     end
  end
  
- def join_conversation
-     @user = User.find_by_unique_id(params[:iid]) if params[:iid]
-
+ def join_conversation_member_not_logged_in
+    #Handling scenario 2. If the user is a member and not logged in:
+    #Request user to login and upon successful login, redirect
+    #them back to same show page in readonly mode and request them to click on Join again.
+    store_location
+    redirect_to login_path
+ end
+ 
+ #TODO: Not working. Needs code review and debugging.
+ def join_conversation_non_member
+     #Handling scenario 3. If the user is a non-member:
+     #Create a SharedPost record, if one does not already exist.
+     #Craft a link that looks like this posts/show/pid=post.unique_id&uid=user.unique_id
+     #and send it to the email address provided.
+  
+     @post = Post.find_by_id(params[:pid])
+     @invited_by = User.find_by_unique_id(params[:iid]) if params[:iid]
      invitee = User.find_by_email(params[:email]) if params[:email]
-     if invitee && invitee.activated?
-         render :update do |page|
-            page.replace_html "send-status", "Our records indicate that you are a member. Please use the above login link to join this conversation."
-         end
-     else
-         if params[:email]
-           #TODO
-           #Got to remove the shared_post record, if present
-           #This won't be present if this join is happening througg a FB click
-           #Will be present if an email share was done
-            send_email_invites(params[:email], false)
+     email = params[:email]
+     render :update do |page|
+         if invitee && invitee.activated?
+             page.replace_html "send-status", "Our records indicate that you are a member. Please use the above login link to join this conversation."
+         else
+             if params[:email]
+                 create_shared_post_and_send_invitee(email, @invited_by)
+                 page.replace_html "send-status", @status_message
+             end
          end
      end
  end 
  
  #handling - user is a member and currently not logged in.
- def join
+ def join1
    if params[:spid] == nil
       session[:jn_post] = params[:pid]
       session[:jn_invited_by] = params[:iid]
@@ -228,9 +244,10 @@ def join_from_ev
     @user = User.find_by_unique_id(params[:uid]) if params[:uid]
     redirect_to @post.get_url_for(@user,'show')
  end
+ 
  private
- def send_email_invites(email_ids, join_conversation = true)      
-   create_engagements_and_send(email_ids, join_conversation)
+ def send_email_invites(email_ids)      
+   create_engagements_and_send(email_ids)
    
     render :update do |page|
       if @status_message.blank?
@@ -257,7 +274,7 @@ def join_from_ev
     end
  end
  
- def create_engagements_and_send(invitees_emails, join_conversation = true)
+ def create_engagements_and_send(invitees_emails, invited_by = nil)
    @email_participants = {}
    @status_message = ""
    if invitees_emails.length > 0
@@ -271,15 +288,16 @@ def join_from_ev
             #Add them to engagement table
             requested_participants.each do |invitee|
               if !invitee.nil?
-                eng_exists = Engagement.find(:first, :conditions => ['user_id = ? and post_id = ?',invitee.id, @post.id])
+                eng_exists = Engagement.find(:first, :conditions => ['user_id = ? and post_id = ?', invitee.id, @post.id])
                 if eng_exists.nil?
                     eng = Engagement.new
-                    eng.invited_by = @user.id
+                    #eng.invited_by = @user.id
+                    eng.invited_by = invited_by.nil? ? @user.id : invited_by.id
                     eng.invited_when = Time.now.utc
                     eng.post = @post
                     eng.invitee = invitee
                     eng.invited_via = 'email'
-                    eng.joined = join_conversation
+                    #eng.joined = join_conversation
                     eng.save
                     @email_participants[invitee] = eng
                 end
@@ -291,15 +309,20 @@ def join_from_ev
              #create membership and add requested_participants to the inner contact.
              #create_membership_and_add_to_contacts(@email_participants.keys)
              #now send emails
-            @post.send_invitations(@email_participants,@user) if @email_participants.size > 0
-            #Delayed::Job.enqueue(MailingJob.new(@post, invitees))            
+             if invited_by.nil?
+                @post.send_invitations(@email_participants, @user) if @email_participants.size > 0
+             else
+                @post.send_invitations(@email_participants, invited_by) if @email_participants.size > 0
+             end 
+             #Delayed::Job.enqueue(MailingJob.new(@post, invitees))            
         else
-                @status_message = "<div id='failure'>There was some problem sending the invitation(s). <br/>" + @invalid_emails_message + "</div>"
+             @status_message = "<div id='failure'>There was some problem sending the invitation(s). <br/>" + @invalid_emails_message + "</div>"
         end
     else
         @status_message = "<div id='failure'>Please enter valid email addresses and try again.</div>"
     end
  end
+  
  def send_ev_invites
    #separate the email ids from twitter ids
    contacts = params[:ev_contacts].split(',') unless params[:ev_contacts].nil?
@@ -411,3 +434,54 @@ def join_from_ev
    end
   end
 end
+
+def join_conversation_member_logged_in()
+   @user = current_user
+   create_engagements_and_send(@user.email, @invited_by)
+   sp_exists = SharedPost.find(:first, :conditions => ['post_id = ? and user_id = ?', @post.id, @user.id])
+   sp_exists.destroy unless sp_exists.nil?
+   redirect_to(@post.get_url_for(@user, 'show'))
+   return
+end
+
+#Don't know how to call this function in the shared_posts controller
+def create_shared_post_and_send_invitee(invitees_emails, invited_by)
+     @email_participants = {}
+     @status_message = ""
+     if invitees_emails.length > 0
+         if validate_emails(invitees_emails)  #returns @parsed_entries
+              #Limit sending only to first 10
+
+              #Get userid of invitees - involves creating dummy accounts
+              requested_participants = []
+              requested_participants = Post.get_invitees(@parsed_entries)
+
+              #Add them to engagement table
+              requested_participants.each do |invitee|
+                if !invitee.nil?
+                  sp_exists = SharedPost.find(:first, :conditions => ['user_id = ? and post_id = ?', invitee.id, @post.id])
+                  if sp_exists.nil?
+                      sp = SharedPost.new
+                      sp.shared_by = invited_by.id
+                      sp.shared_when = Time.now.utc
+                      sp.post = @post
+                      sp.invitee = invitee
+                      sp.shared_via = 'facebook'
+                      sp.save
+                      @email_participants[invitee] = sp
+                  else
+                      @email_participants[invitee] = sp_exists
+                  end
+                end
+              end
+
+              #now send emails or daily digest once a day
+              @post.send_invitations(@email_participants, invited_by) if @email_participants.size > 0
+              #Delayed::Job.enqueue(MailingJob.new(@post, invitees))
+          else
+              @status_message = "<div id='failure'>There was some problem sharing the invitation(s). <br/>" + @invalid_emails_message + "</div>"
+          end
+      else
+          @status_message = "<div id='failure'>Please enter valid email addresses and try again.</div>"
+      end
+ end

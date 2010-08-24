@@ -14,7 +14,6 @@
    <ul id="participants-list">
     <% unless @post.engagements.empty? %>
         <% @post.engagements.each do |engagement| %>
-          <% if engagement.joined? %>
               <div id="participant_details_<%=engagement.invitee.id %>" >
 
               <% if engagement.invitee.id == @user.id  %>
@@ -90,7 +89,7 @@
                  </div>
               </li>
            </div>
-       <% end %>
+
        <% end %>
     <%  end %>
     </ul>

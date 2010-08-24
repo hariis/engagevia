@@ -159,7 +159,7 @@ class SharedPostsController < ApplicationController
                       sp.shared_when = Time.now.utc
                       sp.post = @post
                       sp.invitee = invitee
-                      eng.shared_via = 'email'
+                      sp.shared_via = 'email'
                       sp.save
                       @email_participants[invitee] = sp
                   end

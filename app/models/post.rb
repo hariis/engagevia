@@ -65,27 +65,32 @@ class Post < ActiveRecord::Base
 #   end
 #  end
 
-  def get_url_for(user,action)
+  def get_url_for(user, action)
     if action == 'show'
       DOMAIN + "posts/" + action + "?pid=#{self.unique_id}&uid=#{user.unique_id}"
-
     elsif action == 'send_invites' 
       DOMAIN + "engagements/" + action + "?post_id=#{self.id};uid=#{user.unique_id}"
     elsif action == 'share_open_invites'
       DOMAIN + "shared_posts/" + action + "?post_id=#{self.id};uid=#{user.unique_id}"    
-    elsif action == 'dlg_join_conversation'
-      DOMAIN + "engagements/" + action + "?post_id=#{self.id};iid=#{user.unique_id}"
+    elsif action == 'join_conversation_facebox'
+      DOMAIN + "engagements/" + action + "?pid=#{self.id};iid=#{user.unique_id}"
     end
   end
+  
   def get_readonly_url(inviter)
     DOMAIN + "posts/show" + "?pid=#{self.unique_id}&iid=#{inviter.unique_id}"
   end
-  def get_join_from_ev_url_for(sp,user)
-    DOMAIN + "engagements/join" + "?spid=#{sp.id};uid=#{user.unique_id}"
+  
+  def get_join_from_ev_url_for(sp)
+    #DOMAIN + "engagements/join" + "?spid=#{sp.id};uid=#{user.unique_id}"
+    inviter = User.find_by_id(sp.shared_by)
+    DOMAIN + "engagements/join_conversation_facebox" + "?pid=#{self.id};iid=#{inviter.unique_id}"
   end
+  
   def get_fb_auth_url
     DOMAIN + "authorize"
   end
+  
   def get_all_participants
     p = []
     self.engagements.each do |engagement|
