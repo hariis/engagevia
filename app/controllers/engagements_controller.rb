@@ -181,16 +181,18 @@ end
 
      invitee = User.find_by_email(params[:email]) if params[:email]
      if invitee && invitee.activated?
+        #Member trying to join by putting in email address
          render :update do |page|
             page.replace_html "send-status", "Our records indicate that you are a member. Please use the above login link to join this conversation."
          end
      else
+       #Nonmember joining - so we just send a email invitation
          if params[:email]
            #TODO
            #Got to remove the shared_post record, if present
            #This won't be present if this join is happening througg a FB click
            #Will be present if an email share was done
-            send_email_invites(params[:email], false)
+           send_email_invites(params[:email], false)
          end
      end
  end 
