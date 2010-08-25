@@ -67,7 +67,7 @@ tinyMCE.init(tinymce_advanced_options);
           <li><%= link_to "Contacts", {:controller => 'users', :action => 'contacts'} %></li>
           <li><%= link_to "Groups", {:controller => 'users', :action => 'groups' }%></li>
           <li><%= link_to "Admin", admin_path %></li>
-          <li><%= facebox_link_to "Feedback",  :url => DOMAIN + "experiences/capture_experience?user_id=#{@user.id}" %></li>
+          <li><%= facebox_link_to "Feedback",  :url => DOMAIN + "experiences/capture_experience?user_id=#{current_user.id}" %></li>
       <% end %>  
       <li><%= link_to "#{h current_user.display_name}", :controller => 'users', :action => 'show' %></li>
       <li><%= link_to "Logout", logout_path %></li    
