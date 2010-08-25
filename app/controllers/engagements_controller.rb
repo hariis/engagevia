@@ -2,7 +2,7 @@ class EngagementsController < ApplicationController
   # include the oauth_system mixin
   include OauthSystem
  
-  before_filter :load_post, :except => [:set_notification, :callback, :exclude, :join_conversation_facebox, :join_conversation_member_not_logged_in]
+  before_filter :load_post, :except => [:set_notification, :callback, :exclude, :join_conversation_facebox, :join_conversation_member_not_logged_in, :join_conversation_non_member]
   before_filter :load_user, :only => [:create, :get_auth_from_twitter, :send_invites]
 
   layout 'posts', :except => [:callback]
@@ -160,7 +160,7 @@ end
     end
   end
  
- def join_conversation_facebox
+  def join_conversation_facebox
     @post = Post.find_by_id(params[:pid])
     @invited_by = User.find_by_unique_id(params[:iid]) if params[:iid]
     if current_user && current_user.activated?
@@ -190,25 +190,26 @@ end
  
  #TODO: Not working. Needs code review and debugging.
  def join_conversation_non_member
-     #Handling scenario 3. If the user is a non-member:
-     #Create a SharedPost record, if one does not already exist.
-     #Craft a link that looks like this posts/show/pid=post.unique_id&uid=user.unique_id
-     #and send it to the email address provided.
-  
-     @post = Post.find_by_id(params[:pid])
-     @invited_by = User.find_by_unique_id(params[:iid]) if params[:iid]
-     invitee = User.find_by_email(params[:email]) if params[:email]
+    #Handling scenario 3. If the user is a non-member:
+    #Create a SharedPost record, if one does not already exist.
+    #Craft a link that looks like this posts/show/pid=post.unique_id&uid=user.unique_id
+    #and send it to the email address provided.
 
-     email = params[:email]
-     render :update do |page|
-         if invitee && invitee.activated?
-             page.replace_html "send-status", "Our records indicate that you are a member. Please use the above login link to join this conversation."
-         elsif params[:email]
-             create_shared_post_and_send_invitee(email, @invited_by)
-             page.replace_html "send-status", @status_message
-         end
-     end
- end 
+    @post = Post.find_by_id(params[:pid])
+    @invited_by = User.find_by_unique_id(params[:iid]) if params[:iid]
+    invitee = User.find_by_email(params[:email]) if params[:email]
+    email = params[:email]
+    render :update do |page|
+        if invitee && invitee.activated?
+            page.replace_html "send-status", "Our records indicate that you are a member. Please use the above login link to join this conversation."
+        else
+            if params[:email]
+                create_shared_post_and_send_invitee(email, @invited_by)
+                page.replace_html "send-status", @status_message
+            end
+        end
+    end
+end
  
  private
  def send_email_invites(email_ids)      
