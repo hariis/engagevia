@@ -1,5 +1,10 @@
 class ExperiencesController < ApplicationController
 
+ before_filter :load_user
+
+ def load_user
+   @user = User.find_by_id(params[:user_id]) if params[:user_id]
+ end
    
  def capture_experience
     respond_to do |format|
@@ -13,14 +18,11 @@ class ExperiencesController < ApplicationController
      render :update do |page|       
          if params[:description] != ""
              experience = Experience.new
+             experience.feedback_type = params[:feedback_type]
              experience.description = params[:description]
-             experience.othercomments = params[:othercomments] || ""
-             experience.email = params[:email]  || "Not provided"
-             experience.name = params[:name]  || "Anonymous"
-
-             Notifier.deliver_send_experience(experience)
+             Notifier.deliver_send_experience(experience, @user)
              page.hide 'facebox'
-             #flash[:notice] = "Thank you very much for sharing your feedback."
+             #flash[:notice] = "Thank you very much for sharing your feedback. Your effort is highly appreciated"
          else
              page.replace_html "feedback-status", "Please add some details and share again"       
          end
