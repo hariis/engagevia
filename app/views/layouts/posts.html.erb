@@ -72,11 +72,12 @@
           <% end %>
       <% end %>       
       
-      <%  if !current_user || !current_user.activated? %>
-        <li style="color:#FF60B0;float:right;"><%= @post.get_all_member_participants_for_display %></li>
+      <% unless @readonlypost %>
+          <%  if !current_user || !current_user.activated? %>
+            <li style="color:#FF60B0;float:right;"><%= @post.get_all_member_participants_for_display %></li>
+          <% end %>
       <% end %>
-        
-        </ul>
+    </ul>
   </div>
   
   <% unless @comment_notice.blank? %>

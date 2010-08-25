@@ -198,31 +198,14 @@ end
      @post = Post.find_by_id(params[:pid])
      @invited_by = User.find_by_unique_id(params[:iid]) if params[:iid]
      invitee = User.find_by_email(params[:email]) if params[:email]
-<<<<<<< HEAD
-     if invitee && invitee.activated?
-        #Member trying to join by putting in email address
-         render :update do |page|
-            page.replace_html "send-status", "Our records indicate that you are a member. Please use the above login link to join this conversation."
-         end
-     else
-       #Nonmember joining - so we just send a email invitation
-         if params[:email]
-           #TODO
-           #Got to remove the shared_post record, if present
-           #This won't be present if this join is happening througg a FB click
-           #Will be present if an email share was done
-           send_email_invites(params[:email], false)
-=======
+
      email = params[:email]
      render :update do |page|
          if invitee && invitee.activated?
              page.replace_html "send-status", "Our records indicate that you are a member. Please use the above login link to join this conversation."
-         else
-             if params[:email]
-                 create_shared_post_and_send_invitee(email, @invited_by)
-                 page.replace_html "send-status", @status_message
-             end
->>>>>>> 48c9c4fe74c8844f1900998c60192202b08e8c26
+         elsif params[:email]
+             create_shared_post_and_send_invitee(email, @invited_by)
+             page.replace_html "send-status", @status_message
          end
      end
  end 
