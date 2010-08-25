@@ -25,7 +25,7 @@
     If you are a member, please <%= link_to "login ", :controller => 'engagements', :action => "join_conversation_member_not_logged_in"  %>first and click on Join <br/><br/>
     
     <% form_remote_tag :url => { :controller => 'engagements', :action => "join_conversation_non_member", :pid => "#{@post.id}", :iid => "#{@invited_by.unique_id}" } do %>
-        Non members provide your email<br/><%= text_field_tag :email, "", :size => '40' %><br/><br/>
+        Non members, provide your email and we will send you a link to join<br/><%= text_field_tag :email, "", :size => '40' %><br/><br/>
         <%= submit_tag "Join the Conversation" %>
     <% end %>
     

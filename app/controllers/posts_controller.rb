@@ -47,17 +47,11 @@ class PostsController < ApplicationController
                   force_logout
                   redirect_to root_path
               end
-#          else
-#              @user = User.find_by_unique_id(params[:iid]) if params[:iid]
-#              if current_user && current_user.activated?
-#                  @readonlypost = true  if @user && @user.id != current_user.id
-#              else
-#                  @readonlypost = true
-#              end
           end
           #If iid is present in url, then it is a shared invite
           if params[:iid]
               @user = User.new
+              #TODO :Cross check - Do you need this anymore?
               @user.unique_id = params[:iid] #you need this to craft the link for displaying dlg_join_conversation facebox
               @readonlypost = true
           else
@@ -107,26 +101,33 @@ class PostsController < ApplicationController
   # GET /posts/1.xml  
   def show
       @post = params[:pid] ? Post.find_by_unique_id(params[:pid]) : nil
-      if @post
-          #Check for jn_eng_pending
-          #eng_pending = session[:jn_eng_pending]
-          #if eng_pending
-          #    if session[:jn_post] == params[:pid]
-          #        @invited_by = User.find_by_unique_id(session[:jn_invited_by]) if session[:jn_invited_by]
-          #        CreateEngagementEntry()
-          #        session[:jn_post] = nil
-          #        session[:jn_invited_by] = nil
-          #        session[:jn_eng_pending] = false
-          #        redirect_to(@post.get_url_for(@current_user,'show')) 
-          #        return
-          #    end
-          #end  
+      if @post 
 
           if @readonlypost
               @last_viewed_at = Time.now
+              #TODO: Case: If member clicked on an open invite link again to join, then simply redirect to show page
+              if current_user && current_user.activated?
+                #check if user is not already a participant
+                eng = @user.engagements.find_by_post_id(@post.id)
+                redirect_to(@post.get_url_for(@user, 'show')) unless eng.nil?
+              end
           else            
               if @post.tag_list == ""
                 @post.tag_list = "Click here to Add"
+              end
+              
+              #Special case: If non-member joined a post and visiting the post for the first time
+              #there would not be an engagement record. So fix this by creating eng. record
+              eng = @user.engagements.find_by_post_id(@post.id)
+              if eng.nil?
+                  sp_exists = SharedPost.find(:first, :conditions => ['post_id = ? and user_id = ?', @post.id, @user.id])
+                  if !sp_exists.nil?
+                      create_engagement(sp_exists)
+                      sp_exists.destroy
+                  else
+                    flash[:error] = "It appears you have not joined this conversation. Please join by clicking on your Open invitation link."
+                    render 'posts/404', :status => 404, :layout => false and return
+                  end
               end
 
               #display the count of unread records
@@ -135,26 +136,7 @@ class PostsController < ApplicationController
               @comment_notice = unread.to_s + " comments since your last visit"
               @last_viewed_at = @post.last_viewed_at(@user)
 
-              @engagement = Engagement.new      
-              #eng = @user.engagements.find_by_post_id(@post.id)
-              #eng.update_attribute(:joined, true)
-              #eng.update_attribute( :last_viewed_at, Time.now )      
-              
-              eng = @user.engagements.find_by_post_id(@post.id)
-              if eng.nil? 
-                  sp_exists = SharedPost.find(:first, :conditions => ['post_id = ? and user_id = ?', @post.id, @user.id])
-                  if !sp_exists.nil?
-                      create_engagement(sp_exists)
-                      sp_exists.destroy 
-                  else
-                    #TODO flag some appropriate error and move on
-                    #flash[:error] = "We could not locate this post. Please check the address and try again."
-                    #render 'posts/404', :status => 404, :layout => false and return
-                  end
-              else
-                  eng.update_attribute(:joined, true)
-                  eng.update_attribute( :last_viewed_at, Time.now )                      
-              end
+              @engagement = Engagement.new  
           end
       else
           flash[:error] = "We could not locate this post. Please check the address and try again."

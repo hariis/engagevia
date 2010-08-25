@@ -198,16 +198,18 @@ end
     @post = Post.find_by_id(params[:pid])
     @invited_by = User.find_by_unique_id(params[:iid]) if params[:iid]
     invitee = User.find_by_email(params[:email]) if params[:email]
-    email = params[:email]
+    
+    if invitee && invitee.activated?
+        @status_message = "Our records indicate that you are a member. Please login first and then join this conversation."
+    elsif params[:email]
+            create_shared_post_and_send_invitee(params[:email], @invited_by)       
+    end
     render :update do |page|
-        if invitee && invitee.activated?
-            page.replace_html "send-status", "Our records indicate that you are a member. Please use the above login link to join this conversation."
-        else
-            if params[:email]
-                create_shared_post_and_send_invitee(email, @invited_by)
-                page.replace_html "send-status", @status_message
-            end
-        end
+      if @status_message.blank?
+        page.replace_html "send-status", "An email has been sent with a link. <br/> Please check your email and click on the link to join the conversation."
+      else
+        page.replace_html "send-status", @status_message
+      end
     end
 end
  
@@ -224,7 +226,7 @@ end
               page.replace_html "participant-count", "(#{@post.engagements.size})"        
          else
               page.replace_html "send-status", "#{@email_participants.size > 0  ? 
-                                "Notification email has been send. Check your email and click on the link to participate in the conversation." : "None sent."}"
+                                "Notification email has been sent. Check your email and click on the link to participate in the conversation." : "None sent."}"
          end
          page.replace_html 'invite-status', "#{@email_participants ? pluralize(@email_participants.size ,"participant") : "None"} added."
 
@@ -399,9 +401,8 @@ end
       send_direct_message! follower.screen_name, "Please join me for a conversation at " + message + " about #{truncate(@post.subject,20,"...")}"
    end
   end
-end
 
-def join_conversation_member_logged_in()
+ def join_conversation_member_logged_in()
    @user = current_user
    create_engagements_and_send(@user.email, @invited_by)
    sp_exists = SharedPost.find(:first, :conditions => ['post_id = ? and user_id = ?', @post.id, @user.id])
@@ -410,8 +411,8 @@ def join_conversation_member_logged_in()
    return
 end
 
-#Don't know how to call this function in the shared_posts controller
-def create_shared_post_and_send_invitee(invitees_emails, invited_by)
+  #Don't know how to call this function in the shared_posts controller
+  def create_shared_post_and_send_invitee(invitees_emails, invited_by)
      @email_participants = {}
      @status_message = ""
      if invitees_emails.length > 0
@@ -451,3 +452,6 @@ def create_shared_post_and_send_invitee(invitees_emails, invited_by)
           @status_message = "<div id='failure'>Please enter valid email addresses and try again.</div>"
       end
  end
+end
+
+
