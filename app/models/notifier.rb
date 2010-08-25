@@ -51,14 +51,14 @@ default_url_options[:host] = "www.engagevia.com"
     setup_email(comment.owner)  #TODO: we are not using this argument.
     @subject    +=   " #{comment.owner.display_name} has added a new comment on #{truncate(post.subject,20,"...")}"
     recipients    participant.email
-    body          :post_url  => DOMAIN + "posts/show?pid=#{post.unique_id}&uid=#{participant.unique_id}" ,:post => post, :comment => comment
+    body          :post_url  => DOMAIN + "posts/show?pid=#{post.unique_id}&uid=#{participant.unique_id}", :post => post, :comment => comment
   end
   
-  def send_experience(experience)
+  def send_experience(experience, user)
     setup_email()  #TODO: we are not using this argument.
     @subject    +=   "User Feedback"
     recipients    "engagevia@gmail.com"
-    body          :experience => experience
+    body          :experience => experience, :user => user
   end
   
   protected
