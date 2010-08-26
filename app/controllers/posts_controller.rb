@@ -101,15 +101,13 @@ class PostsController < ApplicationController
   def show
       @post = params[:pid] ? Post.find_by_unique_id(params[:pid]) : nil
       if @post 
-
           if @readonlypost
               @last_viewed_at = Time.now
               #Case: If member clicked on an open invite link again to join, then simply redirect to show page
               if current_user && current_user.activated?
-                #check if user is not already a participant
+                #check if user is already a participant
                 eng = current_user.engagements.find_by_post_id(@post.id)
-                redirect_to(@post.get_url_for(current_user, 'show')) unless eng.nil?
-                return
+                redirect_to(@post.get_url_for(current_user, 'show')) && return unless eng.nil?
               end
           else            
               if @post.tag_list == ""

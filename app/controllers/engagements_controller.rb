@@ -169,8 +169,7 @@ end
         #Create Engagement record
         #Delete SharedPost record, if it exists.
         #Send mail
-        join_conversation_member_logged_in()
-        return
+        join_conversation_member_logged_in        
     end
     
     respond_to do |format|
@@ -202,7 +201,7 @@ end
     if invitee && invitee.activated?
         @status_message = "Our records indicate that you are a member. Please login first and then join this conversation."
     elsif params[:email]
-            create_shared_post_and_send_invitee(params[:email], @invited_by)       
+            create_shared_post_and_send_invite(params[:email], @invited_by)       
     end
     render :update do |page|
       if @status_message.blank?
@@ -396,7 +395,7 @@ end
    end
   end
 
- def join_conversation_member_logged_in()
+ def join_conversation_member_logged_in
    @user = current_user
    create_engagements_and_send(@user.email, @invited_by)
    sp_exists = SharedPost.find(:first, :conditions => ['post_id = ? and user_id = ?', @post.id, @user.id])
@@ -406,7 +405,7 @@ end
 end
 
   #Don't know how to call this function in the shared_posts controller
-  def create_shared_post_and_send_invitee(invitees_emails, invited_by)
+  def create_shared_post_and_send_invite(invitees_emails, invited_by)
      @email_participants = {}
      @status_message = ""
      if invitees_emails.length > 0
@@ -420,6 +419,14 @@ end
               #Add them to engagement table
               requested_participants.each do |invitee|
                 if !invitee.nil?
+                  #check if user is not already a participant , if yes, then resend the email with invitation
+                  eng = invitee.engagements.find_by_post_id(@post.id)
+                  unless eng.nil?
+                     @email_participants[invitee] 
+                     @post.send_invitations(@email_participants, invited_by)
+                     return
+                  end
+                  #if the user is not a participant, then create a SharedPost and then send invitation
                   sp_exists = SharedPost.find(:first, :conditions => ['user_id = ? and post_id = ?', invitee.id, @post.id])
                   if sp_exists.nil?
                       sp = SharedPost.new
