@@ -219,25 +219,19 @@ end
    
     render :update do |page|
       if @status_message.blank?
-         #page.hide 'facebox'
-         if join_conversation
-              page.replace_html "send-status", "#{@email_participants ? pluralize(@email_participants.size ,"invitation") : "None"} sent."
-              page.insert_html :bottom, 'participants-list', :partial => 'participants', :locals => { :participants => @email_participants }
-              page.replace_html "participant-count", "(#{@post.engagements.size})"        
-         else
-              page.replace_html "send-status", "#{@email_participants.size > 0  ? 
-                                "Notification email has been sent. Check your email and click on the link to participate in the conversation." : "None sent."}"
-         end
-         page.replace_html 'invite-status', "#{@email_participants ? pluralize(@email_participants.size ,"participant") : "None"} added."
-
-         page.select("#send-status").each { |b| b.visual_effect :fade, :startcolor => "#4B9CE0",
-                                                                                                :endcolor => "#cf6d0f", :duration => 15.0 }
-         page.select(".new-p").each { |b| b.visual_effect :highlight, :startcolor => "#fb3f37",
-                                                                                                :endcolor => "#cf6d0f", :duration => 5.0 }
-         page.select("#invite-status").each { |b| b.visual_effect :fade, :startcolor => "#fb3f37",
-                                                                                                :endcolor => "#cf6d0f", :duration => 15.0 }
+          #page.hide 'facebox'
+          page.insert_html :bottom, 'participants-list', :partial => 'participants', :locals => { :participants => @email_participants }
+          page.replace_html 'invite-status', "#{@email_participants ? pluralize(@email_participants.size ,"participant") : "None"} added."
+          page.replace_html "send-status", "#{@email_participants ? pluralize(@email_participants.size ,"invitation") : "None"} sent."
+          page.select("#send-status").each { |b| b.visual_effect :fade, :startcolor => "#4B9CE0",
+                                                                        :endcolor => "#cf6d0f", :duration => 15.0 }
+          page.select(".new-p").each { |b| b.visual_effect :highlight, :startcolor => "#fb3f37",
+                                                                       :endcolor => "#cf6d0f", :duration => 5.0 }
+          page.select("#invite-status").each { |b| b.visual_effect :fade, :startcolor => "#fb3f37",
+                                                                          :endcolor => "#cf6d0f", :duration => 15.0 }
+          page.replace_html "participant-count", "(#{@post.engagements.size})"       
       else
-            page.replace_html "send-status", @status_message
+          page.replace_html "send-status", @status_message
       end
     end
  end

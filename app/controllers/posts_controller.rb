@@ -51,8 +51,7 @@ class PostsController < ApplicationController
           #If iid is present in url, then it is a shared invite
           if params[:iid]
               @user = User.new
-              #TODO :Cross check - Do you need this anymore?
-              @user.unique_id = params[:iid] #you need this to craft the link for displaying dlg_join_conversation facebox
+              @user.unique_id = params[:iid] #this is required to craft link for displaying join_conversation_facebox
               @readonlypost = true
           else
               @readonlypost = false
