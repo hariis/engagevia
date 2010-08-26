@@ -199,10 +199,17 @@ end
     @invited_by = User.find_by_unique_id(params[:iid]) if params[:iid]
     invitee = User.find_by_email(params[:email]) if params[:email]
     
-    if invitee && invitee.activated?
+    if invitee && invitee.activated? #check if user is already a member
         @status_message = "Our records indicate that you are a member. Please login first and then join this conversation."
     elsif params[:email]
-            create_shared_post_and_send_invitee(params[:email], @invited_by)       
+        #check if there is already a engagement record. User has already joined the conversation
+        eng = invitee.engagements.find_by_post_id(@post.id) unless invitee.nil?
+        if eng.nil?
+            create_shared_post_and_send_invitee(params[:email], @invited_by) #create shared post since there is no existing eng record
+        else
+            @status_message = "Our records indicate that you have already joined the conversation. <br/> 
+                               Please check your email and click on the link to participate in this conversation"
+        end  
     end
     render :update do |page|
       if @status_message.blank?
@@ -417,7 +424,7 @@ end
               requested_participants = []
               requested_participants = Post.get_invitees(@parsed_entries)
 
-              #Add them to engagement table
+              #Add them to SharedPost table
               requested_participants.each do |invitee|
                 if !invitee.nil?
                   sp_exists = SharedPost.find(:first, :conditions => ['user_id = ? and post_id = ?', invitee.id, @post.id])
