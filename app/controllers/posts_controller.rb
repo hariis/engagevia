@@ -104,11 +104,12 @@ class PostsController < ApplicationController
 
           if @readonlypost
               @last_viewed_at = Time.now
-              #TODO: Case: If member clicked on an open invite link again to join, then simply redirect to show page
+              #Case: If member clicked on an open invite link again to join, then simply redirect to show page
               if current_user && current_user.activated?
                 #check if user is not already a participant
-                eng = @user.engagements.find_by_post_id(@post.id)
-                redirect_to(@post.get_url_for(@user, 'show')) unless eng.nil?
+                eng = current_user.engagements.find_by_post_id(@post.id)
+                redirect_to(@post.get_url_for(current_user, 'show')) unless eng.nil?
+                return
               end
           else            
               if @post.tag_list == ""
