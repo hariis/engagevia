@@ -54,6 +54,7 @@ class PostsController < ApplicationController
               @readonlypost = true
               @inviter_unique_id = params[:iid] #this is required to craft link for displaying join_conversation_facebox              
               @invitee_unique_id = params[:uid] if params[:uid]  #only iid not uid
+              @user = User.find_by_unique_id(params[:uid]) if params[:uid]  #only iid not uid
           else
               @readonlypost = false
           end
@@ -109,6 +110,10 @@ class PostsController < ApplicationController
                 #check if user is already a participant
                 eng = current_user.engagements.find_by_post_id(@post.id)
                 redirect_to(@post.get_url_for(current_user, 'show')) && return unless eng.nil?
+              end
+              unless @invitee_unique_id.nil?
+                eng = @user.engagements.find_by_post_id(@post.id)
+                redirect_to(@post.get_url_for(@user, 'show')) && return unless eng.nil?
               end
           else            
               if @post.tag_list == ""
