@@ -25,7 +25,7 @@ class PostsController < ApplicationController
   #-----------------------------------------------------------------------------------------------------
   def load_user
       if (action_name == 'show' || action_name == 'send_invites')
-          if !params[:uid].nil?
+          if !params[:uid].nil? && params[:iid].nil?
               if current_user && current_user.activated?
                   @user = User.find_by_unique_id(params[:uid]) if params[:uid]
                   #Now check if this is the same user as the logged in user
@@ -51,8 +51,9 @@ class PostsController < ApplicationController
           #If iid is present in url, then it is a shared invite
           if params[:iid]
               @user = User.new
-              @user.unique_id = params[:iid] #this is required to craft link for displaying join_conversation_facebox
               @readonlypost = true
+              @inviter_unique_id = params[:iid] #this is required to craft link for displaying join_conversation_facebox              
+              @invitee_unique_id = params[:uid] if params[:uid]  #only iid not uid
           else
               @readonlypost = false
           end

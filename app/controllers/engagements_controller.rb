@@ -163,13 +163,21 @@ end
   def join_conversation_facebox
     @post = Post.find_by_id(params[:pid])
     @invited_by = User.find_by_unique_id(params[:iid]) if params[:iid]
+    @invitee = User.find_by_unique_id(params[:uid]) if params[:uid]
+    
     if current_user && current_user.activated?
         #Handling scenario 1
         #If the user is a member and already logged in:
         #Create Engagement record
         #Delete SharedPost record, if it exists.
         #Send mail
-        join_conversation_member_logged_in        
+        join_conversation_member_logged_in(current_user)
+        return
+    else
+        unless @invitee.nil?
+            join_conversation_member_logged_in(@invitee)
+            return
+        end   
     end
     
     respond_to do |format|
@@ -393,16 +401,15 @@ end
       message = DOMAIN + "conversation/show/#{@post.unique_id}/#{follower.unique_id}"      
       send_direct_message! follower.screen_name, "Please join me for a conversation at " + message + " about #{truncate(@post.subject,20,"...")}"
    end
-  end
+ end
 
- def join_conversation_member_logged_in
-   @user = current_user
-   create_engagements_and_send(@user.email, @invited_by)
-   sp_exists = SharedPost.find(:first, :conditions => ['post_id = ? and user_id = ?', @post.id, @user.id])
-   sp_exists.destroy unless sp_exists.nil?
-   redirect_to(@post.get_url_for(@user, 'show'))
-   return
-end
+  def join_conversation_member_logged_in(user)
+     create_engagements_and_send(user.email, @invited_by)
+     sp_exists = SharedPost.find(:first, :conditions => ['post_id = ? and user_id = ?', @post.id, user.id])
+     sp_exists.destroy unless sp_exists.nil?
+     redirect_to(@post.get_url_for(user, 'show'))
+     return
+  end
 
   #Don't know how to call this function in the shared_posts controller
   def create_shared_post_and_send_invite(invitees_emails, invited_by)

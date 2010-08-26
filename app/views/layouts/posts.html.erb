@@ -62,10 +62,10 @@
     <ul>
       <li id="invite-status"></li>
       <% if @readonlypost %>
-           <% if current_user && current_user.activated? %>
-                <li><%= image_tag "group_add.png" %> <%= link_to "Join this Conversation",  :controller => 'engagements', :action => 'join_conversation_facebox', :pid => @post.id, :iid => @user.unique_id %></li>
+           <% if current_user && current_user.activated? || !@invitee_unique_id.nil? %>
+                <li><%= image_tag "group_add.png" %> <%= link_to "Join this Conversation",  :controller => 'engagements', :action => 'join_conversation_facebox', :pid => @post.id, :iid => @inviter_unique_id, :uid => @invitee_unique_id %></li>
            <% else %>
-                <li><%= image_tag "group_add.png" %> <%= facebox_link_to "Join this Conversation",  :url => @post.get_url_for(@user, 'join_conversation_facebox') %></li>
+                <li><%= image_tag "group_add.png" %> <%= facebox_link_to "Join this Conversation",  :url => @post.get_url_for_jc_facebox(@inviter_unique_id) %></li>
            <% end %>
       <% else %>
           <% if @post.allow_others_to_invite || @post.owner.id == current_user.id %>

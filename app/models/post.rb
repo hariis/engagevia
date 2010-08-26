@@ -71,10 +71,12 @@ class Post < ActiveRecord::Base
     elsif action == 'send_invites' 
       DOMAIN + "engagements/" + action + "?post_id=#{self.id};uid=#{user.unique_id}"
     elsif action == 'share_open_invites'
-      DOMAIN + "shared_posts/" + action + "?post_id=#{self.id};uid=#{user.unique_id}"    
-    elsif action == 'join_conversation_facebox'
-      DOMAIN + "engagements/" + action + "?pid=#{self.id};iid=#{user.unique_id}"
-    end
+      DOMAIN + "shared_posts/" + action + "?post_id=#{self.id};uid=#{user.unique_id}"
+    end      
+  end
+  
+  def get_url_for_jc_facebox(inviter_iid)
+    DOMAIN + "engagements/join_conversation_facebox" + "?pid=#{self.id};iid=" + inviter_iid
   end
   
   def get_readonly_url(inviter)
