@@ -198,10 +198,10 @@ end
     @invited_by = User.find_by_unique_id(params[:iid]) if params[:iid]
     invitee = User.find_by_email(params[:email]) if params[:email]
     
-    if invitee && invitee.activated?
+    if invitee && invitee.activated? #check if user is already a member
         @status_message = "Our records indicate that you are a member. Please login first and then join this conversation."
     elsif params[:email]
-            create_shared_post_and_send_invite(params[:email], @invited_by)       
+            create_shared_post_and_send_invite(params[:email], @invited_by) 
     end
     render :update do |page|
       if @status_message.blank?
@@ -416,7 +416,7 @@ end
               requested_participants = []
               requested_participants = Post.get_invitees(@parsed_entries)
 
-              #Add them to engagement table
+              #Add them to SharedPost table
               requested_participants.each do |invitee|
                 if !invitee.nil?
                   #check if user is not already a participant , if yes, then resend the email with invitation
