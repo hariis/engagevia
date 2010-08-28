@@ -57,7 +57,7 @@ default_url_options[:host] = "www.engagevia.com"
   
   def send_experience(experience, user)
     setup_email()  #TODO: we are not using this argument.
-    @subject    +=   "User Feedback"
+    @subject    +=   "Feedback | #{experience.feedback_type}"
     recipients    "engagevia@gmail.com"
     body          :experience => experience, :user => user
   end

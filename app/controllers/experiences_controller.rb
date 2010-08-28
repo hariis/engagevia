@@ -18,7 +18,8 @@ class ExperiencesController < ApplicationController
      render :update do |page|       
          if params[:description] != ""
              experience = Experience.new
-             experience.feedback_type = params[:feedback_type]
+             #experience.feedback_type = params[:feedback_type]
+             experience.feedback_type = Experience::COMMENT_TYPES.index(params[:feedback_type].to_i) if params[:feedback_type]
              experience.description = params[:description]
              Notifier.deliver_send_experience(experience, @user)
              page.hide 'facebox'
