@@ -48,15 +48,17 @@ class PostsController < ApplicationController
                   redirect_to root_path
               end
           end
-          #If iid is present in url, then it is a shared invite
+          
+          #If iid is present in url, then it is a shared invite          
+          @readonlypost = false
           if params[:iid]
-              @user = User.new
-              @readonlypost = true
-              @inviter_unique_id = params[:iid] #this is required to craft link for displaying join_conversation_facebox              
-              @invitee_unique_id = params[:uid] if params[:uid]  #only iid not uid
-              @user = User.find_by_unique_id(params[:uid]) if params[:uid]  #only iid not uid
-          else
-              @readonlypost = false
+             if params[:uid]           
+                  @user = User.find_by_unique_id(params[:uid])
+             else
+                  @user = User.new
+             end
+             @readonlypost = true
+             @inviter_unique_id = params[:iid]  #this is required to craft link for displaying join_conversation_facebox              
           end
       end
 
@@ -111,10 +113,10 @@ class PostsController < ApplicationController
                 eng = current_user.engagements.find_by_post_id(@post.id)
                 redirect_to(@post.get_url_for(current_user, 'show')) && return unless eng.nil?
               end
-              unless @invitee_unique_id.nil?
+              unless @user.unique_id.nil?
                 eng = @user.engagements.find_by_post_id(@post.id)
                 redirect_to(@post.get_url_for(@user, 'show')) && return unless eng.nil?
-              end
+              end   
           else            
               if @post.tag_list == ""
                 @post.tag_list = "Click here to Add"

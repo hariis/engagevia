@@ -62,8 +62,8 @@
     <ul>
       <li id="invite-status"></li>
       <% if @readonlypost %>
-           <% if current_user && current_user.activated? || !@invitee_unique_id.nil? %>
-                <li><%= image_tag "group_add.png" %> <%= link_to "Join this Conversation",  :controller => 'engagements', :action => 'join_conversation_facebox', :pid => @post.id, :iid => @inviter_unique_id, :uid => @invitee_unique_id %></li>
+           <% if current_user && current_user.activated? || !@user.unique_id.nil? %>
+                <li><%= image_tag "group_add.png" %> <%= link_to "Join this Conversation",  :controller => 'engagements', :action => 'join_conversation_facebox', :pid => @post.id, :iid => @inviter_unique_id, :uid => @user.unique_id %></li>
            <% else %>
                 <li><%= image_tag "group_add.png" %> <%= facebox_link_to "Join this Conversation",  :url => @post.get_url_for_jc_facebox(@inviter_unique_id) %></li>
            <% end %>
@@ -97,7 +97,7 @@
     <p><%= flash[:error] %><%  flash[:error] = nil %></p>
   </div>
 <% end %>
-  <% if @user.non_member? && (@user.first_name == 'firstname' || @user.last_name == 'lastname' )%>
+  <% if @user.non_member? && !@readonlypost && (@user.first_name == 'firstname' || @user.last_name == 'lastname' )%>
   <div id="name-request">
     <%= render :partial => 'name_request' %>
   </div>
