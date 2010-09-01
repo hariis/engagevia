@@ -28,8 +28,8 @@ ActionController::Routing::Routes.draw do |map|
   map.admin "admin", :controller => 'posts', :action => 'admin'
 
   map.activate '/activate/:activation_code', :controller => 'users', :action => 'activate' 
-  map.auth_start '/authorize', :controller => 'engagements', :action => 'fb_authorize'
-  map.auth_callback '/authorize/callback', :controller => 'engagements', :action => 'fb_callback'
+  map.auth_start '/authorize', :controller => 'shared_posts', :action => 'fb_authorize'
+  map.auth_callback '/authorize/callback', :controller => 'shared_posts', :action => 'fb_callback'
   # The priority is based upon order of creation: first created -> highest priority.
 
   # Sample of regular route:
