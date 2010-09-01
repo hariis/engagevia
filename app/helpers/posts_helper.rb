@@ -15,7 +15,7 @@ module PostsHelper
   def get_joined_participants_count(post)
     participants_count = 0
     post.engagements.each do |engagement|
-       participants_count = participants_count + 1 if engagement.joined == true
+       participants_count = participants_count + 1 
     end
     return participants_count
   end
