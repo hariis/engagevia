@@ -6,7 +6,7 @@
   <% if current_user.nil? || !current_user.activated? %>
    <p>
     <%= label_tag "Your Email" %> (required) <br />
-    <%= text_field_tag :email,'', :size => 80  %>
+    <%= text_field_tag :email,'', :size => 180  %>
   </p>
   <% end %>
   <p>
