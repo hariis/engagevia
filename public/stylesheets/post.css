@@ -784,15 +784,12 @@ label {
 #feedback{
 background-color:#A9ED2E;
 height:auto;
-position:absolute;
+position:fixed;
 right:0pt;
 text-align:left;
 top:340px;
 width:auto;
-z-index:2000;
-padding: 20px;
-font-family: Georgia,serif;
-font-size: 12px;
+padding: 5px;
 }
 #feedback a{
 background-color:#A9ED2E;
