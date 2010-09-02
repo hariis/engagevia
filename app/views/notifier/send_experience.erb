@@ -1,15 +1,14 @@
-
 Hi Engagevia Admin!<br/><br/>
 
-Yohoo! You've got feedback from <em><%= @user.first_name %> <%= @user.last_name %></em> (<%= @user.email %>)<br/> 
-<br/><br/>
-
+<b>Feedback from:</b> <em><%= @user.first_name %> <%= @user.last_name %></em><br/> 
+<b>Email:</b> <%= @user.email %>
+<br/>
 <p> 
-Comment says <em><%= @experience.feedback_type %></em>
+<b>Request Type:</b> "<em><%= @experience.feedback_type %></em>"
 </p>
 <br/>
 
 <p>
-  Feedback details:
+  <b>Details:</b><br/>
   <%= @experience.description %>
 </p>  
