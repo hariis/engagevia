@@ -781,3 +781,23 @@ label {
 #link-icon {
     float:left;
 }
+#feedback{
+background-color:#A9ED2E;
+height:auto;
+position:absolute;
+right:0pt;
+text-align:left;
+top:340px;
+width:auto;
+z-index:2000;
+padding: 20px;
+font-family: Georgia,serif;
+font-size: 12px;
+}
+#feedback a{
+background-color:#A9ED2E;
+border:3px solid #80C00C;
+color:#000000;
+font-weight:bold;
+padding:4px;
+}
