@@ -162,13 +162,14 @@
 
 
 <div style="background-color:#BBDEFA;padding: 10px;">
-        
+     <h3>Know exactly who would be interested in this conversation? Go ahead and invite them.</h3>
         <div id="tabs">
               <ul>
                       <li><a href="#show_email_form">Invite from other Addressbooks</a></li>
-                      <% if @user.admin? %>
+                      <% if @user.member? %>
                       <li><a href="#invite-ev">Invite from EngageVia</a></li>
-                      
+                      <% end %>
+                      <% if @user.admin? %>
                       <li><a href="#get_twitter_auth">Invite via Twitter</a></li>
                       <% end %>
               </ul>

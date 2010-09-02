@@ -165,11 +165,10 @@
   <h3>Not sure who might be interested in this conversation? No Problem. <br/>Send Open invitations and let your friends know.</h3>
         <div id="tabs">
               <ul>
-                      <% if @user.admin? %>
+                      <% if @user.member? %>
                       <li><a href="#invite-ev">Share with EngageVia</a></li>
-
-                      <li><a href="#get_fb_auth">Share with Facebook</a></li>
                       <% end %>
+                      <li><a href="#get_fb_auth">Share with Facebook</a></li>                      
                       <li><a href="#show_email_form">Share with other Addressbooks</a></li>
               </ul>
 
