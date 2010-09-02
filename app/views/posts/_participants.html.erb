@@ -10,7 +10,8 @@
            <% end %>
        </div>
    <% end %>
-   
+
+   <% viewed_count = 0 %>
    <ul id="participants-list">
     <% unless @post.engagements.empty? %>
         <% @post.engagements.each do |engagement| %>
@@ -89,11 +90,13 @@
                  </div>
               </li>
            </div>
-
+            <%  viewed_count = viewed_count + 1 if engagement.last_viewed_at != nil %>
        <% end %>
     <%  end %>
     </ul>
-
+   <% if @user.admin? %>
+   <%= viewed_count %> participant(s) have viewed this post.
+   <% end %>
   </div>
 <% unless @readonlypost %>
    <div id="invitations">
