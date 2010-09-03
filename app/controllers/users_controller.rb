@@ -191,6 +191,7 @@ class UsersController < ApplicationController
         @user.password_confirmation = params[:password]
         @user.activated_at = Time.now.utc
         @user.username = "member"
+        @user.add_role("member")
       end
 
 
