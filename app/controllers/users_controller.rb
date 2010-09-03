@@ -178,52 +178,56 @@ class UsersController < ApplicationController
 
  def update_name
    @user = User.find_by_unique_id(params[:uid]) if params[:uid]
+   @post = Post.find_by_unique_id(params[:pid]) if params[:pid]
    if @user.non_member? && @user.first_name == 'firstname'
       #require the first name and last name
       @error_message = ""
-      if params[:first_name].blank? || params[:last_name].blank?
-        @error_message = "Please identify yourself with both your first and last name!"
+      if params[:first_name].blank? || params[:last_name].blank? || params[:password].blank? 
+        @error_message = "Please identify yourself with both your first and last name and also enter your password!"
       else
         @user.first_name = params[:first_name]
         @user.last_name = params[:last_name]
+        @user.password = params[:password]
+        @user.password_confirmation = params[:password]
+        @user.activated_at = Time.now.utc
+        @user.username = "member"
       end
 
-#      if params[:first_name] != nil && params[:first_name] != ""
-#        @user.first_name = params[:first_name]
-#      else
-#        render :update do |page|
-#          page.replace_html "name-request-status", "Please identify yourself!"
-#        end
-#        return
-#      end
-#      if params[:last_name] != nil && params[:last_name] != ""
-#        @user.last_name = params[:last_name]
-#      else
-#        render :update do |page|
-#          page.replace_html "new-comment-status", "Please identify yourself!"
-#        end
-#       return
-#      end
+
       #If everything is ok
-      respond_to do |format|
-        format.js {
-                if @error_message.blank? && @user.save
-                  flash[:notice] = "Welcome #{@user.display_name}!"
-                  render :update do |page|
-                    page.visual_effect :blind_up, 'name-request'
-                    page.replace_html "non-member-name", flash[:notice]
-                    page.select("non-member-name").each { |b| b.visual_effect :highlight, :startcolor => "#f3add0",
-                                :endcolor => "#ffffff", :duration => 5.0 }
-                  end
-                else
-                  render :update do |page|
-                    page.replace_html "name-request-status", @error_message
-                  end
-                end
-        }
+  #   respond_to do |format|
+  #      format.js {
+  #              if @error_message.blank? && @user.save
+  #                flash[:notice] = "Welcome #{@user.display_name}!"
+  #                render :update do |page|
+                    #page.visual_effect :blind_up, 'name-request'
+                    #page.replace_html "non-member-name", flash[:notice]
+                    #page.select("non-member-name").each { |b| b.visual_effect :highlight, :startcolor => "#f3add0",
+                    #            :endcolor => "#ffffff", :duration => 5.0 }
+  #                end
+  #              else
+  #                render :update do |page|
+  #                  page.replace_html "name-request-status", @error_message
+  #                end
+  #              end
+  #      }
+  #    end
+  #  end
+ #end
+
+    if @error_message.blank? && @user.save
+      flash[:notice] = "Welcome #{@user.display_name}!"
+      redirect_to(@post.get_url_for(@user, 'show')) && return
+    else
+      render :update do |page|
+        page.replace_html "name-request-status", @error_message
       end
     end
+   end
  end
+ 
+ 
+ 
  def set_user_tag_list
     @user = User.find(params[:id]) if params[:id]
     @user.user_id = @user.id

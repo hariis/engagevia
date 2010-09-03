@@ -1,6 +1,6 @@
 <div id="name-request-status" style="color:#ff0000;"></div>
-<h2 style ="color: #2B1E24;">Please enter your name</h2>
-<%  form_remote_tag :url => { :controller => 'users', :action => "update_name", :uid => params[:uid] },
+<h2 style ="color: #2B1E24;">Please enter your name & password</h2>
+<%  form_remote_tag :url => { :controller => 'users', :action => "update_name", :uid => params[:uid], :pid => params[:pid] },
           :before => "Element.show('n-spinner');",
           :complete => "Element.hide('n-spinner')" do %>
         
@@ -8,11 +8,14 @@
       <%= text_field_tag :first_name ,"",  :class =>"mceNoEditor",:size => 20, :maxlength => 20 %>
       <%=  label_tag 'Last Name' %>
       <%= text_field_tag :last_name ,"",  :class =>"mceNoEditor",:size => 20, :maxlength => 20  %><br/>
-        
-
-       <p style="margin-top: 10px;">
+      
+      <p style="margin-top:15px;">
+          <%= label_tag 'Password' %>
+          <%= password_field_tag :password ,"", :size => 20, :maxlength => 20  %>
+      </p>  
+      <p style="margin-top: 0px;">
           <%= submit_tag 'Save' %><%= image_tag 'spinner.gif', :id=>"n-spinner", :style=>"display:none;" %>
-        </p>
-      <% end %>
+      </p>
+<% end %>
 
-        This will be shown only to the participants of this Post.
+Name will be shown only to the participants of this Post.
