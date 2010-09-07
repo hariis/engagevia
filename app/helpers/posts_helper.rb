@@ -19,5 +19,13 @@ module PostsHelper
     end
     return participants_count
   end
-     
+  
+  def is_fullname_missing(user)
+    #user = User.find_by_unique_id(uid)
+    if user.first_name == 'firstname' && user.last_name == 'lastname' 
+      return true
+    else
+      return false
+    end
+  end
 end

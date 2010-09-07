@@ -96,7 +96,7 @@
     <p><%= flash[:error] %><%  flash[:error] = nil %></p>
   </div>
 <% end %>
-  <% if @user.non_member? && !@readonlypost && (@user.first_name == 'firstname' || @user.last_name == 'lastname' )%>
+  <% if @user.non_member? && !@readonlypost %>
   <div id="name-request">
     <%= render :partial => 'name_request' %>
   </div>

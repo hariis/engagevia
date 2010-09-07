@@ -50,11 +50,17 @@ class User < ActiveRecord::Base
     self.roles.count(:conditions => ["name = ?", role]) > 0
   end
 
-	def add_role(role)
-	  return if self.has_role?(role)
-	  self.roles << Role.find_by_name(role)
-	end
+  def add_role(role)
+    return if self.has_role?(role)
+    self.roles << Role.find_by_name(role)
+  end
 
+  def remove_role(role)
+    return if !self.has_role?(role)
+    user_role = UserRole.find(:first, :conditions => ["user_id = ? && role_id = ?", self.id, Role.find_by_name(role).id])    
+    user_role.destroy unless user_role.nil?
+  end
+  
   # Activates the user in the database.
   def activate
     self.activated_at = Time.now.utc
