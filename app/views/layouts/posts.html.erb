@@ -29,19 +29,10 @@
 <strong class="logo">
 <a href="/"><%= image_tag "evlogo.png" %></a>
 </strong>
-<ul>  
-  <li><% link_to "Home", root_url %></li>
-  <li><span id="feedback"><%= facebox_link_to "Feedback",  :url => DOMAIN + "experiences/capture_experience?user_id=#{@user.id}" %></span></li>
+<ul id="band-actions">
+  <li><% link_to "Home", root_url %></li>  
   <% if current_user && current_user.activated? %>
-      <li><%= link_to "Posts (#{current_user.posts.count})", posts_path if current_user.activated? %></li>
-
-      <% if current_user.admin? %>
-            <li><%= link_to "Contacts", {:controller => 'users', :action => 'contacts'} %></li>
-            <li><%= link_to "Groups", {:controller => 'users', :action => 'groups' }%></li>
-            <li><%= link_to "Admin", admin_path %></li>
-      <% end %>
-      <li><%= link_to "#{h current_user.display_name}", :controller => 'users', :action => 'show' %></li>
-      <li><%= link_to "Logout", logout_path %></li>    
+      <%= render :partial => 'member_band_actions' %>
   <% else %>
       <% unless @readonlypost %>
           <span style="font-size:16px;"><li id='non-member-name' style="color:#fff;"><%= "Welcome #{@user.display_name}" %></li>
@@ -54,7 +45,7 @@
 </div>
   <%  if !current_user || !current_user.activated? %>
     <div class="banner" style="height:33px; padding:10px 20px 7px 30px;">
-      <i>Why just Share when you can </i> <span style="color:orange;">Engage in Conversations & Collaborate with your friends with no signup required</span>
+      <span style="color:orange;">Engage in Conversations & Collaborate with your friends with no signup required</span>
     </div>  
   <% end %>
   <div id="widgets">
@@ -102,7 +93,7 @@
   </div>
   <% end %>  
 <%= yield  %>
-
+<span id="feedback"><%= facebox_link_to "Feedback",  :url => DOMAIN + "experiences/capture_experience?user_id=#{@user.id}" %></span>
 <% if controller.action_name == 'show' || controller.action_name == 'ushow' || controller.action_name == 'callback' %>
     <div id="footer-d">
 <% else %>

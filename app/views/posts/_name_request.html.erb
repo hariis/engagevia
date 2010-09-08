@@ -1,9 +1,9 @@
 <div id="name-request-page">
     <div id="name-request-status" style="color:#ff0000;"></div>
     <% if is_fullname_missing(@user) %>
-        <h2 style ="color: #2B1E24;">Please enter your name & password</h2>
+        <h2 style ="color: #2B1E24;">Please enter your Name & choose a Password</h2>
     <% else %>
-        <h2 style ="color: #2B1E24;">Please enter your password</h2>
+        <h2 style ="color: #2B1E24;">Please choose a Password</h2>
     <% end %>
     
     <%  form_remote_tag :url => { :controller => 'users', :action => "update_name", :uid => params[:uid], :pid => params[:pid] },
@@ -16,11 +16,11 @@
             <%=  label_tag 'Last Name' %>
             <%= text_field_tag :last_name ,"",  :class =>"mceNoEditor",:size => 20, :maxlength => 20  %><br/>
         <% end %>
-          <p style="margin-top:15px;">
+          <p>
               <%= label_tag 'Password' %>
               <%= password_field_tag :password ,"", :size => 20, :maxlength => 20  %>
           </p>  
-          <p style="margin-top: 0px;">
+          <p>
               <%= submit_tag 'Save' %><%= image_tag 'spinner.gif', :id=>"n-spinner", :style=>"display:none;" %>
           </p>
     <% end %>

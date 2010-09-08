@@ -201,10 +201,10 @@ class UsersController < ApplicationController
      #check if user firstname and lastname is available
      if @user.first_name == 'firstname' && @user.last_name == 'lastname'
         if params[:first_name].blank? || params[:last_name].blank? || params[:password].blank? 
-            @error_message = "Please identify yourself with both your first and last name and also enter your password!"
+            @error_message = "Please identify yourself with both your first and last name and also choose a password!"
         end
      elsif params[:password].blank?
-       @error_message = "Please enter your password!"
+       @error_message = "Please choose a password! This will help you access all your conversations from one place."
      end
    
      #all the information is available     
@@ -243,13 +243,16 @@ class UsersController < ApplicationController
    render :update do |page|    
       if @error_message.blank? && @user.save
         flash[:notice] = "Welcome #{@user.display_name}!"
-        page.hide "name-request-page"
-        #TODO not working. Need to redirect_to or refresh this(show) page.
-        #redirect_to(@post.get_url_for(@user, 'show')) && return
-      else
-        #render :update do |page|
-          page.replace_html "name-request-status", @error_message
-        #end
+        page.visual_effect :blind_up, 'name-request'
+        #show the top right corner options
+        page.replace_html "band-actions", :partial => 'posts/member_band_actions'
+        page.select("band-actions").each { |b| b.visual_effect :highlight, :startcolor => "#f3add0",
+                    :endcolor => "#ffffff", :duration => 5.0 }
+
+        #remove the x is a member
+        
+      else        
+          page.replace_html "name-request-status", @error_message        
       end
    end
   end
