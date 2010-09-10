@@ -87,7 +87,7 @@
     <p><%= flash[:error] %><%  flash[:error] = nil %></p>
   </div>
 <% end %>
-  <% if @user.non_member? && !@readonlypost %>
+  <% if @user.non_member? && !@readonlypost && (is_fullname_missing(@user) || @user.engagements.count > 1)  %>
   <div id="name-request">
     <%= render :partial => 'name_request' %>
   </div>

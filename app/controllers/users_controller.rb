@@ -179,31 +179,17 @@ class UsersController < ApplicationController
  def update_name
    @user = User.find_by_unique_id(params[:uid]) if params[:uid]
    @post = Post.find_by_unique_id(params[:pid]) if params[:pid]
-   
-   #if @user.non_member? && @user.first_name == 'firstname'
-      #require the first name and last name
-   #   @error_message = ""
-   #   if params[:first_name].blank? || params[:last_name].blank? || params[:password].blank? 
-   #     @error_message = "Please identify yourself with both your first and last name and also enter your password!"
-   #   else
-   #     @user.first_name = params[:first_name]
-   #     @user.last_name = params[:last_name]
-   #     @user.password = params[:password]
-   #     @user.password_confirmation = params[:password]
-   #     @user.activated_at = Time.now.utc
-   #     @user.username = "member"
-   #     @user.add_role("member")
-   #   end
-   #end
-
+   checkpassword = @user.engagements.count > 1
+ 
    @error_message = ""
    if @user.non_member?
      #check if user firstname and lastname is available
      if @user.first_name == 'firstname' && @user.last_name == 'lastname'
-        if params[:first_name].blank? || params[:last_name].blank? || params[:password].blank? 
-            @error_message = "Please identify yourself with both your first and last name and also choose a password!"
+        if params[:first_name].blank? || params[:last_name].blank? 
+            @error_message = "Please identify yourself with both your first and last name"
         end
-     elsif params[:password].blank?
+     end
+     if checkpassword && params[:password].blank?
        @error_message = "Please choose a password! This will help you access all your conversations from one place."
      end
    
@@ -211,50 +197,33 @@ class UsersController < ApplicationController
      if @error_message.blank?
         @user.first_name = params[:first_name] ||  @user.first_name
         @user.last_name = params[:last_name] || @user.last_name
-        @user.password = params[:password]
-        @user.password_confirmation = params[:password]
-        @user.activated_at = Time.now.utc
-        @user.username = "member"
-        @user.remove_role("non_member")
-        @user.add_role("member")
+        
+        if checkpassword
+            @user.password = params[:password]
+            @user.password_confirmation = params[:password]
+            @user.activated_at = Time.now.utc
+            @user.username = "member"
+            @user.remove_role("non_member")
+            @user.add_role("member")
+        end
      end
    
-      #If everything is ok
-  #   respond_to do |format|
-  #      format.js {
-  #              if @error_message.blank? && @user.save
-  #                flash[:notice] = "Welcome #{@user.display_name}!"
-  #                render :update do |page|
-                    #page.visual_effect :blind_up, 'name-request'
-                    #page.replace_html "non-member-name", flash[:notice]
-                    #page.select("non-member-name").each { |b| b.visual_effect :highlight, :startcolor => "#f3add0",
-                    #            :endcolor => "#ffffff", :duration => 5.0 }
-  #                end
-  #              else
-  #                render :update do |page|
-  #                  page.replace_html "name-request-status", @error_message
-  #                end
-  #              end
-  #      }
-  #    end
-  #  end
-
-
    render :update do |page|    
       if @error_message.blank? && @user.save
         flash[:notice] = "Welcome #{@user.display_name}!"
         page.visual_effect :blind_up, 'name-request'
         #show the top right corner options
-        page.replace_html "band-actions", :partial => 'posts/member_band_actions'
-        page.select("band-actions").each { |b| b.visual_effect :highlight, :startcolor => "#f3add0",
-                    :endcolor => "#ffffff", :duration => 5.0 }
-
-        #remove the x is a member
-        
+        if checkpassword
+            page.replace_html "band-actions", :partial => 'posts/member_band_actions'
+            page.select("band-actions").each { |b| b.visual_effect :highlight, :startcolor => "#f3add0",
+                        :endcolor => "#ffffff", :duration => 5.0 }
+        end
+        #remove the x is a member     
       else        
           page.replace_html "name-request-status", @error_message        
       end
    end
+   
   end
  end
  
