@@ -22,7 +22,8 @@ class ExperiencesController < ApplicationController
              experience.feedback_type = Experience::COMMENT_TYPES.index(params[:feedback_type].to_i) if params[:feedback_type]
              experience.description = params[:description]
              Notifier.deliver_send_experience(experience, @user)
-             page.hide 'facebox'
+             #page.hide 'facebox'
+             page.visual_effect :blind_up, 'facebox'
              #flash[:notice] = "Thank you very much for sharing your feedback. Your effort is highly appreciated"
          else
              page.replace_html "feedback-status", "Please add some details and share again"       
