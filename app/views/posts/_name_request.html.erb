@@ -1,8 +1,8 @@
   <div id="name-request-status" style="color:#ff0000;"></div>
 
   <% if is_fullname_missing(@user) %>
-      <h4 style ="color: #2B1E24;">Hey! it looks like you are part of more than one conversation! Get access to Dashboard and view them all in one place. Please enter your Name & choose a Password</h4><br/>
-  <% else %>
+      <h3 style ="color: #2B1E24;">Please enter your first and last name</h3>
+  <% elsif @user.engagements.count > 1 %>
       <h4 style ="color: #2B1E24;">Hey! it looks like you are part of more than one conversation! Get access to Dashboard and view them all in one place. Please choose a Password</h4>
   <% end %>
 
@@ -16,13 +16,17 @@
           <%=  label_tag 'Last Name' %>
           <%= text_field_tag :last_name ,"",  :class =>"mceNoEditor",:size => 20, :maxlength => 20  %><br/>
       <% end %>
-        <p>
-            <%= label_tag 'Password' %>
-            <%= password_field_tag :password ,"", :size => 20, :maxlength => 20  %>
-        </p>  
-        <p>
-            <%= submit_tag 'Save' %><%= image_tag 'spinner.gif', :id=>"n-spinner", :style=>"display:none;" %>
-        </p>
+     
+      <% if @user.engagements.count > 1 %>
+          <p>
+              <%= label_tag 'Password' %>
+              <%= password_field_tag :password ,"", :size => 20, :maxlength => 20  %>
+          </p>
+      <% end %>
+
+      <p>
+          <%= submit_tag 'Save' %><%= image_tag 'spinner.gif', :id=>"n-spinner", :style=>"display:none;" %>
+      </p>
   <% end %>
 
 <% if is_fullname_missing(@user) %>
