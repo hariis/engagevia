@@ -188,7 +188,7 @@
                                   </div>
                   <% end %>
               </div>
-<% if @user.admin? %>
+
               <div id="invite-ev">                   
                 <div style="text-align:center;font-size:10px;">Drag contacts from the left to the right or simply click on the mail icon next to each contact to invite</div>
                       <div class="ui-widget ui-helper-clearfix">
@@ -224,6 +224,7 @@
 
               </div>
 
+<% if @user.admin? %>
               <div id="get_twitter_auth">
                   <% if @followers.nil? %>
                          <p  style="font-size: 12px;">

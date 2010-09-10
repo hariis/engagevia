@@ -186,7 +186,7 @@
                                   </div>
                   <% end %>
               </div>
-<% if @user.admin? %>
+
               <div id="invite-ev">
                 <div style="text-align:center;font-size:10px;">Drag contacts from the left to the right or simply click on the mail icon next to each contact to invite</div>
                       <div class="ui-widget ui-helper-clearfix">
@@ -235,7 +235,7 @@
             <%=  button_to_function "Grant Access and Post to Facebook", "openWindow(\'#{@authorization_url}\')"  %>
 
             </div>
-<% end %>
+
           <div id="send-status" style="background-color:#378314;font-weight:bold;color:#fff;"></div>
 
         </div>
