@@ -1,6 +1,11 @@
 # Methods added to this helper will be available to all templates in the application.
 module ApplicationHelper
-  
+  def title_tag_line
+    "EngageVia, Engage in Conversations & Collaborate with your friends Privately"
+  end
+  def tag_line
+    "Engage in Conversations & Collaborate with your friends Privately"
+  end
   def in_place_editor(field_id, options = {})
     function =  "new Ajax.InPlaceEditor("
     function << "'#{field_id}', "

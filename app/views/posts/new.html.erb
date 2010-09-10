@@ -6,42 +6,43 @@
   <% if current_user.nil? || !current_user.activated? %>
    <p>
     <%= label_tag "Your Email" %> (required) <br />
-    <%= text_field_tag :email,'', :size => 180  %>
+    <span class ="info">This is only to send you notifications about your conversation</span>
+    <%= text_field_tag :email,'', :size => 91  %>
   </p>
   <% end %>
   <p>
-    <%= f.label :subject %> (required) <br />
-    <%= f.text_field :subject, :size=> 80, :maxlength => 80 %>
+    <%= f.label :subject %> (required)
+    <%= f.text_field :subject, :size=> 91, :maxlength => 80 %>
   </p>
-  
+  <p>
+    <%= f.label :description, "Describe a little" %>
+    <%= f.text_area :description, :cols => 83, :rows => 10  %>
+  </p>
   <p>
     <%= f.label :url , "Link to a Website" %> (optional)<br />
-    <%= f.text_field :url , :size=> 80, :maxlength => 80 %>
+    <%= f.text_field :url , :size=> 91, :maxlength => 180 %>
   </p>
 
   <p>
-    <%= f.label :tag_list, "Tags (optional)" %><br />
+    <%= f.label :tag_list, "Tags" %> (optional)<br />
     <span class ="info">(separate multiple tags with comma) Ex: economics, technology, parenting, arts</span>
-    <%= f.text_field :tag_list , :size=> 80, :maxlength => 80 %><br/>    
+    <%= f.text_field :tag_list , :size=> 91, :maxlength => 80 %><br/>
   </p>
 
   <p>
-    <%= f.check_box :allow_others_to_invite %><%= f.label :allow_others_to_invite, " Allow participants to invite"%>
+    <%= f.check_box :allow_others_to_invite %><%= f.label :allow_others_to_invite, " Allow Participants to Invite"%>
   </p>
 
   <p>
-    <%= f.label "Post a picture: (optional)" %><br />
-    <%= f.file_field :avatar %>
+    <%= f.label :avatar, "Attach Picture: " %> (optional)<br />
+    <%= f.file_field :avatar, :size=> 81 %>
   </p>
 
   <p>    
     <% f.check_box :public %><% f.label :public , " Allow Outsiders to Join" %>
   </p>
   
-  <p>
-    <%= f.label :description %><br />
-    <%= f.text_area :description, :cols => 93, :rows => 10  %>
-  </p>
+  
 
   <p>
     <%= f.submit 'Create', :class => 'submit' %>

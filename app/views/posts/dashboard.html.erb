@@ -1,29 +1,34 @@
 <div style="margin: 0px;">
 
    <div id="widgets" class="banner">
-     <span style="color:orange;">Engage in Conversations & Collaborate with your friends with no signup required</span>
+     <span style="color:orange;"><%= tag_line %></span>
   </div>
 <div id="dashboard-content">
 
 <div id="blurb">
   <div id="about">
-    <div class="blurb_about">Use EngageVia to</div>
-    <div class="blurb_about_line">> discuss</div>
-    <div class="blurb_about_line">> ask questions</div>
-    <div class="blurb_about_line">> get feedback & recommendations</div>
-    <div class="blurb_about_line">> brainstorm & collaborate on projects</div>
-    <div class="blurb_about_line" style="padding-left:100px;"><i>& do much more</i></div>
-    <div class="blurb_about">within your trusted circle of friends </div>
-    <div class="blurb_about_line" style="padding-left:100px;color:#0B84E8">& friends of your friends</div>
+    
+    <div class="blurb_about_line">Discuss the latest news with your friends everywhere <br/>
+      <span style="font-size:18px;font-family:Georgia;padding-left:30px;">and go off on a tangent, if you like.</span></div>
+    <div class="blurb_about_line">Bounce ideas off of your closest buddies.</div>
+    <div class="blurb_about_line">Conduct a Survey / Poll <br/>
+      <span style="font-size:18px;font-family:Georgia;padding-left:30px;">among friends and friends of your friends.</span></div>
+    <div class="blurb_about_line">Organize a Friday night potluck dinner<br/>
+      <span style="font-size:18px;font-family:Georgia;padding-left:30px;">among your special interest group folks.</span></div>
+    <div class="blurb_about_line">Ask a Question and Get Recommendations <br/>
+      <span style="font-size:18px;font-family:Georgia;padding-left:30px;">on where to eat out, take a hike etc. from friends</span><br/>
+       <span style="font-size:18px;font-family:Georgia;padding-left:30px;">that know your likes / dislikes / background.</span></div>
+    <div class="blurb_about_line"><span style="font-family:Georgia;font-style: italic;">You get the idea...</span></div>
   </div>
 </div>
+
 <% bk_link = "javascript:location.href=' #{DOMAIN}posts/new?url='+encodeURIComponent(location.href)+';title='+encodeURIComponent(document.title)" %>
   <div id="signup">
       <div id="signup-btn">
         <%= button_to "Start a Conversation" , new_post_url %>
       </div>
       <div class="signup-blurb">
-       No Membership required & It's FREE! <br/>
+       No Signup required & It's FREE! <br/>
       </div>
       <div class="signup-blurb">
         If you are not quite ready,
@@ -31,27 +36,38 @@
       </div>
   </div>
 
-  <div id="howto-blurb">
-  <div id="howto">
-   <div class="blurb_about">
-     How to use EngageVia?
-    </div>
 
-    <ol>      
-      <li>Drag this <%= link_to  "EngageVia bookmarklet", bk_link, :title => "EngageVia bookmarklet"  %> to your browser's bookmarks.</li>
-      <li>Click on it or simply visit <a title="EngageVia" href="http://www.engagevia.com/posts/new">EngageVia</a>. </li>
-      <li>Fill up the basic information and a conversation page is created. </li>
-      <li>From that page, invite specific friends or share with a group. </li>
-      <li>A unique link to the Conversation page is sent to them. </li>
-      <li>Let your invitees invite relevant friends from their circle as well.</li>
-      <li>All the invitees converge at one central location to engage in the conversation.<span style="font-style:italic;color:#ff0000;"> No membership required for anyone!</span>   </li>
-      <li>If you are a content publisher, please visit the <%=  link_to "Help" , "http://www.engagevia.com/help" %> page to see</li>
-      how you can facilitate private conversations for your audience.
-    </ol>
-      
- </div>
-</div>
 
+  <div id="how-to" style="width:960px;">
+    <div class="blurb_about">How to get Started?</div>
+
+    <div style="color:#5B5B5B;font-size:50px;font-family:Georgia;font-weight:bold;float:left;padding:17px 10px;">1</div>
+    <div  class="blurb_about_line">Start a Conversation <i>over</i> any topic, blog post or just any web page.<br/>
+        <span style="font-size:18px;font-family:Georgia;padding-left:30px;">
+          Drag this <%= link_to  "EngageVia bookmarklet", bk_link, :title => "EngageVia bookmarklet"  %> to your browser's bookmarks toolbar.</span><br/>
+        <span style="font-size:18px;font-family:Georgia;padding-left:30px;">Click on the bookmarklet to start.</span></div>
+    <div style="clear: both; padding-top: 30px;"></div>
+
+
+   <div style="color:#5B5B5B;font-size:50px;font-family:Georgia;font-weight:bold;float:left;padding:42px 10px;">2</div>
+   <div  class="blurb_about_line">Invite Friends or Share<br/>
+     <span style="font-size:18px;font-family:Georgia;padding-left:30px;">Invite friends that you know would be interested AND/OR </span><br/>
+     <span style="font-size:18px;font-family:Georgia;padding-left:30px;">Share an Open invite via email or facebook to let them know </span><br/>
+     <span style="font-size:18px;font-family:Georgia;padding-left:30px;">so that those interested can then choose to join.</span><br/>
+
+     <span style="font-size:18px;font-family:Georgia;padding-left:30px;margin-top:5px;">Participants can further invite and/or share the conversation.</span> </div>
+   <div style="clear: both; padding-top: 30px;"></div>
+
+   <div style="color:#5B5B5B;font-size:50px;font-family:Georgia;font-weight:bold;float:left;padding:28px 10px;">3</div>
+   <div class="blurb_about_line">Discuss or Collaborate Privately<br/>
+         <span style="font-size:18px;font-family:Georgia;padding-left:30px;">Add your comments on the Conversation page and</span><br/>
+         <span style="font-size:18px;font-family:Georgia;padding-left:30px;">Engage in an intimate conversation or collaborate privately with</span><br/>
+         <span style="font-size:18px;font-family:Georgia;padding-left:30px;">only the joined Participants.</span></div>
+  </div>
+  <div style="clear: both; padding-top: 30px;"></div>
+      <div id="signup-btn">
+        <%= button_to "Start a Conversation" , new_post_url %>
+      </div>
 </div>
 
 </div>
