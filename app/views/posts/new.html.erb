@@ -6,7 +6,7 @@
   <% if current_user.nil? || !current_user.activated? %>
    <p>
     <%= label_tag "Your Email" %> (required) <br />
-    <%= text_field_tag :email,'', :size => 180  %>
+    <%= text_field_tag :email,'', :size => 80  %>
   </p>
   <% end %>
   <p>
@@ -20,7 +20,7 @@
   </p>
 
   <p>
-    <%= f.label :tag_list, "Tags (optional)" %><br />
+    <%= f.label :tag_list, "Tags" %> (optional)<br />
     <span class ="info">(separate multiple tags with comma) Ex: economics, technology, parenting, arts</span>
     <%= f.text_field :tag_list , :size=> 80, :maxlength => 80 %><br/>    
   </p>
@@ -30,7 +30,7 @@
   </p>
 
   <p>
-    <%= f.label "Post a picture: (optional)" %><br />
+    <%= f.label "Post a picture" %> (optional)<br />
     <%= f.file_field :avatar %>
   </p>
 
@@ -39,7 +39,7 @@
   </p>
   
   <p>
-    <%= f.label :description %><br />
+    <%= f.label :description %> (optional)<br />
     <%= f.text_area :description, :cols => 93, :rows => 10  %>
   </p>
 
