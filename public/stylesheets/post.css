@@ -164,7 +164,7 @@ html,body {
   color: #000;
   width: 920px;
   background-color: #fff;
-  background-repeat: repeat-y;  background-image: url('/images/content-bg.png');
+  /* background-repeat: repeat-y;  background-image: url('/images/content-bg.png'); */
   /* background-image: url(/images/middle.png); background-repeat: repeat-y; width: 898px; */
 }
 #actual-post-content {
