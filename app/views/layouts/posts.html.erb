@@ -36,8 +36,8 @@
   <% else %>
       <% unless @readonlypost %>
           <span style="font-size:16px;"><li id='non-member-name' style="color:#fff;"><%= "Welcome #{@user.display_name}" %></li>
-          <li><%= link_to "Become a Member", new_post_url %></li>
-            <li><%= link_to "Start New Conversation", new_post_url %></li></span>
+          <li><% link_to "Become a Member", new_user_path %></li>
+          <li><%= link_to "Start New Conversation", new_post_url %></li></span>
       <% end %>
   <% end %>
   

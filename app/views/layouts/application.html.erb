@@ -62,16 +62,9 @@ tinyMCE.init(tinymce_advanced_options);
   <li><% link_to "Home", root_url %></li>
 
   <% if current_user && current_user.activated? %>
-      <li><%= link_to "Posts (#{current_user.posts.count})", posts_path if current_user.activated? %></li>
-      <% if current_user.admin? %>
-          <li><%= link_to "Contacts", {:controller => 'users', :action => 'contacts'} %></li>
-          <li><%= link_to "Groups", {:controller => 'users', :action => 'groups' }%></li>
-          <li><%= link_to "Admin", admin_path %></li>
-      <% end %>      
-      <li><%= link_to "#{h current_user.display_name}", :controller => 'users', :action => 'show' %></li>
-      <li><%= link_to "Logout", logout_path %></li    
+      <%= render :partial => 'member_band_actions' %>
    <% else %>
-       <li><%= link_to "Sign Up", new_user_path %></li>
+       <li><% link_to "Sign Up", new_user_path %></li>
        <li><%= link_to "Login", login_path %></li>    
    <% end %>
       
@@ -103,7 +96,9 @@ tinyMCE.init(tinymce_advanced_options);
 <%= yield %>
        
 </div>
-      <span id="feedback"><%= facebox_link_to "Feedback",  :url => DOMAIN + "experiences/capture_experience?user_id=#{current_user.id}" %></span>
+  <% if current_user %>
+  <span id="feedback"><%= facebox_link_to "Feedback",  :url => DOMAIN + "experiences/capture_experience?user_id=#{current_user.id}" %></span>
+  <% end %>
   <% if controller.action_name == 'dashboard' || controller.action_name == 'privacy' || controller.action_name == 'edit'|| controller.action_name == 'update'|| controller.action_name == 'new' || controller.action_name == 'create'|| controller.action_name == 'index' || controller.action_name == 'contacts' %>
     <div id="footer-d">
 <% else %>

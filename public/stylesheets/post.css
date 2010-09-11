@@ -412,6 +412,7 @@ width:251px;
     text-decoration:none;
     padding:0 13px;
     font-size:16px;
+    -moz-border-radius:10px 10px 10px 10px;
 }
 #header ul li a.active, #header ul li a:hover,#wide-header ul li a.active, #wide-header ul li a:hover {
     color:#FFFFFF;
@@ -444,6 +445,8 @@ padding:0 13px;
 color:#ff00ff;
 text-decoration:none;
 font-weight: bold;
+padding:0 10px;
+-moz-border-radius:10px 10px 10px 10px;
 }
 #widgets ul li a.active, #widgets ul li a:hover {
 color:#ff00ff;
