@@ -3,7 +3,7 @@ class PostsController < ApplicationController
   
   before_filter :load_user, :except => [:new, :create, :dashboard, :privacy, :about, :blog, :contact, :plaxo, :help]
   before_filter :check_activated_member,
-    :except => [:new, :show, :create, :dashboard, :index, :privacy, :about, :blog, :contact, :plaxo, :help]
+    :except => [:new, :show, :create, :dashboard, :index, :privacy, :about, :blog, :contact, :plaxo, :help, :load_all_participants, :load_all_invitations]
   in_place_edit_for :post, :note
 
   #-----------------------------------------------------------------------------------------------------
@@ -71,6 +71,14 @@ class PostsController < ApplicationController
               return
           end
       end
+
+    if (action_name == 'load_all_participants' || action_name == 'load_all_invitations')
+      if current_user && current_user.activated?
+          @user = current_user
+      else
+          @user = User.find_by_unique_id(params[:uid])
+      end
+    end
   end  #load_user
 
   #-----------------------------------------------------------------------------------------------------
@@ -432,7 +440,16 @@ class PostsController < ApplicationController
          render 'posts/404', :status => 404, :layout => false
        end
   end
-  
+
+  def load_all_participants
+       @post = params[:pid] ? Post.find_by_unique_id(params[:pid]) : nil
+       render :partial => 'participants_list'
+  end
+
+  def load_all_invitations
+      @post = params[:pid] ? Post.find_by_unique_id(params[:pid]) : nil
+      render :partial => 'invitations_list'
+  end
   #-----------------------------------------------------------------------------------------------------
   private  
   #-----------------------------------------------------------------------------------------------------

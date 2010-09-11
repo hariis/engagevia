@@ -14,8 +14,8 @@ class CreateUsers < ActiveRecord::Migration
       t.string :unique_id
       t.timestamps
     end
-
     add_index :users, :email
+    add_index :users, :unique_id, :unique => true
   end
 
   def self.down

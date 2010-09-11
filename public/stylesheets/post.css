@@ -72,6 +72,8 @@ right: 0px; */
     height:400px;
     width:675px;
     margin-top:40px;
+    padding-bottom: 15px;
+    border-bottom: 2px solid #333333;
 }
 div.blurb_about_line {
 float:left;
@@ -131,9 +133,8 @@ html,body {
   -moz-background-clip:border;
   -moz-background-inline-policy:continuous;
   -moz-background-origin:padding;
-  background:#333333 none repeat scroll 0 0;
-  width: 100%;
-  /* background-image: url('/images/pattern_096.gif'); */
+  background:#222222 none repeat scroll 0 0;
+  width: 100%;  
 }
 .fieldWithErrors input {
     border: 1px solid #ff0000;
@@ -331,6 +332,10 @@ margin:20px 0 0 0;
     font-size:13px;
     text-decoration:underline;
 }
+.blurb_about_line a {
+    color:#BBDEFA;
+    text-decoration:underline;
+}
 form {
 padding:0;
 width:725px;
@@ -406,6 +411,7 @@ width:251px;
     color:#0B84E8;
     text-decoration:none;
     padding:0 13px;
+    font-size:18px;
 }
 #header ul li a.active, #header ul li a:hover,#wide-header ul li a.active, #wide-header ul li a:hover {
     color:#FFFFFF;
@@ -492,8 +498,11 @@ clear: right;
     margin: auto;
     background-color: #fff;
 }
-#comments-section a, #participants a {
+#comments-section a {
    color: #0062f6;
+}
+#participants a {
+   color: #fff;
 }
 .comment-body {
     margin-top:5px;

@@ -10,7 +10,8 @@ class CreatePosts < ActiveRecord::Migration
       t.text :description
 
       t.timestamps
-    end    
+    end
+    add_index(:posts, :unique_id, :unique => true)
   end
 
   def self.down
