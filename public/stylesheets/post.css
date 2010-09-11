@@ -411,7 +411,7 @@ width:251px;
     color:#0B84E8;
     text-decoration:none;
     padding:0 13px;
-    font-size:18px;
+    font-size:16px;
 }
 #header ul li a.active, #header ul li a:hover,#wide-header ul li a.active, #wide-header ul li a:hover {
     color:#FFFFFF;
@@ -803,7 +803,6 @@ padding: 5px;
 }
 #feedback a{
 background-color:#A9ED2E;
-border:3px solid #80C00C;
 color:#000000;
 font-weight:bold;
 padding:4px;
