@@ -244,6 +244,7 @@ class UsersController < ApplicationController
 
  def contacts
    @ic, @ec = current_user.get_inner_and_extended_contacts
+   #@address_book = current_user.groups.find_by_name("addbook")
  end
  
  def groups   

@@ -263,5 +263,10 @@ class User < ActiveRecord::Base
     ec = Group.find_or_create_by_user_id(:user_id => post_owner.id, :name => 'ec')
     Membership.find_or_create_by_user_id(:user_id => id, :group_id => ec.id)
   end
+  
+  #def add_to_address_book(post_owner)
+  #  group = Group.find_or_create_by_user_id(:user_id => current_user.id, :name => 'addbook')
+  #  Membership.find_or_create_by_user_id(:user_id => post_owner.id, :group_id => group.id)
+  #end
 end
 
