@@ -373,21 +373,34 @@ class PostsController < ApplicationController
   end
   
   #-----------------------------------------------------------------------------------------------------
-  def migrate_existing_contacts  #TODO
+  def migrate_existing_contacts
       @posts = Post.find(:all)
       @posts.each do |post|
+        
+        engagements = Engagement.find(:all, :conditions => ["post_id = ?", post.id])
+        if engagements.size > 1
+          engagements.each do |engagement|
+            if engagement.user_id != engagement.invited_by
+                invitee = User.find_by_id(engagement.user_id)
+                inviter = User.find_by_id(engagement.invited_by)
+                inviter.add_to_address_book(invitee)                
+            end
+          end
+        end
+        
         if post.comments.count > 0
             comments = post.comments.find(:all)
             unless comments.nil?
               comments.each do |comment|
                 if comment.owner != post.owner
-                  comment.owner.join_ec_of(post.owner)
+                  #comment.owner.join_ec_of(post.owner)
+                  comment.owner.add_to_address_book(post.owner)
                 end
               end
             end
         end        
      end
-     redirect_to :controller => 'users', :action => 'groups'      
+     redirect_to :controller => 'users', :action => 'contacts'      
   end
 
     #-----------------------------------------------------------------------------------------------------
