@@ -165,12 +165,12 @@
      <h3>Know exactly who would be interested in this conversation? Go ahead and invite them.</h3>
         <div id="tabs">
               <ul>
-                      <li><a href="#show_email_form">Invite from other Addressbooks</a></li>
                       <% if @user.member? %>
-                      <li><a href="#invite-ev">Invite from EngageVia</a></li>
+                            <li><a href="#invite-ev">Invite from EngageVia</a></li>
                       <% end %>
+                      <li><a href="#show_email_form">Invite from other Addressbooks</a></li>
                       <% if @user.admin? %>
-                      <li><a href="#get_twitter_auth">Invite via Twitter</a></li>
+                            <li><a href="#get_twitter_auth">Invite via Twitter</a></li>
                       <% end %>
               </ul>
 
@@ -189,6 +189,7 @@
                   <% end %>
               </div>
 
+  <% if @user.member? %>
               <div id="invite-ev">                   
                 <div style="text-align:center;font-size:10px;">Drag contacts from the left to the right or simply click on the mail icon next to each contact to invite</div>
                       <div class="ui-widget ui-helper-clearfix">
@@ -223,7 +224,7 @@
                       </div>
 
               </div>
-
+     <% end %>
 <% if @user.admin? %>
               <div id="get_twitter_auth">
                   <% if @followers.nil? %>

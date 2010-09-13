@@ -168,8 +168,8 @@
                       <% if @user.member? %>
                       <li><a href="#invite-ev">Share with EngageVia</a></li>
                       <% end %>
-                      <li><a href="#get_fb_auth">Share with Facebook</a></li>                      
                       <li><a href="#show_email_form">Share with other Addressbooks</a></li>
+                      <li><a href="#get_fb_auth">Share with Facebook</a></li>                                            
               </ul>
 
               <div id="show_email_form">
@@ -187,6 +187,7 @@
                   <% end %>
               </div>
 
+    <% if @user.member? %>
               <div id="invite-ev">
                 <div style="text-align:center;font-size:10px;">Drag contacts from the left to the right or simply click on the mail icon next to each contact to invite</div>
                       <div class="ui-widget ui-helper-clearfix">
@@ -221,7 +222,8 @@
                       </div>
 
               </div>
-
+    <% end %>
+    
           <div id="get_fb_auth">
              <p  style="font-size: 12px;">
                 
