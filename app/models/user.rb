@@ -275,12 +275,22 @@ class User < ActiveRecord::Base
   
   def add_to_address_book(user) #invitee || post_owner
     #Add user to the adddress book of inviter
-    gr1 = Group.find_or_create_by_user_id(:user_id => id, :name => 'addbook')
-    Membership.find_or_create_by_user_id(:user_id => user.id, :group_id => gr1.id)
+    gr1 = Group.find_or_create_by_user_id(:user_id => self.id, :name => 'addbook')
+    #Membership.find_or_create_by_user_id(:user_id => user.id, :group_id => gr1.id)
+    mem_exists = Membership.find(:all, :conditions => ["user_id = ? && group_id = ?", user.id,  gr1.id])
+    if mem_exists.empty?
+      membership = Membership.new(:user_id => user.id, :group_id => gr1.id)
+      membership.save
+    end
 
     #Add inviter to the adddress book of user (or vice-versa of above)
     gr2 = Group.find_or_create_by_user_id(:user_id => user.id, :name => 'addbook')
-    Membership.find_or_create_by_user_id(:user_id => id, :group_id => gr2.id)
+    #Membership.find_or_create_by_user_id_and_group_id(:user_id => self.id, :group_id => gr2.id)
+    mem_exists = Membership.find(:all, :conditions => ["user_id = ? && group_id = ?", self.id,  gr2.id])
+    if mem_exists.empty?
+      membership = Membership.new(:user_id => self.id, :group_id => gr2.id)
+      membership.save
+    end
   end
 end
 

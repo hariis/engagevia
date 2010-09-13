@@ -237,6 +237,7 @@ end
           page.select("#invite-status").each { |b| b.visual_effect :fade, :startcolor => "#fb3f37",
                                                                           :endcolor => "#cf6d0f", :duration => 15.0 }
           page.replace_html "participant-count", "(#{@post.engagements.size})"       
+          #page.replace_html "contacts-count", "(#{@user.get_address_book_contacts.count})"
       else
           page.replace_html "send-status", @status_message
       end
@@ -268,7 +269,11 @@ end
                     eng.invited_via = 'email'
                     #eng.joined = join_conversation
                     eng.save
-                    @user.add_to_address_book(invitee) if @user.id != invitee.id
+                    if invited_by.nil?
+                        @user.add_to_address_book(invitee) if @user.id != invitee.id
+                    else
+                        invited_by.add_to_address_book(invitee) if invited_by.id != invitee.id
+                    end                    
                     @email_participants[invitee] = eng
                 end
               end
