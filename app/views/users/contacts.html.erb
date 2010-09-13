@@ -1,30 +1,13 @@
+<div class="heading">My Contacts (<%= @address_book.count %>)</div>
 
-<div class="heading">My Contacts</div>
+<div class="group">      
+    <% @address_book.each do |contact| %>      
+        <div class="contact <%= cycle('listing-line-odd', 'listing-line-even') %>">
+            <div class="contact-name"><%= link_to contact.display_name, :controller => 'users', :action => 'display_profile', :id => contact %></div>
+            <div class="contact-info"><%= "email: " + contact.email unless contact.email.include?("nonmember") %></div>
+            <div class="contact-info"><%= "twitter: @" + contact.screen_name unless contact.screen_name.blank? %></div>
+            <div class="contact-info"><%= "Tags: " + contact.tag_list unless contact.tag_list.blank? %></div>
+        </div>
+    <% end %>
+</div>
 
-<div class="group">
- <div class="group-name">Inner Circle (<%= @ic.values.size %>)</div>
-<% @ic.values.each do |contact| %>
-<%  next if contact.id == current_user.id %>
-<div class="contact <%= cycle('listing-line-odd', 'listing-line-even') %>">
-  <div class="contact-name"><%= contact.display_name %></div>
-  <div class="contact-info"><%= "email: " + contact.email unless contact.email.include?("nonmember") %></div>
-  <div class="contact-info"><%= "twitter: @" + contact.screen_name unless contact.screen_name.blank? %></div>
-  <div class="contact-info"><%= "Tags: " + contact.tag_list unless contact.tag_list.blank? %></div>
-</div>
-<% end %>
- </div>
-
-<div class="group">
-  <div class="group-name">Extended Circle (<%= @ec.values.size %>)</div>
-<% @ec.values.each do |contact| %>
-<%  next if contact.id == current_user.id %>
-<div class="contact <%= cycle('listing-line-odd', 'listing-line-even') %>">
-  <div class="contact-name"><%= contact.display_name %></div>
-  <div class="contact-info"><%= "email: " + contact.email unless contact.email.include?("nonmember") %></div>
-  <div class="contact-info"><%= "twitter: @" + contact.screen_name unless contact.screen_name.blank? %></div>
-  <div class="contact-info"><%= "Tags: " + contact.tag_list unless contact.tag_list.blank? %></div>
-</div>
-<% end %>
-</div>
-<div style="height:10px;"></div>
-<div><hr></div>

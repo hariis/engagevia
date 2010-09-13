@@ -194,7 +194,7 @@
 
                           <ul id="gallery" class="gallery ui-helper-reset ui-helper-clearfix">
                              <h4 class="ui-widget-header"><%= image_tag "group_add.png" %> My Network</h4>
-                                  <% @user.get_contacts_for_invite_from_engagevia.each do |contact| %>
+                                  <% @user.get_address_book_contacts.each do |contact| %>
                                   <%  next if contact.id == @user.id %>
                                   <li class="ui-widget-content ui-corner-tr">
                                         <% if @reco_users_ids.include?(contact.id) %>
