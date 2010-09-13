@@ -19,7 +19,7 @@ class SharedPostsController < ApplicationController
   def share_open_invites
    @engagement = Engagement.new
     #data for invite from ev tab
-    @ic, @ec = @user.get_inner_and_extended_contacts
+    #@ic, @ec = @user.get_inner_and_extended_contacts
     keywords = @post.tag_list
     @reco_users  = []
     @reco_users_ids = []

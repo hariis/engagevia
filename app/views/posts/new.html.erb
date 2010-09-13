@@ -5,13 +5,12 @@
   <%= f.error_messages :header_message => "Invalid Post!", :message => "Please address the following fields:", :header_tag => :h3 %>
   <% if current_user.nil? || !current_user.activated? %>
    <p>
-    <%= label_tag "Your Email" %> (required) <br />
-    <span class ="info">This is only to send you notifications about your conversation</span>
+    <%= label_tag "Your Email" %> (required) <br />    
     <%= text_field_tag :email,'', :size => 91  %>
   </p>
   <% end %>
   <p>
-    <%= f.label :subject %> (required)
+    <%= f.label :subject %> (required) <br />
     <%= f.text_field :subject, :size=> 91, :maxlength => 80 %>
   </p>
   <p>

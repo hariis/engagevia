@@ -373,7 +373,7 @@ class PostsController < ApplicationController
   end
   
   #-----------------------------------------------------------------------------------------------------
-  def migrate_existing_contacts
+  def migrate_existing_contacts  #TODO
       @posts = Post.find(:all)
       @posts.each do |post|
         if post.comments.count > 0

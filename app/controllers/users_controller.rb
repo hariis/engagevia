@@ -243,7 +243,8 @@ class UsersController < ApplicationController
   end
 
  def contacts
-   @ic, @ec = current_user.get_inner_and_extended_contacts
+   #@ic, @ec = current_user.get_inner_and_extended_contacts
+   @address_book = current_user.get_address_book_contacts
  end
  
  def groups   
