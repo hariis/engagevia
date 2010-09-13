@@ -227,13 +227,13 @@ end
     render :update do |page|
       if @status_message.blank?
           #page.hide 'facebox'
-          page.insert_html :bottom, 'participants-list', :partial => 'participants', :locals => { :participants => @email_participants }
+          #page.insert_html :bottom, 'participants-list', :partial => 'participants', :locals => { :participants => @email_participants }
           page.replace_html 'invite-status', "#{@email_participants ? pluralize(@email_participants.size ,"participant") : "None"} added."
           page.replace_html "send-status", "#{@email_participants ? pluralize(@email_participants.size ,"invitation") : "None"} sent."
           page.select("#send-status").each { |b| b.visual_effect :fade, :startcolor => "#4B9CE0",
                                                                         :endcolor => "#cf6d0f", :duration => 15.0 }
-          page.select(".new-p").each { |b| b.visual_effect :highlight, :startcolor => "#fb3f37",
-                                                                       :endcolor => "#cf6d0f", :duration => 5.0 }
+          #page.select(".new-p").each { |b| b.visual_effect :highlight, :startcolor => "#fb3f37",
+          #                                                             :endcolor => "#cf6d0f", :duration => 5.0 }
           page.select("#invite-status").each { |b| b.visual_effect :fade, :startcolor => "#fb3f37",
                                                                           :endcolor => "#cf6d0f", :duration => 15.0 }
           page.replace_html "participant-count", "(#{@post.engagements.size})"       
@@ -317,8 +317,8 @@ end
     render :update do |page|
       if @status_message.blank? && @error_message.blank?
         #page.hide 'facebox'
-        page.insert_html :bottom, 'participants-list', :partial => 'participants', :locals => { :participants => @email_participants } unless @email_participants.blank?
-        page.insert_html :bottom, 'participants-list', :partial => 'participants', :locals => { :participants => @twitter_participants } unless @twitter_participants.blank?
+        #page.insert_html :bottom, 'participants-list', :partial => 'participants', :locals => { :participants => @email_participants } unless @email_participants.blank?
+        #page.insert_html :bottom, 'participants-list', :partial => 'participants', :locals => { :participants => @twitter_participants } unless @twitter_participants.blank?
 
         total_count = 0
         total_count = @email_participants.size unless @email_participants.blank?
@@ -330,8 +330,8 @@ end
 
         page.select("#send-status").each { |b| b.visual_effect :fade, :startcolor => "#4B9CE0",
 												:endcolor => "#cf6d0f", :duration => 15.0 }
-        page.select(".new-p").each { |b| b.visual_effect :highlight, :startcolor => "#fb3f37",
-												:endcolor => "#cf6d0f", :duration => 5.0 }
+        #page.select(".new-p").each { |b| b.visual_effect :highlight, :startcolor => "#fb3f37",
+				#								:endcolor => "#cf6d0f", :duration => 5.0 }
         page.select("#invite-status").each { |b| b.visual_effect :fade, :startcolor => "#fb3f37",
 												:endcolor => "#cf6d0f", :duration => 15.0 }
         page.replace_html "participant-count", "(#{@post.engagements.size})"
@@ -346,13 +346,13 @@ end
     render :update do |page|
        if @error_message.blank?
         #page.hide 'facebox'        
-        page.insert_html :bottom, 'participants-list', :partial => 'participants', :locals => { :participants => @twitter_participants }
+        #page.insert_html :bottom, 'participants-list', :partial => 'participants', :locals => { :participants => @twitter_participants }
         page.replace_html 'invite-status', "#{@twitter_participants ? pluralize(@twitter_participants.size ,"participant") : "None"} added."
         page.replace_html "send-status", "#{@twitter_participants ? pluralize(@twitter_participants.size ,"invitation") : "None"} sent."
         page.select("#send-status").each { |b| b.visual_effect :fade, :startcolor => "#4B9CE0",
 												:endcolor => "#cf6d0f", :duration => 15.0 }
-        page.select(".new-p").each { |b| b.visual_effect :highlight, :startcolor => "#fb3f37",
-												:endcolor => "#cf6d0f", :duration => 5.0 }
+        #page.select(".new-p").each { |b| b.visual_effect :highlight, :startcolor => "#fb3f37",
+				#								:endcolor => "#cf6d0f", :duration => 5.0 }
         page.select("#invite-status").each { |b| b.visual_effect :fade, :startcolor => "#fb3f37",
           :endcolor => "#cf6d0f", :duration => 15.0 }
         page.replace_html "participant-count", "(#{@post.engagements.size})"
