@@ -1,6 +1,6 @@
 <li><%= link_to "Posts (#{current_user.posts.count})", posts_path if current_user.activated? %></li>
 
-<li><%= link_to "Contacts", {:controller => 'users', :action => 'contacts'} %></li>
+<li><%= link_to "Contacts", contacts_path %></li>
 <li><%= link_to "#{h current_user.display_name}", :controller => 'users', :action => 'show' %></li>
 <% if current_user.admin? %>
       <li><% link_to "Groups", {:controller => 'users', :action => 'groups' }%></li>

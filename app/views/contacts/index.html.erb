@@ -1,0 +1,13 @@
+<div class="heading">My Contacts (<%= @contacts.count %>)</div>
+
+<div class="group">      
+    <% @contacts.each do |contact| %>      
+        <div class="contact <%= cycle('listing-line-odd', 'listing-line-even') %>">
+            <div class="contact-name"><%= link_to contact.display_name, :controller => 'users', :action => 'display_profile', :id => contact %></div>
+            <div class="contact-info"><%= "email: " + contact.email unless contact.email.include?("nonmember") %></div>
+            <div class="contact-info"><%= "twitter: @" + contact.screen_name unless contact.screen_name.blank? %></div>
+            <div class="contact-info"><%= "Tags: " + contact.tag_list unless contact.tag_list.blank? %></div>
+        </div>
+    <% end %>
+</div>
+

@@ -5,23 +5,22 @@ ActionController::Routing::Routes.draw do |map|
   map.connect '/posts/show', :controller => 'posts', :action => 'show',  :conditions => { :method => :get }
   map.connect '/posts/send_invites', :controller => 'posts', :action => 'send_invites'
   map.connect '/posts/plaxo', :controller => 'posts', :action => 'plaxo'
-  map.connect '/users/contacts', :controller => 'users', :action => 'contacts',  :conditions => { :method => :get }
   map.connect '/users/groups', :controller => 'users', :action => 'groups',  :conditions => { :method => :get }
   map.resources :comments, :collection => {:set_comment_body => :post}
   map.resources :users, :collection => {:activate => :post, :resendnewactivation => :get, :resendactivation => :post, :display_profile => :get}
-  map.resources :posts, :has_many => 'comments', :collection => {:migrate_existing_contacts => :get}
+  map.resources :posts, :has_many => 'comments'
   map.resources :engagements, :collection => { :get_followers => :get, :resend_invite => :post, :get_auth_from_twitter => :get, :join_conversation_member_not_logged_in => :get, :join_conversation_facebox => :get, :join_conversation_non_member => :get }
   map.resources :user_sessions
   map.resources :password_resets
   map.resources :shared_posts
   map.resources :experiences, :collection => { :capture_experience => :get }
+  map.resources :contacts, :collection => {:migrate_existing_contacts => :get}
   
   #map.resources :groups, :collection => { :add_contact_to_groups => :get}
 
   map.about "about", :controller => 'posts', :action => 'about'
   map.privacy "privacy", :controller => 'posts', :action => 'privacy'
   map.blog "blog", :controller => 'posts', :action => 'blog'
-  map.contact "contact", :controller => 'posts', :action => 'contact'
   map.help "help", :controller => 'posts', :action => 'help'
   map.login "login",   :controller => 'user_sessions', :action => 'new'
   map.logout "logout", :controller => 'user_sessions', :action => 'destroy'

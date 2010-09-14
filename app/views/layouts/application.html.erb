@@ -87,7 +87,7 @@ tinyMCE.init(tinymce_advanced_options);
       <p><%= flash[:status] %><%  flash[:status] = nil %></p>
   </div>
 <% end %>
-<% if controller.action_name == 'dashboard' || controller.action_name == 'index' %>
+<% if controller.action_name == 'dashboard' || (controller_name != 'contacts' && controller.action_name == 'index') %>
     <div id="content">
 <% else %>
      <div id="gen-content">
