@@ -374,6 +374,9 @@ class PostsController < ApplicationController
   
   #-----------------------------------------------------------------------------------------------------
   def migrate_existing_contacts
+      #Empty the membership and groups tables
+      Group.find(:all).each {|g| g.destroy}
+      Membership.find(:all).each {|m| m.destroy}
       @posts = Post.find(:all)
       @posts.each do |post|
         
