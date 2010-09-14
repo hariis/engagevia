@@ -82,7 +82,7 @@ class CommentsController < ApplicationController
       update_tags_for(@user) if @post.is_first_comment?(@user)
       @comment.deliver_comment_notification(@post)      
       #@user.join_ec_of(@post.owner) if @post.owner.id != @user.id  
-      @user.add_to_address_book(@post.owner) if @post.owner.id != @user.id 
+      @user.add_mutually_to_address_book(@post.owner) if @post.owner.id != @user.id 
       render :update do |page|
         if params[:pcid].nil?
           if @comment.sticky?
@@ -129,7 +129,7 @@ class CommentsController < ApplicationController
       render :text => @comment.body
       @comment.deliver_comment_notification(@post)   
       #@user.join_ec_of(@post.owner) if @post.owner.id != @user.id 
-      @user.add_to_address_book(@post.owner) if @post.owner.id != @user.id 
+      @user.add_mutually_to_address_book(@post.owner) if @post.owner.id != @user.id 
       #@comment.touch_root_parent_comment
     else
       render :text => "There was a problem saving your description. Please refresh and try again."

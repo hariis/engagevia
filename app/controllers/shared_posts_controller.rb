@@ -161,7 +161,7 @@ class SharedPostsController < ApplicationController
                       sp.invitee = invitee
                       sp.shared_via = 'email'
                       sp.save
-                      @user.add_to_address_book(invitee) if @user.id != invitee.id
+                      @user.add_mutually_to_address_book(invitee) if @user.id != invitee.id
                       @email_participants[invitee] = sp
                   end
                 end

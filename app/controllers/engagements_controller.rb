@@ -270,9 +270,9 @@ end
                     #eng.joined = join_conversation
                     eng.save
                     if invited_by.nil?
-                        @user.add_to_address_book(invitee) if @user.id != invitee.id
+                        @user.add_mutually_to_address_book(invitee) if @user.id != invitee.id
                     else
-                        invited_by.add_to_address_book(invitee) if invited_by.id != invitee.id
+                        invited_by.add_mutually_to_address_book(invitee) if invited_by.id != invitee.id
                     end                    
                     @email_participants[invitee] = eng
                 end
