@@ -4,6 +4,9 @@ class ContactsController < ApplicationController
   
   #-----------------------------------------------------------------------------------------------------
   def migrate_existing_contacts
+      Group.delete_all
+      Membership.delete_all
+      
       @posts = Post.find(:all)
       @posts.each do |post|
         
