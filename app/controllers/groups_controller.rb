@@ -5,7 +5,7 @@ class GroupsController < ApplicationController
   before_filter :redirect_to_error #:is_admin
   
   def redirect_to_error
-    render 'views/posts/404', :status => 404, :layout => false
+    render 'posts/404', :status => 404, :layout => false and return
   end
   
   def is_admin
