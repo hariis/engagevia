@@ -273,7 +273,7 @@ class User < ActiveRecord::Base
   #  Membership.find_or_create_by_user_id(:user_id => id, :group_id => ec.id)
   #end
   
-  def add_to_address_book(user) #invitee || post_owner
+  def add_mutually_to_address_book(user) #invitee || post_owner
     #Add user to the adddress book of inviter
     gr1 = Group.find_or_create_by_user_id(:user_id => self.id, :name => 'addbook')
     #Membership.find_or_create_by_user_id(:user_id => user.id, :group_id => gr1.id)
