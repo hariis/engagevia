@@ -13,7 +13,9 @@ class ContactsController < ApplicationController
   #-----------------------------------------------------------------------------------------------------
   def check_activated_member
     unless current_user && current_user.activated?
-      redirect_to root_path
+      flash[:notice] = "Please login to access this page."
+      #redirect_to root_path
+      redirect_to login_path
     end
   end
   
