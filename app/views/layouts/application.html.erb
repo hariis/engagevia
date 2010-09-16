@@ -99,15 +99,14 @@ tinyMCE.init(tinymce_advanced_options);
   <% if current_user %>
   <span id="feedback"><%= facebox_link_to "Feedback",  :url => DOMAIN + "experiences/capture_experience?user_id=#{current_user.id}" %></span>
   <% end %>
-  <% if controller.action_name == 'dashboard' || controller.action_name == 'privacy' || controller.action_name == 'edit'|| controller.action_name == 'update'|| controller.action_name == 'new' || controller.action_name == 'create'|| controller.action_name == 'index' || controller.action_name == 'contacts' %>
+  <% if controller.action_name == 'dashboard' || controller.action_name == 'help' || controller.action_name == 'privacy' || controller.action_name == 'edit'|| controller.action_name == 'update'|| controller.action_name == 'new' || controller.action_name == 'create'|| controller.action_name == 'index' || controller.action_name == 'contacts' %>
     <div id="footer-d">
 <% else %>
      <div id="footer">  
 <% end %>
       <ul>
 
-      <li>©2010 EngageVia</li> |
-      <li><%=  link_to "Blog" , "http://www.engagevia.com/blog" %></li> |
+      <li>©2010 EngageVia</li> |      
       <li><%=  link_to "About" , "http://www.engagevia.com/about" %></li> |
       <li><%=  link_to "Contact" , "http://www.engagevia.com/contact" %></li> |
       <li><%=  link_to "Privacy" , "http://www.engagevia.com/privacy" %></li> |
