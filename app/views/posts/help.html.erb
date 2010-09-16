@@ -1,5 +1,6 @@
 <h2>Help / FAQ</h2>
 
+<div style="line-height:1.5em;padding:0 15px;text-align:justify;">
 <h3>Do I have to signup to try?</h3>
 Not at all. Neither you nor any of your invitees have to signup to experience the application.
 <h3>What is benefit of signing up?</h3>
@@ -11,11 +12,26 @@ No. Each invitee receives a unique link that we use to identify them when they v
 <h3>What if I accidentally deleted my invitation email or never received one?</h3>
 Request the owner of the conversation to resend your unique invitation.
 
+<h3>When do I Invite and When do I Share?</h3>
+If you know exactly who would be interested in your conversation or who you want to be part of your conversation, Invite them. <br/>
+As soon as you invite, they will be added to the Participants list of the conversation. <br/> <br/>
+
+On the other hand, when you are not sure who would be relevant to the conversation, Share an open invite via email or Facebook to let them know. <br/>
+By clicking the link, they can view the conversation details and then choose to join, if they are interested.<br/>
+Only when they Join, they will be added to the Participants list.
+
+<h3>How is it different from having conversations in Facebook?</h3>
+EngageVia not only allows you to invite from your friends circle but also lets your friends to invite from their circle as well
+to the same conversation so that you can all gather at one place.<br/>
+This way, you can reach a targeted and trusted audience for your conversation instead of spamming all your friends.
+
 <h3>If you are a content publisher, copy the following javascript snippet to paste in your pages to facilitate private conversations</h3>
 
 <div id="js_snippet">
   <% snippet = "<img src='http://www.engagevia.com/images/e2.png'>    <a href='http://www.engagevia.com/posts/new' onclick='window.open('http://www.engagevia.com/posts/new?noui&amp;jump=close&amp;url='+encodeURIComponent(location.href)+'&amp;title='+encodeURIComponent(document.title),'EngageVia','toolbar=no,width=800,height=600'); return false;'> Start a conversation on EngageVia</a>"        %>
-  <%= text_area_tag 'snippet', snippet, :rows => 5, :cols => 120, :readonly => true %>
+  <%= text_area_tag 'snippet', snippet, :rows => 5, :cols => 120, :readonly => true,  :class =>"mceNoEditor" %>
 </div>
 
 <p>For help, contact us at <a href="mailto:engagevia@gmail.com">engagevia@gmail.com</a>
+
+  </div>
