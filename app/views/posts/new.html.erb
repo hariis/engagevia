@@ -1,12 +1,42 @@
+ <script type="text/javascript">
+  (function() {
+  document.observe('dom:loaded', function() {
+    var attr = Prototype.Browser.IE ? 'htmlFor' : 'for';
+    function showTooltip() {
+      var tooltip = $$('label[' + attr + '="' + this.id + '"] .tooltip').first();
+      tooltip && tooltip.show();
+    }
+    function hideTooltip() {
+      var tooltip = $$('label[' + attr + '="' + this.id + '"] .tooltip').first();
+      tooltip && tooltip.hide();
+    }
 
+    $('new_post').getInputs().invoke('observe', 'focus', showTooltip).
+      invoke('observe', 'blur', hideTooltip);
+  });
+})();
+</script>
+<style type="text/css">
+#new_post .tooltip {
+  display: block; position: absolute; left: 70em; top: 10em;
+  padding: 0.35em 0.5em 0.35em 2em; width: 20em;
+  border: 1px solid silver;
+  color: #fff; font-weight: normal;
+  background: #0B84E8 0.5em 0.3em no-repeat;
+}
+</style>
 <h2>Start a Conversation</h2>
 
 <% form_for(@post , :html => { :multipart => true }) do |f| %>
   <%= f.error_messages :header_message => "Invalid Post!", :message => "Please address the following fields:", :header_tag => :h3 %>
   <% if current_user.nil? || !current_user.activated? %>
    <p>
-    <%= label_tag "Your Email" %> (required) <br />    
-    <%= text_field_tag :email,'', :size => 91  %>
+    
+    <label for="email">Your Email <span class="tooltip" style="display: none;">
+        Your email will be used to send you the unique link to access your conversation page and also comment notifications
+      </span></label>(required)<br />
+    
+    <%= text_field_tag :email,'', :size => 71  %>
   </p>
   <% end %>
   <p>
@@ -22,9 +52,14 @@
     <%= f.text_field :url , :size=> 91, :maxlength => 180 %>
   </p>
 
+  <%=  link_to_function "More >>" do |page|
+    page.toggle 'optional' 
+  end %>
+
+  <div id="optional" style="display:none;">
   <p>
-    <%= f.label :tag_list, "Tags" %> (optional)<br />
-    <span class ="info">(separate multiple tags with comma) Ex: economics, technology, parenting, arts</span>
+    <%= f.label :tag_list, "Keywords that describe this converstion" %> (optional)<br />
+    <span class ="info">(separate multiple with comma)<i> Example: economics, technology, parenting, arts </i></span>
     <%= f.text_field :tag_list , :size=> 91, :maxlength => 80 %><br/>
   </p>
 
@@ -40,7 +75,7 @@
   <p>    
     <% f.check_box :public %><% f.label :public , " Allow Outsiders to Join" %>
   </p>
-
+</div>
   <p>
     <%= f.submit 'Create', :class => 'submit' %>
   </p>
