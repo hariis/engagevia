@@ -179,7 +179,7 @@ class UsersController < ApplicationController
  def update_name
    @user = User.find_by_unique_id(params[:uid]) if params[:uid]
    @post = Post.find_by_unique_id(params[:pid]) if params[:pid]
-   checkpassword = @user.engagements.count > 1
+   checkpassword = @user.engagements.count > 1 && @user.first_name != 'firstname' && @user.last_name != 'lastname'
  
    @error_message = ""
    if @user.non_member?
@@ -211,6 +211,8 @@ class UsersController < ApplicationController
    render :update do |page|    
       if @error_message.blank? && @user.save
         flash[:notice] = "Welcome #{@user.display_name}!"
+        page.replace_html "non-member-name", "Welcome #{@user.display_name}!"
+        page.visual_effect :highlight, 'non-member-name', :startcolor => "#f3add0", :endcolor => "#ffffff", :duration => 5.0
         page.visual_effect :blind_up, 'name-request'
         #show the top right corner options
         if checkpassword

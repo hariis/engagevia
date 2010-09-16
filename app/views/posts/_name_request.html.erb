@@ -15,9 +15,7 @@
           <%= text_field_tag :first_name ,"",  :class =>"mceNoEditor",:size => 20, :maxlength => 20 %>
           <%=  label_tag 'Last Name' %>
           <%= text_field_tag :last_name ,"",  :class =>"mceNoEditor",:size => 20, :maxlength => 20  %><br/>
-      <% end %>
-     
-      <% if @user.engagements.count > 1 %>
+      <% elsif @user.engagements.count > 1 %>
           <p>
               <%= label_tag 'Password' %>
               <%= password_field_tag :password ,"", :size => 20, :maxlength => 20  %>
