@@ -209,16 +209,15 @@ class UsersController < ApplicationController
      end
    
    render :update do |page|    
-      if @error_message.blank? && @user.save
-        flash[:notice] = "Welcome #{@user.display_name}!"
+      if @error_message.blank? && @user.save        
         page.replace_html "non-member-name", "Welcome #{@user.display_name}!"
-        page.visual_effect :highlight, 'non-member-name', :startcolor => "#f3add0", :endcolor => "#ffffff", :duration => 5.0
+        page.visual_effect :highlight, 'non-member-name', :startcolor => "#f3add0", :endcolor => "#222222", :duration => 5.0
         page.visual_effect :blind_up, 'name-request'
         #show the top right corner options
         if checkpassword
             page.replace_html "band-actions", :partial => 'posts/member_band_actions'
             page.select("band-actions").each { |b| b.visual_effect :highlight, :startcolor => "#f3add0",
-                        :endcolor => "#ffffff", :duration => 5.0 }
+                        :endcolor => "#222222", :duration => 5.0 }
         end
         #remove the x is a member     
       else        

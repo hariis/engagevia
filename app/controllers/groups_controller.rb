@@ -1,103 +1,50 @@
 class GroupsController < ApplicationController
-  # GET /groups
-  # GET /groups.xml
-  
-  before_filter :redirect_to_error #:is_admin
+ 
+  before_filter :redirect_to_error 
   
   def redirect_to_error
     render 'posts/404', :status => 404, :layout => false and return
   end
-  
-  def is_admin
-    if !(current_user && current_user.admin?)
-      redirect_to root_url
-    end
-  end
-  
-  def index1
-    @groups = Group.all
-
-    respond_to do |format|
-      format.html # index.html.erb
-      format.xml  { render :xml => @groups }
-    end
-  end
-
-  # GET /groups/1
-  # GET /groups/1.xml
-  def show
-    @group = Group.find(params[:id])
-
-    respond_to do |format|
-      format.html # show.html.erb
-      format.xml  { render :xml => @group }
-    end
-  end
-
-  # GET /groups/new
-  # GET /groups/new.xml
-  def new
-    @group = Group.new
-
-    respond_to do |format|
-      format.html # new.html.erb
-      format.xml  { render :xml => @group }
-    end
-  end
-
-  # GET /groups/1/edit
-  def edit
-    @group = Group.find(params[:id])
-  end
-
+    
   # POST /groups
   # POST /groups.xml
   def create
-    @group = Group.new(params[:group])
-    @group.user_id = current_user.id
-    
-    respond_to do |format|
-      if @group.save
-        flash[:notice] = 'Group was successfully created.'
-        format.html { redirect_to(@group) }
-        format.xml  { render :xml => @group, :status => :created, :location => @group }
-      else
-        format.html { render :action => "new" }
-        format.xml  { render :xml => @group.errors, :status => :unprocessable_entity }
-      end
+    unless params[:post_id].empty?
+      #we are creating from post's participants here
+      @post_owner = User.find_by_unique_id(params[:uid])
+      if !@post_owner.nil? && !params[:group_name].empty?
+        @group = Group.new(:user_id => @post_owner.id , :name => params[:group_name].strip)
+      end    
+    end
+        
+    if @group.save
+        if add_contacts_from_post_participants(params[:post_id])
+          error = ""
+        else
+          error = "Error! Please Try again!"
+        end
+    else
+          error = "Error! Please Try again!"
+    end
+    render :update do |page|
+         if error.blank?
+           page.replace_html 'group-name', @group.name
+         else
+           page.replace_html 'group-name-status', error
+         end        
     end
   end
 
-  def add_contact_to_groups
-    @groups = Group.all
-  end
-  
-  # PUT /groups/1
-  # PUT /groups/1.xml
-  def update
-    @group = Group.find(params[:id])
-
-    respond_to do |format|
-      if @group.update_attributes(params[:group])
-        flash[:notice] = 'Group was successfully updated.'
-        format.html { redirect_to(@group) }
-        format.xml  { head :ok }
-      else
-        format.html { render :action => "edit" }
-        format.xml  { render :xml => @group.errors, :status => :unprocessable_entity }
-      end
+  def add_contacts_from_post_participants(post_id)
+    begin
+        @post = Post.find_by_id(post_id)
+        unless @post.nil?
+          @post.get_all_participants.each do |p|
+            m = Membership.find_or_create_by_user_id_and_group_id(:user_id => p.id, :group_id => @group.id) if p.id != @post_owner.id
+          end
+        end
+        return true
     end
-  end
-
-  # DELETE /groups/1
-  # DELETE /groups/1.xml
-  def destroy
-    @group = Group.find(params[:id])
-    @group.destroy
-
-    respond_to do |format|
-      format.html { redirect_to(groups_url) }
-      format.xml  { head :ok }
-    end
-  end
+  end  
+ 
 end

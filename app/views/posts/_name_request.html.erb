@@ -3,7 +3,7 @@
   <% if is_fullname_missing(@user) %>
       <h3 style ="color: #2B1E24;">Please enter your first and last name</h3>
   <% elsif @user.engagements.count > 1 %>
-      <h4 style ="color: #2B1E24;">Great! you are now part of more than one conversation! Get access to Dashboard and view them all in one place by choosing a Password.</h4>
+      <h4 style ="color: #2B1E24;">Great! You are now part of more than one conversation! <br/> Gain access to Dashboard and view them all in one place by choosing a Password below.</h4>
   <% end %>
 
   <%  form_remote_tag :url => { :controller => 'users', :action => "update_name", :uid => params[:uid], :pid => params[:pid] },

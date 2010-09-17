@@ -1,4 +1,5 @@
-<div id="right">  
+<div id="right">
+  <% unless @readonlypost %>
   <div id="participants">
     <h3 style="border-bottom:1px solid #fff;"><%= image_tag "group.png" %>
       
@@ -16,6 +17,7 @@
   
    <div id="list-all-p"></div>
   </div>
+  <% end %>
 <% unless @readonlypost %>
    <div id="invitations">
       <%= link_to_remote ("<strong style='float:left;color:#fff;'>Invitations sent:</strong>" + image_tag("bullet_arrow_down.png")), :url => { :action => :load_all_invitations, :uid => @user.unique_id, :pid => @post.unique_id },:update => 'list-all-i' %>

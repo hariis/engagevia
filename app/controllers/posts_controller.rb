@@ -144,11 +144,16 @@ class PostsController < ApplicationController
                   end
               end
 
-              #display the count of unread records
-              unread = @post.unread_comments_for(@user)
-              #comment_notice = unread > 0 ? pluralize(unread, 'comment') : "No new comments"
-              @comment_notice = unread.to_s + " comments since your last visit"
               @last_viewed_at = @post.last_viewed_at(@user)
+              #display the count of unread records              
+              if @last_viewed_at == nil
+                 #user is visiting this page for the first time -->
+                 @comment_notice = ""   #   as the display does not make sense
+                 @last_viewed_at = Time.now  #so that all comments show up as read
+              else
+                 unread = @post.unread_comments_for(@user)
+                 @comment_notice = unread > 0 ? pluralize(unread, 'comment') + " since your last visit": "No new comments"
+              end
 
               @engagement = Engagement.new
               eng = @user.engagements.find_by_post_id(@post.id)

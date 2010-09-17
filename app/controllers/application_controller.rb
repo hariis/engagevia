@@ -54,8 +54,9 @@ class ApplicationController < ActionController::Base
     end
 
     def force_logout
-      @user_session = UserSession.find
-      @user_session.destroy if @user_session
+#      @user_session = UserSession.find
+#      @user_session.destroy if @user_session
+      current_user_session.destroy
       session[:return_to] = nil
     end
     #validating email

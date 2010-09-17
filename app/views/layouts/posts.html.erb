@@ -71,7 +71,7 @@
       <% end %>
     </ul>
   </div>
-  
+
   <% unless @comment_notice.blank? %>
   <div style="background-color:#A9ED2E;color:#000;height:24px;padding-top:6px;text-align:center;font-weight:bold;">
     <%= @comment_notice %>
@@ -93,7 +93,9 @@
   </div>
   <% end %>  
 <%= yield  %>
-<span id="feedback"><%= facebox_link_to "Feedback",  :url => DOMAIN + "experiences/capture_experience?user_id=#{@user.id}" %></span>
+<% unless @readonlypost %>
+  <span id="feedback"><%= facebox_link_to "Feedback",  :url => DOMAIN + "experiences/capture_experience?user_id=#{@user.id}" %></span>
+<% end %>
 <% if controller.action_name == 'show' || controller.action_name == 'ushow' || controller.action_name == 'callback' %>
     <div id="footer-d">
 <% else %>

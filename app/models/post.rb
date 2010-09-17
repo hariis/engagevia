@@ -123,8 +123,12 @@ class Post < ActiveRecord::Base
   end
   def unread_comments_for(user)
     unread = 0
+    when_post_last_viewed = last_viewed_at(user)
+    #this is a hack - if the last_viewed_at is nil, that means the user is viewing this post for the first time
+    #we want the unread comments to say 0 - so we use Time.now for calculation purposes
+    when_post_last_viewed = when_post_last_viewed  ? when_post_last_viewed : Time.now
     comments.each do |comment|
-       if comment.owner != user && comment.updated_at > last_viewed_at(user)
+       if comment.owner != user && comment.updated_at > when_post_last_viewed
          unread = unread + 1
        end
     end
@@ -132,7 +136,7 @@ class Post < ActiveRecord::Base
   end
   def last_viewed_at(user)
     eng = user.engagements.find_by_post_id(id)
-    return eng.last_viewed_at ? eng.last_viewed_at : Time.parse( "5/14" )
+    return eng.last_viewed_at ? eng.last_viewed_at : nil
   end
 
   def notification_status
