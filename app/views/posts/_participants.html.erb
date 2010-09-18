@@ -1,5 +1,33 @@
 <div id="right">
   <% unless @readonlypost %>
+  <div id="post-settings">
+    <span style="color:#0B84E8;font-size:14px;font-weight:bold;">Settings</span>
+    <%= link_to_function( (image_tag ("bullet_arrow_down.png")),  :id => "p_more_link_down") do |page|
+            page.visual_effect  :toggle_blind, "post-settings-form"
+            page.show "p_more_link_up"
+            page.hide "p_more_link_down"
+     end  %>
+
+     <%= link_to_function( (image_tag ("bullet_arrow_up.png")),  :id => "p_more_link_up", :style => 'display:none;') do |page|
+            page.visual_effect  :toggle_blind, "post-settings-form"
+            page.hide "p_more_link_up"
+            page.show "p_more_link_down"
+     end  %>
+
+    <div id="post-settings-form"  style="display:none;">
+      <%  form_remote_tag :url => { :action => "update_settings", :uid => params[:uid], :pid => params[:pid] },
+            :before => "Element.show('p-spinner');",
+            :complete => "Element.hide('p-spinner')", :update => 'post-settings-status' do %>
+           <p>
+            <%= check_box_tag :allow_others_to_invite, @post.allow_others_to_invite %><%= label_tag :allow_others_to_invite, " Allow Participants to Invite" %>
+          </p>
+          <p>
+              <%= submit_tag 'Save' %><%= image_tag 'spinner.gif', :id=>"p-spinner", :style=>"display:none;" %>
+          </p>
+      <% end %>
+      <div id="post-settings-status"></div>
+    </div>
+  </div>
   <div id="participants">
     <h3 style="border-bottom:1px solid #fff;"><%= image_tag "group.png" %>
       

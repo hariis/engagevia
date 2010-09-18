@@ -1,4 +1,15 @@
-<li><%= link_to "Posts (#{current_user.posts.count})", posts_path if current_user.activated? %></li>
+<li><%= link_to "Conversations (#{current_user.posts.count})", posts_path if current_user.activated? %>
+<% if current_user.posts.count > 1 && applayout.nil? %>
+  <div class="tooltip" >
+    <ul>
+      <div style="font-weight: bold;text-align:center;">Quick View</div>
+    <% current_user.posts.each do |post| %>
+      <li><%= link_to  h(truncate(post.subject.capitalize,50)), post.get_url_for(current_user,'show'),:class => "#{post.unread_comments_for(current_user) > 0 ? "unread-post" : "read-post"}"   %></li>
+    <% end %>
+    </ul>
+  </div>
+<% end %>
+</li>
 
 <li><%= link_to "Contacts", contacts_path %></li>
 <li><%= link_to "#{h current_user.display_name}", :controller => 'users', :action => 'show' %></li>

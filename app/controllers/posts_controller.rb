@@ -78,7 +78,7 @@ class PostsController < ApplicationController
       else
           @user = User.find_by_unique_id(params[:uid])
       end
-    end
+    end    
   end  #load_user
 
   #-----------------------------------------------------------------------------------------------------
@@ -160,7 +160,7 @@ class PostsController < ApplicationController
               eng.update_attribute( :last_viewed_at, Time.now )
           end
       else
-          flash[:error] = "We could not locate this post. Please check the address and try again."
+          flash[:error] = "There was an error locating this post. Please refresh and try again."
           render 'posts/404', :status => 404, :layout => false and return
       end
 
@@ -377,6 +377,22 @@ class PostsController < ApplicationController
     end
   end
 
+  def update_settings
+    @post = Post.find_by_unique_id(params[:pid])
+    @user = User.find_by_unique_id(params[:uid]) if params[:uid]
+    #check box hack
+    if params[:allow_others_to_invite].nil?
+      allow = 0
+    else
+      allow = 1
+    end
+    if @post.owner.id == @user.id && @post.update_attributes(:allow_others_to_invite => allow)
+        render :text => "Settings saved"
+    else
+        render :text => "Error! Please Try again!"
+    end    
+  end
+
   def privacy
   end
   
@@ -412,8 +428,7 @@ class PostsController < ApplicationController
     else
       redirect_to root_path
     end
-  end
-
+  end  
   #-----------------------------------------------------------------------------------------------------
   def method_missing(methodname, *args)
        @methodname = methodname

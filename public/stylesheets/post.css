@@ -99,12 +99,20 @@ font-weight: bold;
  width: 925px;
 margin: 0 auto;
 }
-#participants{
+#participants {
     background-color:#0B84E8;
     margin-top:10px;
     padding:3px;
     -moz-border-radius:14px;
     -moz-box-shadow:2px 2px 14px #4B9CE0;
+}
+#post-settings{
+    background-color:#E6F1F7;
+    margin-top:10px;
+    padding:3px;
+    -moz-border-radius:14px;
+    -moz-box-shadow:2px 2px 14px #4B9CE0;
+    color:#000;
 }
 #invitations {
     background-color:#0B84E8;

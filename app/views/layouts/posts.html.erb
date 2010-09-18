@@ -18,6 +18,68 @@
   })();
 
 </script>
+  <script type="text/javascript">
+(function() {
+  function toggle(reveal, e) {
+    var trigger = e.findElement('li'),
+      tooltip = trigger && trigger.down('.tooltip');
+    if (!tooltip) return;
+    tooltip[reveal ? 'show' : 'hide']();
+  }
+
+  document.observe('dom:loaded', function() {
+    var isIE6 = Prototype.Browser.IE &&
+      undefined === document.body.style.maxHeight;
+    if (!isIE6) return;
+    var files = $('band-actions'), tooltips = files && files.select('.tooltip');
+    if (!files || 0 == tooltips.length) return;
+    tooltips.invoke('hide');
+    files.observe('mouseover', toggle.curry(true)).
+      observe('mouseout', toggle.curry(false));
+  });
+})();
+</script>
+  <style type="text/css">
+         
+        #band-actions li .tooltip {
+          position: absolute; top: 47px; left: 820px; width: 34em;
+          z-index: 1; display: none;
+          /* IE6 doesn't know li:hover, so we need to toggle via JS,
+             therefore avoiding in-rule display: none */
+          _display: block;
+          border: 1px solid gray;
+          background-color: #E6F1F7;
+          color: #ABD9F5;
+          padding:10px;
+        }
+        #band-actions li:hover .tooltip,
+        #band-actions li:focus .tooltip { display: list-item; }
+        #band-actions li:hover .tooltip  ul li,
+        #band-actions li:focus .tooltip  ul li{
+           display:list-item;
+           list-style-type: circle;
+           float: none;
+           margin-bottom: 3px;
+        }
+        #band-actions li .tooltip ul {
+           float:none;
+        }
+         #band-actions li .tooltip ul li a{
+           color: #0B84E8;
+        }
+        #band-actions li .tooltip ul li a:hover{
+           background-color: #fff;
+        }
+       
+        #band-actions li .tooltip {
+          padding: 0px; color: #555;
+          /* Extra polish for CSS3-compatible implementations (Saf3.1+, FF3.5+, future!)… */
+          -webkit-box-shadow: 1px 1px 7px gray;
+          -moz-box-shadow:    1px 1px 7px gray;
+          box-shadow:         1px 1px 7px gray;
+        }
+        
+  </style>
 </head>
 <body onload="clearElements('comment_form')">
 
@@ -32,7 +94,7 @@
 <ul id="band-actions">
   <li><% link_to "Home", root_url %></li>  
   <% if current_user && current_user.activated? %>
-      <%= render :partial => 'member_band_actions' %>
+      <%= render :partial => 'member_band_actions', :locals => { :applayout => nil} %>
   <% else %>
       <% unless @readonlypost %>
           <span style="font-size:16px;"><li id='non-member-name' style="color:#fff;"><%= "Welcome #{@user.display_name}" %></li>
