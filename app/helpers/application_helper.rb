@@ -1,5 +1,13 @@
 # Methods added to this helper will be available to all templates in the application.
 module ApplicationHelper
+  def get_post_participation_comment_count(contact)
+    user = User.find_by_id(contact.id)
+    user_posts = Engagement.find_all_by_user_id(user.id)
+    user_comments = user.comments
+    return "(#{user_comments.size} comments from #{user_posts.size} posts)"
+  end
+  
+    
   def title_tag_line
     "EngageVia, Engage in Conversations & Collaborate with your friends Privately"
   end

@@ -199,9 +199,9 @@
                                   <%  next if contact.id == @user.id %>
                                   <li class="ui-widget-content ui-corner-tr">
                                         <% if @reco_users_ids.include?(contact.id) %>
-                                        <h5 class="ui-name reco-name"><%= contact.display_name %></h5>
+                                        <h5 class="ui-name reco-name"><%= contact.display_name %><br/><span style="font-size:85%"><%= get_post_participation_comment_count(contact) %></span></h5>
                                         <% else %>
-                                        <h5 class="ui-name"><%= contact.display_name %></h5>
+                                        <h5 class="ui-name"><%= contact.display_name %><br/><span style="font-size:85%"><%= get_post_participation_comment_count(contact) %></span></h5>
                                         <% end %>
                                         <a href="link/to/trash/script/when/we/have/js/off" title="Click to Invite this contact" class="ui-icon ui-icon-mail-closed">Invite</a>
                                         <input type="hidden" value="<%= contact.unique_id %>"/>
