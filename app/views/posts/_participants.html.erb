@@ -1,8 +1,9 @@
 <div id="right">
   <% unless @readonlypost %>
-  <div id="post-settings">
-    <span style="color:#0B84E8;font-size:14px;font-weight:bold;">Settings</span>
-    <%= link_to_function( (image_tag ("bullet_arrow_down.png")),  :id => "p_more_link_down") do |page|
+    <div id="post-settings">
+      <span style="color:#0B84E8;font-size:14px;font-weight:bold;">Settings</span><br/>
+
+     <%= link_to_function( (image_tag ("bullet_arrow_down.png")),  :id => "p_more_link_down") do |page|
             page.visual_effect  :toggle_blind, "post-settings-form"
             page.show "p_more_link_up"
             page.hide "p_more_link_down"
@@ -13,19 +14,30 @@
             page.hide "p_more_link_up"
             page.show "p_more_link_down"
      end  %>
+       
+     <div id="post-settings-form"  style="display:none;">
+        <div id="notification" style="float:right;margin-bottom:10px;">
+            <% if get_user_engagement_from_post(@user, @post).notify_me? %>
+              <%= button_to_remote 'Disable Notification', :url => {:controller => 'engagements', :action => 'set_notification', :id => get_user_engagement_from_post(@user, @post).id, :set => 'false'} %>
+            <% else %>
+              <%= button_to_remote 'Enable Notification', :url => {:controller => 'engagements', :action => 'set_notification', :id => get_user_engagement_from_post(@user, @post).id, :set => 'true'} %>
+            <% end %>
+        </div><br/><br/>
 
-    <div id="post-settings-form"  style="display:none;">
-      <%  form_remote_tag :url => { :action => "update_settings", :uid => params[:uid], :pid => params[:pid] },
-            :before => "Element.show('p-spinner');",
-            :complete => "Element.hide('p-spinner')", :update => 'post-settings-status' do %>
-           <p>
-            <%= check_box_tag :allow_others_to_invite, @post.allow_others_to_invite %><%= label_tag :allow_others_to_invite, " Allow Participants to Invite" %>
-          </p>
-          <p>
-              <%= submit_tag 'Save' %><%= image_tag 'spinner.gif', :id=>"p-spinner", :style=>"display:none;" %>
-          </p>
-      <% end %>
-      <div id="post-settings-status"></div>
+        <% if @post.owner.id == @user.id %>      
+            <%  form_remote_tag :url => { :action => "update_settings", :uid => params[:uid], :pid => params[:pid] },
+                  :before => "Element.show('p-spinner');",
+                  :complete => "Element.hide('p-spinner')", :update => 'post-settings-status' do %>
+                 <p>
+                   <%= check_box_tag :allow_others_to_invite, @post.allow_others_to_invite %><%= label_tag :allow_others_to_invite, " Allow Participants to Invite" %>
+                 </p>
+                 <p>
+                    <%= submit_tag 'Save' %><%= image_tag 'spinner.gif', :id=>"p-spinner", :style=>"display:none;" %>
+                 </p>
+            <% end %>        
+        <% end %>
+        <div id="post-settings-status"></div>
+            
     </div>
   </div>
   <div id="participants">
