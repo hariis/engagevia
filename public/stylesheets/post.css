@@ -657,9 +657,7 @@ div#twitter_followers ul li {
    margin-left:120px;
 }
 
-ul#participants-list li:hover {
-    border-top: 2px solid #fff;
-    border-bottom: 2px solid #fff;
+ul#participants-list li:hover {    
     background-color:#f1f1bc;
     color:#000;
 }
@@ -671,6 +669,7 @@ h3 {
 }
 label {
     font-weight: bold;
+    vertical-align:top;
 }
 #footer {
     background: #333333 url('/images/bg-widgets.png') repeat-x scroll 0 0;

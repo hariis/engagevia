@@ -5,14 +5,9 @@
               <div id="participant_details_<%=engagement.invitee.id %>" >
 
               <% if engagement.invitee.id == @user.id  %>
-                  <li id='you'><%= image_tag "user_red.png" %> Me
-                    <span id="notify-option"><%= image_tag "email.png", :id => "enabled" %></span>
+                  <li id='you'><%= image_tag "user_red.png" %> Me                    
               <% else %>
-                    <% if engagement.invitee.member? %>
-                      <li><%= image_tag "user_green.png" %> <%=  engagement.invitee.display_name(nil,engagement).titleize %>
-                    <% else %>
-                      <li><%= image_tag "user_green.png" %> <%=  engagement.invitee.display_name(nil,engagement).titleize %>
-                    <% end  %>
+                  <li><%= image_tag "user_green.png" %> <%=  engagement.invitee.display_name(nil,engagement).titleize %>
               <% end  %>
 
               <!-- common to both -->

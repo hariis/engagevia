@@ -380,13 +380,33 @@ class PostsController < ApplicationController
   def update_settings
     @post = Post.find_by_unique_id(params[:pid])
     @user = User.find_by_unique_id(params[:uid]) if params[:uid]
-    #check box hack
-    if params[:allow_others_to_invite].nil?
-      allow = 0
+    @eng = Engagement.find_by_id(params[:eid]) if params[:eid]
+    
+    if @post.owner.id == @user.id    
+      #check box hack
+      if params[:allow_others_to_invite].nil?
+        allow = 0
+      else
+        allow = 1
+      end
+
+      if params[:notify_me].nil?
+        notify = 0
+      else
+        notify = 1
+      end
+
+      status = @post.update_attributes(:allow_others_to_invite => allow) && @eng.update_attributes(:notify_me => notify)
     else
-      allow = 1
+      if params[:notify_me].nil?
+        notify = 0
+      else
+        notify = 1
+      end
+
+      status =  @eng.update_attributes(:notify_me => notify)
     end
-    if @post.owner.id == @user.id && @post.update_attributes(:allow_others_to_invite => allow)
+    if status
         render :text => "Settings saved"
     else
         render :text => "Error! Please Try again!"
