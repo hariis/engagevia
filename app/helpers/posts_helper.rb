@@ -1,4 +1,8 @@
 module PostsHelper
+  def get_user_engagement_from_post(user, post)
+    user.engagements.find_by_post_id(post.id)
+  end
+    
   def get_comments_count(post)
     pluralize(post.comments.count, "comment")
   end

@@ -80,7 +80,7 @@
             }
 
             // image recycle function
-            var trash_icon = '<a href="link/to/trash/script/when/we/have/js/off" title="Click to Invite this contact" class="ui-icon ui-icon-mail-closed">Delete image</a>';
+            var trash_icon = '<a href="link/to/trash/script/when/we/have/js/off" title="Click to Include this contact" class="ui-icon ui-icon-mail-closed">Delete image</a>';
             function recycleImage($item) {
                 $item.fadeOut(function() {
                     $item.find('a.ui-icon-refresh').remove();
@@ -162,15 +162,15 @@
 
 
 <div style="background-color:#BBDEFA;padding: 10px;">
-     <h3>Know exactly who would be interested in this conversation? Go ahead and invite them.</h3>
+     <h3>Know exactly who would be interested in this conversation? Go ahead and include them.</h3>
         <div id="tabs">
               <ul>
                       <% if @user.member? %>
-                            <li><a href="#invite-ev">Invite from EngageVia</a></li>
+                            <li><a href="#invite-ev">Include from EngageVia</a></li>
                       <% end %>
-                      <li><a href="#show_email_form">Invite from other Addressbooks</a></li>
+                      <li><a href="#show_email_form">Include from other Addressbooks</a></li>
                       <% if @user.admin? %>
-                            <li><a href="#get_twitter_auth">Invite via Twitter</a></li>
+                            <li><a href="#get_twitter_auth">Include via Twitter</a></li>
                       <% end %>
               </ul>
 
@@ -184,7 +184,7 @@
                                       <div style="font-size: 10px;">Separate multiple addresses with a comma. <br/> Limit to 10 at a time. </div>
                                       <%= text_area_tag :email_invitees ,"",  :class =>"mceNoEditor",:rows => 10, :cols => 43 %>
                                   <div style="margin-top: 10px;">
-                                  <%= submit_tag 'Send Email Invites' %><%= image_tag 'spinner.gif', :id=>"ab-spinner", :style=>"display:none;" %>
+                                  <%= submit_tag 'Include Friends' %><%= image_tag 'spinner.gif', :id=>"ab-spinner", :style=>"display:none;" %>
                                   </div>
                   <% end %>
               </div>
@@ -201,11 +201,11 @@
                                   <%  next if contact.id == @user.id %>
                                   <li class="ui-widget-content ui-corner-tr">
                                         <% if @reco_users_ids.include?(contact.id) %>
-                                        <h5 class="ui-name reco-name"><%= contact.display_name %></h5>
+                                        <h5 class="ui-name reco-name"><%= contact.display_name %><br/><span style="font-size:85%"><%= get_post_participation_comment_count(contact) %></span></h5>
                                         <% else %>
-                                        <h5 class="ui-name"><%= contact.display_name %></h5>
+                                        <h5 class="ui-name"><%= contact.display_name %><br/><span style="font-size:85%"><%= get_post_participation_comment_count(contact) %></span></h5>
                                         <% end %>
-                                        <a href="link/to/trash/script/when/we/have/js/off" title="Click to Invite this contact" class="ui-icon ui-icon-mail-closed">Invite</a>
+                                        <a href="link/to/trash/script/when/we/have/js/off" title="Click to Include this contact" class="ui-icon ui-icon-mail-closed">Invite</a>
                                         <input type="hidden" value="<%= contact.unique_id %>">
                                   </li>
                                 <% end %>
@@ -217,7 +217,7 @@
 
                       </div>
                       <div style="margin-top: 10px;">
-                      <%= button_to_remote "Send Invites", {:url => { :controller => 'engagements', :action => "create", :post_id => "#{@post.id}", :invite_type => 'email',:uid => "#{@user.unique_id}" },
+                      <%= button_to_remote "Include Friends", {:url => { :controller => 'engagements', :action => "create", :post_id => "#{@post.id}", :invite_type => 'email',:uid => "#{@user.unique_id}" },
                         :before => "Element.show('ev-spinner');", :complete => "Element.hide('ev-spinner')",
                           :update => 'added_users',:with=>"'ev_contacts=' + getValues()"  } %>
                         <%= image_tag 'spinner.gif', :id=>"ev-spinner", :style=>"display:none;" %>
@@ -235,7 +235,7 @@
                             Click on the button below to be redirected to Twitter where you can authorize<br/>
                             EngageVia to access your account. <br/><br/>
                             This privilege will be used only to gather your list of followers and <br/>
-                            send invites via direct messages to them.<br/><br/>
+                            include them via direct messages to them.<br/><br/>
 
                             Note: This is a one-time only operation. 
                           </p>

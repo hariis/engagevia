@@ -121,7 +121,7 @@
            <% end %>
       <% else %>
           <% if @post.allow_others_to_invite || @post.owner.id == current_user.id %>
-              <li><%= image_tag "group_add.png" %> <%= facebox_link_to "Invite Friends",  :url => @post.get_url_for(@user, 'send_invites') %></li>              
+              <li><%= image_tag "group_add.png" %> <%= facebox_link_to "Include Friends",  :url => @post.get_url_for(@user, 'send_invites') %></li>              
               <li> <%= facebox_link_to "Share Open Invites",  :url => @post.get_url_for(@user,'share_open_invites') %></li>
           <% end %>
       <% end %>       
