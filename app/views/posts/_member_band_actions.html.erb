@@ -1,6 +1,6 @@
 <li><%= link_to "Conversations (#{current_user.posts.count})", posts_path if current_user.activated? %>
 <% if current_user.posts.count > 1 && applayout.nil? %>
-  <div class="tooltip" >
+  <div class="tooltip">
     <ul>
       <div style="font-weight: bold;text-align:center;">Quick View</div>
     <% current_user.posts.each do |post| %>
