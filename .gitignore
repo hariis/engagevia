@@ -1,4 +1,5 @@
 config/database.yml
+config/initializers/db2s3.rb
 config/site.yml
 config/deploy.rb
 db/data.yml
