@@ -22,6 +22,7 @@ Rails::Initializer.run do |config|
   config.gem 'authlogic'
   config.gem 'twitter'
   config.gem "oauth2", :version => "0.0.8"
+  config.gem "db2s3", :source => "http://gemcutter.org"
   # Only load the plugins named here, in the order given (default is alphabetical).
   # :all can be used as a placeholder for all plugins not explicitly named
   # config.plugins = [ :exception_notification, :ssl_requirement, :all ]
