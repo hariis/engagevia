@@ -22,11 +22,11 @@
                   :before => "Element.show('p-spinner');Element.hide('post-settings-status');",
                   :complete => "Element.hide('p-spinner');Element.show('post-settings-status');", :update => 'post-settings-status' do %>
                  <p>
-                   <%= check_box_tag :notify_me, eng.notify_me %><%= label_tag :notify_me, " Comment Notifications Enabled" %>
+                   <%= check_box_tag :notify_me, 'checked', eng.notify_me %><%= label_tag :notify_me, " Comment Notifications Enabled" %>
                  </p>
                  <% if @post.owner.id == @user.id %>
                  <p>
-                   <%= check_box_tag :allow_others_to_invite, @post.allow_others_to_invite %><%= label_tag :allow_others_to_invite, " Allow Participants to Invite" %>
+                   <%= check_box_tag :allow_others_to_invite, 'checked', @post.allow_others_to_invite %><%= label_tag :allow_others_to_invite, " Allow Participants to Invite" %>
                  </p>
                  <% end %>
                  <p>

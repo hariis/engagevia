@@ -215,7 +215,7 @@ class UsersController < ApplicationController
         page.visual_effect :blind_up, 'name-request'
         #show the top right corner options
         if checkpassword
-            page.replace_html "band-actions", :partial => 'posts/member_band_actions'
+            page.replace_html "band-actions", :partial => 'posts/member_band_actions', :locals => { :applayout => nil}
             page.select("band-actions").each { |b| b.visual_effect :highlight, :startcolor => "#f3add0",
                         :endcolor => "#222222", :duration => 5.0 }
         end
