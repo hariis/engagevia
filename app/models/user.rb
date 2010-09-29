@@ -5,7 +5,7 @@ class User < ActiveRecord::Base
   has_attached_file :avatar, :styles => { :medium => "300x300>", :thumb => "32x32>" },
     :storage => :s3,
     :s3_credentials => "#{RAILS_ROOT}/config/s3.yml",
-    :path => "/uploads/avatars/:id/:style/:basename.:extension",
+    :path => "/uploads/avatars/#{self.unique_id}_:style_:basename.:extension",
     :bucket => 'engagevia-uploads',
     :s3_permissions => :public_read
   has_many :posts
