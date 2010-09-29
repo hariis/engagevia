@@ -82,6 +82,7 @@
   </p>
   <p>
   <%= f.label :avatar %><br />
+  <%= image_tag @user.avatar.url(:thumb) if @user.avatar? %>
   <%= f.file_field :avatar %>
 </p>
 <% end %>

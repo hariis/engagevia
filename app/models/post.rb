@@ -11,7 +11,12 @@ class Post < ActiveRecord::Base
   has_many :potential_participants, :through => :shared_posts, :source => :invitee, :class_name => 'User', :foreign_key => :user_id
   has_many :participants_to_notify, :through => :engagements, :source => :invitee, :class_name => 'User', :foreign_key => :user_id,
            :conditions => 'engagements.notify_me = 1'
-  has_attached_file :avatar, :styles => { :medium => "300x300>" }
+  has_attached_file :avatar, :styles => { :medium => "300x300>" },
+    :storage => :s3,
+    :s3_credentials => "#{RAILS_ROOT}/config/db2s3.yml",
+    :path => "/uploads/posts/:id/:style/:basename.:extension",
+    :bucket => 'engagevia-uploads',
+    :s3_permissions => :public_read
   validates_presence_of :subject
   validates_attachment_size :avatar, :less_than => 5.megabytes
   validates_attachment_content_type :avatar, :content_type => ['image/jpeg', 'image/png']
