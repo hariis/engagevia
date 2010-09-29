@@ -3,11 +3,8 @@ class User < ActiveRecord::Base
   acts_as_tagger
   require 'digest/md5'
   has_attached_file :avatar, :styles => { :medium => "300x300>", :thumb => "32x32>" },
-    :storage => :s3,
-    :s3_credentials => "#{RAILS_ROOT}/config/initializers/db2s3.rb",
-    :path => "/uploads/avatars/:id/:style/:basename.:extension",
-    :bucket => 'engagevia-uploads',
-    :s3_permissions => :public_read
+   :url => "/uploads/avatars/:unique_id_:style_:basename.:extension",
+   :path => ":rails_root/public/uploads/avatars/:unique_id_:style_:basename.:extension"
   has_many :posts
   has_many :comments
   has_many :engagements
