@@ -4,7 +4,7 @@ class User < ActiveRecord::Base
   require 'digest/md5'
   has_attached_file :avatar, :styles => { :medium => "300x300>", :thumb => "32x32>" },
     :storage => :s3,
-    :s3_credentials => "#{RAILS_ROOT}/config/db2s3.rb",
+    :s3_credentials => "#{RAILS_ROOT}/config/initializers/db2s3.rb",
     :path => "/uploads/avatars/:id/:style/:basename.:extension",
     :bucket => 'engagevia-uploads',
     :s3_permissions => :public_read

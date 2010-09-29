@@ -13,7 +13,7 @@ class Post < ActiveRecord::Base
            :conditions => 'engagements.notify_me = 1'
   has_attached_file :avatar, :styles => { :medium => "300x300>" },
     :storage => :s3,
-    :s3_credentials => "#{RAILS_ROOT}/config/db2s3.rb",
+    :s3_credentials => "#{RAILS_ROOT}/config/initializers/db2s3.rb",
     :path => "/uploads/posts/:id/:style/:basename.:extension",
     :bucket => 'engagevia-uploads',
     :s3_permissions => :public_read
