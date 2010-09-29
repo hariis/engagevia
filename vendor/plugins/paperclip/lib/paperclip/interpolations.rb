@@ -85,7 +85,7 @@ module Paperclip
 
     # Returns the id of the instance.
     def id attachment, style
-      attachment.instance.id
+      attachment.instance.unique_id
     end
 
     # Returns the id of the instance in a split path form. e.g. returns

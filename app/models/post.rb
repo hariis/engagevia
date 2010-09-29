@@ -14,7 +14,7 @@ class Post < ActiveRecord::Base
   has_attached_file :avatar, :styles => { :medium => "300x300>" },
     :storage => :s3,
     :s3_credentials => "#{RAILS_ROOT}/config/s3.yml",
-    :path => "/uploads/posts/:unique_id/:style_:basename.:extension",
+    :path => "/uploads/posts/:id_:style_:basename.:extension",
     :bucket => 'engagevia-uploads',
     :s3_permissions => :public_read
   validates_presence_of :subject
