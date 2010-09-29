@@ -12,8 +12,8 @@ class Post < ActiveRecord::Base
   has_many :participants_to_notify, :through => :engagements, :source => :invitee, :class_name => 'User', :foreign_key => :user_id,
            :conditions => 'engagements.notify_me = 1'
   has_attached_file :avatar, :styles => { :medium => "300x300>" },
-   :url => "/uploads/posts/:unique_id_:style_:basename.:extension",
-   :path => ":rails_root/public/uploads/posts/:unique_id_:style_:basename.:extension"
+   :url => "/system/uploads/posts/:unique_id_:style_:basename.:extension",
+   :path => ":rails_root/public/system/uploads/posts/:unique_id_:style_:basename.:extension"
   validates_presence_of :subject
   validates_attachment_size :avatar, :less_than => 5.megabytes
   validates_attachment_content_type :avatar, :content_type => ['image/jpeg', 'image/png']
