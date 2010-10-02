@@ -4,7 +4,7 @@
 <% comment_type = "current-user-comment sub" if !root && comment_owner %>
 <% comment_type = cycle('listing-line-odd', 'listing-line-even') + " sub" if !root && !comment_owner %>
 
-<% comment_type += " unread" if !comment_owner && comment.updated_at >= @last_viewed_at %>
+<% comment_type << " unread" if !comment_owner && comment.updated_at >= @last_viewed_at %>
 
 <div class="<%= comment_type %> comment-body">
    <div style="font-size :70%;float:right;"><%= image_tag "comment.png" %>   <%= "#{comment.owner.display_name(@post)}" %><br/>

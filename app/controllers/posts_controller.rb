@@ -95,7 +95,7 @@ class PostsController < ApplicationController
       if flash[:notice].blank?
         flash[:notice] = prompt_message
       else  #when we come here upon login, we will already have a flash[:notice] message
-        flash[:notice] += prompt_message
+        flash[:notice] << prompt_message
       end
       redirect_to new_post_path
       return
@@ -261,7 +261,7 @@ class PostsController < ApplicationController
             'You can now start inviting your friends for the conversation.'
         else
           flash[:notice] = 'Your Conversation page was successfully created. <br/>'
-          flash[:notice] +='Please check your email for the link to this post you just created. <br/>' +
+          flash[:notice] << 'Please check your email for the link to this post you just created. <br/>' +
             'This redirect helps us to confirm your ownership of the provided email.'+
                        'Happy Engaging!'
           redirect_to root_url
