@@ -81,8 +81,7 @@
     <%= f.text_field :blog_link %>
   </p>
   <p>
-  <%= f.label :avatar %><br />
-  <%= image_tag @user.avatar.url(:thumb) if @user.avatar? %>
+  <%= f.label "Upload Picture" %><br />
   <%= f.file_field :avatar %>
 </p>
 <% end %>

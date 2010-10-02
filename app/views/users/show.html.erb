@@ -3,7 +3,7 @@
 <span style="font-size:8pt">(<%= link_to 'Edit Settings', :controller => 'users', :action => 'edit', :id=> @user.unique_id %>)
 </span></div>
 <p>
-<b>Photo: </b><%= image_tag @user.avatar.url(:thumb) %>
+<b>Photo: </b><%= image_tag @user.avatar.url(:thumb) if @user.avatar? %>
 </p>
 
 <p>

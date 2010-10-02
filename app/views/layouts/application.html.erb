@@ -7,7 +7,7 @@
   <title><%= title_tag_line %> </title>
  
   <%= stylesheet_link_merged :base %>
- <%= javascript_include_merged :proto %>
+ <%= javascript_include_merged :proto, :cache => true %>
   <script src="/javascripts/tiny_mce/tiny_mce.js" type="text/javascript"></script>
   <script type="text/javascript">
     var tinymce_advanced_options = {
@@ -35,7 +35,7 @@
 
 tinyMCE.init(tinymce_advanced_options);
   </script>
- <%= javascript_include_merged :rest %>
+ <%= javascript_include_merged :rest, :cache => true  %>
   
   <script type="text/javascript">
         jQuery.noConflict();

@@ -25,15 +25,12 @@
 <% bk_link = "javascript:location.href=' #{DOMAIN}posts/new?url='+encodeURIComponent(location.href)+';title='+encodeURIComponent(document.title)" %>
   <div id="signup">
       <div id="signup-btn">
-        <%= button_to "Start a Conversation" , new_post_url %>
+        <%= link_to image_tag('sc2.png') , new_post_url %>
       </div>
       <div class="signup-blurb">
        No Signup required and It's FREE! <br/>
       </div>
-      <div class="signup-blurb">
-        If you are not quite ready,
-        drag this link <%= link_to  "Start Conversation", bk_link, :title => "EngageVia bookmark"  %> up to your Bookmarks Toolbar.
-      </div>
+      
   </div>
 
 
@@ -66,7 +63,7 @@
   </div>
   <div style="clear: both; padding-top: 30px;"></div>
       <div id="signup-btn">
-        <%= button_to "Start a Conversation" , new_post_url %>
+        <%= button_to "Try it! Start a Conversation" , new_post_url %>
       </div>
 </div>
 
