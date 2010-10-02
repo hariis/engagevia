@@ -9,12 +9,9 @@ javascripts:
   - jquery-ui-1.7.2.custom.min
   - application
   - facebox
-- tinymce:
+- inplace:
   - patch_inplaceeditor_1-8-2
   - patch_inplaceeditor_editonblank_1-8-2
-  - tiny_mce/tiny_mce
-  - tiny_mce_init
-  - inplacericheditor
 stylesheets: 
 - base:
   - post
