@@ -148,11 +148,10 @@ class PostsController < ApplicationController
               #display the count of unread records              
               if @last_viewed_at == nil
                  #user is visiting this page for the first time -->
-                 @comment_notice = ""   #   as the display does not make sense
+                 @unread = -1 # @comment_notice = ""   #   as the display does not make sense
                  @last_viewed_at = Time.now  #so that all comments show up as read
               else
-                 unread = @post.unread_comments_for(@user)
-                 @comment_notice = unread > 0 ? pluralize(unread, 'comment') + " since your last visit": "No new comments"
+                 @unread = @post.unread_comments_for(@user)
               end
 
               @engagement = Engagement.new
@@ -276,18 +275,7 @@ class PostsController < ApplicationController
     end
   end
   
-  #-----------------------------------------------------------------------------------------------------
-  # DELETE /posts/1
-  # DELETE /posts/1.xml
-  def destroy
-    @post = Post.find(params[:id])
-    @post.destroy
-
-    respond_to do |format|
-      format.html { redirect_to(posts_url) }
-      format.xml  { head :ok }
-    end
-  end
+  
 
   #-----------------------------------------------------------------------------------------------------
   def set_post_description
@@ -510,4 +498,16 @@ class PostsController < ApplicationController
       eng.save
   end
   #-----------------------------------------------------------------------------------------------------
+  #-----------------------------------------------------------------------------------------------------
+  # DELETE /posts/1
+  # DELETE /posts/1.xml
+  def destroy
+    @post = Post.find(params[:id])
+    @post.destroy
+
+    respond_to do |format|
+      format.html { redirect_to(posts_url) }
+      format.xml  { head :ok }
+    end
+  end
 end

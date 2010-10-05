@@ -107,7 +107,7 @@
 </div>
   <%  if !current_user || !current_user.activated? %>
     <div class="banner" style="height:33px; padding:10px 20px 7px 30px;">
-      <span style="color:orange;">Engage in Conversations & Collaborate with your friends with no signup required</span>
+      <span style="color:#fff;">Engage in Conversations & Collaborate with your friends with no signup required</span>
     </div>  
   <% end %>
   <div id="widgets">
@@ -134,9 +134,9 @@
     </ul>
   </div>
 
-  <% unless @comment_notice.blank? %>
+  <% if @unread >= 0 %>
   <div style="background-color:#A9ED2E;color:#000;height:24px;padding-top:6px;text-align:center;font-weight:bold;">
-    <%= @comment_notice %>
+    <%= @unread > 0 ? pluralize(@unread, 'comment') + " since your last visit": "No new comments" %>
   </div>
   <% end %>
   <% if flash[:notice] %>

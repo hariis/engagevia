@@ -1,6 +1,6 @@
 class ContactsController < ApplicationController
  
-  layout "application"
+  layout 'application'
   before_filter :check_activated_member, :only => [:index]
   before_filter :is_admin, :only => [:migrate_existing_contacts]
   before_filter :redirect_to_error, :except => [:migrate_existing_contacts, :index]

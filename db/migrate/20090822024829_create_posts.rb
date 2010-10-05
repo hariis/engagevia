@@ -11,7 +11,7 @@ class CreatePosts < ActiveRecord::Migration
 
       t.timestamps
     end
-    add_index(:posts, :unique_id, :unique => true)
+    
   end
 
   def self.down

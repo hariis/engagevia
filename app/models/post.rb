@@ -3,7 +3,7 @@ class Post < ActiveRecord::Base
   require 'twitter'
   acts_as_taggable
   
-  has_many :comments, :dependent => :destroy
+  has_many :comments,:include => :owner , :dependent => :destroy
   belongs_to :owner, :class_name => 'User', :foreign_key => :user_id
   has_many :engagements, :dependent => :destroy
   has_many :shared_posts, :dependent => :destroy

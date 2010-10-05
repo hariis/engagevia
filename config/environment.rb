@@ -33,8 +33,8 @@ Rails::Initializer.run do |config|
 
   # Activate observers that should always be running
   # config.active_record.observers = :cacher, :garbage_collector, :forum_observer  
-  #config.action_controller.session_store = :active_record_store
-  #config.action_controller.session = {:domain => '.engagevia.com'}
+  config.action_controller.session_store = :active_record_store
+  config.action_controller.session = {:domain => '.engagevia.com'}
   # Set Time.zone default to the specified zone and make Active Record auto-convert to this zone.
   # Run "rake -D time" for a list of tasks for finding time zone names.
   #config.time_zone = 'UTC'
@@ -43,7 +43,7 @@ Rails::Initializer.run do |config|
   # config.i18n.load_path += Dir[Rails.root.join('my', 'locales', '*.{rb,yml}')]
   # config.i18n.default_locale = :de
   DOMAIN = "http://www.engagevia.com/" if ENV['RAILS_ENV'] == 'production'
-  DOMAIN = "http://localhost:3000/" if ENV['RAILS_ENV'] == 'development'
+  DOMAIN = "http://localhost:3000/" if ENV['RAILS_ENV'] != 'production'
   TWOAUTH_KEY = "2ABzvtWhFUCZFiluhc7bGg"
   TWOAUTH_SECRET = "byf0AI0N6iazhGK1AeZWOqmaOZzm0cKvsMmnu8uDIM"
   TWOAUTH_SITE = "http://twitter.com"

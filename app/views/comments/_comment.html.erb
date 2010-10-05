@@ -27,7 +27,7 @@
   <% end %>
    
   <div id="children_for_<%= comment.id %>">
-  <%= render :partial => "/comments/comment", :collection => comment.children , :locals => {:root => nil,:parent_comment => comment } %>
+  <%= render :partial => "/comments/comment", :collection => comment.children , :locals => {:root => nil,:parent_comment => comment }, :inline => true %>
   </div>
 
 </div>
